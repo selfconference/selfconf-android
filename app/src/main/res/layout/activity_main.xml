@@ -25,7 +25,7 @@
 
     </LinearLayout>
 
-    <org.selfconference.android.views.ScrimInsetsFrameLayout
+    <org.selfconference.android.utils.ScrimInsetsFrameLayout
         android:id="@+id/scrimInsetsFrameLayout"
         android:layout_width="320dp"
         android:layout_height="match_parent"
@@ -34,10 +34,11 @@
         android:fitsSystemWindows="true"
         app:insetForeground="#4000">
 
-        <org.selfconference.android.views.DrawerView
+        <FrameLayout
+            android:id="@+id/drawer_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </org.selfconference.android.views.ScrimInsetsFrameLayout>
+    </org.selfconference.android.utils.ScrimInsetsFrameLayout>
 
 </android.support.v4.widget.DrawerLayout>

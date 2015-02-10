@@ -3,24 +3,24 @@ package org.selfconference.android;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import org.selfconference.android.drawer.DrawerCloser;
+import org.selfconference.android.drawer.DrawerFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends ActionBarActivity {
-
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
+public class MainActivity extends BaseActivity implements DrawerCloser {
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -29,14 +29,14 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(getToolbar());
 
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark));
 
         drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
-                toolbar,
+                getToolbar(),
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         ) {
@@ -52,6 +52,11 @@ public class MainActivity extends ActionBarActivity {
                 supportInvalidateOptionsMenu();
             }
         };
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.drawer_container, new DrawerFragment(), DrawerFragment.TAG)
+                .commit();
     }
 
     @Override
@@ -82,5 +87,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void closeDrawer() {
+        drawerLayout.closeDrawer(Gravity.START);
     }
 }

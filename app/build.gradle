@@ -1,5 +1,5 @@
 // Manifest version information!
-def versionMajor = 1
+def versionMajor = 0
 def versionMinor = 1
 def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
@@ -63,6 +63,16 @@ dependencies {
     compile 'com.squareup.dagger:dagger:1.2.2'
     apt 'com.squareup.dagger:dagger-compiler:1.2.2'
 
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'net.danlew:android.joda:2.7.0'
+
     compile 'com.github.frankiesardo:auto-parcel:0.2'
     apt 'com.github.frankiesardo:auto-parcel-processor:0.2'
+
+    compile 'com.jpardogo.materialtabstrip:library:1.0.8'
+
+    compile 'com.google.guava:guava:18.0'
+
+    compile 'io.reactivex:rxjava:1.0.5'
+    compile 'io.reactivex:rxandroid:0.24.0'
 }
