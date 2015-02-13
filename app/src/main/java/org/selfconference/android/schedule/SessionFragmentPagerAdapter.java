@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.selfconference.android.App;
 import org.selfconference.android.R;
+import org.selfconference.android.api.Day;
 
 public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
-    private static final int NUM_DAYS = 2;
 
     public SessionFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -16,12 +16,13 @@ public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new DaySessionFragment();
+        final Day day = position == 0 ? Day.ONE : Day.TWO;
+        return DaySessionFragment.newInstance(day);
     }
 
     @Override
     public int getCount() {
-        return NUM_DAYS;
+        return Day.values().length;
     }
 
     @Override

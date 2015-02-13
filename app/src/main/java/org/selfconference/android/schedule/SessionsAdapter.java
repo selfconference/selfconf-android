@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.selfconference.android.R;
+import org.selfconference.android.api.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,6 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
             }
         });
 
-        holder.sessionName.setText(session.getName());
         holder.sessionTitle.setText(session.getTitle());
         holder.sessionRoom.setText(session.getRoom());
         holder.sessionTime.setText(session.getBeginning().toString("M/dd h:mm a"));

@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.selfconference.android.R;
+import org.selfconference.android.api.Day;
 import org.selfconference.android.api.SelfConferenceApi;
+import org.selfconference.android.api.Session;
 
 import java.util.List;
 
@@ -25,27 +27,20 @@ import timber.log.Timber;
 import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
 public class DaySessionFragment extends Fragment implements SessionsAdapter.Callback {
+    private static final String KEY_DAY = "day";
 
     @InjectView(R.id.schedule_item_recycler_view)
     RecyclerView scheduleItemRecyclerView;
 
     private final SessionsAdapter adapter = new SessionsAdapter(this);
-    private final Subscriber<List<Session>> subscriber = new Subscriber<List<Session>>() {
-        @Override
-        public void onCompleted() {
 
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            Timber.e(e, "Schedule failed to load");
-        }
-
-        @Override
-        public void onNext(List<Session> sessions) {
-            adapter.setSessions(sessions);
-        }
-    };
+    public static DaySessionFragment newInstance(Day day) {
+        final Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_DAY, day);
+        final DaySessionFragment fragment = new DaySessionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     public DaySessionFragment() {
     }
@@ -68,7 +63,8 @@ public class DaySessionFragment extends Fragment implements SessionsAdapter.Call
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        new SelfConferenceApi().loadSchedule()
+        final Day day = (Day) getArguments().getSerializable(KEY_DAY);
+        new SelfConferenceApi().getScheduleByDay(day)
                 .observeOn(mainThread())
                 .subscribe(subscriber);
     }
@@ -79,4 +75,21 @@ public class DaySessionFragment extends Fragment implements SessionsAdapter.Call
         final Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), view, getString(R.string.transition_name_session)).toBundle();
         ActivityCompat.startActivity(getActivity(), intent, options);
     }
+
+    private final Subscriber<List<Session>> subscriber = new Subscriber<List<Session>>() {
+        @Override
+        public void onCompleted() {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Timber.e(e, "Schedule failed to load");
+        }
+
+        @Override
+        public void onNext(List<Session> sessions) {
+            adapter.setSessions(sessions);
+        }
+    };
 }

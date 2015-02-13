@@ -3,13 +3,13 @@ package org.selfconference.android.schedule;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
+import org.selfconference.android.api.Session;
 import org.selfconference.android.utils.StatusBarHelper;
 
 import butterknife.ButterKnife;
@@ -42,7 +42,6 @@ public class SessionActivity extends BaseActivity {
         StatusBarHelper.setStatusBarColor(getWindow(), R.color.primary_dark);
 
         sessionTitle.setText(session.getTitle());
-        getSupportActionBar().setTitle(session.getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

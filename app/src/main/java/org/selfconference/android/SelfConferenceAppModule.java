@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.selfconference.android.api.SelfConferenceApi;
-import org.selfconference.android.schedule.Session;
+import org.selfconference.android.api.Session;
 
 import javax.inject.Singleton;
 
