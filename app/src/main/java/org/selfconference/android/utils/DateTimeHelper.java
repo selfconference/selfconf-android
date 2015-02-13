@@ -12,7 +12,7 @@ public class DateTimeHelper {
     public static final DateTimeZone EST = DateTimeZone.forOffsetHours(-5);
 
     public static DateTime parseDateTime(String time) {
-        return DateTime.parse(time, JSON_PATTERN).withZone(EST);
+        return DateTime.parse(time, JSON_PATTERN);
     }
 
     public static Interval intervalForDay(Day day) {

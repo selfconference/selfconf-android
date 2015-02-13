@@ -23,6 +23,7 @@ import dagger.Lazy;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 import static rx.Observable.OnSubscribe;
@@ -67,7 +68,13 @@ public class SelfConferenceApi {
                         final Interval interval = DateTimeHelper.intervalForDay(day);
                         return interval.contains(session.getBeginning());
                     }
-                }).toList();
+                })
+                .toSortedList(new Func2<Session, Session, Integer>() {
+                    @Override
+                    public Integer call(Session session, Session session2) {
+                        return session.getBeginning().compareTo(session2.getBeginning());
+                    }
+                });
     }
 
     public Observable<List<Speaker>> getSpeakers() {
