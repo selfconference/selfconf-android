@@ -3,10 +3,7 @@ package org.selfconference.android.api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
 import org.selfconference.android.App;
 import org.selfconference.android.utils.DateTimeHelper;
 
@@ -40,18 +37,7 @@ public class SelfConferenceApi {
     }
 
     public Observable<List<Session>> getSchedule() {
-        return Observable.create(new OnSubscribe<List<Session>>() {
-            @Override
-            public void call(Subscriber<? super List<Session>> subscriber) {
-                try {
-                    final List<Session> events = loadFile("test-session.json", LIST_SESSION_TYPE);
-                    subscriber.onNext(events);
-                    subscriber.onCompleted();
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-            }
-        }).subscribeOn(Schedulers.io());
+        return fileObservable("test-session.json", LIST_SESSION_TYPE);
     }
 
     public Observable<List<Session>> getScheduleByDay(final Day day) {
@@ -69,32 +55,69 @@ public class SelfConferenceApi {
                         return interval.contains(session.getBeginning());
                     }
                 })
-                .toSortedList(new Func2<Session, Session, Integer>() {
-                    @Override
-                    public Integer call(Session session, Session session2) {
-                        return session.getBeginning().compareTo(session2.getBeginning());
-                    }
-                });
+                .toSortedList(sortByDateFunction());
     }
 
     public Observable<List<Speaker>> getSpeakers() {
-        return Observable.create(new OnSubscribe<List<Speaker>>() {
-            @Override
-            public void call(Subscriber<? super List<Speaker>> subscriber) {
-                try {
-                    final List<Speaker> speakers = loadFile("test-speaker.json", LIST_SPEAKER_TYPE);
-                    subscriber.onNext(speakers);
-                    subscriber.onCompleted();
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-            }
-        }).subscribeOn(Schedulers.io());
+        return fileObservable("test-speaker.json", LIST_SPEAKER_TYPE);
+    }
+
+    public Observable<List<Speaker>> getSpeakersForSession(final Session session) {
+        return getSpeakers()
+                .flatMap(new Func1<List<Speaker>, Observable<Speaker>>() {
+                    @Override
+                    public Observable<Speaker> call(List<Speaker> speakers) {
+                        return Observable.from(speakers);
+                    }
+                })
+                .filter(new Func1<Speaker, Boolean>() {
+                    @Override
+                    public Boolean call(Speaker speaker) {
+                        return session.getSpeakerIds().contains(speaker.getId());
+                    }
+                })
+                .toSortedList(sortByNameFunction());
+    }
+
+    private <T> Observable<T> fileObservable(final String filename, final Type typeOfT) {
+        return Observable.create(
+                new OnSubscribe<T>() {
+                    @Override
+                    public void call(Subscriber<? super T> subscriber) {
+                        try {
+                            final T t = loadFile(filename, typeOfT);
+                            subscriber.onNext(t);
+                            subscriber.onCompleted();
+                        } catch (Exception e) {
+                            subscriber.onError(e);
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .cache();
     }
 
     private <T> T loadFile(String filename, Type typeOfT) throws IOException {
         final InputStream json = App.getInstance().getAssets().open(filename);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(json, "UTF-8"));
         return gson.get().fromJson(reader, typeOfT);
+    }
+
+    private Func2<Session, Session, Integer> sortByDateFunction() {
+        return new Func2<Session, Session, Integer>() {
+            @Override
+            public Integer call(Session session, Session session2) {
+                return session.getBeginning().compareTo(session2.getBeginning());
+            }
+        };
+    }
+
+    private Func2<Speaker, Speaker, Integer> sortByNameFunction() {
+        return new Func2<Speaker, Speaker, Integer>() {
+            @Override
+            public Integer call(Speaker speaker, Speaker speaker2) {
+                return speaker.getName().compareTo(speaker2.getName());
+            }
+        };
     }
 }

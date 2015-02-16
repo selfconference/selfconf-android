@@ -16,7 +16,7 @@ public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        final Day day = position == 0 ? Day.ONE : Day.TWO;
+        final Day day = Day.fromPosition(position);
         return DaySessionFragment.newInstance(day);
     }
 

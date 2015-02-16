@@ -6,11 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.selfconference.android.App;
 import org.selfconference.android.R;
+import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
+import org.selfconference.android.api.Speaker;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.observables.StringObservable;
 
 import static android.view.View.OnClickListener;
 
@@ -19,9 +29,13 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
         void onSessionSelected(View view, Session event);
     }
 
+    @Inject
+    SelfConferenceApi api;
+
     private final Callback callback;
 
     public SessionsAdapter(Callback callback) {
+        App.getInstance().inject(this);
         this.callback = callback;
     }
 
@@ -40,8 +54,30 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(SessionViewHolder holder, int position) {
+    public void onBindViewHolder(final SessionViewHolder holder, final int position) {
         final Session session = sessions.get(position);
+        final Observable<String> nameObservable = api.getSpeakersForSession(session)
+                .flatMap(new Func1<List<Speaker>, Observable<Speaker>>() {
+                    @Override
+                    public Observable<Speaker> call(List<Speaker> speakers) {
+                        return Observable.from(speakers);
+                    }
+                })
+                .flatMap(new Func1<Speaker, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(Speaker speaker) {
+                        return Observable.just(speaker.getName());
+                    }
+                });
+
+
+        StringObservable.join(nameObservable, ", ")
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        holder.sessionName.setText(s);
+                    }
+                });
 
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override

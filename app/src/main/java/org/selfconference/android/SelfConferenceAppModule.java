@@ -7,6 +7,8 @@ import com.google.gson.GsonBuilder;
 
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
+import org.selfconference.android.schedule.DaySessionFragment;
+import org.selfconference.android.schedule.SessionsAdapter;
 
 import javax.inject.Singleton;
 
@@ -17,7 +19,9 @@ import dagger.Provides;
         library = true,
         complete = false,
         injects = {
-                SelfConferenceApi.class
+                SelfConferenceApi.class,
+                SessionsAdapter.class,
+                DaySessionFragment.class
         }
 )
 public class SelfConferenceAppModule {
@@ -26,6 +30,12 @@ public class SelfConferenceAppModule {
 
     public SelfConferenceAppModule(Application application) {
         this.application = application;
+    }
+
+    @Provides
+    @Singleton
+    SelfConferenceApi selfConferenceApi() {
+        return new SelfConferenceApi();
     }
 
     @Provides

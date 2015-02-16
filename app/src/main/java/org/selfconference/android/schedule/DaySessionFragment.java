@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import org.selfconference.android.App;
+import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Day;
 import org.selfconference.android.api.SelfConferenceApi;
@@ -19,15 +18,20 @@ import org.selfconference.android.api.Session;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
+import javax.inject.Inject;
+
 import butterknife.InjectView;
 import rx.Subscriber;
 import timber.log.Timber;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
-public class DaySessionFragment extends Fragment implements SessionsAdapter.Callback {
+public class DaySessionFragment extends BaseFragment implements SessionsAdapter.Callback {
     private static final String KEY_DAY = "day";
+
+    @Inject
+    SelfConferenceApi api;
 
     @InjectView(R.id.schedule_item_recycler_view)
     RecyclerView scheduleItemRecyclerView;
@@ -46,27 +50,21 @@ public class DaySessionFragment extends Fragment implements SessionsAdapter.Call
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_schedule_item, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        App.getInstance().inject(this);
 
         scheduleItemRecyclerView.setAdapter(adapter);
         scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        api.getScheduleByDay(getDay())
+                .observeOn(mainThread())
+                .subscribe(subscriber);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        final Day day = (Day) getArguments().getSerializable(KEY_DAY);
-        new SelfConferenceApi().getScheduleByDay(day)
-                .observeOn(mainThread())
-                .subscribe(subscriber);
+    protected int layoutResId() {
+        return R.layout.fragment_schedule_item;
     }
 
     @Override
@@ -74,6 +72,10 @@ public class DaySessionFragment extends Fragment implements SessionsAdapter.Call
         final Intent intent = SessionActivity.newIntent(getActivity(), session);
         final Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), view, getString(R.string.transition_name_session)).toBundle();
         ActivityCompat.startActivity(getActivity(), intent, options);
+    }
+
+    private Day getDay() {
+        return (Day) checkNotNull(getArguments().getSerializable(KEY_DAY));
     }
 
     private final Subscriber<List<Session>> subscriber = new Subscriber<List<Session>>() {

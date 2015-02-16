@@ -16,7 +16,7 @@ public class DateTimeHelper {
     }
 
     public static Interval intervalForDay(Day day) {
-        int d = day == Day.ONE ? 30 : 31;
+        final int d = day == Day.ONE ? 30 : 31;
         final DateTime start = new DateTime(2014, 5, d, 0, 0, 0).withZone(EST);
         final DateTime end = new DateTime(2014, 5, d, 23, 59, 59).withZone(EST);
         return new Interval(start, end);
