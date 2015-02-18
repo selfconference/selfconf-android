@@ -3,7 +3,7 @@ package org.selfconference.android.speakers;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
@@ -47,7 +47,7 @@ public class SpeakerFragment extends BaseFragment implements SpeakerAdapter.OnSp
         speakerAdapter.setOnSpeakerClickListener(this);
 
         speakerRecyclerView.setAdapter(speakerAdapter);
-        speakerRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        speakerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         addSubscription(
                 api.getSpeakers()

@@ -11,11 +11,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class SpeakerViewHolder extends RecyclerView.ViewHolder {
-    @InjectView(R.id.speaker_name)
-    public TextView speakerName;
-
-    @InjectView(R.id.speaker_headshot)
+    @InjectView(R.id.row_icon)
     public ImageView speakerHeadshot;
+
+    @InjectView(R.id.row_title)
+    public TextView speakerName;
 
     public SpeakerViewHolder(View itemView) {
         super(itemView);

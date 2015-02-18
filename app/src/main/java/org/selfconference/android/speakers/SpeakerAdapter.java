@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Speaker;
+import org.selfconference.android.utils.CircularTransformation;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
 
     @Override
     public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_speaker_simple, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_row_single_item_with_avatar, parent, false);
         return new SpeakerViewHolder(view);
     }
 
@@ -65,10 +66,11 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
                 holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
                 picasso.load(speaker.getHeadshot())
-                        .resize(holder.itemView.getWidth(), holder.itemView.getHeight())
-                        .centerInside()
+                        .resize(holder.speakerHeadshot.getWidth(), holder.speakerHeadshot.getHeight())
+                        .centerCrop()
+                        .transform(new CircularTransformation(speaker.getHeadshot()))
                         .placeholder(TextDrawable.builder()
-                                        .buildRect(speaker.getName().substring(0, 1), getColorForPosition(context, position))
+                                        .buildRound(speaker.getName().substring(0, 1), getColorForPosition(context, position))
                         )
                         .into(holder.speakerHeadshot);
                 return true;
@@ -88,9 +90,11 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
     }
 
     private static final int[] COLORS = new int[]{
+            R.color.red,
+            R.color.accent,
+            R.color.yellow,
             R.color.primary,
-            R.color.purple,
-            R.color.yellow
+            R.color.purple
     };
 
     private static int getColorForPosition(Context context, int position) {
