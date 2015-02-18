@@ -1,19 +1,26 @@
 package org.selfconference.android;
 
 import android.app.Application;
+import android.net.Uri;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
+import org.selfconference.android.drawer.DrawerFragment;
 import org.selfconference.android.schedule.DaySessionFragment;
+import org.selfconference.android.schedule.ScheduleFragment;
 import org.selfconference.android.schedule.SessionsAdapter;
+import org.selfconference.android.speakers.SpeakerAdapter;
+import org.selfconference.android.speakers.SpeakerFragment;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import timber.log.Timber;
 
 @Module(
         library = true,
@@ -21,7 +28,12 @@ import dagger.Provides;
         injects = {
                 SelfConferenceApi.class,
                 SessionsAdapter.class,
-                DaySessionFragment.class
+                BaseFragment.class,
+                ScheduleFragment.class,
+                SpeakerFragment.class,
+                DrawerFragment.class,
+                DaySessionFragment.class,
+                SpeakerAdapter.class
         }
 )
 public class SelfConferenceAppModule {
@@ -44,5 +56,19 @@ public class SelfConferenceAppModule {
         return new GsonBuilder()
                 .registerTypeAdapter(Session.class, new Session.Deserializer())
                 .create();
+    }
+
+    @Provides
+    @Singleton
+    Picasso picasso() {
+        return new Picasso.Builder(application)
+                .loggingEnabled(BuildConfig.DEBUG)
+                .listener(new Picasso.Listener() {
+                    @Override
+                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                        Timber.e(exception, "Image load failed");
+                    }
+                })
+                .build();
     }
 }

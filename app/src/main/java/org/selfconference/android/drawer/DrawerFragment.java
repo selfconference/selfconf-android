@@ -6,23 +6,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
+import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
 import org.selfconference.android.schedule.ScheduleFragment;
+import org.selfconference.android.speakers.SpeakerFragment;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class DrawerFragment extends Fragment implements DrawerAdapter.Callback {
+public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDrawerItemClickListener {
     public static final String TAG = DrawerFragment.class.getName();
 
     @InjectView(R.id.drawer_recycler_view)
     RecyclerView drawerRecyclerView;
 
     private DrawerCloser drawerCloser;
+    private DrawerAdapter adapter = new DrawerAdapter();
 
     @Override
     public void onAttach(Activity activity) {
@@ -41,33 +40,42 @@ public class DrawerFragment extends Fragment implements DrawerAdapter.Callback {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_drawer, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        adapter.setOnDrawerItemClickListener(this);
+
         drawerRecyclerView.setHasFixedSize(true);
         drawerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        drawerRecyclerView.setAdapter(new DrawerAdapter(this));
+        drawerRecyclerView.setAdapter(adapter);
+
         if (savedInstanceState == null) {
-            onDrawerItemSelected(DrawerItem.SCHEDULE);
+            onDrawerItemClick(DrawerItem.SCHEDULE);
         }
     }
 
     @Override
-    public void onDrawerItemSelected(DrawerItem drawerItem) {
+    protected int layoutResId() {
+        return R.layout.fragment_drawer;
+    }
+
+    @Override
+    public void onDrawerItemClick(DrawerItem drawerItem) {
         drawerCloser.closeDrawer();
+        switch (drawerItem) {
+            case SCHEDULE:
+                changeFragment(new ScheduleFragment(), ScheduleFragment.TAG);
+                break;
+            case SPEAKERS:
+                changeFragment(new SpeakerFragment(), SpeakerFragment.TAG);
+                break;
+        }
+    }
+
+    private void changeFragment(Fragment fragment, String tag) {
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, new ScheduleFragment(), ScheduleFragment.TAG)
+                .replace(R.id.container, fragment, tag)
                 .commit();
     }
 }

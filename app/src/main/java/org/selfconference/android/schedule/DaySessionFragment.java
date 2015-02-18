@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import org.selfconference.android.App;
 import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Day;
@@ -52,14 +51,15 @@ public class DaySessionFragment extends BaseFragment implements SessionsAdapter.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        App.getInstance().inject(this);
 
         scheduleItemRecyclerView.setAdapter(adapter);
         scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        api.getScheduleByDay(getDay())
-                .observeOn(mainThread())
-                .subscribe(subscriber);
+        addSubscription(
+                api.getScheduleByDay(getDay())
+                        .observeOn(mainThread())
+                        .subscribe(subscriber)
+        );
     }
 
     @Override

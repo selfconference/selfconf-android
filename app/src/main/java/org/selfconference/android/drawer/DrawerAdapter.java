@@ -9,14 +9,13 @@ import android.view.ViewGroup;
 import org.selfconference.android.R;
 
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerViewHolder> {
-    public interface Callback {
-        void onDrawerItemSelected(DrawerItem drawerItem);
+    public interface OnDrawerItemClickListener {
+        void onDrawerItemClick(DrawerItem drawerItem);
     }
+    private OnDrawerItemClickListener onDrawerItemClickListener;
 
-    private final Callback callback;
-
-    public DrawerAdapter(Callback callback) {
-        this.callback = callback;
+    public void setOnDrawerItemClickListener(OnDrawerItemClickListener onDrawerItemClickListener) {
+        this.onDrawerItemClickListener = onDrawerItemClickListener;
     }
 
     @Override
@@ -32,7 +31,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerViewHolder> {
         holder.rowItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
-                callback.onDrawerItemSelected(drawerItem);
+                onDrawerItemClickListener.onDrawerItemClick(drawerItem);
             }
         });
         holder.icon.setImageResource(drawerItem.getIcon());
