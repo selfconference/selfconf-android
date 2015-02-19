@@ -103,7 +103,7 @@ public class SelfConferenceApi {
         return gson.get().fromJson(reader, typeOfT);
     }
 
-    private Func2<Session, Session, Integer> sortByDateFunction() {
+    private static Func2<Session, Session, Integer> sortByDateFunction() {
         return new Func2<Session, Session, Integer>() {
             @Override
             public Integer call(Session session, Session session2) {
@@ -112,7 +112,7 @@ public class SelfConferenceApi {
         };
     }
 
-    private Func2<Speaker, Speaker, Integer> sortByNameFunction() {
+    private static Func2<Speaker, Speaker, Integer> sortByNameFunction() {
         return new Func2<Speaker, Speaker, Integer>() {
             @Override
             public Integer call(Speaker speaker, Speaker speaker2) {

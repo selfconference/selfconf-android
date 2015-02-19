@@ -21,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static android.view.ViewTreeObserver.OnPreDrawListener;
+import static org.selfconference.android.utils.BrandColors.getColorForPosition;
 
 public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
     public interface OnSpeakerClickListener {
@@ -87,17 +88,5 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
         this.speakers.clear();
         this.speakers.addAll(speakers);
         notifyDataSetChanged();
-    }
-
-    private static final int[] COLORS = new int[]{
-            R.color.red,
-            R.color.accent,
-            R.color.yellow,
-            R.color.primary,
-            R.color.purple
-    };
-
-    private static int getColorForPosition(Context context, int position) {
-        return context.getResources().getColor(COLORS[position % COLORS.length]);
     }
 }

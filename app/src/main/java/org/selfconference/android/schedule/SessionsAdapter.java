@@ -6,13 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.common.collect.Lists;
+
 import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
 import org.selfconference.android.api.Speaker;
+import org.selfconference.android.utils.SharedElements;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,21 +27,23 @@ import rx.observables.StringObservable;
 import static android.view.View.OnClickListener;
 
 public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
-    public interface Callback {
-        void onSessionSelected(View view, Session event);
+    public interface OnSessionClickListener {
+        void onSessionClick(SharedElements sharedElements, Session event);
     }
 
     @Inject
     SelfConferenceApi api;
 
-    private final Callback callback;
+    private final List<Session> sessions = Lists.newArrayList();
+    private OnSessionClickListener onSessionClickListener;
 
-    public SessionsAdapter(Callback callback) {
+    public SessionsAdapter() {
         App.getInstance().inject(this);
-        this.callback = callback;
     }
 
-    private final List<Session> sessions = new ArrayList<>();
+    public void setOnSessionClickListener(OnSessionClickListener onSessionClickListener) {
+        this.onSessionClickListener = onSessionClickListener;
+    }
 
     public void setSessions(List<Session> events) {
         this.sessions.clear();
@@ -82,13 +86,17 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
-                callback.onSessionSelected(v, session);
+                final SharedElements sharedElements = new SharedElements.Builder(v.getContext())
+                        .add(holder.sessionTitle, R.string.transition_name_session)
+                        .add(holder.sessionName, R.string.transition_name_speaker_name)
+                        .build();
+                onSessionClickListener.onSessionClick(sharedElements, session);
             }
         });
 
         holder.sessionTitle.setText(session.getTitle());
         holder.sessionRoom.setText(session.getRoom());
-        holder.sessionTime.setText(session.getBeginning().toString("M/dd h:mm a"));
+        holder.sessionTime.setText(session.getBeginning().toString("h:mm a"));
     }
 
     @Override
