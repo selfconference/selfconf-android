@@ -11,7 +11,9 @@ import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
 import org.selfconference.android.drawer.DrawerFragment;
 import org.selfconference.android.schedule.DaySessionFragment;
+import org.selfconference.android.schedule.SavedSessionPreferences;
 import org.selfconference.android.schedule.ScheduleFragment;
+import org.selfconference.android.schedule.SessionDetailsActivity;
 import org.selfconference.android.schedule.SessionsAdapter;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerFragment;
@@ -33,7 +35,9 @@ import timber.log.Timber;
                 SpeakerFragment.class,
                 DrawerFragment.class,
                 DaySessionFragment.class,
-                SpeakerAdapter.class
+                SpeakerAdapter.class,
+                BaseActivity.class,
+                SessionDetailsActivity.class
         }
 )
 public class SelfConferenceAppModule {
@@ -70,5 +74,10 @@ public class SelfConferenceAppModule {
                     }
                 })
                 .build();
+    }
+
+    @Provides
+    SavedSessionPreferences savedSessionPreferences() {
+        return new SavedSessionPreferences();
     }
 }

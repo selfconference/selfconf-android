@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".schedule.SessionActivity"
+            android:name=".schedule.SessionDetailsActivity"
             android:label="@string/app_name_lowercase">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -12,13 +12,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
 import org.selfconference.android.utils.DateTimeHelper;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 public class Session implements Parcelable {
     private final int id;
@@ -59,6 +59,17 @@ public class Session implements Parcelable {
 
     public List<Integer> getSpeakerIds() {
         return speakers;
+    }
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("id", id)
+                .add("title", title)
+                .add("room", room)
+                .add("beginning", beginning)
+                .add("speakers", speakers)
+                .toString();
     }
 
     public static class Deserializer implements JsonDeserializer<Session> {

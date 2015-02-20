@@ -35,7 +35,7 @@
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/primary"
             android:gravity="center_horizontal"
-            tools:text="10" />
+            tools:text="10"/>
 
         <TextView
             android:id="@+id/start_time_indicator"
@@ -44,7 +44,7 @@
             android:textSize="16sp"
             android:textColor="@color/primary"
             android:gravity="center_horizontal"
-            tools:text="AM" />
+            tools:text="AM"/>
 
     </LinearLayout>
 
@@ -53,17 +53,18 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp"
+
         android:layout_marginRight="16dp"
-        android:background="#ECECEC">
+        android:background="@drawable/schedule_item_background">
 
         <LinearLayout
             android:id="@+id/slot_chip_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
             android:orientation="vertical">
 
             <TextView
@@ -72,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="#464646"
-                tools:text="Introduction to Typescript" />
+                tools:text="Introduction to Typescript"/>
 
             <TextView
                 android:id="@+id/slot_subtitle"
@@ -81,7 +82,19 @@
                 android:layout_marginTop="4dp"
                 android:textSize="16sp"
                 android:textColor="#939393"
-                tools:text="Room 140F" />
+                tools:text="Room 140F"/>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/favorite_session_indicator"
+            android:contentDescription="Favorited session"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_star_grey600_24dp"
+            android:layout_gravity="right|top"
+            android:padding="4dp"
+            android:tint="@color/accent"
+            android:visibility="gone"
+            tools:visibility="visible"/>
     </FrameLayout>
 </LinearLayout>

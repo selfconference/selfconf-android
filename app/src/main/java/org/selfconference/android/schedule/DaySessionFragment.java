@@ -62,13 +62,19 @@ public class DaySessionFragment extends BaseFragment implements SessionsAdapter.
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        sessionsAdapter.refresh();
+    }
+
+    @Override
     protected int layoutResId() {
         return R.layout.fragment_schedule_item;
     }
 
     @Override
     public void onSessionClick(SharedElements sharedElements, Session session) {
-        final Intent intent = SessionActivity.newIntent(getActivity(), session);
+        final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
         ActivityCompat.startActivity(getActivity(), intent, null);
     }
 

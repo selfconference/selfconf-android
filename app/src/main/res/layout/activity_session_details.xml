@@ -1,0 +1,59 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.selfconference.android.speakers.SessionDetailsActivity">
+
+    <ImageView
+        android:id="@+id/speaker_headshot"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@color/purple"
+        tools:ignore="UnknownId"/>
+
+    <include layout="@layout/toolbar"/>
+
+    <ImageButton
+        android:id="@+id/favorite_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/round_button"
+        android:layout_below="@+id/speaker_headshot"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="-28dp"/>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/speaker_headshot">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/session_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/session_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

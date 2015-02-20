@@ -23,8 +23,10 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
+import static android.view.View.VISIBLE;
 
 public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.SessionViewHolder> {
 
@@ -34,6 +36,9 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
 
     @Inject
     SelfConferenceApi api;
+
+    @Inject
+    SavedSessionPreferences preferences;
 
     private final List<Session> sessions = Lists.newArrayList();
     private OnSessionClickListener onSessionClickListener;
@@ -49,6 +54,10 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
     public void setSessions(List<Session> events) {
         this.sessions.clear();
         this.sessions.addAll(events);
+        notifyDataSetChanged();
+    }
+
+    public void refresh() {
         notifyDataSetChanged();
     }
 
@@ -69,6 +78,8 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
                 onSessionClickListener.onSessionClick(sharedElements, session);
             }
         });
+
+        holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
 
         holder.sessionTitle.setText(session.getTitle());
         holder.sessionSubtitle.setText(session.getRoom());
@@ -112,6 +123,9 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
 
         @InjectView(R.id.slot_subtitle)
         public TextView sessionSubtitle;
+
+        @InjectView(R.id.favorite_session_indicator)
+        public View favoriteSessionIndicator;
 
         public SessionViewHolder(View itemView) {
             super(itemView);
