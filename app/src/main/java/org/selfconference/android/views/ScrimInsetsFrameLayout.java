@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.selfconference.android.utils;
+package org.selfconference.android.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

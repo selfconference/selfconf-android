@@ -5,28 +5,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 
+import org.joda.time.DateTime;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
-import org.selfconference.android.api.Speaker;
 import org.selfconference.android.utils.SharedElements;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.observables.StringObservable;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
+import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
 
-public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
+public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.SessionViewHolder> {
+
     public interface OnSessionClickListener {
         void onSessionClick(SharedElements sharedElements, Session event);
     }
@@ -53,54 +54,68 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionViewHolder> {
 
     @Override
     public SessionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_schedule_event_row, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_session_row, parent, false);
         return new SessionViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final SessionViewHolder holder, final int position) {
         final Session session = sessions.get(position);
-        final Observable<String> nameObservable = api.getSpeakersForSession(session)
-                .flatMap(new Func1<List<Speaker>, Observable<Speaker>>() {
-                    @Override
-                    public Observable<Speaker> call(List<Speaker> speakers) {
-                        return Observable.from(speakers);
-                    }
-                })
-                .flatMap(new Func1<Speaker, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(Speaker speaker) {
-                        return Observable.just(speaker.getName());
-                    }
-                });
 
-
-        StringObservable.join(nameObservable, ", ")
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        holder.sessionName.setText(s);
-                    }
-                });
-
-        holder.itemView.setOnClickListener(new OnClickListener() {
+        holder.sessionBackground.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
-                final SharedElements sharedElements = new SharedElements.Builder(v.getContext())
-                        .add(holder.sessionTitle, R.string.transition_name_session)
-                        .add(holder.sessionName, R.string.transition_name_speaker_name)
-                        .build();
+                final SharedElements sharedElements = new SharedElements.Builder(v.getContext()).build();
                 onSessionClickListener.onSessionClick(sharedElements, session);
             }
         });
 
         holder.sessionTitle.setText(session.getTitle());
-        holder.sessionRoom.setText(session.getRoom());
-        holder.sessionTime.setText(session.getBeginning().toString("h:mm a"));
+        holder.sessionSubtitle.setText(session.getRoom());
+        try {
+            final Session previousSession = sessions.get(position - 1);
+            if (session.getBeginning().isEqual(previousSession.getBeginning())) {
+                holder.startTimeNumber.setVisibility(INVISIBLE);
+            } else {
+                setStartTime(holder, session);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            setStartTime(holder, session);
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return sessions.size();
+    }
+
+    private void setStartTime(SessionViewHolder holder, Session session) {
+        final DateTime time = session.getBeginning();
+        holder.startTimeNumber.setText(time.toString("h"));
+        holder.startTimeIndicator.setText(time.toString("a"));
+    }
+
+    public static class SessionViewHolder extends RecyclerView.ViewHolder {
+
+        @InjectView(R.id.box)
+        public View sessionBackground;
+
+        @InjectView(R.id.start_time_number)
+        public TextView startTimeNumber;
+
+        @InjectView(R.id.start_time_indicator)
+        public TextView startTimeIndicator;
+
+        @InjectView(R.id.slot_title)
+        public TextView sessionTitle;
+
+        @InjectView(R.id.slot_subtitle)
+        public TextView sessionSubtitle;
+
+        public SessionViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+        }
     }
 }
