@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.common.collect.Lists;
-
 import org.joda.time.DateTime;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
@@ -27,6 +25,7 @@ import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
 import static android.view.View.VISIBLE;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.SessionViewHolder> {
 
@@ -40,7 +39,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
     @Inject
     SavedSessionPreferences preferences;
 
-    private final List<Session> sessions = Lists.newArrayList();
+    private final List<Session> sessions = newArrayList();
     private OnSessionClickListener onSessionClickListener;
 
     public SessionsAdapter() {
@@ -86,7 +85,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
         try {
             final Session previousSession = sessions.get(position - 1);
             if (session.getBeginning().isEqual(previousSession.getBeginning())) {
-                holder.startTimeNumber.setVisibility(INVISIBLE);
+                holder.startTime.setVisibility(INVISIBLE);
             } else {
                 setStartTime(holder, session);
             }
@@ -103,8 +102,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
 
     private void setStartTime(SessionViewHolder holder, Session session) {
         final DateTime time = session.getBeginning();
-        holder.startTimeNumber.setText(time.toString("h"));
-        holder.startTimeIndicator.setText(time.toString("a"));
+        holder.startTime.setText(time.toString("ha"));
     }
 
     public static class SessionViewHolder extends RecyclerView.ViewHolder {
@@ -112,11 +110,8 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
         @InjectView(R.id.box)
         public View sessionBackground;
 
-        @InjectView(R.id.start_time_number)
-        public TextView startTimeNumber;
-
-        @InjectView(R.id.start_time_indicator)
-        public TextView startTimeIndicator;
+        @InjectView(R.id.start_time)
+        public TextView startTime;
 
         @InjectView(R.id.slot_title)
         public TextView sessionTitle;

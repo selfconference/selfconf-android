@@ -18,8 +18,7 @@
         app:pstsIndicatorColor="?attr/colorAccent"
         app:pstsIndicatorHeight="2dp"
         app:pstsTabBackground="?attr/selectableItemBackground"
-        app:pstsTextAlpha="0.6"
-        />
+        app:pstsTextAlpha="0.6"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/schedule_view_pager"

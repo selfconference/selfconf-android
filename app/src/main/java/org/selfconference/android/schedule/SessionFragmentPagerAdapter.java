@@ -27,6 +27,6 @@ public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return App.getInstance().getString(R.string.day_number, position + 1);
+        return App.getInstance().getString(position == 0 ? R.string.friday : R.string.saturday);
     }
 }

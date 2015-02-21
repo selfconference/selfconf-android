@@ -21,47 +21,33 @@
     android:baselineAligned="false"
     tools:background="#FAFAFA">
 
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="2dp">
-
-        <TextView
-            android:id="@+id/start_time_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@color/primary"
-            android:gravity="center_horizontal"
-            tools:text="10"/>
-
-        <TextView
-            android:id="@+id/start_time_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/primary"
-            android:gravity="center_horizontal"
-            tools:text="AM"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium"
+        android:background="@drawable/time_background"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:padding="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        tools:text="12PM"/>
 
     <FrameLayout
         android:id="@+id/box"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-
-        android:layout_marginRight="16dp"
-        android:background="@drawable/schedule_item_background">
+        android:paddingTop="4dp"
+        android:layout_marginRight="16dp">
 
         <LinearLayout
             android:id="@+id/slot_chip_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
+            android:paddingLeft="8dp"
             android:paddingRight="16dp"
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
@@ -72,26 +58,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="#464646"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 tools:text="Introduction to Typescript"/>
 
             <TextView
                 android:id="@+id/slot_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="8dp"
+                android:textSize="14sp"
                 android:textColor="#939393"
                 tools:text="Room 140F"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#eee"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/favorite_session_indicator"
             android:contentDescription="Favorited session"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:src="@drawable/ic_star_grey600_24dp"
             android:layout_gravity="right|top"
+            android:layout_marginTop="8dp"
             android:padding="4dp"
             android:tint="@color/accent"
             android:visibility="gone"
