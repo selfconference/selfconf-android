@@ -9,7 +9,7 @@
     android:background="?attr/selectableItemBackground"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    tools:background="#ccc">
+    tools:background="#fcc">
 
     <ImageView
         android:id="@+id/row_icon"
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        tools:src="@drawable/ic_schedule"/>
+        tools:src="@drawable/round_button"/>
 
     <TextView
         android:id="@+id/row_title"
@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:textColor="#DE000000"
-        android:textSize="14sp"
-        tools:text="@string/schedule"/>
+        android:textSize="16sp"
+        tools:text="David Klawitter"/>
 
 </LinearLayout>
