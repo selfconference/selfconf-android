@@ -21,7 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static android.view.ViewTreeObserver.OnPreDrawListener;
-import static org.selfconference.android.utils.BrandColors.getColorForPosition;
+import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 
 public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
     public interface OnSpeakerClickListener {
@@ -71,7 +71,7 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
                         .centerCrop()
                         .transform(new CircularTransformation(speaker.getHeadshot()))
                         .placeholder(TextDrawable.builder()
-                                        .buildRound(speaker.getName().substring(0, 1), getColorForPosition(context, position))
+                                        .buildRound(speaker.getName().substring(0, 1), getPrimaryColorForPosition(context, position))
                         )
                         .into(holder.speakerHeadshot);
                 return true;

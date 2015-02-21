@@ -14,7 +14,6 @@ import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Session;
-import org.selfconference.android.utils.StatusBarHelper;
 
 import javax.inject.Inject;
 
@@ -23,11 +22,14 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
+import static org.selfconference.android.utils.BrandColors.getSecondaryColorForPosition;
+import static org.selfconference.android.utils.VersionHelper.setDrawableTint;
 
 public class SessionDetailsActivity extends BaseActivity {
     private static final String EXTRA_SESSION = "org.selfconference.android.schedule.SESSION";
 
-    @InjectView(R.id.session_title)
+    @InjectView(R.id.long_title)
     TextView sessionTitle;
 
     @InjectView(R.id.session_description)
@@ -40,6 +42,10 @@ public class SessionDetailsActivity extends BaseActivity {
     SavedSessionPreferences preferences;
 
     private Session session;
+    private Drawable favoriteDrawable;
+    private Drawable unfavoriteDrawable;
+    private int primaryColor;
+    private int primaryDarkColor;
 
     public static Intent newIntent(final Context context, final Session session) {
         return new Intent(context, SessionDetailsActivity.class).putExtra(EXTRA_SESSION, session);
@@ -53,31 +59,17 @@ public class SessionDetailsActivity extends BaseActivity {
         App.getInstance().inject(this);
         ButterKnife.inject(this);
 
-        final Intent intent = checkNotNull(getIntent());
-        session = (Session) checkNotNull(intent.getParcelableExtra(EXTRA_SESSION));
+        setSession();
+        setDetailColors();
 
         setSupportActionBar(getToolbar());
-        StatusBarHelper.setStatusBarColor(getWindow(), R.color.primary_dark);
+        getToolbar().setBackgroundColor(primaryColor);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setStatusBarColor(primaryDarkColor);
 
         sessionTitle.setText(session.getTitle());
         sessionDescription.setText(Html.fromHtml(session.getDescription()));
-        favoriteButton.setImageResource(R.drawable.ic_star_outline_grey600_24dp);
-
-        favoriteButton.setImageDrawable(preferences.isFavorite(session) ? favoriteDrawable() : unfavoriteDrawable());
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private Drawable unfavoriteDrawable() {
-        final Drawable unfavoritedDrawable = getResources().getDrawable(R.drawable.ic_star_outline_grey600_24dp);
-        unfavoritedDrawable.setTint(getColor(R.color.purple));
-        return unfavoritedDrawable;
-    }
-
-    private Drawable favoriteDrawable() {
-        final Drawable favoritedDrawable = getResources().getDrawable(R.drawable.ic_star_grey600_24dp);
-        favoritedDrawable.setTint(getColor(R.color.purple));
-        return favoritedDrawable;
+        favoriteButton.setImageDrawable(preferences.isFavorite(session) ? getFavoriteDrawable() : getUnfavoriteDrawable());
     }
 
     @Override
@@ -94,10 +86,37 @@ public class SessionDetailsActivity extends BaseActivity {
     void onFavoriteButtonClicked() {
         if (preferences.isFavorite(session)) {
             preferences.removeFavorite(session);
-            favoriteButton.setImageDrawable(unfavoriteDrawable());
+            favoriteButton.setImageDrawable(getUnfavoriteDrawable());
         } else {
             preferences.saveFavorite(session);
-            favoriteButton.setImageDrawable(favoriteDrawable());
+            favoriteButton.setImageDrawable(getFavoriteDrawable());
         }
+    }
+
+    private void setSession() {
+        final Intent intent = checkNotNull(getIntent());
+        session = (Session) checkNotNull(intent.getParcelableExtra(EXTRA_SESSION));
+    }
+
+    private void setDetailColors() {
+        final int sessionId = session.getId();
+        primaryColor = getPrimaryColorForPosition(this, sessionId);
+        primaryDarkColor = getSecondaryColorForPosition(this, sessionId);
+    }
+
+    private Drawable getUnfavoriteDrawable() {
+        if (unfavoriteDrawable == null) {
+            unfavoriteDrawable = getResources().getDrawable(R.drawable.ic_star_outline_grey600_24dp);
+            setDrawableTint(unfavoriteDrawable, primaryColor);
+        }
+        return unfavoriteDrawable;
+    }
+
+    private Drawable getFavoriteDrawable() {
+        if (favoriteDrawable == null) {
+            favoriteDrawable = getResources().getDrawable(R.drawable.ic_star_grey600_24dp);
+            setDrawableTint(favoriteDrawable, primaryColor);
+        }
+        return favoriteDrawable;
     }
 }

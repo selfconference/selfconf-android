@@ -2,10 +2,18 @@
 <resources>
     <color name="primary">#339194</color>
     <color name="primary_dark">#2d8285</color>
+
     <color name="accent">#FB6B40</color>
+    <color name="accent_dark">#e16039</color>
 
     <color name="purple">#A70267</color>
+    <color name="purple_dark">#96015c</color>
+
     <color name="yellow">#F6D86B</color>
+    <color name="yellow_dark">#ddc260</color>
+
     <color name="red">#F10D49</color>
+    <color name="red_dark">#d80b41</color>
+
     <color name="schedule_item_background">#ececec</color>
 </resources>
