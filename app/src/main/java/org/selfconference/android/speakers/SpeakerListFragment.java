@@ -21,8 +21,8 @@ import rx.Subscriber;
 
 import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
-public class SpeakerFragment extends BaseFragment implements SpeakerAdapter.OnSpeakerClickListener {
-    public static final String TAG = SpeakerFragment.class.getName();
+public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.OnSpeakerClickListener {
+    public static final String TAG = SpeakerListFragment.class.getName();
 
     @InjectView(R.id.speaker_recycler_view)
     RecyclerView speakerRecyclerView;
@@ -32,7 +32,7 @@ public class SpeakerFragment extends BaseFragment implements SpeakerAdapter.OnSp
 
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(false);
 
-    public SpeakerFragment() {
+    public SpeakerListFragment() {
     }
 
     @Override

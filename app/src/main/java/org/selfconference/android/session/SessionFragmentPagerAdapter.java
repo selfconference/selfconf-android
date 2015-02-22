@@ -1,4 +1,4 @@
-package org.selfconference.android.schedule;
+package org.selfconference.android.session;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +17,7 @@ public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         final Day day = Day.fromPosition(position);
-        return DaySessionFragment.newInstance(day);
+        return SessionListFragment.newInstance(day);
     }
 
     @Override

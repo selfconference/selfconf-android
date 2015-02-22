@@ -5,13 +5,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.selfconference.android.R;
 
-public class DrawerAdapter extends RecyclerView.Adapter<DrawerViewHolder> {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+import static android.view.View.OnClickListener;
+
+public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerViewHolder> {
     public interface OnDrawerItemClickListener {
         void onDrawerItemClick(DrawerItem drawerItem);
     }
+
     private OnDrawerItemClickListener onDrawerItemClickListener;
 
     public void setOnDrawerItemClickListener(OnDrawerItemClickListener onDrawerItemClickListener) {
@@ -28,7 +36,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerViewHolder> {
     public void onBindViewHolder(final DrawerViewHolder holder, int position) {
         final DrawerItem drawerItem = DrawerItem.values()[position];
 
-        holder.rowItem.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
                 onDrawerItemClickListener.onDrawerItemClick(drawerItem);
@@ -41,5 +49,18 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerViewHolder> {
     @Override
     public int getItemCount() {
         return DrawerItem.values().length;
+    }
+
+    public static class DrawerViewHolder extends RecyclerView.ViewHolder {
+        @InjectView(R.id.row_icon)
+        public ImageView icon;
+
+        @InjectView(R.id.row_title)
+        public TextView title;
+
+        public DrawerViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+        }
     }
 }

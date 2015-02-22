@@ -10,13 +10,13 @@ import com.squareup.picasso.Picasso;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
 import org.selfconference.android.drawer.DrawerFragment;
-import org.selfconference.android.schedule.DaySessionFragment;
-import org.selfconference.android.schedule.SavedSessionPreferences;
-import org.selfconference.android.schedule.ScheduleFragment;
-import org.selfconference.android.schedule.SessionDetailsActivity;
-import org.selfconference.android.schedule.SessionsAdapter;
+import org.selfconference.android.session.SessionListFragment;
+import org.selfconference.android.session.SavedSessionPreferences;
+import org.selfconference.android.session.SessionContainerFragment;
+import org.selfconference.android.session.SessionAdapter;
+import org.selfconference.android.session.SessionDetailsActivity;
 import org.selfconference.android.speakers.SpeakerAdapter;
-import org.selfconference.android.speakers.SpeakerFragment;
+import org.selfconference.android.speakers.SpeakerListFragment;
 
 import javax.inject.Singleton;
 
@@ -29,12 +29,12 @@ import timber.log.Timber;
         complete = false,
         injects = {
                 SelfConferenceApi.class,
-                SessionsAdapter.class,
+                SessionAdapter.class,
                 BaseFragment.class,
-                ScheduleFragment.class,
-                SpeakerFragment.class,
+                SessionContainerFragment.class,
+                SpeakerListFragment.class,
                 DrawerFragment.class,
-                DaySessionFragment.class,
+                SessionListFragment.class,
                 SpeakerAdapter.class,
                 BaseActivity.class,
                 SessionDetailsActivity.class

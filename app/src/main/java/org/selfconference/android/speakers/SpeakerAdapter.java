@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.squareup.picasso.Picasso;
@@ -13,11 +15,13 @@ import com.squareup.picasso.Picasso;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Speaker;
-import org.selfconference.android.utils.CircularTransformation;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
@@ -25,7 +29,7 @@ import static android.view.ViewTreeObserver.OnPreDrawListener;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 
-public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
+public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerViewHolder> {
     public interface OnSpeakerClickListener {
         void onSpeakerClick(Speaker speaker);
     }
@@ -97,5 +101,21 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
     @Override
     public int getItemCount() {
         return speakers.size();
+    }
+
+    public static class SpeakerViewHolder extends RecyclerView.ViewHolder {
+        @InjectView(R.id.row_icon)
+        public ImageView speakerHeadshot;
+
+        @InjectView(R.id.row_title)
+        public TextView speakerName;
+
+        @InjectView(R.id.row_subtitle)
+        public TextView speakerDescription;
+
+        public SpeakerViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.inject(this, itemView);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package org.selfconference.android.schedule;
+package org.selfconference.android.session;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ import timber.log.Timber;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static rx.android.app.AppObservable.bindFragment;
 
-public class DaySessionFragment extends BaseFragment implements SessionsAdapter.OnSessionClickListener {
+public class SessionListFragment extends BaseFragment implements SessionAdapter.OnSessionClickListener {
     private static final String KEY_DAY = "day";
 
     @Inject
@@ -34,37 +34,38 @@ public class DaySessionFragment extends BaseFragment implements SessionsAdapter.
     @InjectView(R.id.schedule_item_recycler_view)
     RecyclerView scheduleItemRecyclerView;
 
-    private final SessionsAdapter sessionsAdapter = new SessionsAdapter();
+    private final SessionAdapter sessionAdapter = new SessionAdapter();
 
-    public static DaySessionFragment newInstance(Day day) {
+    public static SessionListFragment newInstance(Day day) {
         final Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_DAY, day);
-        final DaySessionFragment fragment = new DaySessionFragment();
+        final SessionListFragment fragment = new SessionListFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public DaySessionFragment() {
+    public SessionListFragment() {
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        sessionsAdapter.setOnSessionClickListener(this);
+        sessionAdapter.setOnSessionClickListener(this);
 
-        scheduleItemRecyclerView.setAdapter(sessionsAdapter);
+        scheduleItemRecyclerView.setAdapter(sessionAdapter);
         scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        final Day day = (Day) checkNotNull(getArguments().getSerializable(KEY_DAY));
         addSubscription(
-                bindFragment(this, api.getScheduleByDay(getDay())).subscribe(subscriber)
+                bindFragment(this, api.getSessionsByDay(day)).subscribe(subscriber)
         );
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        sessionsAdapter.refresh();
+        sessionAdapter.refresh();
     }
 
     @Override
@@ -76,10 +77,6 @@ public class DaySessionFragment extends BaseFragment implements SessionsAdapter.
     public void onSessionClick(SharedElements sharedElements, Session session) {
         final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
         ActivityCompat.startActivity(getActivity(), intent, null);
-    }
-
-    private Day getDay() {
-        return (Day) checkNotNull(getArguments().getSerializable(KEY_DAY));
     }
 
     private final Subscriber<List<Session>> subscriber = new Subscriber<List<Session>>() {
@@ -95,7 +92,7 @@ public class DaySessionFragment extends BaseFragment implements SessionsAdapter.
 
         @Override
         public void onNext(List<Session> sessions) {
-            sessionsAdapter.setSessions(sessions);
+            sessionAdapter.setSessions(sessions);
         }
     };
 }

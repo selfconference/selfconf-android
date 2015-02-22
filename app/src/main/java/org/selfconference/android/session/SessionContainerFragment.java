@@ -1,4 +1,4 @@
-package org.selfconference.android.schedule;
+package org.selfconference.android.session;
 
 
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import org.selfconference.android.R;
 
 import butterknife.InjectView;
 
-public class ScheduleFragment extends BaseFragment {
+public class SessionContainerFragment extends BaseFragment {
 
-    public static final String TAG = ScheduleFragment.class.getName();
+    public static final String TAG = SessionContainerFragment.class.getName();
 
     @InjectView(R.id.pager_tab_strip)
     PagerSlidingTabStrip pagerTabStrip;
@@ -21,7 +21,7 @@ public class ScheduleFragment extends BaseFragment {
     @InjectView(R.id.schedule_view_pager)
     ViewPager scheduleViewPager;
 
-    public ScheduleFragment() {
+    public SessionContainerFragment() {
     }
 
     @Override

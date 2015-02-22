@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 
 import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
-import org.selfconference.android.schedule.ScheduleFragment;
-import org.selfconference.android.speakers.SpeakerFragment;
+import org.selfconference.android.session.SessionContainerFragment;
+import org.selfconference.android.speakers.SpeakerListFragment;
 
 import butterknife.InjectView;
 
@@ -21,7 +21,7 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
     RecyclerView drawerRecyclerView;
 
     private DrawerCloser drawerCloser;
-    private DrawerAdapter adapter = new DrawerAdapter();
+    private final DrawerAdapter drawerAdapter = new DrawerAdapter();
 
     @Override
     public void onAttach(Activity activity) {
@@ -43,11 +43,11 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        adapter.setOnDrawerItemClickListener(this);
+        drawerAdapter.setOnDrawerItemClickListener(this);
 
         drawerRecyclerView.setHasFixedSize(true);
         drawerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        drawerRecyclerView.setAdapter(adapter);
+        drawerRecyclerView.setAdapter(drawerAdapter);
 
         if (savedInstanceState == null) {
             onDrawerItemClick(DrawerItem.SCHEDULE);
@@ -64,10 +64,10 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
         drawerCloser.closeDrawer();
         switch (drawerItem) {
             case SCHEDULE:
-                changeFragment(new ScheduleFragment(), ScheduleFragment.TAG);
+                changeFragment(new SessionContainerFragment(), SessionContainerFragment.TAG);
                 break;
             case SPEAKERS:
-                changeFragment(new SpeakerFragment(), SpeakerFragment.TAG);
+                changeFragment(new SpeakerListFragment(), SpeakerListFragment.TAG);
                 break;
         }
     }

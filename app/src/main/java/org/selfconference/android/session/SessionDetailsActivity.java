@@ -1,4 +1,4 @@
-package org.selfconference.android.schedule;
+package org.selfconference.android.session;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -36,12 +36,12 @@ public class SelfConferenceApi {
         App.getInstance().inject(this);
     }
 
-    public Observable<List<Session>> getSchedule() {
+    public Observable<List<Session>> getSessions() {
         return fileObservable("test-session.json", LIST_SESSION_TYPE);
     }
 
-    public Observable<List<Session>> getScheduleByDay(final Day day) {
-        return getSchedule()
+    public Observable<List<Session>> getSessionsByDay(final Day day) {
+        return getSessions()
                 .flatMap(new Func1<List<Session>, Observable<Session>>() {
                     @Override
                     public Observable<Session> call(List<Session> sessions) {

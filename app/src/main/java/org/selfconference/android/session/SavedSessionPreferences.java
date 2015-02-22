@@ -1,4 +1,4 @@
-package org.selfconference.android.schedule;
+package org.selfconference.android.session;
 
 import android.content.SharedPreferences;
 

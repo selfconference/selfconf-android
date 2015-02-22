@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.selfconference.android.schedule.ScheduleFragment">
+    tools:context="org.selfconference.android.session.SessionContainerFragment">
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/pager_tab_strip"

@@ -1,4 +1,4 @@
-package org.selfconference.android.schedule;
+package org.selfconference.android.session;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +27,7 @@ import static android.view.View.OnClickListener;
 import static android.view.View.VISIBLE;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.SessionViewHolder> {
+public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionViewHolder> {
 
     public interface OnSessionClickListener {
         void onSessionClick(SharedElements sharedElements, Session event);
@@ -42,7 +42,7 @@ public class SessionsAdapter extends RecyclerView.Adapter<SessionsAdapter.Sessio
     private final List<Session> sessions = newArrayList();
     private OnSessionClickListener onSessionClickListener;
 
-    public SessionsAdapter() {
+    public SessionAdapter() {
         App.getInstance().inject(this);
     }
 

@@ -7,7 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.selfconference.android.api.Day;
 
-public class DateTimeHelper {
+public final class DateTimeHelper {
     public static final DateTimeFormatter JSON_PATTERN = DateTimeFormat.forPattern("MM/dd/YY HH:mm:ss");
     public static final DateTimeZone EST = DateTimeZone.forOffsetHours(-5);
 
@@ -21,4 +21,6 @@ public class DateTimeHelper {
         final DateTime end = new DateTime(2014, 5, d, 23, 59, 59).withZone(EST);
         return new Interval(start, end);
     }
+
+    private DateTimeHelper() {}
 }
