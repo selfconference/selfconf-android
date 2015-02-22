@@ -16,4 +16,5 @@
     <color name="red_dark">#d80b41</color>
 
     <color name="schedule_item_background">#ececec</color>
+    <color name="divider_color">#ddd</color>
 </resources>

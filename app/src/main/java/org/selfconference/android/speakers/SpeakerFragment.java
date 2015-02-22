@@ -30,7 +30,7 @@ public class SpeakerFragment extends BaseFragment implements SpeakerAdapter.OnSp
     @Inject
     SelfConferenceApi api;
 
-    private final SpeakerAdapter speakerAdapter = new SpeakerAdapter();
+    private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(false);
 
     public SpeakerFragment() {
     }

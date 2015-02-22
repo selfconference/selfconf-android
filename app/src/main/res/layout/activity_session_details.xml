@@ -35,23 +35,14 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ImageButton
-        android:id="@+id/favorite_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/round_button"
-        android:layout_below="@id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="-20dp"/>
-
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
-        android:layout_marginRight="16dp"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,9 +55,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="16dp"
+                tools:text="Agile values and principles like individuals and interactions, limiting work-in-process, and continuous improvement are relatively simple to discuss but difficult to internalize and convert into value systems. Facilitated exercises and games that illustrate them can be used to drive home why they really matter. This session will combine the experience of participating in some key exercises, seeing firsthand how they run, and learning how to translate them into practical lessons on why Agile advocates certain values."/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/divider_color"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/speakers_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Speakers"
+                tools:textColor="@color/purple"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="16dp"
+                android:textSize="20sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/speaker_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"/>
         </LinearLayout>
+
     </ScrollView>
 
+    <ImageButton
+        android:id="@+id/favorite_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_button"
+        android:layout_below="@id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="-20dp"/>
 </RelativeLayout>

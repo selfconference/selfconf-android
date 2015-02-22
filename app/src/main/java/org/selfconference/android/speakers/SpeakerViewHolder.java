@@ -17,6 +17,9 @@ public class SpeakerViewHolder extends RecyclerView.ViewHolder {
     @InjectView(R.id.row_title)
     public TextView speakerName;
 
+    @InjectView(R.id.row_subtitle)
+    public TextView speakerDescription;
+
     public SpeakerViewHolder(View itemView) {
         super(itemView);
         ButterKnife.inject(this, itemView);

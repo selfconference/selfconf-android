@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
 
 import org.selfconference.android.App;
@@ -20,7 +19,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static android.text.Html.fromHtml;
+import static android.view.View.GONE;
 import static android.view.ViewTreeObserver.OnPreDrawListener;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 
 public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
@@ -31,15 +33,23 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
     @Inject
     Picasso picasso;
 
-    private final List<Speaker> speakers = Lists.newArrayList();
+    private final List<Speaker> speakers = newArrayList();
     private OnSpeakerClickListener onSpeakerClickListener;
+    private final boolean showDescription;
 
-    public SpeakerAdapter() {
+    public SpeakerAdapter(boolean showDescription) {
         App.getInstance().inject(this);
+        this.showDescription = showDescription;
     }
 
     public void setOnSpeakerClickListener(OnSpeakerClickListener onSpeakerClickListener) {
         this.onSpeakerClickListener = onSpeakerClickListener;
+    }
+
+    public void setSpeakers(List<Speaker> speakers) {
+        this.speakers.clear();
+        this.speakers.addAll(speakers);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -77,16 +87,15 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerViewHolder> {
                 return true;
             }
         });
+        if (showDescription) {
+            holder.speakerDescription.setText(fromHtml(speaker.getBio()));
+        } else {
+            holder.speakerDescription.setVisibility(GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
         return speakers.size();
-    }
-
-    public void setSpeakers(List<Speaker> speakers) {
-        this.speakers.clear();
-        this.speakers.addAll(speakers);
-        notifyDataSetChanged();
     }
 }
