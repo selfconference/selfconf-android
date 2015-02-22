@@ -6,19 +6,27 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import org.selfconference.android.BaseFragment;
+import org.selfconference.android.BuildConfig;
 import org.selfconference.android.R;
 import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.speakers.SpeakerListFragment;
 
 import butterknife.InjectView;
 
+import static android.view.View.VISIBLE;
+import static org.selfconference.android.BuildConfig.VERSION_NAME;
+
 public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDrawerItemClickListener {
     public static final String TAG = DrawerFragment.class.getName();
 
     @InjectView(R.id.drawer_recycler_view)
     RecyclerView drawerRecyclerView;
+
+    @InjectView(R.id.build_version)
+    TextView buildVersion;
 
     private DrawerCloser drawerCloser;
     private final DrawerAdapter drawerAdapter = new DrawerAdapter();
@@ -48,6 +56,11 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
         drawerRecyclerView.setHasFixedSize(true);
         drawerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         drawerRecyclerView.setAdapter(drawerAdapter);
+
+        if (BuildConfig.DEBUG) {
+            buildVersion.setVisibility(VISIBLE);
+            buildVersion.setText(String.format("Debug Build: v%s", VERSION_NAME));
+        }
 
         if (savedInstanceState == null) {
             onDrawerItemClick(DrawerItem.SCHEDULE);
