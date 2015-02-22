@@ -3,6 +3,8 @@ package org.selfconference.android.api;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 public class Speaker implements Parcelable {
     private final int id;
     private final String name;
@@ -36,6 +38,15 @@ public class Speaker implements Parcelable {
 
     public String getHeadshot() {
         return headshot;
+    }
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .add("twitter", twitter)
+                .add("id", id)
+                .add("name", name)
+                .toString();
     }
 
     public static final class Builder {

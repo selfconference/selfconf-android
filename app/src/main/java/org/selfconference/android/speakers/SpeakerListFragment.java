@@ -1,25 +1,29 @@
 package org.selfconference.android.speakers;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
 import org.selfconference.android.api.SelfConferenceApi;
+import org.selfconference.android.api.Session;
 import org.selfconference.android.api.Speaker;
+import org.selfconference.android.session.SessionDetailsActivity;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.InjectView;
+import rx.Observable;
 import rx.Subscriber;
+import timber.log.Timber;
 
-import static rx.android.schedulers.AndroidSchedulers.mainThread;
+import static rx.android.app.AppObservable.bindFragment;
 
 public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.OnSpeakerClickListener {
     public static final String TAG = SpeakerListFragment.class.getName();
@@ -49,16 +53,19 @@ public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.
         speakerRecyclerView.setAdapter(speakerAdapter);
         speakerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        final Observable<List<Speaker>> speakersObservable = api.getSpeakers();
         addSubscription(
-                api.getSpeakers()
-                        .observeOn(mainThread())
-                        .subscribe(speakersSubscriber)
+                bindFragment(this, speakersObservable).subscribe(speakersSubscriber)
         );
     }
 
     @Override
     public void onSpeakerClick(Speaker speaker) {
-        Toast.makeText(getActivity(), speaker.getName(), Toast.LENGTH_SHORT).show();
+        Timber.d("Speaker clicked: %s", speaker.toString());
+        final Observable<Session> sessionObservable = api.getSessionForSpeaker(speaker);
+        addSubscription(
+                bindFragment(this, sessionObservable).subscribe(sessionSubscriber)
+        );
     }
 
     private final Subscriber<List<Speaker>> speakersSubscriber = new Subscriber<List<Speaker>>() {
@@ -75,6 +82,24 @@ public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.
         @Override
         public void onNext(List<Speaker> speakers) {
             speakerAdapter.setSpeakers(speakers);
+        }
+    };
+
+    private final Subscriber<Session> sessionSubscriber = new Subscriber<Session>() {
+        @Override
+        public void onCompleted() {
+            unsubscribe();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Timber.e(e, "Session not found");
+        }
+
+        @Override
+        public void onNext(Session session) {
+            final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
+            startActivity(intent);
         }
     };
 }

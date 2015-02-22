@@ -28,7 +28,9 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.Observable;
 import rx.Subscriber;
+import rx.android.app.AppObservable;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -36,6 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 import static org.selfconference.android.utils.BrandColors.getSecondaryColorForPosition;
 import static org.selfconference.android.utils.VersionHelper.setDrawableTint;
+import static rx.android.app.AppObservable.bindActivity;
 import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
 public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapter.OnSpeakerClickListener {
@@ -97,10 +100,9 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
         speakerRecyclerView.setAdapter(speakerAdapter);
         speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
 
+        final Observable<List<Speaker>> speakersObservable = api.getSpeakersForSession(session);
         addSubscription(
-                api.getSpeakersForSession(session)
-                        .observeOn(mainThread())
-                        .subscribe(speakersSubscriber)
+                bindActivity(this, speakersObservable).subscribe(speakersSubscriber)
         );
     }
 

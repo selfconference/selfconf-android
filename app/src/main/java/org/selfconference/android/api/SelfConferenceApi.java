@@ -24,6 +24,7 @@ import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 import static rx.Observable.OnSubscribe;
+import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
 public class SelfConferenceApi {
     private static final Type LIST_SESSION_TYPE = new TypeToken<List<Session>>() {}.getType();
@@ -58,6 +59,23 @@ public class SelfConferenceApi {
                 .toSortedList(sortByDateFunction());
     }
 
+    public Observable<Session> getSessionForSpeaker(final Speaker speaker) {
+        final Observable<List<Session>> observable = fileObservable("test-session.json", LIST_SESSION_TYPE, false);
+        return observable
+                .flatMap(new Func1<List<Session>, Observable<Session>>() {
+                    @Override
+                    public Observable<Session> call(List<Session> sessions) {
+                        return Observable.from(sessions);
+                    }
+                })
+                .filter(new Func1<Session, Boolean>() {
+                    @Override
+                    public Boolean call(Session session) {
+                        return session.getSpeakerIds().contains(speaker.getId());
+                    }
+                });
+    }
+
     public Observable<List<Speaker>> getSpeakers() {
         return fileObservable("test-speaker.json", LIST_SPEAKER_TYPE);
     }
@@ -80,6 +98,10 @@ public class SelfConferenceApi {
     }
 
     private <T> Observable<T> fileObservable(final String filename, final Type typeOfT) {
+        return fileObservable(filename, typeOfT, true);
+    }
+
+    private <T> Observable<T> fileObservable(final String filename, final Type typeOfT, final boolean shouldComplete) {
         return Observable.create(
                 new OnSubscribe<T>() {
                     @Override
@@ -87,13 +109,16 @@ public class SelfConferenceApi {
                         try {
                             final T t = loadFile(filename, typeOfT);
                             subscriber.onNext(t);
-                            subscriber.onCompleted();
+                            if (shouldComplete) {
+                                subscriber.onCompleted();
+                            }
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
                     }
                 })
                 .subscribeOn(Schedulers.io())
+                .observeOn(mainThread())
                 .cache();
     }
 
