@@ -2,8 +2,13 @@ package org.selfconference.android;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+
 import dagger.ObjectGraph;
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
+
+import static org.selfconference.android.BuildConfig.DEBUG;
 
 public class App extends Application {
 
@@ -18,8 +23,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        setupFabric();
         INSTANCE = this;
-        if (BuildConfig.DEBUG) {
+        if (DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
 
@@ -28,5 +34,13 @@ public class App extends Application {
 
     public void inject(Object object) {
         objectGraph.inject(object);
+    }
+
+    private void setupFabric() {
+        final Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics())
+                .debuggable(DEBUG)
+                .build();
+        Fabric.with(fabric);
     }
 }
