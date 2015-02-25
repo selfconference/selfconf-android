@@ -36,7 +36,7 @@ public class App extends Application {
         objectGraph.inject(object);
     }
 
-    private void setupFabric() {
+    protected void setupFabric() {
         final Fabric fabric = new Fabric.Builder(this)
                 .kits(new Crashlytics())
                 .debuggable(DEBUG)

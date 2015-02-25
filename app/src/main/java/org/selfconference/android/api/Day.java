@@ -5,11 +5,10 @@ public enum Day {
     TWO;
 
     public static Day fromPosition(final int position) {
-        if (position == 0) {
-            return ONE;
-        } else if (position == 1) {
-            return TWO;
+        switch (position) {
+            case 0:  return ONE;
+            case 1:  return TWO;
+            default: throw new IllegalArgumentException("position must be 0 or 1 but position == " + position);
         }
-        throw new IllegalArgumentException("position must be 0 or 1 but position == " + position);
     }
 }

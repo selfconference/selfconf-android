@@ -5,4 +5,4 @@ android:
         - build-tools-21.1.1
         - android-21
         - extra-android-support
-script: ./gradlew assembleDebug
+script: ./gradlew assembleDebug testDebug
