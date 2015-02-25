@@ -1,11 +1,11 @@
 package org.selfconference.android.session;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-import org.selfconference.android.App;
 import org.selfconference.android.api.Session;
 
 import java.util.Set;
@@ -21,8 +21,8 @@ public class SavedSessionPreferences {
 
     private final SharedPreferences sharedPreferences;
 
-    public SavedSessionPreferences() {
-        this.sharedPreferences = App.getInstance().getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    public SavedSessionPreferences(Context context) {
+        this.sharedPreferences = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
     }
 
     public void saveFavorite(Session session) {

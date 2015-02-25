@@ -78,6 +78,6 @@ public class SelfConferenceAppModule {
 
     @Provides
     SavedSessionPreferences savedSessionPreferences() {
-        return new SavedSessionPreferences();
+        return new SavedSessionPreferences(application);
     }
 }
