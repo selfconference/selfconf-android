@@ -59,9 +59,8 @@ public class SelfConferenceApi {
                 .toSortedList(sortByDateFunction());
     }
 
-    public Observable<Session> getSessionForSpeaker(final Speaker speaker) {
-        final Observable<List<Session>> observable = fileObservable("test-session.json", LIST_SESSION_TYPE, false);
-        return observable
+    public Observable<List<Session>> getSessionsForSpeaker(final Speaker speaker) {
+        return getSessions()
                 .flatMap(new Func1<List<Session>, Observable<Session>>() {
                     @Override
                     public Observable<Session> call(List<Session> sessions) {
@@ -71,9 +70,10 @@ public class SelfConferenceApi {
                 .filter(new Func1<Session, Boolean>() {
                     @Override
                     public Boolean call(Session session) {
-                        return session.getSpeakerIds().contains(speaker.getId());
+                        return speaker.getSessionIds().contains(session.getId());
                     }
-                });
+                })
+                .toList();
     }
 
     public Observable<List<Speaker>> getSpeakers() {
@@ -98,10 +98,6 @@ public class SelfConferenceApi {
     }
 
     private <T> Observable<T> fileObservable(final String filename, final Type typeOfT) {
-        return fileObservable(filename, typeOfT, true);
-    }
-
-    private <T> Observable<T> fileObservable(final String filename, final Type typeOfT, final boolean shouldComplete) {
         return Observable.create(
                 new OnSubscribe<T>() {
                     @Override
@@ -109,16 +105,18 @@ public class SelfConferenceApi {
                         try {
                             final T t = loadFile(filename, typeOfT);
                             subscriber.onNext(t);
-                            if (shouldComplete) {
-                                subscriber.onCompleted();
-                            }
+                            subscriber.onCompleted();
                         } catch (Exception e) {
                             subscriber.onError(e);
                         }
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(mainThread())
+                .compose(new Observable.Transformer<T, T>() {
+                    @Override
+                    public Observable<T> call(Observable<T> tObservable) {
+                        return tObservable.subscribeOn(Schedulers.io()).observeOn(mainThread());
+                    }
+                })
                 .cache();
     }
 

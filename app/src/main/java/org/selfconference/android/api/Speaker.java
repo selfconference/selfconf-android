@@ -3,7 +3,10 @@ package org.selfconference.android.api;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class Speaker implements Parcelable {
     private final int id;
@@ -11,6 +14,7 @@ public class Speaker implements Parcelable {
     private final String twitter;
     private final String bio;
     private final String headshot;
+    private final List<Integer> sessions;
 
     private Speaker(Builder builder) {
         id = builder.id;
@@ -18,6 +22,7 @@ public class Speaker implements Parcelable {
         twitter = builder.twitter;
         bio = builder.bio;
         headshot = builder.headshot;
+        sessions = builder.sessions;
     }
 
     public int getId() {
@@ -40,12 +45,17 @@ public class Speaker implements Parcelable {
         return headshot;
     }
 
+    public List<Integer> getSessionIds() {
+        return sessions;
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
                 .add("twitter", twitter)
                 .add("id", id)
                 .add("name", name)
+                .add("sessions", sessions)
                 .toString();
     }
 
@@ -55,6 +65,7 @@ public class Speaker implements Parcelable {
         private String twitter = "";
         private String bio = "";
         private String headshot = "";
+        private List<Integer> sessions = newArrayList();
 
         public Builder() {
         }
@@ -84,6 +95,11 @@ public class Speaker implements Parcelable {
             return this;
         }
 
+        public Builder sessions(List<Integer> sessions) {
+            this.sessions = sessions;
+            return this;
+        }
+
         public Speaker build() {
             return new Speaker(this);
         }
@@ -101,6 +117,7 @@ public class Speaker implements Parcelable {
         dest.writeString(this.twitter);
         dest.writeString(this.bio);
         dest.writeString(this.headshot);
+        dest.writeList(this.sessions);
     }
 
     private Speaker(Parcel in) {
@@ -109,6 +126,8 @@ public class Speaker implements Parcelable {
         this.twitter = in.readString();
         this.bio = in.readString();
         this.headshot = in.readString();
+        this.sessions = newArrayList();
+        in.readList(this.sessions, Integer.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Speaker> CREATOR = new Parcelable.Creator<Speaker>() {

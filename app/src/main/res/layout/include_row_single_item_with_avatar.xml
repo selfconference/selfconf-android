@@ -9,6 +9,7 @@
     android:background="?attr/selectableItemBackground"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
+    android:paddingRight="16dp"
     tools:background="#fcc">
 
     <ImageView
@@ -35,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:textColor="#aaa"
         android:textSize="16sp"
         tools:text="David Klawitter's description"
         android:layout_toRightOf="@+id/row_icon"

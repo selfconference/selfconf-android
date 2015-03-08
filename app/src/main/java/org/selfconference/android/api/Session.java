@@ -15,10 +15,11 @@ import org.joda.time.DateTime;
 import org.selfconference.android.utils.DateTimeHelper;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.joda.time.DateTime.now;
 
 public class Session implements Parcelable {
     private final int id;
@@ -86,7 +87,7 @@ public class Session implements Parcelable {
             try {
                 dateTime = DateTimeHelper.parseDateTime(beginning.getAsString());
             } catch (Exception e) {
-                dateTime = DateTime.now().withZone(DateTimeHelper.EST);
+                dateTime = now().withZone(DateTimeHelper.EST);
             }
             final List<Integer> listOfSpeakers = new Gson().fromJson(speakers.getAsJsonArray(), new TypeToken<List<Integer>>(){}.getType());
             return new Builder()
@@ -102,11 +103,11 @@ public class Session implements Parcelable {
 
     public static final class Builder {
         private int id;
-        private String title;
-        private String room;
-        private String description;
-        private DateTime beginning;
-        private List<Integer> speakers;
+        private String title = "";
+        private String room = "";
+        private String description = "";
+        private DateTime beginning = now();
+        private List<Integer> speakers = newArrayList();
 
         public Builder() {
         }
@@ -167,7 +168,7 @@ public class Session implements Parcelable {
         this.room = in.readString();
         this.description = in.readString();
         this.beginning = (DateTime) in.readSerializable();
-        this.speakers = new ArrayList<>();
+        this.speakers = newArrayList();
         in.readList(this.speakers, Integer.class.getClassLoader());
     }
 
