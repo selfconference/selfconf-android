@@ -1,12 +1,9 @@
 package org.selfconference.android.utils;
 
-import android.content.Context;
-
 import org.assertj.core.api.AbstractAssert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.Pair;
 import org.selfconference.android.CustomTestRunner;
@@ -54,10 +51,9 @@ public class BrandColorsTest {
     }
 
     private static Pair<Integer, Integer> getColorsForPosition(int position) {
-        final Context context = Robolectric.application;
         return Pair.create(
-                BrandColors.getPrimaryColorForPosition(context, position),
-                BrandColors.getSecondaryColorForPosition(context, position)
+                BrandColors.getPrimaryColorForPosition(position),
+                BrandColors.getSecondaryColorForPosition(position)
         );
     }
 

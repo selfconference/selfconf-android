@@ -85,7 +85,7 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerV
                         .centerCrop()
                         .transform(new CircularTransformation(speaker.getHeadshot()))
                         .placeholder(TextDrawable.builder()
-                                        .buildRound(speaker.getName().substring(0, 1), getPrimaryColorForPosition(context, position))
+                                        .buildRound(speaker.getName().substring(0, 1), getPrimaryColorForPosition(position))
                         )
                         .into(holder.speakerHeadshot);
                 return true;

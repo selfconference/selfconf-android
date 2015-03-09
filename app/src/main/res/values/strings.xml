@@ -1,7 +1,4 @@
 <resources>
-    <string name="app_name">SelfConference</string>
-    <string name="app_name_lowercase">self.conference</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -20,6 +17,7 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="about">About</string>
+    <string name="twitter_url">https://twitter.com/%1$s</string>
 
     <plurals name="speakers">
         <item quantity="zero"></item>

@@ -85,6 +85,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/divider_color"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/more_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="More"
+                tools:textColor="@color/purple"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="16dp"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/submit_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="72dp"
+                android:textSize="18sp"
+                android:background="?attr/selectableItemBackground"
+                android:text="Submit Feedback"/>
         </LinearLayout>
 
     </ScrollView>
@@ -97,5 +128,6 @@
         android:layout_below="@id/toolbar"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="-20dp"/>
+        android:layout_marginTop="-20dp"
+        android:elevation="4dp"/>
 </RelativeLayout>

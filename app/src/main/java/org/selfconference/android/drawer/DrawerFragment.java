@@ -18,6 +18,7 @@ import butterknife.InjectView;
 
 import static android.view.View.VISIBLE;
 import static org.selfconference.android.BuildConfig.VERSION_NAME;
+import static org.selfconference.android.drawer.DrawerItem.SCHEDULE;
 
 public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDrawerItemClickListener {
     public static final String TAG = DrawerFragment.class.getName();
@@ -63,7 +64,7 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
         }
 
         if (savedInstanceState == null) {
-            onDrawerItemClick(DrawerItem.SCHEDULE);
+            onDrawerItemClick(SCHEDULE);
         }
     }
 

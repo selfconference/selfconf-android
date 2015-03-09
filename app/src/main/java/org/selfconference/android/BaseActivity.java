@@ -1,6 +1,5 @@
 package org.selfconference.android;
 
-import android.support.annotation.ColorRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -27,10 +26,6 @@ public abstract class BaseActivity extends ActionBarActivity {
             toolbar = (Toolbar) checkNotNull(findViewById(R.id.toolbar));
         }
         return toolbar;
-    }
-
-    protected int getColor(@ColorRes int colorResId) {
-        return getResources().getColor(colorResId);
     }
 
     protected void setStatusBarColor(int color) {

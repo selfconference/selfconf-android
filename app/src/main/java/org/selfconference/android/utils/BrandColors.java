@@ -1,7 +1,6 @@
 package org.selfconference.android.utils;
 
-import android.content.Context;
-
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 
 public final class BrandColors {
@@ -12,12 +11,12 @@ public final class BrandColors {
             {R.color.purple, R.color.purple_dark}
     };
 
-    public static int getPrimaryColorForPosition(Context context, int position) {
-        return context.getResources().getColor(COLORS[position % COLORS.length][0]);
+    public static int getPrimaryColorForPosition(int position) {
+        return App.getInstance().getResources().getColor(COLORS[position % COLORS.length][0]);
     }
 
-    public static int getSecondaryColorForPosition(Context context, int position) {
-        return context.getResources().getColor(COLORS[position % COLORS.length][1]);
+    public static int getSecondaryColorForPosition(int position) {
+        return App.getInstance().getResources().getColor(COLORS[position % COLORS.length][1]);
     }
 
     private BrandColors() {

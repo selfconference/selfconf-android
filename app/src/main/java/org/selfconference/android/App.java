@@ -37,10 +37,6 @@ public class App extends Application {
     }
 
     protected void setupFabric() {
-        final Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics())
-                .debuggable(DEBUG)
-                .build();
-        Fabric.with(fabric);
+        Fabric.with(this, new Crashlytics());
     }
 }

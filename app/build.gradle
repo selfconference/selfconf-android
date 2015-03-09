@@ -1,7 +1,7 @@
 // Manifest version information!
 def versionMajor = 0
 def versionMinor = 4
-def versionPatch = 0
+def versionPatch = 1
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 buildscript {
@@ -48,10 +48,14 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            resValue "string", "app_name", "Self.conference"
         }
         debug {
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.debug
+
+            resValue "string", "app_name", "Self.conference Debug"
         }
     }
 
@@ -88,7 +92,7 @@ dependencies {
     compile 'io.reactivex:rxjava-string:0.22.0'
 
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.1@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
         transitive = true;
     }
 

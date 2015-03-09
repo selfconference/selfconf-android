@@ -1,6 +1,5 @@
 package org.selfconference.android.session;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -18,6 +17,7 @@ import org.selfconference.android.R;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
 import org.selfconference.android.api.Speaker;
+import org.selfconference.android.feedback.FeedbackActivity;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.utils.NestedLinearLayoutManager;
 
@@ -27,22 +27,29 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.InjectViews;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.app.AppObservable;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static butterknife.ButterKnife.Setter;
+import static butterknife.ButterKnife.apply;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 import static org.selfconference.android.utils.BrandColors.getSecondaryColorForPosition;
 import static org.selfconference.android.utils.VersionHelper.setDrawableTint;
 import static rx.android.app.AppObservable.bindActivity;
-import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
 public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapter.OnSpeakerClickListener {
     private static final String EXTRA_SESSION = "org.selfconference.android.schedule.SESSION";
+    private static final Setter<TextView, Integer> TEXT_COLOR_SETTER = new Setter<TextView, Integer>() {
+        @Override
+        public void set(TextView view, Integer value, int index) {
+            view.setTextColor(value);
+        }
+    };
 
     @InjectView(R.id.long_title)
     TextView sessionTitle;
@@ -58,6 +65,9 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
 
     @InjectView(R.id.speaker_recycler_view)
     RecyclerView speakerRecyclerView;
+
+    @InjectViews({R.id.speakers_header, R.id.more_header})
+    List<TextView> headers;
 
     @Inject
     SelfConferenceApi api;
@@ -77,7 +87,6 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
         return new Intent(context, SessionDetailsActivity.class).putExtra(EXTRA_SESSION, session);
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +94,7 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
         App.getInstance().inject(this);
         ButterKnife.inject(this);
 
-        session = (Session) checkNotNull(getIntent().getParcelableExtra(EXTRA_SESSION));
+        session = checkNotNull((Session) getIntent().getParcelableExtra(EXTRA_SESSION));
 
         setDetailColors();
         setUpActionBar();
@@ -93,7 +102,7 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
         sessionTitle.setText(session.getTitle());
         sessionDescription.setText(Html.fromHtml(session.getDescription()));
         favoriteButton.setImageDrawable(preferences.isFavorite(session) ? getFavoriteDrawable() : getUnfavoriteDrawable());
-        speakersHeader.setTextColor(primaryColor);
+        apply(headers, TEXT_COLOR_SETTER, primaryColor);
 
         speakerAdapter.setOnSpeakerClickListener(this);
 
@@ -117,10 +126,10 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
 
     @Override
     public void onSpeakerClick(Speaker speaker) {
-        final String twitterUri = String.format("https://twitter.com/%s", speaker.getTwitter());
+        final String twitterUrl = getString(R.string.twitter_url, speaker.getTwitter());
         final Intent twitterIntent = new Intent()
                 .setAction(ACTION_VIEW)
-                .setData(Uri.parse(twitterUri))
+                .setData(Uri.parse(twitterUrl))
                 .addFlags(FLAG_ACTIVITY_NEW_TASK);
         startActivity(twitterIntent);
     }
@@ -136,6 +145,12 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
         }
     }
 
+    @OnClick(R.id.submit_feedback)
+    void onSubmitFeedbackClick() {
+        final Intent intent = FeedbackActivity.newIntent(this, session);
+        startActivity(intent);
+    }
+
     private void setUpActionBar() {
         setSupportActionBar(getToolbar());
         getToolbar().setBackgroundColor(primaryColor);
@@ -145,8 +160,8 @@ public class SessionDetailsActivity extends BaseActivity implements SpeakerAdapt
 
     private void setDetailColors() {
         final int sessionId = session.getId();
-        primaryColor = getPrimaryColorForPosition(this, sessionId);
-        primaryDarkColor = getSecondaryColorForPosition(this, sessionId);
+        primaryColor = getPrimaryColorForPosition(sessionId);
+        primaryDarkColor = getSecondaryColorForPosition(sessionId);
     }
 
     private Drawable getUnfavoriteDrawable() {

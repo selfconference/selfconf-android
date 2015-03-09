@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name_lowercase">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -22,14 +22,24 @@
         </activity>
         <activity
             android:name=".session.SessionDetailsActivity"
-            android:label="@string/app_name_lowercase">
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.selfconference.android.MainActivity"/>
+                android:value=".MainActivity"/>
         </activity>
+        <activity
+            android:name=".feedback.FeedbackActivity"
+            android:label="Session Feedback"
+            android:parentActivityName=".feedback.FeedbackActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".session.SessionDetailsActivity"/>
+        </activity>
+
         <meta-data
             android:name="com.crashlytics.ApiKey"
-            android:value="fbff2890832b0c5f6b9c86553264ab3030dad587" />
+            android:value="fbff2890832b0c5f6b9c86553264ab3030dad587"/>
     </application>
 
 </manifest>
