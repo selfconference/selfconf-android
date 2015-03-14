@@ -9,26 +9,26 @@ import android.widget.TextView;
 
 import org.joda.time.DateTime;
 import org.selfconference.android.App;
+import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
 import org.selfconference.android.utils.SharedElements;
 
-import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.functions.Func1;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
 import static android.view.View.VISIBLE;
-import static com.google.common.collect.Lists.newArrayList;
 
-public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionViewHolder> {
-
+public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.SessionViewHolder> {
     public interface OnSessionClickListener {
         void onSessionClick(SharedElements sharedElements, Session event);
     }
@@ -39,7 +39,6 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
     @Inject
     SavedSessionPreferences preferences;
 
-    private final List<Session> sessions = newArrayList();
     private OnSessionClickListener onSessionClickListener;
 
     public SessionAdapter() {
@@ -48,12 +47,6 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
 
     public void setOnSessionClickListener(OnSessionClickListener onSessionClickListener) {
         this.onSessionClickListener = onSessionClickListener;
-    }
-
-    public void setSessions(List<Session> events) {
-        this.sessions.clear();
-        this.sessions.addAll(events);
-        notifyDataSetChanged();
     }
 
     public void refresh() {
@@ -68,7 +61,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
 
     @Override
     public void onBindViewHolder(final SessionViewHolder holder, final int position) {
-        final Session session = sessions.get(position);
+        final Session session = getFilteredData().get(position);
 
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
@@ -85,7 +78,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
         holder.sessionTitle.setText(session.getTitle());
         holder.sessionSubtitle.setText(session.getRoom());
         try {
-            final Session previousSession = sessions.get(position - 1);
+            final Session previousSession = getFilteredData().get(position - 1);
             if (session.getBeginning().isEqual(previousSession.getBeginning())) {
                 holder.startTime.setVisibility(INVISIBLE);
             } else {
@@ -98,8 +91,15 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
     }
 
     @Override
-    public int getItemCount() {
-        return sessions.size();
+    protected Func1<Session, Boolean> filterPredicate(final String query) {
+        return new Func1<Session, Boolean>() {
+            @Override
+            public Boolean call(Session session) {
+                return session.getTitle()
+                        .toLowerCase(Locale.US)
+                        .contains(query.toLowerCase(Locale.US));
+            }
+        };
     }
 
     private static void setStartTime(SessionViewHolder holder, Session session) {

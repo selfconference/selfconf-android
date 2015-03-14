@@ -8,17 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.View.OnFocusChangeListener;
 
-import org.selfconference.android.BaseFragment;
+import org.selfconference.android.BaseListFragment;
+import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
@@ -41,7 +35,7 @@ import static android.content.DialogInterface.OnClickListener;
 import static com.google.common.base.Preconditions.checkState;
 import static rx.android.app.AppObservable.bindFragment;
 
-public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.OnSpeakerClickListener {
+public class SpeakerListFragment extends BaseListFragment implements SpeakerAdapter.OnSpeakerClickListener {
     public static final String TAG = SpeakerListFragment.class.getName();
 
     @InjectView(R.id.speaker_recycler_view)
@@ -53,17 +47,6 @@ public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(false);
 
     public SpeakerListFragment() {
-    }
-
-    @Override
-    protected int layoutResId() {
-        return R.layout.fragment_speaker;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -82,30 +65,13 @@ public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_speaker_list, menu);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setOnQueryTextListener(new OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+    protected int layoutResId() {
+        return R.layout.fragment_speaker;
+    }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                speakerAdapter.filter(s);
-                return true;
-            }
-        });
-        searchView.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    speakerAdapter.reset();
-                }
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
+    @Override
+    protected FilterableAdapter getFilterableAdapter() {
+        return speakerAdapter;
     }
 
     @Override

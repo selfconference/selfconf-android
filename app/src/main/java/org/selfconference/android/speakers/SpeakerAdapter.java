@@ -55,10 +55,9 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
         return new Func1<Speaker, Boolean>() {
             @Override
             public Boolean call(Speaker speaker) {
-                final Locale locale = Locale.US;
                 return speaker.getName()
-                        .toLowerCase(locale)
-                        .contains(query.toLowerCase(locale));
+                        .toLowerCase(Locale.US)
+                        .contains(query.toLowerCase(Locale.US));
             }
         };
     }

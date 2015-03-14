@@ -7,7 +7,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import org.selfconference.android.BaseFragment;
+import org.selfconference.android.BaseListFragment;
+import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Day;
 import org.selfconference.android.api.SelfConferenceApi;
@@ -25,7 +26,7 @@ import timber.log.Timber;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static rx.android.app.AppObservable.bindFragment;
 
-public class SessionListFragment extends BaseFragment implements SessionAdapter.OnSessionClickListener {
+public class SessionListFragment extends BaseListFragment implements SessionAdapter.OnSessionClickListener {
     private static final String KEY_DAY = "day";
 
     @Inject
@@ -74,6 +75,11 @@ public class SessionListFragment extends BaseFragment implements SessionAdapter.
     }
 
     @Override
+    protected FilterableAdapter getFilterableAdapter() {
+        return sessionAdapter;
+    }
+
+    @Override
     public void onSessionClick(SharedElements sharedElements, Session session) {
         final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
         ActivityCompat.startActivity(getActivity(), intent, null);
@@ -92,7 +98,7 @@ public class SessionListFragment extends BaseFragment implements SessionAdapter.
 
         @Override
         public void onNext(List<Session> sessions) {
-            sessionAdapter.setSessions(sessions);
+            sessionAdapter.setData(sessions);
         }
     };
 }
