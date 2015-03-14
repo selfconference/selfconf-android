@@ -13,23 +13,24 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.squareup.picasso.Picasso;
 
 import org.selfconference.android.App;
+import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Speaker;
 
-import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.functions.Func1;
 
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import static android.view.ViewTreeObserver.OnPreDrawListener;
-import static com.google.common.collect.Lists.newArrayList;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 
-public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerViewHolder> {
+public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.SpeakerViewHolder> {
     public interface OnSpeakerClickListener {
         void onSpeakerClick(Speaker speaker);
     }
@@ -37,7 +38,6 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerV
     @Inject
     Picasso picasso;
 
-    private final List<Speaker> speakers = newArrayList();
     private OnSpeakerClickListener onSpeakerClickListener;
     private final boolean showDescription;
 
@@ -50,10 +50,17 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerV
         this.onSpeakerClickListener = onSpeakerClickListener;
     }
 
-    public void setSpeakers(List<Speaker> speakers) {
-        this.speakers.clear();
-        this.speakers.addAll(speakers);
-        notifyDataSetChanged();
+    @Override
+    protected Func1<Speaker, Boolean> filterPredicate(final String query) {
+        return new Func1<Speaker, Boolean>() {
+            @Override
+            public Boolean call(Speaker speaker) {
+                final Locale locale = Locale.US;
+                return speaker.getName()
+                        .toLowerCase(locale)
+                        .contains(query.toLowerCase(locale));
+            }
+        };
     }
 
     @Override
@@ -64,7 +71,7 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerV
 
     @Override
     public void onBindViewHolder(final SpeakerViewHolder holder, final int position) {
-        final Speaker speaker = speakers.get(position);
+        final Speaker speaker = getFilteredData().get(position);
 
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
@@ -86,7 +93,7 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerV
                         .centerCrop()
                         .transform(new CircularTransformation(speaker.getHeadshot()))
                         .placeholder(TextDrawable.builder()
-                                        .buildRound(speaker.getName().substring(0, 1), getPrimaryColorForPosition(position))
+                                        .buildRound(speaker.getName().substring(0, 1), getPrimaryColorForPosition(speaker.getId()))
                         )
                         .into(holder.speakerHeadshot);
                 return true;
@@ -97,11 +104,6 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerV
         } else {
             holder.speakerDescription.setVisibility(GONE);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return speakers.size();
     }
 
     public static class SpeakerViewHolder extends RecyclerView.ViewHolder {

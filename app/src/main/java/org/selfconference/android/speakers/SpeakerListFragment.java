@@ -8,8 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
 
 import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
@@ -54,6 +61,12 @@ public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -66,6 +79,33 @@ public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.
         addSubscription(
                 bindFragment(this, speakersObservable).subscribe(speakersSubscriber)
         );
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_speaker_list, menu);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                speakerAdapter.filter(s);
+                return true;
+            }
+        });
+        searchView.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    speakerAdapter.reset();
+                }
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -90,7 +130,7 @@ public class SpeakerListFragment extends BaseFragment implements SpeakerAdapter.
 
         @Override
         public void onNext(List<Speaker> speakers) {
-            speakerAdapter.setSpeakers(speakers);
+            speakerAdapter.setData(speakers);
         }
     };
 

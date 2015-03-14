@@ -175,7 +175,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         @Override
         public void onNext(List<Speaker> speakers) {
             speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
-            speakerAdapter.setSpeakers(speakers);
+            speakerAdapter.setData(speakers);
         }
     };
 }
