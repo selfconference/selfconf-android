@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +8,8 @@
         android:id="@+id/drawer_header_background"
         android:layout_height="200dp"
         android:layout_width="match_parent"
-        android:background="@color/purple"/>
+        android:background="@color/purple"
+        android:clickable="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/drawer_recycler_view"
@@ -17,19 +17,5 @@
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"
         android:layout_below="@+id/drawer_header_background"/>
-
-    <TextView
-        android:id="@+id/build_version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:layout_marginLeft="72dp"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="v0.3.3"/>
 
 </RelativeLayout>

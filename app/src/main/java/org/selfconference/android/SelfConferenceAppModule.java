@@ -10,11 +10,12 @@ import com.squareup.picasso.Picasso;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
 import org.selfconference.android.drawer.DrawerFragment;
-import org.selfconference.android.session.SessionListFragment;
 import org.selfconference.android.session.SavedSessionPreferences;
-import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.session.SessionAdapter;
+import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.session.SessionDetailsActivity;
+import org.selfconference.android.session.SessionListFragment;
+import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerListFragment;
 
@@ -35,6 +36,7 @@ import timber.log.Timber;
                 SpeakerListFragment.class,
                 DrawerFragment.class,
                 SessionListFragment.class,
+                CodeOfConductFragment.class,
                 SpeakerAdapter.class,
                 BaseActivity.class,
                 SessionDetailsActivity.class

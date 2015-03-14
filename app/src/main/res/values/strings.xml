@@ -7,7 +7,6 @@
     <string name="schedule">Schedule</string>
 
     <string name="day_number">Day %1$s</string>
-    <string name="title_activity_session">SessionActivity</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="transition_name_session">session</string>
@@ -18,9 +17,23 @@
     <string name="saturday">Saturday</string>
     <string name="about">About</string>
     <string name="twitter_url">https://twitter.com/%1$s</string>
+    <string name="settings">Settings</string>
+
+    <string name="code_of_conduct">Code of Conduct</string>
+
+    <string name="coc_main_title">Code of Conduct</string>
+    <string name="coc_main_subtitle">self.conference is a developer community conference intended to create opportunities for education, collaboration and networking. In the interest of creating a safe, enjoyable and fulfilling experiences for all concerned, attendees are expected to show respect and courtesy to other attendees throughout the conference and at all conference events.\n\nAll attendees, speakers, sponsors, organizers and volunteers at self.conference events are required to abide by the following Code of Conduct. Organizers will enforce this code throughout the event.</string>
+
+    <string name="coc_short_version_title">The Short Version</string>
+    <string name="coc_short_version_subtitle">self.conference is dedicated to providing a welcoming and harassment–free conference experience for everyone, regardless of gender (cis– or trans-), sexual orientation, disability, physical appearance, body size, race, or religion. We do not tolerate harassment of conference participants in any form.</string>
+
+    <string name="coc_long_version_title">The Longer Version</string>
+    <string name="coc_long_version_subtitle">Harassment includes offensive verbal comments related to gender, sexual orientation, disability, physical appearance, body size, race, religion, sexual images in public spaces, deliberate intimidation, stalking, following, harassing photography or recording, sustained disruption of talks or other events, inappropriate physical contact, and unwelcome sexual attention.\n\nParticipants asked to stop any harassing behavior are expected to comply immediately.\n\nIf a participant engages in behavior that violates this code of conduct, the conference organizers may take any action they deem appropriate, including warning the offender or expulsion from the conference with no refund.</string>
+
+    <string name="coc_contact_information_title">Contact Information</string>
+    <string name="coc_contact_information_subtitle">If you are being harassed, notice that someone else is being harassed, or have any other concerns, please contact a self.conference staff member or volunteer immediately.\n\nYou may also contact any volunteer and ask to be put in touch with the conference chairs, Amber Conville &amp; Erika Carlson.\n\nIf the matter is especially urgent, please contact conference co-chair Erika Carlson at (313) 473-7560.\n\nConference staff will be happy to help participants contact hotel/venue security or local law enforcement, provide escorts, or otherwise assist those experiencing harassment to feel safe for the duration of the conference. We value your attendance.\n\nAdapted from http://geekfeminism.wikia.com/wiki/Conference_anti-harassment/Policy</string>
 
     <plurals name="speakers">
-        <item quantity="zero"></item>
         <item quantity="one">Speaker</item>
         <item quantity="other">Speakers</item>
     </plurals>

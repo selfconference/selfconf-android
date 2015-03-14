@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_app_version">pref_key_version_number</string>
+    <string name="title_app_version">App Version</string>
+    <string name="summary_app_version">v%1$s</string>
+    <string name="header_title_about">About</string>
+    <string name="header_title_notifications">Notifications</string>
+    <string name="key_push_notifications">pref_key_push_notifications</string>
+    <string name="title_push_notifications">Enable push notifications</string>
+    <string name="summary_push_notifications">Receive push notifications during Self.conference</string>
+    <string name="title_code_of_conduct">Code of Conduct</string>
+    <string name="key_code_of_conduct">pref_key_code_of_conduct</string>
+</resources>

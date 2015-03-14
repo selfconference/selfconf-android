@@ -7,7 +7,9 @@ import org.selfconference.android.R;
 
 public enum DrawerItem {
     SCHEDULE(R.drawable.ic_schedule, R.string.schedule),
-    SPEAKERS(R.drawable.ic_mood_grey600_24dp, R.string.speakers);
+    SPEAKERS(R.drawable.ic_mood_grey600_24dp, R.string.speakers),
+    CODE_OF_CONDUCT(R.drawable.ic_description_grey600_24dp, R.string.code_of_conduct),
+    SETTINGS(R.drawable.ic_settings_grey600_24dp, R.string.settings);
 
     private final int icon;
     private final int title;

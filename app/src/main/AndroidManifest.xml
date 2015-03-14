@@ -48,6 +48,15 @@
                 android:value=".session.SessionDetailsActivity"/>
         </activity>
 
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
         <service android:name="com.parse.PushService"/>
 
         <receiver android:name="com.parse.ParseBroadcastReceiver">

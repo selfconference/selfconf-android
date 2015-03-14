@@ -17,4 +17,10 @@
 
     <color name="schedule_item_background">#ececec</color>
     <color name="divider_color">#ddd</color>
+
+    <color name="fab_unchecked">#2196F3</color>
+    <color name="fab_unchecked_muted">#64B5F6</color>
+
+    <color name="fab_checked">#FFFFFF</color>
+    <color name="fab_checked_muted">#e5e5e5</color>
 </resources>

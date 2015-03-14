@@ -1,6 +1,6 @@
 // Manifest version information!
 def versionMajor = 0
-def versionMinor = 5
+def versionMinor = 7
 def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 

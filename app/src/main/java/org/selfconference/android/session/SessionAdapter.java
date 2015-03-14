@@ -1,5 +1,6 @@
 package org.selfconference.android.session;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
     public interface OnSessionClickListener {
         void onSessionClick(SharedElements sharedElements, Session event);
     }
+
+    private static Drawable backgroundDrawable;
 
     @Inject
     SelfConferenceApi api;
@@ -70,7 +73,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
     public void onBindViewHolder(final SessionViewHolder holder, final int position) {
         final Session session = sessions.get(position);
 
-        holder.sessionBackground.setOnClickListener(new OnClickListener() {
+        holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
                 final SharedElements sharedElements = new SharedElements.Builder(v.getContext()).build();
@@ -100,15 +103,14 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
         return sessions.size();
     }
 
-    private void setStartTime(SessionViewHolder holder, Session session) {
+    private static void setStartTime(SessionViewHolder holder, Session session) {
         final DateTime time = session.getBeginning();
-        holder.startTime.setText(time.toString("ha"));
+        final String timeString = time.toString("ha");
+        holder.startTime.setText(timeString.substring(0, timeString.length() - 1));
+        holder.startTime.setVisibility(VISIBLE);
     }
 
     public static class SessionViewHolder extends RecyclerView.ViewHolder {
-
-        @InjectView(R.id.box)
-        public View sessionBackground;
 
         @InjectView(R.id.start_time)
         public TextView startTime;
