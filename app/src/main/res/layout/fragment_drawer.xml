@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <ImageView
         android:id="@+id/drawer_header_background"
         android:layout_height="200dp"
         android:layout_width="match_parent"
-        android:background="@color/purple"
+        android:background="?attr/colorPrimary"
         android:clickable="true"/>
 
     <android.support.v7.widget.RecyclerView

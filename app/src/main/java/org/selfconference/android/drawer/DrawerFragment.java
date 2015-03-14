@@ -7,13 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
-import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
+import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.settings.SettingsActivity;
 import org.selfconference.android.speakers.SpeakerListFragment;
+
+import javax.inject.Inject;
 
 import butterknife.InjectView;
 
@@ -21,9 +26,16 @@ import static org.selfconference.android.drawer.DrawerItem.SCHEDULE;
 
 public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDrawerItemClickListener {
     public static final String TAG = DrawerFragment.class.getName();
+    private static final String SELF_CONF_TWITTER_LOGO = "https://pbs.twimg.com/profile_images/514233058740801536/05yCQ6xV.png";
+
+    @InjectView(R.id.drawer_header_background)
+    ImageView drawerHeaderBackground;
 
     @InjectView(R.id.drawer_recycler_view)
     RecyclerView drawerRecyclerView;
+
+    @Inject
+    Picasso picasso;
 
     private DrawerCloser drawerCloser;
     private final DrawerAdapter drawerAdapter = new DrawerAdapter();
@@ -48,6 +60,8 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        picasso.load(SELF_CONF_TWITTER_LOGO).into(drawerHeaderBackground);
+
         drawerAdapter.setOnDrawerItemClickListener(this);
 
         drawerRecyclerView.setHasFixedSize(true);
@@ -66,7 +80,9 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
 
     @Override
     public void onDrawerItemClick(DrawerItem drawerItem) {
-        drawerCloser.closeDrawer();
+        if (drawerCloser != null) {
+            drawerCloser.closeDrawer();
+        }
         switch (drawerItem) {
             case SCHEDULE:
                 changeFragment(new SessionContainerFragment(), SessionContainerFragment.TAG);
