@@ -1,6 +1,5 @@
 package org.selfconference.android.session;
 
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,8 +32,6 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
     public interface OnSessionClickListener {
         void onSessionClick(SharedElements sharedElements, Session event);
     }
-
-    private static Drawable backgroundDrawable;
 
     @Inject
     SelfConferenceApi api;
@@ -76,8 +73,10 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.SessionV
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
-                final SharedElements sharedElements = new SharedElements.Builder(v.getContext()).build();
-                onSessionClickListener.onSessionClick(sharedElements, session);
+                if (onSessionClickListener != null) {
+                    final SharedElements sharedElements = new SharedElements.Builder(v.getContext()).build();
+                    onSessionClickListener.onSessionClick(sharedElements, session);
+                }
             }
         });
 

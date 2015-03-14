@@ -34,7 +34,6 @@ public class App extends Application {
         if (DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_id));
         setUpPushNotifications();
         objectGraph = ObjectGraph.create(new SelfConferenceAppModule(this));
     }
@@ -47,7 +46,8 @@ public class App extends Application {
         Fabric.with(this, new Crashlytics());
     }
 
-    private void setUpPushNotifications() {
+    protected void setUpPushNotifications() {
+        Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_id));
         subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {

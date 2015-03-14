@@ -53,6 +53,7 @@ public class SavedSessionPreferences {
         return getSavedSessions().contains(idAsString(session));
     }
 
+    @SuppressWarnings("ConstantConditions")
     private Set<String> getSavedSessions() {
         return newHashSet(sharedPreferences.getStringSet(KEY_SESSIONS, Sets.<String>newHashSet()));
     }

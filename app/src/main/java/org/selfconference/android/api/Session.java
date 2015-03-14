@@ -3,6 +3,7 @@ package org.selfconference.android.api;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Objects;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
@@ -18,6 +19,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.joda.time.DateTime.now;
 
@@ -71,6 +73,26 @@ public class Session implements Parcelable {
                 .add("beginning", beginning)
                 .add("speakers", speakers)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Session that = (Session) o;
+
+        return equal(this.id, that.id) &&
+                equal(this.title, that.title) &&
+                equal(this.room, that.room) &&
+                equal(this.description, that.description) &&
+                equal(this.beginning, that.beginning) &&
+                equal(this.speakers, that.speakers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, title, room, description, beginning, speakers);
     }
 
     public static class Deserializer implements JsonDeserializer<Session> {

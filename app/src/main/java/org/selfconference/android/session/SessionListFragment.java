@@ -56,7 +56,7 @@ public class SessionListFragment extends BaseFragment implements SessionAdapter.
         scheduleItemRecyclerView.setAdapter(sessionAdapter);
         scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final Day day = (Day) checkNotNull(getArguments().getSerializable(KEY_DAY));
+        final Day day = checkNotNull((Day) getArguments().getSerializable(KEY_DAY));
         addSubscription(
                 bindFragment(this, api.getSessionsByDay(day)).subscribe(subscriber)
         );

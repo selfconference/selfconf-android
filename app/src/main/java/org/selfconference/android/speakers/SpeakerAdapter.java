@@ -1,10 +1,10 @@
 package org.selfconference.android.speakers;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,13 +64,14 @@ public class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerV
 
     @Override
     public void onBindViewHolder(final SpeakerViewHolder holder, final int position) {
-        final Context context = holder.itemView.getContext();
         final Speaker speaker = speakers.get(position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
-                onSpeakerClickListener.onSpeakerClick(speaker);
+                if (onSpeakerClickListener != null) {
+                    onSpeakerClickListener.onSpeakerClick(speaker);
+                }
             }
         });
         holder.speakerName.setText(speaker.getName());

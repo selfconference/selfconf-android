@@ -1,5 +1,6 @@
 package org.selfconference.android.session;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,7 @@ import org.selfconference.android.api.Session;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
+import static butterknife.ButterKnife.findById;
 
 public final class SimpleSessionAdapter extends ArrayAdapter<Session> {
 
@@ -21,10 +22,11 @@ public final class SimpleSessionAdapter extends ArrayAdapter<Session> {
     }
 
     @Override
+    @SuppressLint("ViewHolder")
     public View getView(int position, View convertView, ViewGroup parent) {
         final View view = LayoutInflater.from(getContext()).inflate(R.layout.two_line_list_item, parent, false);
-        final TextView title = ButterKnife.findById(view, android.R.id.text1);
-        final TextView subtitle = ButterKnife.findById(view, android.R.id.text2);
+        final TextView title = findById(view, android.R.id.text1);
+        final TextView subtitle = findById(view, android.R.id.text2);
 
         final Session session = getItem(position);
 

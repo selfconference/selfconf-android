@@ -3,9 +3,12 @@ package org.selfconference.android.api;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Objects;
+
 import java.util.List;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Speaker implements Parcelable {
@@ -57,6 +60,26 @@ public class Speaker implements Parcelable {
                 .add("name", name)
                 .add("sessions", sessions)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Speaker that = (Speaker) o;
+
+        return equal(this.id, that.id) &&
+                equal(this.name, that.name) &&
+                equal(this.twitter, that.twitter) &&
+                equal(this.bio, that.bio) &&
+                equal(this.headshot, that.headshot) &&
+                equal(this.sessions, that.sessions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, twitter, bio, headshot, sessions);
     }
 
     public static final class Builder {

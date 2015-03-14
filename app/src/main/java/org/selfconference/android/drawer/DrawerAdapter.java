@@ -39,7 +39,9 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(@NonNull View v) {
-                onDrawerItemClickListener.onDrawerItemClick(drawerItem);
+                if (onDrawerItemClickListener != null) {
+                    onDrawerItemClickListener.onDrawerItemClick(drawerItem);
+                }
             }
         });
         holder.icon.setImageResource(drawerItem.getIcon());
