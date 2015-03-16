@@ -9,6 +9,8 @@ import rx.Subscriber;
 import rx.functions.Func1;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static rx.android.schedulers.AndroidSchedulers.mainThread;
+import static rx.schedulers.Schedulers.io;
 
 public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
@@ -19,6 +21,8 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder> e
         filteredData.clear();
         Observable.from(data)
                 .filter(filterPredicate(query))
+                .subscribeOn(io())
+                .observeOn(mainThread())
                 .subscribe(new Subscriber<T>() {
                     @Override
                     public void onCompleted() {
