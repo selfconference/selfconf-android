@@ -1,7 +1,6 @@
 package org.selfconference.android.speakers;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +12,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.squareup.picasso.Picasso;
 
 import org.selfconference.android.App;
+import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Speaker;
@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import rx.functions.Func1;
 
@@ -98,7 +97,7 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
         }
     }
 
-    public static class SpeakerViewHolder extends RecyclerView.ViewHolder {
+    public static class SpeakerViewHolder extends ButterKnifeViewHolder {
 
         @InjectView(R.id.row_icon) public ImageView speakerHeadshot;
         @InjectView(R.id.row_title) public TextView speakerName;
@@ -106,7 +105,6 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
 
         public SpeakerViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
         }
     }
 }

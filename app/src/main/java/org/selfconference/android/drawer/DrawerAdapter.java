@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import static android.view.View.OnClickListener;
@@ -49,13 +49,13 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         return DrawerItem.values().length;
     }
 
-    public static class DrawerViewHolder extends RecyclerView.ViewHolder {
+    public static class DrawerViewHolder extends ButterKnifeViewHolder {
+
         @InjectView(R.id.row_icon) public ImageView icon;
         @InjectView(R.id.row_title) public TextView title;
 
         public DrawerViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
         }
     }
 }

@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class CodeOfConductAdapter extends RecyclerView.Adapter<CodeOfConductAdapter.ViewHolder> {
@@ -29,13 +29,13 @@ public class CodeOfConductAdapter extends RecyclerView.Adapter<CodeOfConductAdap
         return Code.values().length;
     }
 
-    public static final class ViewHolder extends RecyclerView.ViewHolder {
+    public static final class ViewHolder extends ButterKnifeViewHolder {
+
         @InjectView(R.id.code_of_conduct_title) public TextView title;
         @InjectView(R.id.code_of_conduct_subtitle) public TextView subtitle;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
         }
     }
 }
