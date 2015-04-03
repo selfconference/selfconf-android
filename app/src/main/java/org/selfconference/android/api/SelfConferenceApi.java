@@ -30,8 +30,7 @@ public class SelfConferenceApi {
     private static final Type LIST_SESSION_TYPE = new TypeToken<List<Session>>() {}.getType();
     private static final Type LIST_SPEAKER_TYPE = new TypeToken<List<Speaker>>() {}.getType();
 
-    @Inject
-    Lazy<Gson> gson;
+    @Inject Lazy<Gson> gson;
 
     public SelfConferenceApi() {
         App.getInstance().inject(this);
@@ -44,14 +43,12 @@ public class SelfConferenceApi {
     public Observable<List<Session>> getSessionsByDay(final Day day) {
         return getSessions()
                 .flatMap(new Func1<List<Session>, Observable<Session>>() {
-                    @Override
-                    public Observable<Session> call(List<Session> sessions) {
+                    @Override public Observable<Session> call(List<Session> sessions) {
                         return Observable.from(sessions);
                     }
                 })
                 .filter(new Func1<Session, Boolean>() {
-                    @Override
-                    public Boolean call(Session session) {
+                    @Override public Boolean call(Session session) {
                         final Interval interval = DateTimeHelper.intervalForDay(day);
                         return interval.contains(session.getBeginning());
                     }
@@ -62,14 +59,12 @@ public class SelfConferenceApi {
     public Observable<List<Session>> getSessionsForSpeaker(final Speaker speaker) {
         return getSessions()
                 .flatMap(new Func1<List<Session>, Observable<Session>>() {
-                    @Override
-                    public Observable<Session> call(List<Session> sessions) {
+                    @Override public Observable<Session> call(List<Session> sessions) {
                         return Observable.from(sessions);
                     }
                 })
                 .filter(new Func1<Session, Boolean>() {
-                    @Override
-                    public Boolean call(Session session) {
+                    @Override public Boolean call(Session session) {
                         return speaker.getSessionIds().contains(session.getId());
                     }
                 })
@@ -83,14 +78,12 @@ public class SelfConferenceApi {
     public Observable<List<Speaker>> getSpeakersForSession(final Session session) {
         return getSpeakers()
                 .flatMap(new Func1<List<Speaker>, Observable<Speaker>>() {
-                    @Override
-                    public Observable<Speaker> call(List<Speaker> speakers) {
+                    @Override public Observable<Speaker> call(List<Speaker> speakers) {
                         return Observable.from(speakers);
                     }
                 })
                 .filter(new Func1<Speaker, Boolean>() {
-                    @Override
-                    public Boolean call(Speaker speaker) {
+                    @Override public Boolean call(Speaker speaker) {
                         return session.getSpeakerIds().contains(speaker.getId());
                     }
                 })
@@ -100,8 +93,7 @@ public class SelfConferenceApi {
     private <T> Observable<T> fileObservable(final String filename, final Type typeOfT) {
         return Observable.create(
                 new OnSubscribe<T>() {
-                    @Override
-                    public void call(Subscriber<? super T> subscriber) {
+                    @Override public void call(Subscriber<? super T> subscriber) {
                         try {
                             final T t = loadFile(filename, typeOfT);
                             subscriber.onNext(t);
@@ -112,8 +104,7 @@ public class SelfConferenceApi {
                     }
                 })
                 .compose(new Observable.Transformer<T, T>() {
-                    @Override
-                    public Observable<T> call(Observable<T> tObservable) {
+                    @Override public Observable<T> call(Observable<T> tObservable) {
                         return tObservable.subscribeOn(Schedulers.io()).observeOn(mainThread());
                     }
                 })
@@ -128,8 +119,7 @@ public class SelfConferenceApi {
 
     private static Func2<Session, Session, Integer> sortByDateFunction() {
         return new Func2<Session, Session, Integer>() {
-            @Override
-            public Integer call(Session session, Session session2) {
+            @Override public Integer call(Session session, Session session2) {
                 return session.getBeginning().compareTo(session2.getBeginning());
             }
         };
@@ -137,8 +127,7 @@ public class SelfConferenceApi {
 
     private static Func2<Speaker, Speaker, Integer> sortByNameFunction() {
         return new Func2<Speaker, Speaker, Integer>() {
-            @Override
-            public Integer call(Speaker speaker, Speaker speaker2) {
+            @Override public Integer call(Speaker speaker, Speaker speaker2) {
                 return speaker.getName().compareTo(speaker2.getName());
             }
         };

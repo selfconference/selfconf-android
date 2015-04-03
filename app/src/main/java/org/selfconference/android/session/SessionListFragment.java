@@ -29,11 +29,9 @@ import static rx.android.app.AppObservable.bindFragment;
 public class SessionListFragment extends BaseListFragment implements SessionAdapter.OnSessionClickListener {
     private static final String KEY_DAY = "day";
 
-    @Inject
-    SelfConferenceApi api;
+    @InjectView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
-    @InjectView(R.id.schedule_item_recycler_view)
-    RecyclerView scheduleItemRecyclerView;
+    @Inject SelfConferenceApi api;
 
     private final SessionAdapter sessionAdapter = new SessionAdapter();
 
@@ -48,8 +46,7 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
     public SessionListFragment() {
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         sessionAdapter.setOnSessionClickListener(this);
@@ -63,41 +60,34 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
         );
     }
 
-    @Override
-    public void onResume() {
+    @Override public void onResume() {
         super.onResume();
         sessionAdapter.refresh();
     }
 
-    @Override
-    protected int layoutResId() {
+    @Override protected int layoutResId() {
         return R.layout.fragment_schedule_item;
     }
 
-    @Override
-    protected FilterableAdapter getFilterableAdapter() {
+    @Override protected FilterableAdapter getFilterableAdapter() {
         return sessionAdapter;
     }
 
-    @Override
-    public void onSessionClick(SharedElements sharedElements, Session session) {
+    @Override public void onSessionClick(SharedElements sharedElements, Session session) {
         final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
         ActivityCompat.startActivity(getActivity(), intent, null);
     }
 
     private final Subscriber<List<Session>> subscriber = new Subscriber<List<Session>>() {
-        @Override
-        public void onCompleted() {
+        @Override public void onCompleted() {
 
         }
 
-        @Override
-        public void onError(Throwable e) {
+        @Override public void onError(Throwable e) {
             Timber.e(e, "Schedule failed to load");
         }
 
-        @Override
-        public void onNext(List<Session> sessions) {
+        @Override public void onNext(List<Session> sessions) {
             sessionAdapter.setData(sessions);
         }
     };

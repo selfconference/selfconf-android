@@ -26,19 +26,16 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         this.onDrawerItemClickListener = onDrawerItemClickListener;
     }
 
-    @Override
-    public DrawerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public DrawerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_row_single_item_with_icon, parent, false);
         return new DrawerViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(final DrawerViewHolder holder, int position) {
+    @Override public void onBindViewHolder(final DrawerViewHolder holder, int position) {
         final DrawerItem drawerItem = DrawerItem.values()[position];
 
         holder.itemView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(@NonNull View v) {
+            @Override public void onClick(@NonNull View v) {
                 if (onDrawerItemClickListener != null) {
                     onDrawerItemClickListener.onDrawerItemClick(drawerItem);
                 }
@@ -48,17 +45,13 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         holder.title.setText(drawerItem.getTitle());
     }
 
-    @Override
-    public int getItemCount() {
+    @Override public int getItemCount() {
         return DrawerItem.values().length;
     }
 
     public static class DrawerViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.row_icon)
-        public ImageView icon;
-
-        @InjectView(R.id.row_title)
-        public TextView title;
+        @InjectView(R.id.row_icon) public ImageView icon;
+        @InjectView(R.id.row_title) public TextView title;
 
         public DrawerViewHolder(View itemView) {
             super(itemView);

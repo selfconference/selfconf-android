@@ -28,20 +28,15 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
     public static final String TAG = DrawerFragment.class.getName();
     private static final String SELF_CONF_TWITTER_LOGO = "https://pbs.twimg.com/profile_images/514233058740801536/05yCQ6xV.png";
 
-    @InjectView(R.id.drawer_header_background)
-    ImageView drawerHeaderBackground;
+    @InjectView(R.id.drawer_header_background) ImageView drawerHeaderBackground;
+    @InjectView(R.id.drawer_recycler_view) RecyclerView drawerRecyclerView;
 
-    @InjectView(R.id.drawer_recycler_view)
-    RecyclerView drawerRecyclerView;
-
-    @Inject
-    Picasso picasso;
+    @Inject Picasso picasso;
 
     private DrawerCloser drawerCloser;
     private final DrawerAdapter drawerAdapter = new DrawerAdapter();
 
-    @Override
-    public void onAttach(Activity activity) {
+    @Override public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             drawerCloser = (DrawerCloser) activity;
@@ -50,14 +45,12 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
         }
     }
 
-    @Override
-    public void onDetach() {
+    @Override public void onDetach() {
         super.onDetach();
         drawerCloser = null;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         picasso.load(SELF_CONF_TWITTER_LOGO).into(drawerHeaderBackground);
@@ -73,13 +66,11 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
         }
     }
 
-    @Override
-    protected int layoutResId() {
+    @Override protected int layoutResId() {
         return R.layout.fragment_drawer;
     }
 
-    @Override
-    public void onDrawerItemClick(DrawerItem drawerItem) {
+    @Override public void onDrawerItemClick(DrawerItem drawerItem) {
         if (drawerCloser != null) {
             drawerCloser.closeDrawer();
         }

@@ -26,13 +26,11 @@ public class SettingsCategoryHeader extends PreferenceCategory {
         super(context);
     }
 
-    @TargetApi(LOLLIPOP)
-    public SettingsCategoryHeader(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    @TargetApi(LOLLIPOP) public SettingsCategoryHeader(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    @Override
-    protected void onBindView(@NonNull View view) {
+    @Override protected void onBindView(@NonNull View view) {
         super.onBindView(view);
         final TextView titleTextView = (TextView) view.findViewById(android.R.id.title);
         if (titleTextView != null) {

@@ -6,16 +6,17 @@ import android.net.Uri;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso.Listener;
 
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.Session;
+import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.drawer.DrawerFragment;
 import org.selfconference.android.session.SavedSessionPreferences;
 import org.selfconference.android.session.SessionAdapter;
 import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.session.SessionDetailsActivity;
 import org.selfconference.android.session.SessionListFragment;
-import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerListFragment;
 
@@ -50,36 +51,27 @@ public class SelfConferenceAppModule {
         this.application = application;
     }
 
-    @Provides
-    @Singleton
-    SelfConferenceApi selfConferenceApi() {
+    @Provides @Singleton SelfConferenceApi selfConferenceApi() {
         return new SelfConferenceApi();
     }
 
-    @Provides
-    @Singleton
-    Gson gson() {
+    @Provides @Singleton Gson gson() {
         return new GsonBuilder()
                 .registerTypeAdapter(Session.class, new Session.Deserializer())
                 .create();
     }
 
-    @Provides
-    @Singleton
-    Picasso picasso() {
+    @Provides @Singleton Picasso picasso() {
         return new Picasso.Builder(application)
-                .loggingEnabled(BuildConfig.DEBUG)
-                .listener(new Picasso.Listener() {
-                    @Override
-                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                .listener(new Listener() {
+                    @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
                         Timber.e(exception, "Image load failed");
                     }
                 })
                 .build();
     }
 
-    @Provides
-    SavedSessionPreferences savedSessionPreferences() {
+    @Provides SavedSessionPreferences savedSessionPreferences() {
         return new SavedSessionPreferences(application);
     }
 }

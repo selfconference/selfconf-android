@@ -30,8 +30,7 @@ final class CircularTransformation implements Transformation {
         this.key = key;
     }
 
-    @Override
-    public Bitmap transform(Bitmap source) {
+    @Override public Bitmap transform(Bitmap source) {
         int size = Math.min(source.getWidth(), source.getHeight());
 
         int x = (source.getWidth() - size) / 2;
@@ -57,8 +56,7 @@ final class CircularTransformation implements Transformation {
         return bitmap;
     }
 
-    @Override
-    public String key() {
+    @Override public String key() {
         return String.format("circle(key=%s)", key);
     }
 }

@@ -64,8 +64,7 @@ public class Session implements Parcelable {
         return speakers;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return toStringHelper(this)
                 .add("id", id)
                 .add("title", title)
@@ -75,8 +74,7 @@ public class Session implements Parcelable {
                 .toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -90,14 +88,12 @@ public class Session implements Parcelable {
                 equal(this.speakers, that.speakers);
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return Objects.hashCode(id, title, room, description, beginning, speakers);
     }
 
     public static class Deserializer implements JsonDeserializer<Session> {
-        @Override
-        public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        @Override public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             final JsonObject jsonObject = json.getAsJsonObject();
             final JsonElement id = jsonObject.get("id");
             final JsonElement title = jsonObject.get("title");
@@ -169,13 +165,11 @@ public class Session implements Parcelable {
         }
     }
 
-    @Override
-    public int describeContents() {
+    @Override public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
         dest.writeString(this.title);
         dest.writeString(this.room);
@@ -195,11 +189,11 @@ public class Session implements Parcelable {
     }
 
     public static final Parcelable.Creator<Session> CREATOR = new Parcelable.Creator<Session>() {
-        public Session createFromParcel(Parcel source) {
+        @Override public Session createFromParcel(Parcel source) {
             return new Session(source);
         }
 
-        public Session[] newArray(int size) {
+        @Override public Session[] newArray(int size) {
             return new Session[size];
         }
     };

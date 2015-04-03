@@ -18,13 +18,11 @@ public enum Code {
         this.subtitle = subtitle;
     }
 
-    @StringRes
-    public int getTitle() {
+    @StringRes public int getTitle() {
         return title;
     }
 
-    @StringRes
-    public int getSubtitle() {
+    @StringRes public int getSubtitle() {
         return subtitle;
     }
 }

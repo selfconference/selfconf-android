@@ -19,13 +19,11 @@ public enum DrawerItem {
         this.title = title;
     }
 
-    @DrawableRes
-    public int getIcon() {
+    @DrawableRes public int getIcon() {
         return icon;
     }
 
-    @StringRes
-    public int getTitle() {
+    @StringRes public int getTitle() {
         return title;
     }
 }

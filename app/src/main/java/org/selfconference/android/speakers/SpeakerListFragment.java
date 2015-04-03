@@ -38,19 +38,16 @@ import static rx.android.app.AppObservable.bindFragment;
 public class SpeakerListFragment extends BaseListFragment implements SpeakerAdapter.OnSpeakerClickListener {
     public static final String TAG = SpeakerListFragment.class.getName();
 
-    @InjectView(R.id.speaker_recycler_view)
-    RecyclerView speakerRecyclerView;
+    @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
 
-    @Inject
-    SelfConferenceApi api;
+    @Inject SelfConferenceApi api;
 
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(false);
 
     public SpeakerListFragment() {
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         speakerAdapter.setOnSpeakerClickListener(this);
@@ -64,18 +61,15 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         );
     }
 
-    @Override
-    protected int layoutResId() {
+    @Override protected int layoutResId() {
         return R.layout.fragment_speaker;
     }
 
-    @Override
-    protected FilterableAdapter getFilterableAdapter() {
+    @Override protected FilterableAdapter getFilterableAdapter() {
         return speakerAdapter;
     }
 
-    @Override
-    public void onSpeakerClick(Speaker speaker) {
+    @Override public void onSpeakerClick(Speaker speaker) {
         Timber.d("Speaker clicked: %s", speaker.toString());
         final Observable<List<Session>> sessionObservable = api.getSessionsForSpeaker(speaker);
         addSubscription(
@@ -84,18 +78,15 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
     }
 
     private final Subscriber<List<Speaker>> speakersSubscriber = new Subscriber<List<Speaker>>() {
-        @Override
-        public void onCompleted() {
+        @Override public void onCompleted() {
 
         }
 
-        @Override
-        public void onError(Throwable e) {
+        @Override public void onError(Throwable e) {
 
         }
 
-        @Override
-        public void onNext(List<Speaker> speakers) {
+        @Override public void onNext(List<Speaker> speakers) {
             speakerAdapter.setData(speakers);
         }
     };
@@ -109,18 +100,15 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
             this.activityReference = new WeakReference<>(activity);
         }
 
-        @Override
-        public void onCompleted() {
+        @Override public void onCompleted() {
 
         }
 
-        @Override
-        public void onError(Throwable e) {
+        @Override public void onError(Throwable e) {
             Timber.e(e, "Session not found");
         }
 
-        @Override
-        public void onNext(List<Session> sessions) {
+        @Override public void onNext(List<Session> sessions) {
             Timber.d("Speaker's sessions: %s", Arrays.toString(sessions.toArray()));
             checkState(!sessions.isEmpty(), "Speaker must have at least one session");
 
@@ -132,8 +120,7 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
                 new AlertDialog.Builder(activity)
                         .setTitle("Choose session")
                         .setAdapter(adapter, new OnClickListener() {
-                            @Override
-                            public void onClick(@NonNull DialogInterface dialog, int which) {
+                            @Override public void onClick(@NonNull DialogInterface dialog, int which) {
                                 dialog.dismiss();
                                 final Session session = adapter.getItem(which);
                                 startSessionDetailsActivity(session);

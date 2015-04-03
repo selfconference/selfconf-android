@@ -45,35 +45,20 @@ import static rx.android.app.AppObservable.bindActivity;
 public class SessionDetailsActivity extends BaseActivity implements OnSpeakerClickListener, OnCheckedChangeListener {
     private static final String EXTRA_SESSION = "org.selfconference.android.session.SESSION";
     private static final Setter<TextView, Integer> TEXT_COLOR_SETTER = new Setter<TextView, Integer>() {
-        @Override
-        public void set(TextView view, Integer value, int index) {
+        @Override public void set(TextView view, Integer value, int index) {
             view.setTextColor(value);
         }
     };
 
-    @InjectView(R.id.long_title)
-    TextView sessionTitle;
+    @InjectView(R.id.long_title) TextView sessionTitle;
+    @InjectView(R.id.session_description) TextView sessionDescription;
+    @InjectView(R.id.speakers_header) TextView speakersHeader;
+    @InjectView(R.id.favorite_button) FloatingActionButton favoriteButton;
+    @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
+    @InjectViews({R.id.speakers_header, R.id.more_header}) List<TextView> headers;
 
-    @InjectView(R.id.session_description)
-    TextView sessionDescription;
-
-    @InjectView(R.id.speakers_header)
-    TextView speakersHeader;
-
-    @InjectView(R.id.favorite_button)
-    FloatingActionButton favoriteButton;
-
-    @InjectView(R.id.speaker_recycler_view)
-    RecyclerView speakerRecyclerView;
-
-    @InjectViews({R.id.speakers_header, R.id.more_header})
-    List<TextView> headers;
-
-    @Inject
-    SelfConferenceApi api;
-
-    @Inject
-    SavedSessionPreferences preferences;
+    @Inject SelfConferenceApi api;
+    @Inject SavedSessionPreferences preferences;
 
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(true);
 
@@ -85,8 +70,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         return new Intent(context, SessionDetailsActivity.class).putExtra(EXTRA_SESSION, session);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_details);
         App.getInstance().inject(this);
@@ -114,8 +98,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         );
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
@@ -123,8 +106,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onSpeakerClick(Speaker speaker) {
+    @Override public void onSpeakerClick(Speaker speaker) {
         final String twitterUrl = getString(R.string.twitter_url, speaker.getTwitter());
         final Intent twitterIntent = new Intent()
                 .setAction(ACTION_VIEW)
@@ -133,8 +115,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         startActivity(twitterIntent);
     }
 
-    @Override
-    public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
+    @Override public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
         if (isChecked) {
             preferences.saveFavorite(session);
         } else {
@@ -142,8 +123,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         }
     }
 
-    @OnClick(R.id.submit_feedback)
-    void onSubmitFeedbackClick() {
+    @OnClick(R.id.submit_feedback) void onSubmitFeedbackClick() {
         final Intent intent = FeedbackActivity.newIntent(this, session);
         startActivity(intent);
     }
@@ -162,18 +142,15 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     }
 
     private final Subscriber<List<Speaker>> speakersSubscriber = new Subscriber<List<Speaker>>() {
-        @Override
-        public void onCompleted() {
+        @Override public void onCompleted() {
 
         }
 
-        @Override
-        public void onError(Throwable e) {
+        @Override public void onError(Throwable e) {
 
         }
 
-        @Override
-        public void onNext(List<Speaker> speakers) {
+        @Override public void onNext(List<Speaker> speakers) {
             speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
             speakerAdapter.setData(speakers);
         }

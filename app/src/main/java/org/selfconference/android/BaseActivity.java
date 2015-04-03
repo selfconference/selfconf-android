@@ -18,8 +18,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
     private Toolbar toolbar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (SDK_INT >= LOLLIPOP) {
             setTaskDescription(new TaskDescription(
@@ -30,8 +29,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
     }
 
-    @Override
-    public void onDestroy() {
+    @Override public void onDestroy() {
         super.onDestroy();
         compositeSubscription.unsubscribe();
     }

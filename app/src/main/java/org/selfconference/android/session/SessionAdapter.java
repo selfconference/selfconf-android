@@ -33,11 +33,8 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
         void onSessionClick(SharedElements sharedElements, Session event);
     }
 
-    @Inject
-    SelfConferenceApi api;
-
-    @Inject
-    SavedSessionPreferences preferences;
+    @Inject SelfConferenceApi api;
+    @Inject SavedSessionPreferences preferences;
 
     private OnSessionClickListener onSessionClickListener;
 
@@ -53,19 +50,16 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
         notifyDataSetChanged();
     }
 
-    @Override
-    public SessionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public SessionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_session_row, parent, false);
         return new SessionViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(final SessionViewHolder holder, final int position) {
+    @Override public void onBindViewHolder(final SessionViewHolder holder, final int position) {
         final Session session = getFilteredData().get(position);
 
         holder.itemView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(@NonNull View v) {
+            @Override public void onClick(@NonNull View v) {
                 if (onSessionClickListener != null) {
                     final SharedElements sharedElements = new SharedElements.Builder(v.getContext()).build();
                     onSessionClickListener.onSessionClick(sharedElements, session);
@@ -90,11 +84,9 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     }
 
-    @Override
-    protected Func1<Session, Boolean> filterPredicate(final String query) {
+    @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
         return new Func1<Session, Boolean>() {
-            @Override
-            public Boolean call(Session session) {
+            @Override public Boolean call(Session session) {
                 return session.getTitle()
                         .toLowerCase(Locale.US)
                         .contains(query.toLowerCase(Locale.US));
@@ -111,17 +103,10 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     public static class SessionViewHolder extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.start_time)
-        public TextView startTime;
-
-        @InjectView(R.id.slot_title)
-        public TextView sessionTitle;
-
-        @InjectView(R.id.slot_subtitle)
-        public TextView sessionSubtitle;
-
-        @InjectView(R.id.favorite_session_indicator)
-        public View favoriteSessionIndicator;
+        @InjectView(R.id.start_time) public TextView startTime;
+        @InjectView(R.id.slot_title) public TextView sessionTitle;
+        @InjectView(R.id.slot_subtitle) public TextView sessionSubtitle;
+        @InjectView(R.id.favorite_session_indicator) public View favoriteSessionIndicator;
 
         public SessionViewHolder(View itemView) {
             super(itemView);

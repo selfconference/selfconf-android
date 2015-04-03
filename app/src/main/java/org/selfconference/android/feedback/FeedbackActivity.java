@@ -25,8 +25,7 @@ public class FeedbackActivity extends BaseActivity {
                 .putExtra(EXTRA_SESSION, session);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
 
@@ -36,8 +35,7 @@ public class FeedbackActivity extends BaseActivity {
         setupActionBar();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
             return true;

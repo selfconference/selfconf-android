@@ -13,8 +13,7 @@ import static org.selfconference.android.BuildConfig.VERSION_NAME;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
 
@@ -26,8 +25,7 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private final OnPreferenceChangeListener onPushNotificationCheckChangeListener = new OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
+        @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
             final boolean checked = (boolean) newValue;
             if (checked) {
                 subscribeInBackground("all");

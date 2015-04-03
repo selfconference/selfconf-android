@@ -16,13 +16,11 @@ import butterknife.InjectView;
 
 public class MainActivity extends BaseActivity implements DrawerCloser {
 
-    @InjectView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
+    @InjectView(R.id.drawer_layout) DrawerLayout drawerLayout;
 
     private ActionBarDrawerToggle drawerToggle;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
@@ -38,14 +36,12 @@ public class MainActivity extends BaseActivity implements DrawerCloser {
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         ) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
+            @Override public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 supportInvalidateOptionsMenu();
             }
 
-            @Override
-            public void onDrawerOpened(View drawerView) {
+            @Override public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 supportInvalidateOptionsMenu();
             }
@@ -57,20 +53,17 @@ public class MainActivity extends BaseActivity implements DrawerCloser {
                 .commit();
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    @Override protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    @Override public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void closeDrawer() {
+    @Override public void closeDrawer() {
         drawerLayout.closeDrawer(Gravity.START);
     }
 }

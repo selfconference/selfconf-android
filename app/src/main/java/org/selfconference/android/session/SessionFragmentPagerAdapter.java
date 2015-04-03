@@ -14,19 +14,16 @@ public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
-    @Override
-    public Fragment getItem(int position) {
+    @Override public Fragment getItem(int position) {
         final Day day = Day.fromPosition(position);
         return SessionListFragment.newInstance(day);
     }
 
-    @Override
-    public int getCount() {
+    @Override public int getCount() {
         return Day.values().length;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
+    @Override public CharSequence getPageTitle(int position) {
         return App.getInstance().getString(position == 0 ? R.string.friday : R.string.saturday);
     }
 }

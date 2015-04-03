@@ -35,8 +35,7 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
         void onSpeakerClick(Speaker speaker);
     }
 
-    @Inject
-    Picasso picasso;
+    @Inject Picasso picasso;
 
     private OnSpeakerClickListener onSpeakerClickListener;
     private final boolean showDescription;
@@ -50,11 +49,9 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
         this.onSpeakerClickListener = onSpeakerClickListener;
     }
 
-    @Override
-    protected Func1<Speaker, Boolean> filterPredicate(final String query) {
+    @Override protected Func1<Speaker, Boolean> filterPredicate(final String query) {
         return new Func1<Speaker, Boolean>() {
-            @Override
-            public Boolean call(Speaker speaker) {
+            @Override public Boolean call(Speaker speaker) {
                 return speaker.getName()
                         .toLowerCase(Locale.US)
                         .contains(query.toLowerCase(Locale.US));
@@ -62,19 +59,16 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
         };
     }
 
-    @Override
-    public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_row_single_item_with_avatar, parent, false);
         return new SpeakerViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(final SpeakerViewHolder holder, final int position) {
+    @Override public void onBindViewHolder(final SpeakerViewHolder holder, final int position) {
         final Speaker speaker = getFilteredData().get(position);
 
         holder.itemView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(@NonNull View v) {
+            @Override public void onClick(@NonNull View v) {
                 if (onSpeakerClickListener != null) {
                     onSpeakerClickListener.onSpeakerClick(speaker);
                 }
@@ -83,8 +77,7 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
         holder.speakerName.setText(speaker.getName());
 
         holder.itemView.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
+            @Override public boolean onPreDraw() {
                 holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
                 picasso.load(speaker.getHeadshot())
@@ -106,14 +99,10 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
     }
 
     public static class SpeakerViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.row_icon)
-        public ImageView speakerHeadshot;
 
-        @InjectView(R.id.row_title)
-        public TextView speakerName;
-
-        @InjectView(R.id.row_subtitle)
-        public TextView speakerDescription;
+        @InjectView(R.id.row_icon) public ImageView speakerHeadshot;
+        @InjectView(R.id.row_title) public TextView speakerName;
+        @InjectView(R.id.row_subtitle) public TextView speakerDescription;
 
         public SpeakerViewHolder(View itemView) {
             super(itemView);

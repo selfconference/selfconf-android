@@ -24,18 +24,15 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder> e
                 .subscribeOn(io())
                 .observeOn(mainThread())
                 .subscribe(new Subscriber<T>() {
-                    @Override
-                    public void onCompleted() {
+                    @Override public void onCompleted() {
                         notifyDataSetChanged();
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
+                    @Override public void onError(Throwable e) {
 
                     }
 
-                    @Override
-                    public void onNext(T item) {
+                    @Override public void onNext(T item) {
                         filteredData.add(item);
                     }
                 });
@@ -58,8 +55,7 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder> e
         return filteredData;
     }
 
-    @Override
-    public int getItemCount() {
+    @Override public int getItemCount() {
         return getFilteredData().size();
     }
 

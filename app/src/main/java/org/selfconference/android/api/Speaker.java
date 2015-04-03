@@ -52,8 +52,7 @@ public class Speaker implements Parcelable {
         return sessions;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return toStringHelper(this)
                 .add("twitter", twitter)
                 .add("id", id)
@@ -62,8 +61,7 @@ public class Speaker implements Parcelable {
                 .toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -77,8 +75,7 @@ public class Speaker implements Parcelable {
                 equal(this.sessions, that.sessions);
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return Objects.hashCode(id, name, twitter, bio, headshot, sessions);
     }
 
@@ -128,13 +125,11 @@ public class Speaker implements Parcelable {
         }
     }
 
-    @Override
-    public int describeContents() {
+    @Override public int describeContents() {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
         dest.writeString(this.name);
         dest.writeString(this.twitter);
@@ -154,11 +149,11 @@ public class Speaker implements Parcelable {
     }
 
     public static final Parcelable.Creator<Speaker> CREATOR = new Parcelable.Creator<Speaker>() {
-        public Speaker createFromParcel(Parcel source) {
+        @Override public Speaker createFromParcel(Parcel source) {
             return new Speaker(source);
         }
 
-        public Speaker[] newArray(int size) {
+        @Override public Speaker[] newArray(int size) {
             return new Speaker[size];
         }
     };
