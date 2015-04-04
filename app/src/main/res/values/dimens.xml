@@ -12,4 +12,5 @@
     <dimen name="fab_size">56dp</dimen>
     <dimen name="fab_size_small">40dp</dimen>
     <dimen name="fab_icon_size">24dp</dimen>
+    <dimen name="session_detail_icon_padding">8dp</dimen>
 </resources>

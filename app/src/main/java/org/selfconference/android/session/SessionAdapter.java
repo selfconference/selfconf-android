@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
 import org.selfconference.android.App;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
@@ -26,6 +25,8 @@ import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
 import static android.view.View.VISIBLE;
+import static org.selfconference.android.utils.DateStringer.toShortDateString;
+import static org.selfconference.android.utils.RoomStringer.toRoomString;
 
 public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.SessionViewHolder> {
     public interface OnSessionClickListener {
@@ -69,7 +70,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
         holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
 
         holder.sessionTitle.setText(session.getTitle());
-        holder.sessionSubtitle.setText(session.getRoom());
+        holder.sessionSubtitle.setText(toRoomString(session.getRoom()));
         try {
             final Session previousSession = getFilteredData().get(position - 1);
             if (session.getBeginning().isEqual(previousSession.getBeginning())) {
@@ -94,9 +95,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     }
 
     private static void setStartTime(SessionViewHolder holder, Session session) {
-        final DateTime time = session.getBeginning();
-        final String timeString = time.toString("ha");
-        holder.startTime.setText(timeString.substring(0, timeString.length() - 1));
+        holder.startTime.setText(toShortDateString(session.getBeginning()));
         holder.startTime.setVisibility(VISIBLE);
     }
 

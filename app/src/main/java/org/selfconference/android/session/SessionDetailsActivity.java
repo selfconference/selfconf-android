@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -35,11 +34,14 @@ import rx.Subscriber;
 
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.text.Html.fromHtml;
 import static butterknife.ButterKnife.Setter;
 import static butterknife.ButterKnife.apply;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 import static org.selfconference.android.utils.BrandColors.getSecondaryColorForPosition;
+import static org.selfconference.android.utils.DateStringer.toDateString;
+import static org.selfconference.android.utils.RoomStringer.toRoomString;
 import static rx.android.app.AppObservable.bindActivity;
 
 public class SessionDetailsActivity extends BaseActivity implements OnSpeakerClickListener, OnCheckedChangeListener {
@@ -51,9 +53,9 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     };
 
     @InjectView(R.id.long_title) TextView sessionTitle;
-    @InjectView(R.id.session_description) TextView sessionDescription;
     @InjectView(R.id.speakers_header) TextView speakersHeader;
     @InjectView(R.id.favorite_button) FloatingActionButton favoriteButton;
+    @InjectView(R.id.session_detail_recycler_view) RecyclerView sessionDetailRecyclerView;
     @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
     @InjectViews({R.id.speakers_header, R.id.more_header}) List<TextView> headers;
 
@@ -82,20 +84,35 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         setUpActionBar();
 
         sessionTitle.setText(session.getTitle());
-        sessionDescription.setText(Html.fromHtml(session.getDescription()));
         favoriteButton.setChecked(preferences.isFavorite(session));
         favoriteButton.setOnCheckedChangeListener(this);
         apply(headers, TEXT_COLOR_SETTER, primaryColor);
 
-        speakerAdapter.setOnSpeakerClickListener(this);
-
-        speakerRecyclerView.setAdapter(speakerAdapter);
-        speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
+        setUpSessionDetailList();
+        setUpSpeakerList();
 
         final Observable<List<Speaker>> speakersObservable = api.getSpeakersForSession(session);
         addSubscription(
                 bindActivity(this, speakersObservable).subscribe(speakersSubscriber)
         );
+    }
+
+    private void setUpSessionDetailList() {
+        final List<SessionDetail> sessionDetails = SessionDetails.builder(this)
+                .add(R.drawable.ic_schedule, toDateString(session.getBeginning()))
+                .add(R.drawable.ic_place_grey600_24dp, toRoomString(session.getRoom()))
+                .add(R.drawable.ic_description_grey600_24dp, fromHtml(session.getDescription()))
+                .toList();
+
+        final SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
+        sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);
+        sessionDetailRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
+    }
+
+    private void setUpSpeakerList() {
+        speakerAdapter.setOnSpeakerClickListener(this);
+        speakerRecyclerView.setAdapter(speakerAdapter);
+        speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

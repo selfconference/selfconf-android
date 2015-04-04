@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:background="?attr/selectableItemBackground"
-    tools:background="#ccc">
+    tools:background="#fcc">
 
     <ImageView
         android:id="@+id/row_icon"
