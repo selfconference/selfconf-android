@@ -28,6 +28,7 @@ public class Session implements Parcelable {
     private final String title;
     private final String room;
     private final String description;
+    private final boolean isKeynote;
     private final DateTime beginning;
     private final List<Integer> speakers;
 
@@ -36,6 +37,7 @@ public class Session implements Parcelable {
         title = builder.title;
         room = builder.room;
         description = builder.description;
+        isKeynote = builder.isKeynote;
         beginning = builder.beginning;
         speakers = builder.speakers;
     }
@@ -54,6 +56,10 @@ public class Session implements Parcelable {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isKeynote() {
+        return isKeynote;
     }
 
     public DateTime getBeginning() {
@@ -101,21 +107,31 @@ public class Session implements Parcelable {
             final JsonElement beginning = jsonObject.get("beginning");
             final JsonElement description = jsonObject.get("description");
             final JsonElement speakers = jsonObject.get("speakers");
-            DateTime dateTime;
-            try {
-                dateTime = DateTimeHelper.parseDateTime(beginning.getAsString());
-            } catch (Exception e) {
-                dateTime = now().withZone(DateTimeHelper.EST);
-            }
+            final JsonElement keynote = jsonObject.get("keynote");
             final List<Integer> listOfSpeakers = new Gson().fromJson(speakers.getAsJsonArray(), new TypeToken<List<Integer>>(){}.getType());
             return new Builder()
                     .id(id.getAsInt())
                     .title(title.getAsString())
                     .room(room.getAsString())
-                    .beginning(dateTime)
+                    .beginning(determineDateTime(beginning))
                     .description(description.getAsString())
+                    .isKeynote(determineKeynote(keynote))
                     .speakers(listOfSpeakers)
                     .build();
+        }
+
+        private static DateTime determineDateTime(JsonElement jsonElement) {
+            try {
+                return DateTimeHelper.parseDateTime(jsonElement.getAsString());
+            } catch (Exception e) {
+                return now().withZone(DateTimeHelper.EST);
+            }
+        }
+
+        private static boolean determineKeynote(JsonElement jsonElement) {
+            return jsonElement != null &&
+                    !jsonElement.isJsonNull() &&
+                    jsonElement.getAsBoolean();
         }
     }
 
@@ -124,6 +140,7 @@ public class Session implements Parcelable {
         private String title = "";
         private String room = "";
         private String description = "";
+        private boolean isKeynote = false;
         private DateTime beginning = now();
         private List<Integer> speakers = newArrayList();
 
@@ -147,6 +164,11 @@ public class Session implements Parcelable {
 
         public Builder description(String description) {
             this.description = description;
+            return this;
+        }
+
+        public Builder isKeynote(boolean isKeynote) {
+            this.isKeynote = isKeynote;
             return this;
         }
 
@@ -174,6 +196,7 @@ public class Session implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.room);
         dest.writeString(this.description);
+        dest.writeInt(this.isKeynote ? 1 : 0);
         dest.writeSerializable(this.beginning);
         dest.writeList(this.speakers);
     }
@@ -183,6 +206,7 @@ public class Session implements Parcelable {
         this.title = in.readString();
         this.room = in.readString();
         this.description = in.readString();
+        this.isKeynote = in.readInt() == 1;
         this.beginning = (DateTime) in.readSerializable();
         this.speakers = newArrayList();
         in.readList(this.speakers, Integer.class.getClassLoader());

@@ -1,122 +1,134 @@
 [
   {
+    "keynote": null,
+    "room": "140D",
+    "title": "Forms, the Universe and Everything",
     "speakers": [
       24
-    ], 
-    "room": "140D", 
-    "title": "Forms, the Universe and Everything", 
-    "id": 0, 
+    ],
+    "id": 0,
     "beginning": "05/30/2014 11:00:00",
     "description": "It\u2019s inevitable at some point you\u2019re going to need a form on your website somewhere. Gone are the days of your Grandparent\u2019s web forms. With the advent of HTML5 our options for types have exploded, it is now possible to make forms that are more functional, more usable, and a joy to use. That\u2019s just using vanilla html, how much more trouble can we get in if we start playing with CSS and JavaScript? I for one, am tired of trying to use forms with the wrong input types on my smartphone. Won\u2019t you join me in the coalition to end inferior forms, to make the world better for everyone?"
-  }, 
+  },
   {
+    "keynote": true,
+    "room": "140G",
+    "title": "Making Web Development \"Secure by Default\"",
     "speakers": [
       45
-    ], 
-    "room": "140G", 
-    "title": "Making Web Development \"Secure by Default\"", 
-    "id": 1, 
-    "beginning": "05/31/2014 10:00:00", 
+    ],
+    "id": 1,
+    "beginning": "05/31/2014 10:00:00",
     "description": "The OWASP Foundation maintains a list of the top 10 most critical types of web security vulnerabilities. In the last decade, many of the entries on the list have remained constant, even though they represent issues that are quite well\u00ad understood by the software security community. Worse, when new vulnerabilities are discovered, we still often see developers employ a \u201cwhack-a-mole\u201d patching strategy that may block a particular exploit, but does nothing to prevent similar issues from recurring.<br /><br />This talk will explore a much broader and more systemic approach to mitigating some common types of web vulnerabilities, by demonstrating how well\u00ad-designed frameworks (and other tools) can eliminate some entire classes of vulnerabilities from web applications. Together, these examples will illustrate a different mindset to security bugs which, when applied correctly, can greatly improve software quality in general."
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140A",
+    "title": "Choose a tribe. Not a job.",
     "speakers": [
       15
-    ], 
-    "room": "140A", 
-    "title": "Choose a tribe. Not a job.", 
-    "id": 2, 
-    "beginning": "05/30/2014 16:00:00", 
+    ],
+    "id": 2,
+    "beginning": "05/30/2014 16:00:00",
     "description": "We are all members of tribes.  If we take a job for a huge raise or a given technology, we can't pass up the fact that we are joining an existing tribe, a group of people that work together to solve a common problem.  Sometimes those tribes inspire you; sometimes they do not.  Why?  People.  When you pick your job, you are actually picking your tribe, a tribe that is going to have an impact on your career.  Be sure to select wisely. <br /><br />In this session, we'll discuss and/or run exercises covering:<br />- Why tribes are so important<br />- What a healthy tribe and an unhealthy tribe look and feel like<br />- How to identify how healthy your tribe is<br />- Why would you want to take your tribe to the next level<br />- How to avoid the \"I'm great, and you're not\" plateau<br />- How to build great tribes"
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140D",
+    "title": "From Napkin to App",
     "speakers": [
       25
-    ], 
-    "room": "140D", 
-    "title": "From Napkin to App", 
-    "id": 3, 
-    "beginning": "05/30/2014 16:00:00", 
+    ],
+    "id": 3,
+    "beginning": "05/30/2014 16:00:00",
     "description": "Start with a sketch, end with some code. <br /><br />How to help guide your clients through the app ideation process to create something that is credible for their brand, relevant to their customers, and differentiated from the rest of the marketplace. <br /><br />The first part of the talk is about a framework for that through process, the second a recommendation for tools and methods to get the job done."
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140A",
+    "title": "iPads everywhere: Working with tablets at scale",
     "speakers": [
       37
-    ], 
-    "room": "140A", 
-    "title": "iPads everywhere: Working with tablets at scale", 
-    "id": 4, 
-    "beginning": "05/31/2014 10:00:00", 
+    ],
+    "id": 4,
+    "beginning": "05/31/2014 10:00:00",
     "description": "How do you manage a hundred thousand Internet-enabled devices scattered around the country? As smartphones proliferate and everything from thermostats to light bulbs connect to the Internet, this isn\u2019t just a question for academics and huge corporations anymore. <br /><br />At eSpark, we work with teachers and students across the country to provide education using a personalized iPad-based curriculum. Over the last two years, we\u2019ve seen explosive growth in the number of tablets at schools: tablets that require a unique, personalized curriculum of apps; tablets that are not always reliably on wifi; tablets that are often use by kids who haven\u2019t yet learned to read.<br /><br />In this talk, I\u2019ll share what it\u2019s like to go from deploying iPads to a few schools in places like Utica and Romeo near Detroit up to a hundred districts and now beyond, and how we solved the challenges we encountered: building tools atop reverse-engineered iTunes APIs, creating our own mobile device management (MDM) system from scratch, tracking state across multiple systems (including our native iPad app and sometimes-unreliable third-party systems). Along the way, I\u2019ll also show how having a scalable, responsive infrastructure for managing iPads will allow us to innovate and improve K-8 education in future years.<br /><br />"
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140F",
+    "title": "PHP misses you.",
     "speakers": [
       49
-    ], 
-    "room": "140F", 
-    "title": "PHP misses you.", 
-    "id": 5, 
-    "beginning": "05/30/2014 17:00:00", 
+    ],
+    "id": 5,
+    "beginning": "05/30/2014 17:00:00",
     "description": "PHP has been long relegated to the Wordpress, Drupal, Joomla, and cheap shared-hosting crowd. You've long since dismissed PHP entirely, but the times have changed!<br />I hear your retorts; I've seen the countless \"PHP Sucks\" blog posts, but hear me out - there's a reason PHP is still super popular, and I'd like to show you how it has all the fancy asynchronous, functional, generator, event-driven, non-blocking I/O goodies that your heart desires with a syntax that you're probably already familiar with.<br /><br />PHP misses you, and with greater performance enhancements coming faster than ever before thanks to HHVM, maybe you could make some time to come visit it?"
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140C",
+    "title": "Teaching Agile Principles Through Experiential Exercises",
     "speakers": [
       63
-    ], 
-    "room": "140C", 
-    "title": "Teaching Agile Principles Through Experiential Exercises", 
-    "id": 6, 
-    "beginning": "05/31/2014 11:00:00", 
+    ],
+    "id": 6,
+    "beginning": "05/31/2014 11:00:00",
     "description": "Agile values and principles like individuals and interactions, limiting work-in-process, and continuous improvement are relatively simple to discuss but difficult to internalize and convert into value systems. Facilitated exercises and games that illustrate them can be used to drive home why they really matter. This session will combine the experience of participating in some key exercises, seeing firsthand how they run, and learning how to translate them into practical lessons on why Agile advocates certain values."
-  }, 
+  },
   {
+    "keynote": true,
+    "room": "Ballroom",
+    "title": "Careful with those People Skills: You'll Poke Somebody's Eye Out!",
     "speakers": [
       14
-    ], 
-    "room": "Ballroom", 
-    "title": "Careful with those People Skills: You'll Poke Somebody's Eye Out!", 
-    "id": 7, 
-    "beginning": "05/30/2014 09:00:00", 
-    "description": "\"People skills\" are offered up as a way to get along with people better, to get them to do what you want, and to generally make your life easier. But often, a simple technique can backfire and produce the opposite response. How do you know you're doing it right? Why do people get mad when you give your feedback exactly like the book says to do it?<br /><br />Lao Tzu said \"The world is won by those who let it go.\" Giving up the steps and practices -- focusing instead on the underlying ideas and values -- can guide you to better relationships and better collaboration. Dig deep and learn how empathetic listening, authentic connection, and embodying compassion can fit naturally into your life and your work."
-  }, 
+    ],
+    "id": 7,
+    "beginning": "05/30/2014 09:00:00",
+    "description": "\"People skills\" are offered up as a way to get along with people better, to get them to do what you want, and to generally make your life easier. But often, a simple technique can backfire and produce the opposite response. How do you know you're doing it right? Why do peoMakingple get mad when you give your feedback exactly like the book says to do it?<br /><br />Lao Tzu said \"The world is won by those who let it go.\" Giving up the steps and practices -- focusing instead on the underlying ideas and values -- can guide you to better relationships and better collaboration. Dig deep and learn how empathetic listening, authentic connection, and embodying compassion can fit naturally into your life and your work."
+  },
   {
+    "keynote": null,
+    "room": "140F",
+    "title": "Hello Ansible: a story about infrastructure agility",
     "speakers": [
       29
-    ], 
-    "room": "140F", 
-    "title": "Hello Ansible: a story about infrastructure agility", 
-    "id": 8, 
-    "beginning": "05/30/2014 14:00:00", 
+    ],
+    "id": 8,
+    "beginning": "05/30/2014 14:00:00",
     "description": "This is the story of how our team is automating our infrastructure using Ansible (http://ansible.com). The story is told from the perspective of a software developer with an interest in operations.<br /><br />In the talk, we will get familiar with Ansible using simple examples. We'll then see how to assemble Ansible's basic building blocks into reliable and repeatable playbooks for server configuration.<br /><br />We will briefly compare Ansible with other tools that we have used, such as Chef and Capistrano. We will visit other technologies along the way, including Packer (http://packer.io) and Amazon Web Services.<br /><br />Beyond specific tools, the talk will also explore practical principles for succeeding with automation, such as disposable servers, package management, and applying software design principles to infrastructure automation."
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140F",
+    "title": "Introduction to TypeScript",
     "speakers": [
       36
-    ], 
-    "room": "140F", 
-    "title": "Introduction to TypeScript", 
-    "id": 9, 
-    "beginning": "05/30/2014 10:00:00", 
+    ],
+    "id": 9,
+    "beginning": "05/30/2014 10:00:00",
     "description": "Intro to TypeScript <br />Javascript is the assembly language for the web. Does that make TypeScript the  Next Big Thing (tm)? <br />It's too early to tell, but it's one of the paths developers and teams can choose to be more productive writing large-scale applications for the web. <br />In this session, we'll go through the basics of TypeScript syntax, and how to integrate TypeScript with common javascript libraries. You'll learn the basics of TypeScript, and have a basic understanding of the language.  You'll leave with the basic skills in TypeScript to continue your own learning of this new language.<br /><br />                                "
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140F",
+    "title": "Feedback By Design",
     "speakers": [
       22
-    ], 
-    "room": "140F", 
-    "title": "Feedback By Design", 
-    "id": 10, 
-    "beginning": "05/31/2014 16:00:00", 
+    ],
+    "id": 10,
+    "beginning": "05/31/2014 16:00:00",
     "description": "For decades rock music has benefitted from a glorious set of tones delivered to sets of ears across the globe. This wonderful thing is called feedback.<br /><br />Just like in music, we have glorious vibes of wonderful truth screeching through to us everyday. The only problem is we don't know how to listen to them or tune in to the right station.<br /><br />We are going to discuss the breath of agility. Feedback.                                 "
-  }, 
+  },
   {
+    "keynote": null,
+    "room": "140G",
+    "title": "Math is everywhere and why you should care",
     "speakers": [
       46
-    ], 
-    "room": "140G", 
-    "title": "Math is everywhere and why you should care", 
-    "id": 11, 
-    "beginning": "05/30/2014 15:00:00", 
+    ],
+    "id": 11,
+    "beginning": "05/30/2014 15:00:00",
     "description": "As developers, we are surrounded by math. While much of it is hidden or abstracted away by our language of choice, understanding it will allow you to make better decisions. Do you really know the difference between a linked list and a hash table? How about a tree or a trie? The data structures and algorithms we use daily are bursting with math, and being aware of the basics can mean the difference between success today and failure next year. Topics covered will include LINQ in C#, underscore.js, map/reduce, recursion, and combinatorics.               "
   }
 ]
