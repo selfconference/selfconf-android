@@ -24,6 +24,7 @@
 
     <item android:state_checked="true">
         <shape android:shape="oval">
+            <stroke android:color="@color/fab_checked_muted" android:width="1px"/>
             <solid android:color="@color/fab_checked"/>
         </shape>
     </item>
