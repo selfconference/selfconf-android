@@ -1,8 +1,8 @@
 package org.selfconference.android.codeofconduct;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.util.Linkify.TransformFilter;
+import android.text.util.Linkify;
+import android.text.util.Linkify.MatchFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +11,6 @@ import android.widget.TextView;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
 
-import java.util.regex.Matcher;
-
 import butterknife.InjectView;
 
 import static android.text.util.Linkify.PHONE_NUMBERS;
@@ -20,8 +18,6 @@ import static android.text.util.Linkify.addLinks;
 import static android.util.Patterns.WEB_URL;
 
 public class CodeOfConductAdapter extends RecyclerView.Adapter<CodeOfConductAdapter.ViewHolder> {
-    private static final String FAKE_SELF_CONFERENCE_DOMAIN = "self.conference";
-    private static final String ACTUAL_SELF_CONFERENCE_DOMAIN = "http://selfconference.org";
 
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_code_of_conduct_card, parent, false);
@@ -43,14 +39,7 @@ public class CodeOfConductAdapter extends RecyclerView.Adapter<CodeOfConductAdap
 
     private static void linkifySubtitleText(ViewHolder holder) {
         addLinks(holder.subtitle, PHONE_NUMBERS);
-        addLinks(holder.subtitle, WEB_URL, "", null, new TransformFilter() {
-            @Override @NonNull public String transformUrl(@NonNull Matcher match, String url) {
-                if (match.group().equals(FAKE_SELF_CONFERENCE_DOMAIN)) {
-                    return ACTUAL_SELF_CONFERENCE_DOMAIN;
-                }
-                return url;
-            }
-        });
+        addLinks(holder.subtitle, WEB_URL, null, new SelfConferenceUrlDenier(), null);
     }
 
     public static final class ViewHolder extends ButterKnifeViewHolder {
@@ -60,6 +49,14 @@ public class CodeOfConductAdapter extends RecyclerView.Adapter<CodeOfConductAdap
 
         public ViewHolder(View itemView) {
             super(itemView);
+        }
+    }
+
+    private static final class SelfConferenceUrlDenier implements Linkify.MatchFilter {
+        private static final String FAKE_SELF_CONFERENCE_DOMAIN = "self.conference";
+
+        @Override public boolean acceptMatch(CharSequence s, int start, int end) {
+            return !s.equals(FAKE_SELF_CONFERENCE_DOMAIN);
         }
     }
 }
