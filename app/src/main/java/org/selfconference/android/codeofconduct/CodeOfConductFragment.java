@@ -20,6 +20,12 @@ public class CodeOfConductFragment extends BaseFragment {
         return R.layout.fragment_code_of_conduct;
     }
 
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
+        getActivity().supportInvalidateOptionsMenu();
+    }
+
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
