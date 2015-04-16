@@ -2,7 +2,6 @@ package org.selfconference.android.codeofconduct;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
-import android.text.util.Linkify.MatchFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,8 @@ public class CodeOfConductAdapter extends RecyclerView.Adapter<CodeOfConductAdap
         private static final String FAKE_SELF_CONFERENCE_DOMAIN = "self.conference";
 
         @Override public boolean acceptMatch(CharSequence s, int start, int end) {
-            return !s.equals(FAKE_SELF_CONFERENCE_DOMAIN);
+            final String match = s.subSequence(start, end).toString();
+            return !match.equalsIgnoreCase(FAKE_SELF_CONFERENCE_DOMAIN);
         }
     }
 }
