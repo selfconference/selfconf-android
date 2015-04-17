@@ -11,8 +11,20 @@
         android:background="?attr/colorPrimary"
         android:clickable="true"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/drawer_header_background"
+        android:text="@string/app_name"
+        android:layout_centerVertical="true"
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-medium"
+        android:padding="16dp"
+        android:textSize="16sp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/drawer_recycler_view"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"

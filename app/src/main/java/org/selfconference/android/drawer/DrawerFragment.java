@@ -23,10 +23,10 @@ import javax.inject.Inject;
 import butterknife.InjectView;
 
 import static org.selfconference.android.drawer.DrawerItem.SCHEDULE;
+import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
 
 public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDrawerItemClickListener {
     public static final String TAG = DrawerFragment.class.getName();
-    private static final String SELF_CONF_TWITTER_LOGO = "https://pbs.twimg.com/profile_images/514233058740801536/05yCQ6xV.png";
 
     @InjectView(R.id.drawer_header_background) ImageView drawerHeaderBackground;
     @InjectView(R.id.drawer_recycler_view) RecyclerView drawerRecyclerView;
@@ -53,7 +53,9 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
     @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        picasso.load(SELF_CONF_TWITTER_LOGO).into(drawerHeaderBackground);
+        picasso.load(R.drawable.core_toolbar)
+                .fit()
+                .into(drawerHeaderBackground);
 
         drawerAdapter.setOnDrawerItemClickListener(this);
 
@@ -73,6 +75,9 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
     @Override public void onDrawerItemClick(DrawerItem drawerItem) {
         if (drawerCloser != null) {
             drawerCloser.closeDrawer();
+        }
+        if (drawerItem != SETTINGS) {
+            drawerAdapter.setSelectedPosition(drawerItem.ordinal());
         }
         switch (drawerItem) {
             case SCHEDULE:

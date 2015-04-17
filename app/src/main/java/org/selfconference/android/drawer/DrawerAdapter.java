@@ -1,29 +1,44 @@
 package org.selfconference.android.drawer;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.selfconference.android.App;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
 
 import butterknife.InjectView;
 
 import static android.view.View.OnClickListener;
+import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
 
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerViewHolder> {
     public interface OnDrawerItemClickListener {
         void onDrawerItemClick(DrawerItem drawerItem);
     }
 
+    private static final int SELECTED_COLOR = App.getInstance().getResources().getColor(R.color.purple);
+    private static final int UNSELECTED_COLOR = App.getInstance().getResources().getColor(R.color.text_tint);
+
+    private static int selectableItemBackgroundResId = -1;
+
     private OnDrawerItemClickListener onDrawerItemClickListener;
+    private int selectedPosition = -1;
 
     public void setOnDrawerItemClickListener(OnDrawerItemClickListener onDrawerItemClickListener) {
         this.onDrawerItemClickListener = onDrawerItemClickListener;
+    }
+
+    public void setSelectedPosition(int selectedPosition) {
+        this.selectedPosition = selectedPosition;
+        notifyDataSetChanged();
     }
 
     @Override public DrawerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,7 +46,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         return new DrawerViewHolder(view);
     }
 
-    @Override public void onBindViewHolder(final DrawerViewHolder holder, int position) {
+    @Override public void onBindViewHolder(final DrawerViewHolder holder, final int position) {
         final DrawerItem drawerItem = DrawerItem.values()[position];
 
         holder.itemView.setOnClickListener(new OnClickListener() {
@@ -43,6 +58,26 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
         });
         holder.icon.setImageResource(drawerItem.getIcon());
         holder.title.setText(drawerItem.getTitle());
+
+        if (position != SETTINGS.ordinal()) {
+            final boolean isSelected = selectedPosition == position;
+            holder.title.setTextColor(isSelected ?
+                    SELECTED_COLOR :
+                    UNSELECTED_COLOR);
+
+            holder.itemView.setBackgroundResource(isSelected ?
+                    R.drawable.item_background :
+                    getSelectableItemBackgroundResId(holder.itemView.getContext()));
+        }
+    }
+
+    private static int getSelectableItemBackgroundResId(Context context) {
+        if (selectableItemBackgroundResId == -1) {
+            final TypedValue typedValue = new TypedValue();
+            context.getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.selectableItemBackground, typedValue, true);
+            selectableItemBackgroundResId = typedValue.resourceId;
+        }
+        return selectableItemBackgroundResId;
     }
 
     @Override public int getItemCount() {
