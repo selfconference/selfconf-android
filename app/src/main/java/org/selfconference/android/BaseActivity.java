@@ -3,7 +3,7 @@ package org.selfconference.android;
 import android.app.ActivityManager.TaskDescription;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import rx.Subscription;
@@ -13,7 +13,7 @@ import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
     private Toolbar toolbar;
