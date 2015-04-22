@@ -2,6 +2,7 @@ package org.selfconference.android.drawer;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.selfconference.android.App;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
 
@@ -18,14 +18,16 @@ import butterknife.InjectView;
 
 import static android.view.View.OnClickListener;
 import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
+import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerViewHolder> {
     public interface OnDrawerItemClickListener {
         void onDrawerItemClick(DrawerItem drawerItem);
     }
 
-    private static final int SELECTED_COLOR = App.getInstance().getResources().getColor(R.color.purple);
-    private static final int UNSELECTED_COLOR = App.getInstance().getResources().getColor(R.color.text_tint);
+    private static final int SELECTED_COLOR = getColor(R.color.purple);
+    private static final int UNSELECTED_TEXT_COLOR = getColor(R.color.text_tint);
+    private static final int UNSELECTED_IMAGE_COLOR = getColor(R.color.image_tint);
 
     private static int selectableItemBackgroundResId = -1;
 
@@ -63,11 +65,15 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
             final boolean isSelected = selectedPosition == position;
             holder.title.setTextColor(isSelected ?
                     SELECTED_COLOR :
-                    UNSELECTED_COLOR);
+                    UNSELECTED_TEXT_COLOR);
 
             holder.itemView.setBackgroundResource(isSelected ?
                     R.drawable.item_background :
                     getSelectableItemBackgroundResId(holder.itemView.getContext()));
+
+            DrawableCompat.setTint(DrawableCompat.wrap(holder.icon.getDrawable()), isSelected ?
+                    SELECTED_COLOR :
+                    UNSELECTED_IMAGE_COLOR);
         }
     }
 
