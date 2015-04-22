@@ -4,9 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Day;
+
+import static org.selfconference.android.utils.ResourceProvider.getString;
 
 public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -24,6 +25,6 @@ public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override public CharSequence getPageTitle(int position) {
-        return App.getInstance().getString(position == 0 ? R.string.friday : R.string.saturday);
+        return getString(position == 0 ? R.string.friday : R.string.saturday);
     }
 }

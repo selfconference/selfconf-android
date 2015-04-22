@@ -61,7 +61,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override public void onClick(@NonNull View v) {
                 if (onSessionClickListener != null) {
-                    final SharedElements sharedElements = new SharedElements.Builder(v.getContext()).build();
+                    final SharedElements sharedElements = new SharedElements.Builder().build();
                     onSessionClickListener.onSessionClick(sharedElements, session);
                 }
             }

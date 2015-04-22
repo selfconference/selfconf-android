@@ -2,8 +2,9 @@ package org.selfconference.android.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.selfconference.android.App;
 import org.selfconference.android.R;
+
+import static org.selfconference.android.utils.ResourceProvider.getString;
 
 public final class DateStringer {
 
@@ -21,9 +22,9 @@ public final class DateStringer {
         final StringBuilder stringBuilder = new StringBuilder();
 
         if (dateTime.isAfter(startOfToday) && dateTime.isBefore(startOfTomorrow)) {
-            stringBuilder.append(App.getInstance().getString(R.string.today));
+            stringBuilder.append(getString(R.string.today));
         } else if (dateTime.isAfter(startOfTomorrow) && dateTime.isBefore(startOfTwoDaysAway)) {
-            stringBuilder.append(App.getInstance().getString(R.string.tomorrow));
+            stringBuilder.append(getString(R.string.tomorrow));
         } else {
             stringBuilder.append(dateTime.toString("M/d/Y"));
         }

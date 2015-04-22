@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import org.selfconference.android.utils.ResourceProvider;
+
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -24,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             setTaskDescription(new TaskDescription(
                     getString(R.string.app_name),
                     BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_task),
-                    getResources().getColor(R.color.primary)
+                    getColor(R.color.primary)
             ));
         }
     }

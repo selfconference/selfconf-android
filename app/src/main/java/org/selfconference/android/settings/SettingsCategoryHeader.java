@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.selfconference.android.R;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
+import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 public class SettingsCategoryHeader extends PreferenceCategory {
 
@@ -35,7 +36,7 @@ public class SettingsCategoryHeader extends PreferenceCategory {
         final TextView titleTextView = (TextView) view.findViewById(android.R.id.title);
         if (titleTextView != null) {
             titleTextView.setAllCaps(true);
-            titleTextView.setTextColor(getContext().getResources().getColor(R.color.accent));
+            titleTextView.setTextColor(getColor(R.color.accent));
         }
     }
 }

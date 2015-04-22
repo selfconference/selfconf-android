@@ -1,7 +1,8 @@
 package org.selfconference.android.utils;
 
-import org.selfconference.android.App;
 import org.selfconference.android.R;
+
+import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 public final class BrandColors {
     private static final int[][] COLORS = new int[][]{
@@ -12,11 +13,11 @@ public final class BrandColors {
     };
 
     public static int getPrimaryColorForPosition(int position) {
-        return App.getInstance().getResources().getColor(COLORS[position % COLORS.length][0]);
+        return getColor(COLORS[position % COLORS.length][0]);
     }
 
     public static int getSecondaryColorForPosition(int position) {
-        return App.getInstance().getResources().getColor(COLORS[position % COLORS.length][1]);
+        return getColor(COLORS[position % COLORS.length][1]);
     }
 
     private BrandColors() {

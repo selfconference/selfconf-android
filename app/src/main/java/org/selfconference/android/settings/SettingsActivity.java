@@ -5,6 +5,9 @@ import android.view.MenuItem;
 
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
+import org.selfconference.android.utils.ResourceProvider;
+
+import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -12,7 +15,7 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setSupportActionBar(getToolbar());
-        setStatusBarColor(getResources().getColor(R.color.primary_dark));
+        setStatusBarColor(getColor(R.color.primary_dark));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

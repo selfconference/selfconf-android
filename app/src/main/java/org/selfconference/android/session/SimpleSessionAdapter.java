@@ -1,5 +1,6 @@
 package org.selfconference.android.session;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,8 @@ public final class SimpleSessionAdapter extends ArrayAdapter<Session> {
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {
-        final View view = LayoutInflater.from(getContext()).inflate(R.layout.two_line_list_item, parent, false);
+        @SuppressLint("ViewHolder") final View view =
+                LayoutInflater.from(getContext()).inflate(R.layout.two_line_list_item, parent, false);
         final TextView title = findById(view, android.R.id.text1);
         final TextView subtitle = findById(view, android.R.id.text2);
 

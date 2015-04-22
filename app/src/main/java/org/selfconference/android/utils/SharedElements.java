@@ -1,6 +1,5 @@
 package org.selfconference.android.utils;
 
-import android.content.Context;
 import android.support.annotation.StringRes;
 import android.support.v4.util.Pair;
 import android.view.View;
@@ -8,6 +7,8 @@ import android.view.View;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+
+import static org.selfconference.android.utils.ResourceProvider.getString;
 
 public class SharedElements {
     private final List<Pair<View, String>> sharedElements;
@@ -22,14 +23,9 @@ public class SharedElements {
 
     public static final class Builder {
         private final List<Pair<View, String>> sharedElements = Lists.newArrayList();
-        private final Context context;
-
-        public Builder(Context context) {
-            this.context = context;
-        }
 
         public Builder add(View view, @StringRes int stringResId) {
-            sharedElements.add(Pair.create(view, context.getString(stringResId)));
+            sharedElements.add(Pair.create(view, getString(stringResId)));
             return this;
         }
 

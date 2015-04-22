@@ -98,7 +98,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     }
 
     private void setUpSessionDetailList() {
-        final List<SessionDetail> sessionDetails = SessionDetails.builder(this)
+        final List<SessionDetail> sessionDetails = SessionDetails.builder()
                 .add(R.drawable.ic_schedule, toDateString(session.getBeginning()))
                 .add(R.drawable.ic_place_grey600_24dp, toRoomString(session.getRoom()))
                 .add(R.drawable.ic_description_grey600_24dp, fromHtml(session.getDescription()))

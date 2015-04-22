@@ -13,6 +13,8 @@ import org.selfconference.android.drawer.DrawerFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static org.selfconference.android.utils.ResourceProvider.getColor;
+
 
 public class MainActivity extends BaseActivity implements DrawerCloser {
 
@@ -27,7 +29,7 @@ public class MainActivity extends BaseActivity implements DrawerCloser {
 
         setSupportActionBar(getToolbar());
 
-        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark));
+        drawerLayout.setStatusBarBackgroundColor(getColor(R.color.primary_dark));
 
         drawerToggle = new ActionBarDrawerToggle(
                 this,

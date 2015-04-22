@@ -27,7 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static rx.android.app.AppObservable.bindFragment;
 
 public class SessionListFragment extends BaseListFragment implements SessionAdapter.OnSessionClickListener {
-    private static final String KEY_DAY = "day";
+    private static final String EXTRA_DAY = "org.selfconference.android.session.EXTRA_DAY";
 
     @InjectView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
@@ -37,7 +37,7 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
 
     public static SessionListFragment newInstance(Day day) {
         final Bundle bundle = new Bundle();
-        bundle.putSerializable(KEY_DAY, day);
+        bundle.putSerializable(EXTRA_DAY, day);
         final SessionListFragment fragment = new SessionListFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -54,7 +54,7 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
         scheduleItemRecyclerView.setAdapter(sessionAdapter);
         scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final Day day = checkNotNull((Day) getArguments().getSerializable(KEY_DAY));
+        final Day day = checkNotNull((Day) getArguments().getSerializable(EXTRA_DAY));
         addSubscription(
                 bindFragment(this, api.getSessionsByDay(day)).subscribe(subscriber)
         );
