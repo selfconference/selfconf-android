@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.selfconference.android.R;
-import org.selfconference.android.api.Session;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public final class SimpleSessionAdapter extends ArrayAdapter<Session> {
         final Session session = getItem(position);
 
         title.setText(session.getTitle());
-        subtitle.setText(session.getRoom());
+        subtitle.setText(session.getRoom().getName());
 
         return view;
     }

@@ -1,9 +1,11 @@
-package org.selfconference.android.api;
+package org.selfconference.android.speakers;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.common.base.Objects;
+
+import org.selfconference.android.session.Session;
 
 import java.util.List;
 
@@ -16,15 +18,19 @@ public class Speaker implements Parcelable {
     private final String name;
     private final String twitter;
     private final String bio;
-    private final String headshot;
-    private final List<Integer> sessions;
+    private final String photo;
+    private final List<Session> sessions;
+
+    public static Builder builder() {
+        return new Builder();
+    }
 
     private Speaker(Builder builder) {
         id = builder.id;
         name = builder.name;
         twitter = builder.twitter;
         bio = builder.bio;
-        headshot = builder.headshot;
+        photo = builder.photo;
         sessions = builder.sessions;
     }
 
@@ -44,11 +50,11 @@ public class Speaker implements Parcelable {
         return bio;
     }
 
-    public String getHeadshot() {
-        return headshot;
+    public String getPhoto() {
+        return photo;
     }
 
-    public List<Integer> getSessionIds() {
+    public List<Session> getSessions() {
         return sessions;
     }
 
@@ -71,12 +77,12 @@ public class Speaker implements Parcelable {
                 equal(this.name, that.name) &&
                 equal(this.twitter, that.twitter) &&
                 equal(this.bio, that.bio) &&
-                equal(this.headshot, that.headshot) &&
+                equal(this.photo, that.photo) &&
                 equal(this.sessions, that.sessions);
     }
 
     @Override public int hashCode() {
-        return Objects.hashCode(id, name, twitter, bio, headshot, sessions);
+        return Objects.hashCode(id, name, twitter, bio, photo, sessions);
     }
 
     public static final class Builder {
@@ -84,10 +90,10 @@ public class Speaker implements Parcelable {
         private String name = "";
         private String twitter = "";
         private String bio = "";
-        private String headshot = "";
-        private List<Integer> sessions = newArrayList();
+        private String photo = "";
+        private List<Session> sessions = newArrayList();
 
-        public Builder() {
+        private Builder() {
         }
 
         public Builder id(int id) {
@@ -110,12 +116,12 @@ public class Speaker implements Parcelable {
             return this;
         }
 
-        public Builder headshot(String headshot) {
-            this.headshot = headshot;
+        public Builder photo(String photo) {
+            this.photo = photo;
             return this;
         }
 
-        public Builder sessions(List<Integer> sessions) {
+        public Builder sessions(List<Session> sessions) {
             this.sessions = sessions;
             return this;
         }
@@ -134,7 +140,7 @@ public class Speaker implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.twitter);
         dest.writeString(this.bio);
-        dest.writeString(this.headshot);
+        dest.writeString(this.photo);
         dest.writeList(this.sessions);
     }
 
@@ -143,12 +149,12 @@ public class Speaker implements Parcelable {
         this.name = in.readString();
         this.twitter = in.readString();
         this.bio = in.readString();
-        this.headshot = in.readString();
+        this.photo = in.readString();
         this.sessions = newArrayList();
         in.readList(this.sessions, Integer.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Speaker> CREATOR = new Parcelable.Creator<Speaker>() {
+    public static final Creator<Speaker> CREATOR = new Creator<Speaker>() {
         @Override public Speaker createFromParcel(Parcel source) {
             return new Speaker(source);
         }

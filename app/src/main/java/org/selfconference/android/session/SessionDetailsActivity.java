@@ -11,9 +11,8 @@ import android.widget.TextView;
 import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
-import org.selfconference.android.api.SelfConferenceApi;
-import org.selfconference.android.api.Session;
-import org.selfconference.android.api.Speaker;
+import org.selfconference.android.api.Api;
+import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.feedback.FeedbackActivity;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerAdapter.OnSpeakerClickListener;
@@ -29,11 +28,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscriber;
 
 import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.text.Html.fromHtml;
 import static butterknife.ButterKnife.Setter;
 import static butterknife.ButterKnife.apply;
@@ -41,8 +38,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 import static org.selfconference.android.utils.BrandColors.getSecondaryColorForPosition;
 import static org.selfconference.android.utils.DateStringer.toDateString;
-import static org.selfconference.android.utils.RoomStringer.toRoomString;
-import static rx.android.app.AppObservable.bindActivity;
 
 public class SessionDetailsActivity extends BaseActivity implements OnSpeakerClickListener, OnCheckedChangeListener {
     private static final String EXTRA_SESSION = "org.selfconference.android.session.SESSION";
@@ -59,7 +54,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
     @InjectViews({R.id.speakers_header, R.id.more_header}) List<TextView> headers;
 
-    @Inject SelfConferenceApi api;
+    @Inject Api api;
     @Inject SavedSessionPreferences preferences;
 
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(true);
@@ -90,17 +85,12 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
 
         setUpSessionDetailList();
         setUpSpeakerList();
-
-        final Observable<List<Speaker>> speakersObservable = api.getSpeakersForSession(session);
-        addSubscription(
-                bindActivity(this, speakersObservable).subscribe(speakersSubscriber)
-        );
     }
 
     private void setUpSessionDetailList() {
         final List<SessionDetail> sessionDetails = SessionDetails.builder()
                 .add(R.drawable.ic_schedule, toDateString(session.getBeginning()))
-                .add(R.drawable.ic_place_grey600_24dp, toRoomString(session.getRoom()))
+                .add(R.drawable.ic_place_grey600_24dp, session.getRoom().getName())
                 .add(R.drawable.ic_description_grey600_24dp, fromHtml(session.getDescription()))
                 .toList();
 
@@ -110,6 +100,9 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     }
 
     private void setUpSpeakerList() {
+        final List<Speaker> speakers = session.getSpeakers();
+        speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
+        speakerAdapter.setData(speakers);
         speakerAdapter.setOnSpeakerClickListener(this);
         speakerRecyclerView.setAdapter(speakerAdapter);
         speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
@@ -128,7 +121,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         final Intent twitterIntent = new Intent()
                 .setAction(ACTION_VIEW)
                 .setData(Uri.parse(twitterUrl))
-                .addFlags(FLAG_ACTIVITY_NEW_TASK);
+                .addFlags(FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(twitterIntent);
     }
 
@@ -157,19 +150,4 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         primaryColor = getPrimaryColorForPosition(sessionId);
         primaryDarkColor = getSecondaryColorForPosition(sessionId);
     }
-
-    private final Subscriber<List<Speaker>> speakersSubscriber = new Subscriber<List<Speaker>>() {
-        @Override public void onCompleted() {
-
-        }
-
-        @Override public void onError(Throwable e) {
-
-        }
-
-        @Override public void onNext(List<Speaker> speakers) {
-            speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
-            speakerAdapter.setData(speakers);
-        }
-    };
 }

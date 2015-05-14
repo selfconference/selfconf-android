@@ -2,26 +2,22 @@ package org.selfconference.android.speakers;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
 
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
-import org.selfconference.android.api.SelfConferenceApi;
-import org.selfconference.android.api.Session;
-import org.selfconference.android.api.Speaker;
+import org.selfconference.android.api.Api;
+import org.selfconference.android.session.Session;
 import org.selfconference.android.session.SessionDetailsActivity;
-import org.selfconference.android.session.SimpleSessionAdapter;
+import org.selfconference.android.utils.rx.Transformers;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,18 +25,18 @@ import javax.inject.Inject;
 import butterknife.InjectView;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 import timber.log.Timber;
 
-import static android.content.DialogInterface.OnClickListener;
-import static com.google.common.base.Preconditions.checkState;
 import static rx.android.app.AppObservable.bindFragment;
 
 public class SpeakerListFragment extends BaseListFragment implements SpeakerAdapter.OnSpeakerClickListener {
     public static final String TAG = SpeakerListFragment.class.getName();
 
     @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
+    @InjectView(R.id.progress_bar) ProgressBar progressBar;
 
-    @Inject SelfConferenceApi api;
+    @Inject Api api;
 
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(false);
 
@@ -55,7 +51,8 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         speakerRecyclerView.setAdapter(speakerAdapter);
         speakerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final Observable<List<Speaker>> speakersObservable = api.getSpeakers();
+        final Observable<List<Speaker>> speakersObservable = bindFragment(this, api.getSpeakers())
+                .compose(Transformers.<List<Speaker>>showAndHideProgressBar(progressBar));
         addSubscription(
                 bindFragment(this, speakersObservable).subscribe(speakersSubscriber)
         );
@@ -70,10 +67,18 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
     }
 
     @Override public void onSpeakerClick(Speaker speaker) {
-        Timber.d("Speaker clicked: %s", speaker.toString());
-        final Observable<List<Session>> sessionObservable = api.getSessionsForSpeaker(speaker);
+        Timber.d("Speaker clicked: %s", speaker);
+        final Observable<Session> sessionObservable = Observable.from(speaker.getSessions())
+                .first()
+                .flatMap(new Func1<Session, Observable<Session>>() {
+                    @Override public Observable<Session> call(Session session) {
+                        return api.getSessionById(session.getId());
+                    }
+                });
         addSubscription(
-                bindFragment(this, sessionObservable).subscribe(new SessionObservableSubscriber(getActivity()))
+                bindFragment(this, sessionObservable)
+                        .compose(Transformers.<Session>showAndHideProgressBar(progressBar))
+                        .subscribe(new SpeakerClickSubscriber(getActivity()))
         );
     }
 
@@ -83,7 +88,7 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         }
 
         @Override public void onError(Throwable e) {
-
+            Timber.e(e, "Failed to load speakers");
         }
 
         @Override public void onNext(List<Speaker> speakers) {
@@ -91,13 +96,12 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         }
     };
 
-    private static final class SessionObservableSubscriber extends Subscriber<List<Session>> {
+    private static final class SpeakerClickSubscriber extends Subscriber<Session> {
 
-        private final WeakReference<Activity> activityReference;
+        private final WeakReference<Activity> activityWeakReference;
 
-        private SessionObservableSubscriber(Activity activity) {
-            super();
-            this.activityReference = new WeakReference<>(activity);
+        public SpeakerClickSubscriber(Activity activity) {
+            this.activityWeakReference = new WeakReference<>(activity);
         }
 
         @Override public void onCompleted() {
@@ -105,33 +109,11 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         }
 
         @Override public void onError(Throwable e) {
-            Timber.e(e, "Session not found");
+
         }
 
-        @Override public void onNext(List<Session> sessions) {
-            Timber.d("Speaker's sessions: %s", Arrays.toString(sessions.toArray()));
-            checkState(!sessions.isEmpty(), "Speaker must have at least one session");
-
-            if (sessions.size() == 1) {
-                startSessionDetailsActivity(sessions.get(0));
-            } else {
-                final Activity activity = activityReference.get();
-                final SimpleSessionAdapter adapter = new SimpleSessionAdapter(activity, sessions);
-                new AlertDialog.Builder(activity)
-                        .setTitle("Choose session")
-                        .setAdapter(adapter, new OnClickListener() {
-                            @Override public void onClick(@NonNull DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                final Session session = adapter.getItem(which);
-                                startSessionDetailsActivity(session);
-                            }
-                        })
-                        .show();
-            }
-        }
-
-        private void startSessionDetailsActivity(Session session) {
-            final Activity activity = this.activityReference.get();
+        @Override public void onNext(Session session) {
+            final Activity activity = activityWeakReference.get();
             final Intent intent = SessionDetailsActivity.newIntent(activity, session);
             activity.startActivity(intent);
         }

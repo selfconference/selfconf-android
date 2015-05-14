@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
-import org.selfconference.android.api.Session;
+import org.selfconference.android.session.Session;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;

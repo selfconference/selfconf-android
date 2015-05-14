@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import org.selfconference.android.R;
-import org.selfconference.android.api.Day;
 
 import static org.selfconference.android.utils.ResourceProvider.getString;
 

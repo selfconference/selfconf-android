@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.squareup.picasso.Picasso;
 
 import org.selfconference.android.App;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
-import org.selfconference.android.api.Speaker;
+import org.selfconference.android.utils.PlaceholderDrawable;
 
 import java.util.Locale;
 
@@ -27,7 +26,6 @@ import rx.functions.Func1;
 import static android.text.Html.fromHtml;
 import static android.view.View.GONE;
 import static android.view.ViewTreeObserver.OnPreDrawListener;
-import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
 
 public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.SpeakerViewHolder> {
     public interface OnSpeakerClickListener {
@@ -79,14 +77,12 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
             @Override public boolean onPreDraw() {
                 holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                picasso.load(speaker.getHeadshot())
-                        .resize(holder.speakerHeadshot.getWidth(), holder.speakerHeadshot.getHeight())
+                picasso.load(speaker.getPhoto())
+                        .resize(holder.speakerPhoto.getWidth(), holder.speakerPhoto.getHeight())
                         .centerCrop()
-                        .transform(new CircularTransformation(speaker.getHeadshot()))
-                        .placeholder(TextDrawable.builder()
-                                        .buildRound(speaker.getName().substring(0, 1), getPrimaryColorForPosition(speaker.getId()))
-                        )
-                        .into(holder.speakerHeadshot);
+                        .transform(new CircularTransformation(speaker.getPhoto()))
+                        .placeholder(PlaceholderDrawable.forSpeaker(speaker))
+                        .into(holder.speakerPhoto);
                 return true;
             }
         });
@@ -99,7 +95,7 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
 
     public static class SpeakerViewHolder extends ButterKnifeViewHolder {
 
-        @InjectView(R.id.row_icon) public ImageView speakerHeadshot;
+        @InjectView(R.id.row_icon) public ImageView speakerPhoto;
         @InjectView(R.id.row_title) public TextView speakerName;
         @InjectView(R.id.row_subtitle) public TextView speakerDescription;
 

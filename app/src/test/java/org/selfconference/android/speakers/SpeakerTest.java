@@ -1,4 +1,4 @@
-package org.selfconference.android.api;
+package org.selfconference.android.speakers;
 
 import android.os.Parcel;
 
@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
+import org.selfconference.android.session.Session;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,12 +17,14 @@ public class SpeakerTest {
 
     @Test
     public void speakerParcelsWithoutErrors() throws Exception {
-        final Speaker speaker = new Speaker.Builder()
+        final Speaker speaker = Speaker.builder()
                 .bio("bio")
-                .headshot("http://test.com/img.png")
+                .photo("http://test.com/img.png")
                 .id(10)
                 .name("Dave")
-                .sessions(asList(1, 2, 4))
+                .sessions(asList(
+                        Session.builder().id(10).build(),
+                        Session.builder().id(25).build()))
                 .twitter("dave")
                 .build();
 

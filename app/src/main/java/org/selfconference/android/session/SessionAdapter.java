@@ -10,8 +10,7 @@ import org.selfconference.android.App;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
-import org.selfconference.android.api.SelfConferenceApi;
-import org.selfconference.android.api.Session;
+import org.selfconference.android.api.Api;
 import org.selfconference.android.utils.SharedElements;
 
 import java.util.Locale;
@@ -26,14 +25,13 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.OnClickListener;
 import static android.view.View.VISIBLE;
 import static org.selfconference.android.utils.DateStringer.toShortDateString;
-import static org.selfconference.android.utils.RoomStringer.toRoomString;
 
 public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.SessionViewHolder> {
     public interface OnSessionClickListener {
         void onSessionClick(SharedElements sharedElements, Session event);
     }
 
-    @Inject SelfConferenceApi api;
+    @Inject Api api;
     @Inject SavedSessionPreferences preferences;
 
     private OnSessionClickListener onSessionClickListener;
@@ -70,7 +68,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
         holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
 
         holder.sessionTitle.setText(session.getTitle());
-        holder.sessionSubtitle.setText(toRoomString(session.getRoom()));
+        holder.sessionSubtitle.setText(session.getRoom().getName());
         try {
             final Session previousSession = getFilteredData().get(position - 1);
             if (session.getBeginning().isEqual(previousSession.getBeginning())) {

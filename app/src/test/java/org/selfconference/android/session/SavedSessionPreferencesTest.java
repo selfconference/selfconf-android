@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
-import org.selfconference.android.api.Session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +22,7 @@ public class SavedSessionPreferencesTest {
 
     @Test
     public void testSavedSessionPreferences() throws Exception {
-        final Session session = new Session.Builder()
+        final Session session = Session.builder()
                 .id(13)
                 .build();
 

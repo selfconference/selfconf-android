@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
-import org.selfconference.android.api.Session;
-
 import java.util.Set;
 
 import timber.log.Timber;

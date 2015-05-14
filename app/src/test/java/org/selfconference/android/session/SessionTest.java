@@ -1,4 +1,4 @@
-package org.selfconference.android.api;
+package org.selfconference.android.session;
 
 import android.os.Parcel;
 
@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
+import org.selfconference.android.api.Room;
+import org.selfconference.android.speakers.Speaker;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,12 +19,16 @@ public class SessionTest {
 
     @Test
     public void sessionParcelsWithoutError() throws Exception {
-        final Session session = new Session.Builder()
+        final Session session = Session.builder()
                 .id(4)
                 .beginning(now())
                 .description("description")
-                .room("101")
-                .speakers(asList(3, 4, 9))
+                .room(Room.builder()
+                        .name("101")
+                        .build())
+                .speakers(asList(
+                        Speaker.builder().id(3).build(),
+                        Speaker.builder().id(5).build()))
                 .title("title")
                 .build();
 

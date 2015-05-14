@@ -6,20 +6,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
 
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
-import org.selfconference.android.api.Day;
-import org.selfconference.android.api.SelfConferenceApi;
-import org.selfconference.android.api.Session;
+import org.selfconference.android.api.Api;
 import org.selfconference.android.utils.SharedElements;
+import org.selfconference.android.utils.rx.Transformers;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.InjectView;
+import rx.Observable;
 import rx.Subscriber;
 import timber.log.Timber;
 
@@ -29,9 +30,10 @@ import static rx.android.app.AppObservable.bindFragment;
 public class SessionListFragment extends BaseListFragment implements SessionAdapter.OnSessionClickListener {
     private static final String EXTRA_DAY = "org.selfconference.android.session.EXTRA_DAY";
 
+    @InjectView(R.id.progress_bar) ProgressBar progressBar;
     @InjectView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
-    @Inject SelfConferenceApi api;
+    @Inject Api api;
 
     private final SessionAdapter sessionAdapter = new SessionAdapter();
 
@@ -55,9 +57,9 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
         scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         final Day day = checkNotNull((Day) getArguments().getSerializable(EXTRA_DAY));
-        addSubscription(
-                bindFragment(this, api.getSessionsByDay(day)).subscribe(subscriber)
-        );
+        final Observable<List<Session>> getSessionsByDay = bindFragment(this, api.getSessionsByDay(day))
+                .compose(Transformers.<List<Session>>showAndHideProgressBar(progressBar));
+        addSubscription(getSessionsByDay.subscribe(subscriber));
     }
 
     @Override public void onResume() {

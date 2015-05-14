@@ -1,11 +1,10 @@
-package org.selfconference.android.api;
+package org.selfconference.android.session;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.common.base.Objects;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -13,6 +12,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.joda.time.DateTime;
+import org.selfconference.android.api.Room;
+import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.utils.DateTimeHelper;
 
 import java.lang.reflect.Type;
@@ -22,15 +23,20 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.joda.time.DateTime.now;
+import static org.selfconference.android.api.Room.emptyRoom;
 
 public class Session implements Parcelable {
     private final int id;
     private final String title;
-    private final String room;
+    private final Room room;
     private final String description;
     private final boolean isKeynote;
     private final DateTime beginning;
-    private final List<Integer> speakers;
+    private final List<Speaker> speakers;
+
+    public static Builder builder() {
+        return new Builder();
+    }
 
     private Session(Builder builder) {
         id = builder.id;
@@ -50,7 +56,7 @@ public class Session implements Parcelable {
         return title;
     }
 
-    public String getRoom() {
+    public Room getRoom() {
         return room;
     }
 
@@ -66,7 +72,7 @@ public class Session implements Parcelable {
         return beginning;
     }
 
-    public List<Integer> getSpeakerIds() {
+    public List<Speaker> getSpeakers() {
         return speakers;
     }
 
@@ -102,29 +108,43 @@ public class Session implements Parcelable {
         @Override public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             final JsonObject jsonObject = json.getAsJsonObject();
             final JsonElement id = jsonObject.get("id");
-            final JsonElement title = jsonObject.get("title");
-            final JsonElement room = jsonObject.get("room");
-            final JsonElement beginning = jsonObject.get("beginning");
-            final JsonElement description = jsonObject.get("description");
+            final JsonElement title = jsonObject.get("name");
+            final JsonElement roomJsonObject = jsonObject.get("room");
+            final JsonElement beginning = jsonObject.get("slot");
+            final JsonElement description = jsonObject.get("abstract");
             final JsonElement speakers = jsonObject.get("speakers");
             final JsonElement keynote = jsonObject.get("keynote");
-            final List<Integer> listOfSpeakers = new Gson().fromJson(speakers.getAsJsonArray(), new TypeToken<List<Integer>>(){}.getType());
+            final Room room = context.deserialize(roomJsonObject, Room.class);
             return new Builder()
                     .id(id.getAsInt())
                     .title(title.getAsString())
-                    .room(room.getAsString())
+                    .room(room)
                     .beginning(determineDateTime(beginning))
                     .description(description.getAsString())
                     .isKeynote(determineKeynote(keynote))
-                    .speakers(listOfSpeakers)
+                    .speakers(determineSpeakers(context, speakers))
                     .build();
+        }
+
+        private static List<Speaker> determineSpeakers(JsonDeserializationContext context, JsonElement jsonElement) {
+            final List<Speaker> speakers = newArrayList();
+            if (jsonElement == null) {
+                return speakers;
+            } else {
+                final JsonArray jsonArray = jsonElement.getAsJsonArray();
+                for (JsonElement element : jsonArray) {
+                    final Speaker speaker = context.deserialize(element, Speaker.class);
+                    speakers.add(speaker);
+                }
+                return speakers;
+            }
         }
 
         private static DateTime determineDateTime(JsonElement jsonElement) {
             try {
                 return DateTimeHelper.parseDateTime(jsonElement.getAsString());
             } catch (Exception e) {
-                return now().withZone(DateTimeHelper.EST);
+                return now();
             }
         }
 
@@ -138,13 +158,13 @@ public class Session implements Parcelable {
     public static final class Builder {
         private int id;
         private String title = "";
-        private String room = "";
+        private Room room = emptyRoom();
         private String description = "";
         private boolean isKeynote = false;
         private DateTime beginning = now();
-        private List<Integer> speakers = newArrayList();
+        private List<Speaker> speakers = newArrayList();
 
-        public Builder() {
+        private Builder() {
         }
 
         public Builder id(int id) {
@@ -157,7 +177,7 @@ public class Session implements Parcelable {
             return this;
         }
 
-        public Builder room(String room) {
+        public Builder room(Room room) {
             this.room = room;
             return this;
         }
@@ -177,7 +197,7 @@ public class Session implements Parcelable {
             return this;
         }
 
-        public Builder speakers(List<Integer> speakers) {
+        public Builder speakers(List<Speaker> speakers) {
             this.speakers = speakers;
             return this;
         }
@@ -194,7 +214,7 @@ public class Session implements Parcelable {
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
         dest.writeString(this.title);
-        dest.writeString(this.room);
+        dest.writeParcelable(this.room, 0);
         dest.writeString(this.description);
         dest.writeInt(this.isKeynote ? 1 : 0);
         dest.writeSerializable(this.beginning);
@@ -204,12 +224,12 @@ public class Session implements Parcelable {
     private Session(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
-        this.room = in.readString();
+        this.room = in.readParcelable(Room.class.getClassLoader());
         this.description = in.readString();
         this.isKeynote = in.readInt() == 1;
         this.beginning = (DateTime) in.readSerializable();
         this.speakers = newArrayList();
-        in.readList(this.speakers, Integer.class.getClassLoader());
+        in.readList(this.speakers, Speaker.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Session> CREATOR = new Parcelable.Creator<Session>() {
