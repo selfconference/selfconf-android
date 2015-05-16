@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.common.base.Objects;
 
+import org.selfconference.android.brand.BrandColor;
+import org.selfconference.android.brand.Brandable;
 import org.selfconference.android.session.Session;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Speaker implements Parcelable {
+public class Speaker implements Parcelable, Brandable {
     private final int id;
     private final String name;
     private final String twitter;
@@ -32,6 +34,16 @@ public class Speaker implements Parcelable {
         bio = builder.bio;
         photo = builder.photo;
         sessions = builder.sessions;
+    }
+
+    private Speaker(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.twitter = in.readString();
+        this.bio = in.readString();
+        this.photo = in.readString();
+        this.sessions = newArrayList();
+        in.readList(this.sessions, Integer.class.getClassLoader());
     }
 
     public int getId() {
@@ -58,6 +70,10 @@ public class Speaker implements Parcelable {
         return sessions;
     }
 
+    @Override public BrandColor getBrandColor() {
+        return BrandColor.withIdentifier(getId());
+    }
+
     @Override public String toString() {
         return toStringHelper(this)
                 .add("twitter", twitter)
@@ -68,8 +84,12 @@ public class Speaker implements Parcelable {
     }
 
     @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Speaker that = (Speaker) o;
 
@@ -142,16 +162,6 @@ public class Speaker implements Parcelable {
         dest.writeString(this.bio);
         dest.writeString(this.photo);
         dest.writeList(this.sessions);
-    }
-
-    private Speaker(Parcel in) {
-        this.id = in.readInt();
-        this.name = in.readString();
-        this.twitter = in.readString();
-        this.bio = in.readString();
-        this.photo = in.readString();
-        this.sessions = newArrayList();
-        in.readList(this.sessions, Integer.class.getClassLoader());
     }
 
     public static final Creator<Speaker> CREATOR = new Creator<Speaker>() {

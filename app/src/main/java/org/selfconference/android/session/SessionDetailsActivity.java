@@ -33,8 +33,6 @@ import static android.text.Html.fromHtml;
 import static butterknife.ButterKnife.Setter;
 import static butterknife.ButterKnife.apply;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
-import static org.selfconference.android.utils.BrandColors.getSecondaryColorForPosition;
 import static org.selfconference.android.utils.DateStringer.toDateString;
 
 public class SessionDetailsActivity extends BaseActivity implements OnSpeakerClickListener, OnCheckedChangeListener {
@@ -58,8 +56,6 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(true);
 
     private Session session;
-    private int primaryColor;
-    private int primaryDarkColor;
 
     public static Intent newIntent(final Context context, final Session session) {
         return new Intent(context, SessionDetailsActivity.class).putExtra(EXTRA_SESSION, session);
@@ -73,13 +69,12 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
 
         session = checkNotNull((Session) getIntent().getParcelableExtra(EXTRA_SESSION));
 
-        setDetailColors();
         setUpActionBar();
 
         sessionTitle.setText(session.getTitle());
         favoriteButton.setChecked(preferences.isFavorite(session));
         favoriteButton.setOnCheckedChangeListener(this);
-        apply(headers, TEXT_COLOR_SETTER, primaryColor);
+        apply(headers, TEXT_COLOR_SETTER, session.getBrandColor().getPrimary());
 
         setUpSessionDetailList();
         setUpSpeakerList();
@@ -134,14 +129,8 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
 
     private void setUpActionBar() {
         setSupportActionBar(getToolbar());
-        getToolbar().setBackgroundColor(primaryColor);
+        getToolbar().setBackgroundColor(session.getBrandColor().getPrimary());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setStatusBarColor(primaryDarkColor);
-    }
-
-    private void setDetailColors() {
-        final int sessionId = session.getId();
-        primaryColor = getPrimaryColorForPosition(sessionId);
-        primaryDarkColor = getSecondaryColorForPosition(sessionId);
+        setStatusBarColor(session.getBrandColor().getSecondary());
     }
 }

@@ -12,6 +12,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.joda.time.DateTime;
+import org.selfconference.android.brand.BrandColor;
+import org.selfconference.android.brand.Brandable;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.utils.DateTimeHelper;
 
@@ -24,7 +26,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.joda.time.DateTime.now;
 import static org.selfconference.android.session.Room.emptyRoom;
 
-public class Session implements Parcelable {
+public class Session implements Parcelable, Brandable {
     private final int id;
     private final String title;
     private final Room room;
@@ -45,6 +47,17 @@ public class Session implements Parcelable {
         isKeynote = builder.isKeynote;
         beginning = builder.beginning;
         speakers = builder.speakers;
+    }
+
+    private Session(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.room = in.readParcelable(Room.class.getClassLoader());
+        this.description = in.readString();
+        this.isKeynote = in.readInt() == 1;
+        this.beginning = (DateTime) in.readSerializable();
+        this.speakers = newArrayList();
+        in.readList(this.speakers, Speaker.class.getClassLoader());
     }
 
     public int getId() {
@@ -73,6 +86,10 @@ public class Session implements Parcelable {
 
     public List<Speaker> getSpeakers() {
         return speakers;
+    }
+
+    @Override public BrandColor getBrandColor() {
+        return BrandColor.withIdentifier(getId());
     }
 
     @Override public String toString() {
@@ -218,17 +235,6 @@ public class Session implements Parcelable {
         dest.writeInt(this.isKeynote ? 1 : 0);
         dest.writeSerializable(this.beginning);
         dest.writeList(this.speakers);
-    }
-
-    private Session(Parcel in) {
-        this.id = in.readInt();
-        this.title = in.readString();
-        this.room = in.readParcelable(Room.class.getClassLoader());
-        this.description = in.readString();
-        this.isKeynote = in.readInt() == 1;
-        this.beginning = (DateTime) in.readSerializable();
-        this.speakers = newArrayList();
-        in.readList(this.speakers, Speaker.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Session> CREATOR = new Parcelable.Creator<Session>() {

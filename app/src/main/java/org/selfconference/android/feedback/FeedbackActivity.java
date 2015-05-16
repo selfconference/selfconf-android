@@ -10,15 +10,11 @@ import org.selfconference.android.R;
 import org.selfconference.android.session.Session;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.selfconference.android.utils.BrandColors.getPrimaryColorForPosition;
-import static org.selfconference.android.utils.BrandColors.getSecondaryColorForPosition;
 
 public class FeedbackActivity extends BaseActivity {
     private static final String EXTRA_SESSION = "session";
 
     private Session session;
-    private int primaryColor;
-    private int primaryDarkColor;
 
     public static Intent newIntent(Context context, Session session) {
         return new Intent(context, FeedbackActivity.class)
@@ -31,7 +27,6 @@ public class FeedbackActivity extends BaseActivity {
 
         session = checkNotNull((Session) getIntent().getParcelableExtra(EXTRA_SESSION));
 
-        setDetailColors();
         setupActionBar();
     }
 
@@ -45,14 +40,8 @@ public class FeedbackActivity extends BaseActivity {
 
     private void setupActionBar() {
         setSupportActionBar(getToolbar());
-        getToolbar().setBackgroundColor(primaryColor);
+        getToolbar().setBackgroundColor(session.getBrandColor().getPrimary());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setStatusBarColor(primaryDarkColor);
-    }
-
-    private void setDetailColors() {
-        final int sessionId = session.getId();
-        primaryColor = getPrimaryColorForPosition(sessionId);
-        primaryDarkColor = getSecondaryColorForPosition(sessionId);
+        setStatusBarColor(session.getBrandColor().getSecondary());
     }
 }
