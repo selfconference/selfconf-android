@@ -1,0 +1,43 @@
+{
+  "id":3,
+  "name":"Detroit Labs",
+  "link":"http://detroitlabs.com",
+  "photo":"http://s3.amazonaws.com/selfconf/sponsors/dl.png",
+  "event_id":1,
+  "created_at":"2015-03-02T14:50:48.570Z",
+  "updated_at":"2015-03-02T14:50:48.570Z",
+  "sponsor_levels":[
+    {
+      "id":7,
+      "name":"Diversity",
+      "event_id":1,
+      "created_at":"2015-03-02T14:50:48.425Z",
+      "updated_at":"2015-03-02T14:50:48.425Z",
+      "order":7
+    },
+    {
+      "id":7,
+      "name":"Diversity",
+      "event_id":1,
+      "created_at":"2015-03-02T14:50:48.425Z",
+      "updated_at":"2015-03-02T14:50:48.425Z",
+      "order":7
+    },
+    {
+      "id":9,
+      "name":"Lanyard",
+      "event_id":1,
+      "created_at":"2015-03-02T14:50:48.442Z",
+      "updated_at":"2015-03-02T14:50:48.442Z",
+      "order":9
+    },
+    {
+      "id":12,
+      "name":"Snack",
+      "event_id":1,
+      "created_at":"2015-03-02T14:50:48.476Z",
+      "updated_at":"2015-03-02T14:50:48.476Z",
+      "order":12
+    }
+  ]
+}

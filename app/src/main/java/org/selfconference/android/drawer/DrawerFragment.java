@@ -17,6 +17,7 @@ import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.settings.SettingsActivity;
 import org.selfconference.android.speakers.SpeakerListFragment;
+import org.selfconference.android.sponsors.SponsorListFragment;
 
 import javax.inject.Inject;
 
@@ -85,6 +86,9 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
                 break;
             case SPEAKERS:
                 changeFragment(new SpeakerListFragment(), SpeakerListFragment.TAG);
+                break;
+            case SPONSORS:
+                changeFragment(new SponsorListFragment(), SponsorListFragment.TAG);
                 break;
             case CODE_OF_CONDUCT:
                 changeFragment(new CodeOfConductFragment(), CodeOfConductFragment.TAG);

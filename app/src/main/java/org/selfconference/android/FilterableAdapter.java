@@ -17,6 +17,10 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder> e
     private final List<T> data = newArrayList();
     private final List<T> filteredData = newArrayList();
 
+    public FilterableAdapter() {
+        App.getInstance().inject(this);
+    }
+
     public void filter(String query) {
         filteredData.clear();
         Observable.from(data)

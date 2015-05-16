@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.joda.time.DateTime;
-import org.selfconference.android.api.Room;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.utils.DateTimeHelper;
 
@@ -23,7 +22,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.joda.time.DateTime.now;
-import static org.selfconference.android.api.Room.emptyRoom;
+import static org.selfconference.android.session.Room.emptyRoom;
 
 public class Session implements Parcelable {
     private final int id;

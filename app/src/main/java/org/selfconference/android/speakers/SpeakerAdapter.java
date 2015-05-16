@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.selfconference.android.App;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
@@ -38,7 +37,7 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
     private final boolean showDescription;
 
     public SpeakerAdapter(boolean showDescription) {
-        App.getInstance().inject(this);
+        super();
         this.showDescription = showDescription;
     }
 

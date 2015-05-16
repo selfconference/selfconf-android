@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.selfconference.android.App;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
@@ -36,10 +35,6 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     private OnSessionClickListener onSessionClickListener;
 
-    public SessionAdapter() {
-        App.getInstance().inject(this);
-    }
-
     public void setOnSessionClickListener(OnSessionClickListener onSessionClickListener) {
         this.onSessionClickListener = onSessionClickListener;
     }
@@ -65,7 +60,9 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
             }
         });
 
-        holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
+        holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ?
+                VISIBLE :
+                GONE);
 
         holder.sessionTitle.setText(session.getTitle());
         holder.sessionSubtitle.setText(session.getRoom().getName());

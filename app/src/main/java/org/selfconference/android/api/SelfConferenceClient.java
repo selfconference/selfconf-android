@@ -2,6 +2,7 @@ package org.selfconference.android.api;
 
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.sponsors.Sponsor;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface SelfConferenceClient {
     @GET("/sessions/{id}") Observable<Session> getSessionById(@Path("id") final int id);
 
     @GET("/speakers") Observable<List<Speaker>> getSpeakers();
+
+    @GET("/sponsors") Observable<List<Sponsor>> getSponsors();
 }

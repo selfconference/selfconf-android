@@ -1,5 +1,7 @@
 package org.selfconference.android.speakers;
 
+import android.support.annotation.Nullable;
+
 import com.google.common.base.Optional;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -68,6 +70,7 @@ public class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
         return builder.build();
     }
 
+    @Nullable
     private static String parsePhoto(JsonReader in) throws IOException {
         if (in.peek() == JsonToken.NULL) {
             in.nextNull();

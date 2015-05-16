@@ -5,6 +5,7 @@ import org.selfconference.android.App;
 import org.selfconference.android.session.Day;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.sponsors.Sponsor;
 
 import java.util.List;
 
@@ -30,6 +31,10 @@ public final class SelfConferenceApi implements Api {
 
     @Override public Observable<List<Speaker>> getSpeakers() {
         return client.getSpeakers();
+    }
+
+    @Override public Observable<List<Sponsor>> getSponsors() {
+        return client.getSponsors();
     }
 
     @Override public Observable<List<Session>> getSessionsByDay(final Day day) {

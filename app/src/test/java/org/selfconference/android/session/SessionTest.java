@@ -1,17 +1,16 @@
 package org.selfconference.android.session;
 
-import android.os.Parcel;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
-import org.selfconference.android.api.Room;
+import org.selfconference.android.Parceler.Container;
 import org.selfconference.android.speakers.Speaker;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.time.DateTime.now;
+import static org.selfconference.android.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class)
 @Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
@@ -32,12 +31,8 @@ public class SessionTest {
                 .title("title")
                 .build();
 
-        final Parcel parcel = Parcel.obtain();
-        session.writeToParcel(parcel, 0);
-        parcel.setDataPosition(0);
+        final Container<Session> sessionContainer = testParceling(session, Session.CREATOR);
 
-        final Session parceledSession = Session.CREATOR.createFromParcel(parcel);
-
-        assertThat(session).isEqualTo(parceledSession);
+        assertThat(sessionContainer.original).isEqualTo(sessionContainer.parceled);
     }
 }

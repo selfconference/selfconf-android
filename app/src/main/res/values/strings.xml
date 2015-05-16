@@ -36,9 +36,14 @@
     <string name="search">Search</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="sponsors">Sponsors</string>
 
     <plurals name="speakers">
         <item quantity="one">Speaker</item>
         <item quantity="other">Speakers</item>
+    </plurals>
+    <plurals name="sponsor_levels">
+        <item quantity="one">Sponsor level: %1$s</item>
+        <item quantity="other">Sponsor levels: %1$s</item>
     </plurals>
 </resources>

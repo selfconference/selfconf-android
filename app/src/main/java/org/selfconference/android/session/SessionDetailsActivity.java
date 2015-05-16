@@ -2,7 +2,6 @@ package org.selfconference.android.session;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -12,10 +11,11 @@ import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
-import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.feedback.FeedbackActivity;
+import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerAdapter.OnSpeakerClickListener;
+import org.selfconference.android.utils.Intents;
 import org.selfconference.android.utils.NestedLinearLayoutManager;
 import org.selfconference.android.views.FloatingActionButton;
 import org.selfconference.android.views.FloatingActionButton.OnCheckedChangeListener;
@@ -29,8 +29,6 @@ import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
 
-import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.text.Html.fromHtml;
 import static butterknife.ButterKnife.Setter;
 import static butterknife.ButterKnife.apply;
@@ -118,11 +116,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
 
     @Override public void onSpeakerClick(Speaker speaker) {
         final String twitterUrl = getString(R.string.twitter_url, speaker.getTwitter());
-        final Intent twitterIntent = new Intent()
-                .setAction(ACTION_VIEW)
-                .setData(Uri.parse(twitterUrl))
-                .addFlags(FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(twitterIntent);
+        Intents.launchUrl(this, twitterUrl);
     }
 
     @Override public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {

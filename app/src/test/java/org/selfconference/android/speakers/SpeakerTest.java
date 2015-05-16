@@ -1,15 +1,15 @@
 package org.selfconference.android.speakers;
 
-import android.os.Parcel;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
+import org.selfconference.android.Parceler.Container;
 import org.selfconference.android.session.Session;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.selfconference.android.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class)
 @Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
@@ -28,12 +28,8 @@ public class SpeakerTest {
                 .twitter("dave")
                 .build();
 
-        final Parcel parcel = Parcel.obtain();
-        speaker.writeToParcel(parcel, 0);
-        parcel.setDataPosition(0);
+        final Container<Speaker> speakerContainer = testParceling(speaker, Speaker.CREATOR);
 
-        final Speaker parceledSpeaker = Speaker.CREATOR.createFromParcel(parcel);
-
-        assertThat(speaker).isEqualTo(parceledSpeaker);
+        assertThat(speakerContainer.original).isEqualTo(speakerContainer.parceled);
     }
 }
