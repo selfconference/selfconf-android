@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ProgressBar;
 
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
@@ -30,11 +30,11 @@ import timber.log.Timber;
 
 import static rx.android.app.AppObservable.bindFragment;
 
-public class SpeakerListFragment extends BaseListFragment implements SpeakerAdapter.OnSpeakerClickListener {
+public class SpeakerListFragment extends BaseListFragment implements SpeakerAdapter.OnSpeakerClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = SpeakerListFragment.class.getName();
 
+    @InjectView(R.id.speaker_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
-    @InjectView(R.id.progress_bar) ProgressBar progressBar;
 
     @Inject Api api;
 
@@ -51,11 +51,9 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         speakerRecyclerView.setAdapter(speakerAdapter);
         speakerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final Observable<List<Speaker>> speakersObservable = bindFragment(this, api.getSpeakers())
-                .compose(Transformers.<List<Speaker>>showAndHideProgressBar(progressBar));
-        addSubscription(
-                bindFragment(this, speakersObservable).subscribe(speakersSubscriber)
-        );
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        fetchData();
     }
 
     @Override protected int layoutResId() {
@@ -77,12 +75,32 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
                 });
         addSubscription(
                 bindFragment(this, sessionObservable)
-                        .compose(Transformers.<Session>showAndHideProgressBar(progressBar))
+                        .compose(Transformers.<Session>setRefreshing(swipeRefreshLayout))
                         .subscribe(new SpeakerClickSubscriber(getActivity()))
         );
     }
 
-    private final Subscriber<List<Speaker>> speakersSubscriber = new Subscriber<List<Speaker>>() {
+    @Override public void onRefresh() {
+        fetchData();
+    }
+
+    private void fetchData() {
+        final Observable<List<Speaker>> speakersObservable = bindFragment(this, api.getSpeakers())
+                .compose(Transformers.<List<Speaker>>setRefreshing(swipeRefreshLayout));
+        addSubscription(
+                bindFragment(this, speakersObservable).subscribe(new SpeakerListSubscriber(speakerAdapter))
+        );
+    }
+
+    private static final class SpeakerListSubscriber extends Subscriber<List<Speaker>> {
+
+        private final WeakReference<SpeakerAdapter> speakerAdapter;
+
+        public SpeakerListSubscriber(SpeakerAdapter speakerAdapter) {
+            super();
+            this.speakerAdapter = new WeakReference<>(speakerAdapter);
+        }
+
         @Override public void onCompleted() {
 
         }
@@ -92,15 +110,19 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         }
 
         @Override public void onNext(List<Speaker> speakers) {
-            speakerAdapter.setData(speakers);
+            final SpeakerAdapter speakerAdapter = this.speakerAdapter.get();
+            if (speakerAdapter != null) {
+                speakerAdapter.setData(speakers);
+            }
         }
-    };
+    }
 
     private static final class SpeakerClickSubscriber extends Subscriber<Session> {
 
         private final WeakReference<Activity> activityWeakReference;
 
         public SpeakerClickSubscriber(Activity activity) {
+            super();
             this.activityWeakReference = new WeakReference<>(activity);
         }
 
@@ -109,13 +131,15 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         }
 
         @Override public void onError(Throwable e) {
-
+            Timber.e(e, "Failed to load sessions for speaker");
         }
 
         @Override public void onNext(Session session) {
             final Activity activity = activityWeakReference.get();
-            final Intent intent = SessionDetailsActivity.newIntent(activity, session);
-            activity.startActivity(intent);
+            if (activity != null) {
+                final Intent intent = SessionDetailsActivity.newIntent(activity, session);
+                activity.startActivity(intent);
+            }
         }
     }
 

@@ -4,17 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ProgressBar;
+import android.view.View;
 
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
+import org.selfconference.android.session.SessionAdapter.OnSessionClickListener;
 import org.selfconference.android.utils.SharedElements;
 import org.selfconference.android.utils.rx.Transformers;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,15 +31,17 @@ import timber.log.Timber;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static rx.android.app.AppObservable.bindFragment;
 
-public class SessionListFragment extends BaseListFragment implements SessionAdapter.OnSessionClickListener {
-    private static final String EXTRA_DAY = "org.selfconference.android.session.EXTRA_DAY";
+public class SessionListFragment extends BaseListFragment implements OnSessionClickListener, OnRefreshListener {
+    private static final String EXTRA_DAY =
+            "org.selfconference.android.session.SessionListFragment.EXTRA_DAY";
 
-    @InjectView(R.id.progress_bar) ProgressBar progressBar;
+    @InjectView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
     @Inject Api api;
 
     private final SessionAdapter sessionAdapter = new SessionAdapter();
+    private Day day;
 
     public static SessionListFragment newInstance(Day day) {
         final Bundle bundle = new Bundle();
@@ -48,18 +54,23 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
     public SessionListFragment() {
     }
 
-    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         sessionAdapter.setOnSessionClickListener(this);
 
         scheduleItemRecyclerView.setAdapter(sessionAdapter);
         scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
 
-        final Day day = checkNotNull((Day) getArguments().getSerializable(EXTRA_DAY));
-        final Observable<List<Session>> getSessionsByDay = bindFragment(this, api.getSessionsByDay(day))
-                .compose(Transformers.<List<Session>>showAndHideProgressBar(progressBar));
-        addSubscription(getSessionsByDay.subscribe(subscriber));
+    @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        day = checkNotNull((Day) getArguments().getSerializable(EXTRA_DAY));
+
+        fetchData();
     }
 
     @Override public void onResume() {
@@ -80,7 +91,25 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
         ActivityCompat.startActivity(getActivity(), intent, null);
     }
 
-    private final Subscriber<List<Session>> subscriber = new Subscriber<List<Session>>() {
+    @Override public void onRefresh() {
+        fetchData();
+    }
+
+    private void fetchData() {
+        final Observable<List<Session>> getSessionsByDay = bindFragment(this, api.getSessionsByDay(day))
+                .compose(Transformers.<List<Session>>setRefreshing(swipeRefreshLayout));
+        addSubscription(getSessionsByDay.subscribe(new SessionListSubscriber(sessionAdapter)));
+    }
+
+    private static final class SessionListSubscriber extends Subscriber<List<Session>> {
+
+        private final WeakReference<SessionAdapter> sessionAdapter;
+
+        public SessionListSubscriber(SessionAdapter sessionAdapter) {
+            super();
+            this.sessionAdapter = new WeakReference<>(sessionAdapter);
+        }
+
         @Override public void onCompleted() {
 
         }
@@ -90,7 +119,10 @@ public class SessionListFragment extends BaseListFragment implements SessionAdap
         }
 
         @Override public void onNext(List<Session> sessions) {
-            sessionAdapter.setData(sessions);
+            final SessionAdapter sessionAdapter = this.sessionAdapter.get();
+            if (sessionAdapter != null) {
+                sessionAdapter.setData(sessions);
+            }
         }
-    };
+    }
 }

@@ -31,7 +31,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     }
 
     @Inject Api api;
-    @Inject SavedSessionPreferences preferences;
+    @Inject SessionPreferences preferences;
 
     private OnSessionClickListener onSessionClickListener;
 

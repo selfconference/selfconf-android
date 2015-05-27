@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Picasso.Listener;
 
@@ -13,12 +14,15 @@ import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.drawer.DrawerFragment;
-import org.selfconference.android.session.SavedSessionPreferences;
+import org.selfconference.android.feedback.SubmitFeedbackIntentService;
+import org.selfconference.android.feedback.Vote;
+import org.selfconference.android.feedback.VoteTypeAdapter;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.session.SessionAdapter;
 import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.session.SessionDetailsActivity;
 import org.selfconference.android.session.SessionListFragment;
+import org.selfconference.android.session.SessionPreferences;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerListFragment;
@@ -27,6 +31,7 @@ import org.selfconference.android.sponsors.Sponsor;
 import org.selfconference.android.sponsors.SponsorAdapter;
 import org.selfconference.android.sponsors.SponsorListFragment;
 import org.selfconference.android.sponsors.SponsorTypeAdapter;
+import org.selfconference.android.utils.PostFromAnyThreadBus;
 
 import javax.inject.Singleton;
 
@@ -56,7 +61,8 @@ import static retrofit.RestAdapter.LogLevel.BASIC;
                 CodeOfConductFragment.class,
                 SpeakerAdapter.class,
                 BaseActivity.class,
-                SessionDetailsActivity.class
+                SessionDetailsActivity.class,
+                SubmitFeedbackIntentService.class
         }
 )
 public class SelfConferenceAppModule {
@@ -76,12 +82,13 @@ public class SelfConferenceAppModule {
                 .registerTypeAdapter(Session.class, new Session.Deserializer())
                 .registerTypeAdapter(Speaker.class, new SpeakerTypeAdapter())
                 .registerTypeAdapter(Sponsor.class, new SponsorTypeAdapter())
+                .registerTypeAdapter(Vote.class, new VoteTypeAdapter())
                 .create();
     }
 
     @Provides @Singleton SelfConferenceClient selfConferenceClient(Gson gson) {
         return new RestAdapter.Builder()
-                .setEndpoint("http://selfconference.org/api/events/1")
+                .setEndpoint("http://selfconf-dev.herokuapp.com/api")
                 .setClient(new OkClient())
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(BASIC)
@@ -99,7 +106,11 @@ public class SelfConferenceAppModule {
                 .build();
     }
 
-    @Provides SavedSessionPreferences savedSessionPreferences() {
-        return new SavedSessionPreferences(application);
+    @Provides SessionPreferences savedSessionPreferences() {
+        return new SessionPreferences(application);
+    }
+
+    @Provides @Singleton Bus bus() {
+        return new PostFromAnyThreadBus();
     }
 }

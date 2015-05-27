@@ -6,6 +6,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.PluralsRes;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 
 import org.selfconference.android.App;
 
@@ -25,7 +26,7 @@ public final class ResourceProvider {
     }
 
     public static Drawable getDrawable(@DrawableRes int drawableResId) {
-        return RESOURCES.getDrawable(drawableResId);
+        return ContextCompat.getDrawable(App.getInstance(), drawableResId);
     }
 
     private ResourceProvider() {}

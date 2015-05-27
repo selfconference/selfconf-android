@@ -2,7 +2,6 @@ package org.selfconference.android.drawer;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -16,6 +15,11 @@ import org.selfconference.android.R;
 
 import butterknife.InjectView;
 
+import static android.graphics.Typeface.BOLD;
+import static android.graphics.Typeface.DEFAULT;
+import static android.graphics.Typeface.NORMAL;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static android.view.View.OnClickListener;
 import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
 import static org.selfconference.android.utils.ResourceProvider.getColor;
@@ -63,17 +67,21 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
 
         if (position != SETTINGS.ordinal()) {
             final boolean isSelected = selectedPosition == position;
-            holder.title.setTextColor(isSelected ?
-                    SELECTED_COLOR :
-                    UNSELECTED_TEXT_COLOR);
 
             holder.itemView.setBackgroundResource(isSelected ?
                     R.drawable.item_background :
                     getSelectableItemBackgroundResId(holder.itemView.getContext()));
 
-            DrawableCompat.setTint(DrawableCompat.wrap(holder.icon.getDrawable()), isSelected ?
-                    SELECTED_COLOR :
-                    UNSELECTED_IMAGE_COLOR);
+            if (SDK_INT >= LOLLIPOP) {
+                holder.icon.getDrawable().setTint(isSelected ?
+                        SELECTED_COLOR :
+                        UNSELECTED_IMAGE_COLOR);
+                holder.title.setTextColor(isSelected ?
+                        SELECTED_COLOR :
+                        UNSELECTED_TEXT_COLOR);
+            } else {
+                holder.title.setTypeface(DEFAULT, isSelected ? BOLD : NORMAL);
+            }
         }
     }
 

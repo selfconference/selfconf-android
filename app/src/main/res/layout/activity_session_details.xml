@@ -103,7 +103,7 @@
                 android:paddingLeft="72dp"
                 android:textSize="18sp"
                 android:background="?attr/selectableItemBackground"
-                android:text="Submit Feedback"/>
+                android:text="@string/submit_feedback"/>
         </LinearLayout>
 
     </ScrollView>

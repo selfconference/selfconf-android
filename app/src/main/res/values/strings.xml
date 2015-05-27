@@ -38,6 +38,10 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="sponsors">Sponsors</string>
 
+    <string name="feedback_dialog_title">What did you think?</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="feedback_submitted">Thanks for submitting feedback!</string>
+
     <plurals name="speakers">
         <item quantity="one">Speaker</item>
         <item quantity="other">Speakers</item>

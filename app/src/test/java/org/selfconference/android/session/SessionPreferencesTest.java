@@ -11,13 +11,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(CustomTestRunner.class)
 @Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
-public class SavedSessionPreferencesTest {
+public class SessionPreferencesTest {
 
-    private SavedSessionPreferences preferences;
+    private SessionPreferences preferences;
 
     @Before
     public void setUp() throws Exception {
-        preferences = new SavedSessionPreferences(Robolectric.application);
+        preferences = new SessionPreferences(Robolectric.application);
     }
 
     @Test
@@ -28,11 +28,11 @@ public class SavedSessionPreferencesTest {
 
         assertThat(preferences.isFavorite(session)).isFalse();
 
-        preferences.saveFavorite(session);
+        preferences.favorite(session);
 
         assertThat(preferences.isFavorite(session)).isTrue();
 
-        preferences.removeFavorite(session);
+        preferences.unfavorite(session);
 
         assertThat(preferences.isFavorite(session)).isFalse();
     }

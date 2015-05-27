@@ -2,6 +2,8 @@ package org.selfconference.android.api;
 
 import org.joda.time.Interval;
 import org.selfconference.android.App;
+import org.selfconference.android.feedback.Feedback;
+import org.selfconference.android.feedback.FeedbackRequest;
 import org.selfconference.android.session.Day;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import retrofit.client.Response;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
@@ -35,6 +38,10 @@ public final class SelfConferenceApi implements Api {
 
     @Override public Observable<List<Sponsor>> getSponsors() {
         return client.getSponsors();
+    }
+
+    @Override public Observable<Response> submitFeedback(final Session session, final Feedback feedback) {
+        return client.submitFeedback(session.getId(), new FeedbackRequest(feedback));
     }
 
     @Override public Observable<List<Session>> getSessionsByDay(final Day day) {

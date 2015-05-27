@@ -1,4 +1,5 @@
-<FrameLayout
+<org.selfconference.android.views.SelfConferenceSwipeRefreshLayout
+    android:id="@+id/speaker_swipe_refresh_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,13 +11,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="@dimen/indeterminate_progress_bar_size"
-        android:layout_height="@dimen/indeterminate_progress_bar_size"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"
-        tools:visibility="visible"/>
-
-</FrameLayout>
+</org.selfconference.android.views.SelfConferenceSwipeRefreshLayout>

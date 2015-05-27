@@ -7,11 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
 import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
-import org.selfconference.android.api.Api;
-import org.selfconference.android.feedback.FeedbackActivity;
+import org.selfconference.android.feedback.FeedbackFragment;
+import org.selfconference.android.feedback.SuccessfulFeedbackSubmission;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerAdapter.OnSpeakerClickListener;
@@ -48,10 +51,11 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     @InjectView(R.id.favorite_button) FloatingActionButton favoriteButton;
     @InjectView(R.id.session_detail_recycler_view) RecyclerView sessionDetailRecyclerView;
     @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
+    @InjectView(R.id.submit_feedback) TextView submitFeedback;
     @InjectViews({R.id.speakers_header, R.id.more_header}) List<TextView> headers;
 
-    @Inject Api api;
-    @Inject SavedSessionPreferences preferences;
+    @Inject SessionPreferences preferences;
+    @Inject Bus bus;
 
     private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(true);
 
@@ -76,8 +80,65 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         favoriteButton.setOnCheckedChangeListener(this);
         apply(headers, TEXT_COLOR_SETTER, session.getBrandColor().getPrimary());
 
+        setupFeedbackButton();
+
         setUpSessionDetailList();
         setUpSpeakerList();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        bus.register(this);
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
+        bus.unregister(this);
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onSpeakerClick(Speaker speaker) {
+        final String twitterUrl = getString(R.string.twitter_url, speaker.getTwitter());
+        Intents.launchUrl(this, twitterUrl);
+    }
+
+    @Override public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
+        if (isChecked) {
+            preferences.favorite(session);
+        } else {
+            preferences.unfavorite(session);
+        }
+    }
+
+    @OnClick(R.id.submit_feedback) void onSubmitFeedbackClick() {
+        final FeedbackFragment fragment = FeedbackFragment.newInstance(session);
+        fragment.show(getSupportFragmentManager(), FeedbackFragment.TAG);
+    }
+
+    @Subscribe public void onSuccessfulFeedbackSubmitted(SuccessfulFeedbackSubmission event) {
+        setupFeedbackButton();
+    }
+
+    private void setUpActionBar() {
+        setSupportActionBar(getToolbar());
+        getToolbar().setBackgroundColor(session.getBrandColor().getPrimary());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setStatusBarColor(session.getBrandColor().getSecondary());
+    }
+
+    private void setupFeedbackButton() {
+        final boolean hasSubmittedFeedback = preferences.hasSubmittedFeedback(session);
+        submitFeedback.setText(hasSubmittedFeedback ?
+                R.string.feedback_submitted :
+                R.string.submit_feedback);
+        submitFeedback.setEnabled(!hasSubmittedFeedback);
     }
 
     private void setUpSessionDetailList() {
@@ -99,38 +160,5 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         speakerAdapter.setOnSpeakerClickListener(this);
         speakerRecyclerView.setAdapter(speakerAdapter);
         speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
-    }
-
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override public void onSpeakerClick(Speaker speaker) {
-        final String twitterUrl = getString(R.string.twitter_url, speaker.getTwitter());
-        Intents.launchUrl(this, twitterUrl);
-    }
-
-    @Override public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
-        if (isChecked) {
-            preferences.saveFavorite(session);
-        } else {
-            preferences.removeFavorite(session);
-        }
-    }
-
-    @OnClick(R.id.submit_feedback) void onSubmitFeedbackClick() {
-        final Intent intent = FeedbackActivity.newIntent(this, session);
-        startActivity(intent);
-    }
-
-    private void setUpActionBar() {
-        setSupportActionBar(getToolbar());
-        getToolbar().setBackgroundColor(session.getBrandColor().getPrimary());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setStatusBarColor(session.getBrandColor().getSecondary());
     }
 }
