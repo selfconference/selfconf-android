@@ -29,5 +29,7 @@ public final class ResourceProvider {
         return ContextCompat.getDrawable(App.getInstance(), drawableResId);
     }
 
-    private ResourceProvider() {}
+    private ResourceProvider() {
+        throw new AssertionError("No instances.");
+    }
 }

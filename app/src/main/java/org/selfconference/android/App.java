@@ -17,6 +17,8 @@ import timber.log.Timber.DebugTree;
 
 import static com.parse.ParsePush.subscribeInBackground;
 import static org.selfconference.android.BuildConfig.DEBUG;
+import static org.selfconference.android.BuildConfig.PARSE_APPLICATION_ID;
+import static org.selfconference.android.BuildConfig.PARSE_CLIENT_ID;
 
 public class App extends Application {
 
@@ -54,7 +56,7 @@ public class App extends Application {
     }
 
     protected void setUpPushNotifications() {
-        Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_id));
+        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_ID);
         subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {

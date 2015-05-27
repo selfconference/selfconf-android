@@ -1,7 +1,7 @@
 // Manifest version information!
 def versionMajor = 0
 def versionMinor = 13
-def versionPatch = 0
+def versionPatch = 1
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 buildscript {
@@ -46,14 +46,15 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
 
             def prop = loadProperties('release.properties')
 
             resValue "string", "app_name", "Self.conference"
-            resValue "string", "parse_application_id", prop.parseApplicationId ?: System.getenv('parseApplicationId')
-            resValue "string", "parse_client_id", prop.parseClientSecret ?: System.getenv('parseClientSecret')
+
+            buildConfigField "String", "PARSE_APPLICATION_ID", parseApplicationId(prop)
+            buildConfigField "String", "PARSE_CLIENT_ID", parseClientSecret(prop)
+            buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api\""
         }
         debug {
             applicationIdSuffix '.debug'
@@ -62,8 +63,10 @@ android {
             def prop = loadProperties('debug.properties')
 
             resValue "string", "app_name", "Self.conference Debug"
-            resValue "string", "parse_application_id", prop.parseApplicationId ?: System.getenv('parseApplicationId')
-            resValue "string", "parse_client_id", prop.parseClientSecret ?: System.getenv('parseClientSecret')
+
+            buildConfigField "String", "PARSE_APPLICATION_ID", parseApplicationId(prop)
+            buildConfigField "String", "PARSE_CLIENT_ID", parseClientSecret(prop)
+            buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconf-dev.herokuapp.com/api\""
         }
     }
 
@@ -121,4 +124,12 @@ def Properties loadProperties(String filename) {
         properties.load(new FileInputStream(rootProject.file(filename)))
     }
     return properties
+}
+
+def String parseApplicationId(Properties prop) {
+    return "\"${prop.parseApplicationId ?: System.getenv('parseApplicationId')}\""
+}
+
+def String parseClientSecret(Properties prop) {
+    return "\"${prop.parseClientSecret ?: System.getenv('parseClientSecret')}\""
 }

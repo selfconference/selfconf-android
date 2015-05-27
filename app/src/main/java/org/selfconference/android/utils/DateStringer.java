@@ -40,5 +40,6 @@ public final class DateStringer {
     }
 
     private DateStringer() {
+        throw new AssertionError("No instances.");
     }
 }

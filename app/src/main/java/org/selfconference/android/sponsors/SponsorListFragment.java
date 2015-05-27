@@ -2,9 +2,9 @@ package org.selfconference.android.sponsors;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ProgressBar;
 
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
@@ -31,7 +31,7 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
     public static final String TAG = SponsorListFragment.class.getName();
 
     @InjectView(R.id.sponsor_recycler_view) RecyclerView sponsorRecyclerView;
-    @InjectView(R.id.progress_bar) ProgressBar progressBar;
+    @InjectView(R.id.sponsor_list_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
     @Inject Api api;
 
@@ -56,7 +56,7 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
                         return sponsors;
                     }
                 })
-                .compose(Transformers.<List<Sponsor>>showAndHideProgressBar(progressBar));
+                .compose(Transformers.<List<Sponsor>>setRefreshing(swipeRefreshLayout));
 
         addSubscription(
                 sponsorsObservable.subscribe(sponsorsSubscriber)

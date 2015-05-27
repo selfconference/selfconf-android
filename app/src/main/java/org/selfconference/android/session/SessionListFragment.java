@@ -15,7 +15,6 @@ import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
 import org.selfconference.android.session.SessionAdapter.OnSessionClickListener;
-import org.selfconference.android.utils.SharedElements;
 import org.selfconference.android.utils.rx.Transformers;
 
 import java.lang.ref.WeakReference;
@@ -86,9 +85,9 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
         return sessionAdapter;
     }
 
-    @Override public void onSessionClick(SharedElements sharedElements, Session session) {
+    @Override public void onSessionClick(Session session) {
         final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
-        ActivityCompat.startActivity(getActivity(), intent, null);
+        getActivity().startActivity(intent);
     }
 
     @Override public void onRefresh() {

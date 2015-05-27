@@ -10,7 +10,6 @@ import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
-import org.selfconference.android.utils.SharedElements;
 
 import java.util.Locale;
 
@@ -27,7 +26,7 @@ import static org.selfconference.android.utils.DateStringer.toShortDateString;
 
 public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.SessionViewHolder> {
     public interface OnSessionClickListener {
-        void onSessionClick(SharedElements sharedElements, Session event);
+        void onSessionClick(Session event);
     }
 
     @Inject Api api;
@@ -54,8 +53,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
         holder.itemView.setOnClickListener(new OnClickListener() {
             @Override public void onClick(@NonNull View v) {
                 if (onSessionClickListener != null) {
-                    final SharedElements sharedElements = new SharedElements.Builder().build();
-                    onSessionClickListener.onSessionClick(sharedElements, session);
+                    onSessionClickListener.onSessionClick(session);
                 }
             }
         });

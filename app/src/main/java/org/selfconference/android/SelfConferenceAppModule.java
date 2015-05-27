@@ -42,7 +42,10 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 import timber.log.Timber;
 
+import static org.selfconference.android.BuildConfig.DEBUG;
+import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOINT;
 import static retrofit.RestAdapter.LogLevel.BASIC;
+import static retrofit.RestAdapter.LogLevel.NONE;
 
 @Module(
         library = true,
@@ -88,10 +91,10 @@ public class SelfConferenceAppModule {
 
     @Provides @Singleton SelfConferenceClient selfConferenceClient(Gson gson) {
         return new RestAdapter.Builder()
-                .setEndpoint("http://selfconf-dev.herokuapp.com/api")
+                .setEndpoint(SELF_CONFERENCE_API_ENDPOINT)
                 .setClient(new OkClient())
                 .setConverter(new GsonConverter(gson))
-                .setLogLevel(BASIC)
+                .setLogLevel(DEBUG ? BASIC : NONE)
                 .build()
                 .create(SelfConferenceClient.class);
     }
@@ -100,7 +103,7 @@ public class SelfConferenceAppModule {
         return new Picasso.Builder(application)
                 .listener(new Listener() {
                     @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                        Timber.e(exception, "Image load failed");
+                        Timber.e(exception, "Image load failed for URI: %s", uri);
                     }
                 })
                 .build();

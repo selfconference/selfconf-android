@@ -22,5 +22,7 @@ public final class DateTimeHelper {
         return new Interval(startTime, end);
     }
 
-    private DateTimeHelper() {}
+    private DateTimeHelper() {
+        throw new AssertionError("No instances.");
+    }
 }
