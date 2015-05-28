@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.otto.Bus;
@@ -47,6 +48,7 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
     };
 
     @InjectView(R.id.long_title) TextView sessionTitle;
+    @InjectView(R.id.scroll_view) ScrollView scrollView;
     @InjectView(R.id.speakers_header) TextView speakersHeader;
     @InjectView(R.id.favorite_button) FloatingActionButton favoriteButton;
     @InjectView(R.id.session_detail_recycler_view) RecyclerView sessionDetailRecyclerView;
@@ -143,14 +145,19 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
 
     private void setUpSessionDetailList() {
         final List<SessionDetail> sessionDetails = SessionDetails.builder()
-                .add(R.drawable.ic_schedule, toDateString(session.getBeginning()))
-                .add(R.drawable.ic_place_grey600_24dp, session.getRoom().getName())
-                .add(R.drawable.ic_description_grey600_24dp, fromHtml(session.getDescription()))
+                .add(R.drawable.ic_action_schedule, toDateString(session.getBeginning()))
+                .add(R.drawable.ic_maps_place, session.getRoom().getName())
+                .add(R.drawable.ic_action_description, fromHtml(session.getDescription()))
                 .toList();
 
         final SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
         sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);
         sessionDetailRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
+        scrollView.post(new Runnable() {
+            @Override public void run() {
+                scrollView.scrollTo(0, 0);
+            }
+        });
     }
 
     private void setUpSpeakerList() {

@@ -20,11 +20,11 @@
     android:enterFadeDuration="@android:integer/config_shortAnimTime">
 
     <item android:state_checked="true">
-        <bitmap android:src="@drawable/ic_star_grey600_24dp" android:tint="@color/fab_unchecked"/>
+        <bitmap android:src="@drawable/ic_star_grey" android:tint="@color/fab_unchecked"/>
     </item>
 
     <item>
-        <bitmap android:src="@drawable/ic_add_grey600_24dp" android:tint="@color/fab_checked"/>
+        <bitmap android:src="@drawable/ic_content_add_grey" android:tint="@color/fab_checked"/>
     </item>
 
 </selector>

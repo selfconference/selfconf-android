@@ -124,7 +124,7 @@ public class VoteButton extends LinearLayout implements OnClickListener {
     }
 
     private void deselect(ImageView view) {
-        applyColor(view, getColor(R.color.image_tint));
+        applyColor(view, getColor(R.color.image_tint_dark));
     }
 
     private static void applyColor(ImageView view, int color) {

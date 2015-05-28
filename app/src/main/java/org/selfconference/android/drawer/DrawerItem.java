@@ -6,11 +6,11 @@ import android.support.annotation.StringRes;
 import org.selfconference.android.R;
 
 public enum DrawerItem {
-    SESSIONS(R.drawable.ic_schedule, R.string.sessions),
-    SPEAKERS(R.drawable.ic_mood_grey600_24dp, R.string.speakers),
+    SESSIONS(R.drawable.ic_action_schedule, R.string.sessions),
+    SPEAKERS(R.drawable.ic_social_mood, R.string.speakers),
     SPONSORS(R.drawable.ic_action_wallet_giftcard, R.string.sponsors),
-    CODE_OF_CONDUCT(R.drawable.ic_description_grey600_24dp, R.string.code_of_conduct),
-    SETTINGS(R.drawable.ic_settings_grey600_24dp, R.string.settings);
+    CODE_OF_CONDUCT(R.drawable.ic_action_description, R.string.code_of_conduct),
+    SETTINGS(R.drawable.ic_action_settings, R.string.settings);
 
     private final int icon;
     private final int title;

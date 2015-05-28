@@ -16,8 +16,8 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_marginRight="16dp"
-        android:tint="@color/image_tint"
-        tools:src="@drawable/ic_schedule"/>
+        android:tint="@color/image_tint_dark"
+        tools:src="@drawable/ic_action_schedule"/>
 
     <TextView
         android:id="@+id/row_title"

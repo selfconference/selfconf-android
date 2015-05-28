@@ -31,7 +31,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerView
 
     private static final int SELECTED_COLOR = getColor(R.color.purple);
     private static final int UNSELECTED_TEXT_COLOR = getColor(R.color.text_tint);
-    private static final int UNSELECTED_IMAGE_COLOR = getColor(R.color.image_tint);
+    private static final int UNSELECTED_IMAGE_COLOR = getColor(R.color.image_tint_dark);
 
     private static int selectableItemBackgroundResId = -1;
 
