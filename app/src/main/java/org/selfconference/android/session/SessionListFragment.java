@@ -3,17 +3,22 @@ package org.selfconference.android.session;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
+import org.selfconference.android.api.ApiRequestSubscriber;
 import org.selfconference.android.session.SessionAdapter.OnSessionClickListener;
 import org.selfconference.android.utils.rx.Transformers;
 
@@ -24,7 +29,6 @@ import javax.inject.Inject;
 
 import butterknife.InjectView;
 import rx.Observable;
-import rx.Subscriber;
 import timber.log.Timber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -38,9 +42,11 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
     @InjectView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
     @Inject Api api;
+    @Inject SessionPreferences sessionPreferences;
 
     private final SessionAdapter sessionAdapter = new SessionAdapter();
     private Day day;
+    private MenuItem favoritesItem;
 
     public static SessionListFragment newInstance(Day day) {
         final Bundle bundle = new Bundle();
@@ -72,9 +78,25 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
         fetchData();
     }
 
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (sessionPreferences.hasFavorites()) {
+            inflater.inflate(R.menu.favorites, menu);
+            favoritesItem = menu.findItem(R.id.action_favorites);
+            favoritesItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                @Override public boolean onMenuItemClick(MenuItem item) {
+                    item.setChecked(!item.isChecked());
+                    sessionAdapter.filterFavorites(item.isChecked());
+                    return true;
+                }
+            });
+        }
+    }
+
     @Override public void onResume() {
         super.onResume();
         sessionAdapter.refresh();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
     }
 
     @Override protected int layoutResId() {
@@ -100,7 +122,7 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
         addSubscription(getSessionsByDay.subscribe(new SessionListSubscriber(sessionAdapter)));
     }
 
-    private static final class SessionListSubscriber extends Subscriber<List<Session>> {
+    private static final class SessionListSubscriber extends ApiRequestSubscriber<List<Session>> {
 
         private final WeakReference<SessionAdapter> sessionAdapter;
 
@@ -109,11 +131,8 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
             this.sessionAdapter = new WeakReference<>(sessionAdapter);
         }
 
-        @Override public void onCompleted() {
-
-        }
-
         @Override public void onError(Throwable e) {
+            super.onError(e);
             Timber.e(e, "Schedule failed to load");
         }
 

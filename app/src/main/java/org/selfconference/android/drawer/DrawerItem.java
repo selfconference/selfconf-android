@@ -6,7 +6,7 @@ import android.support.annotation.StringRes;
 import org.selfconference.android.R;
 
 public enum DrawerItem {
-    SCHEDULE(R.drawable.ic_schedule, R.string.schedule),
+    SESSIONS(R.drawable.ic_schedule, R.string.sessions),
     SPEAKERS(R.drawable.ic_mood_grey600_24dp, R.string.speakers),
     SPONSORS(R.drawable.ic_action_wallet_giftcard, R.string.sponsors),
     CODE_OF_CONDUCT(R.drawable.ic_description_grey600_24dp, R.string.code_of_conduct),

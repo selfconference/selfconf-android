@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
+import org.selfconference.android.FilteredDataSubscriber;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
 
@@ -74,7 +75,17 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
         } catch (IndexOutOfBoundsException e) {
             setStartTime(holder, session);
         }
+    }
 
+    public void filterFavorites(final boolean show) {
+        getFilteredData().clear();
+        dataObservable()
+                .filter(new Func1<Session, Boolean>() {
+                    @Override public Boolean call(Session session) {
+                        return !show || preferences.isFavorite(session);
+                    }
+                })
+                .subscribe(new FilteredDataSubscriber<>(this));
     }
 
     @Override protected Func1<Session, Boolean> filterPredicate(final String query) {

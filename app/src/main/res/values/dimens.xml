@@ -9,4 +9,5 @@
     <dimen name="fab_icon_size">24dp</dimen>
 
     <dimen name="feedback_comments_edit_text_padding">16dp</dimen>
+    <dimen name="drawer_header_image_height">200dp</dimen>
 </resources>

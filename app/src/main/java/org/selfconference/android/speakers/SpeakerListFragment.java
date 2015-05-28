@@ -13,6 +13,7 @@ import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
+import org.selfconference.android.api.ApiRequestSubscriber;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.session.SessionDetailsActivity;
 import org.selfconference.android.utils.rx.Transformers;
@@ -24,7 +25,6 @@ import javax.inject.Inject;
 
 import butterknife.InjectView;
 import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Func1;
 import timber.log.Timber;
 
@@ -92,7 +92,7 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         );
     }
 
-    private static final class SpeakerListSubscriber extends Subscriber<List<Speaker>> {
+    private static final class SpeakerListSubscriber extends ApiRequestSubscriber<List<Speaker>> {
 
         private final WeakReference<SpeakerAdapter> speakerAdapter;
 
@@ -101,11 +101,8 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
             this.speakerAdapter = new WeakReference<>(speakerAdapter);
         }
 
-        @Override public void onCompleted() {
-
-        }
-
         @Override public void onError(Throwable e) {
+            super.onError(e);
             Timber.e(e, "Failed to load speakers");
         }
 
@@ -117,7 +114,7 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
         }
     }
 
-    private static final class SpeakerClickSubscriber extends Subscriber<Session> {
+    private static final class SpeakerClickSubscriber extends ApiRequestSubscriber<Session> {
 
         private final WeakReference<Activity> activityWeakReference;
 
@@ -126,11 +123,8 @@ public class SpeakerListFragment extends BaseListFragment implements SpeakerAdap
             this.activityWeakReference = new WeakReference<>(activity);
         }
 
-        @Override public void onCompleted() {
-
-        }
-
         @Override public void onError(Throwable e) {
+            super.onError(e);
             Timber.e(e, "Failed to load sessions for speaker");
         }
 

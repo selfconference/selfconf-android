@@ -27,6 +27,6 @@
         android:textColor="@color/text_tint"
         android:textSize="14sp"
         android:fontFamily="sans-serif-medium"
-        tools:text="@string/schedule"/>
+        tools:text="@string/sessions"/>
 
 </LinearLayout>

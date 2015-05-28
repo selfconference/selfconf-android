@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Func1;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -23,23 +22,9 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder> e
 
     public void filter(String query) {
         filteredData.clear();
-        Observable.from(data)
+        dataObservable()
                 .filter(filterPredicate(query))
-                .subscribeOn(io())
-                .observeOn(mainThread())
-                .subscribe(new Subscriber<T>() {
-                    @Override public void onCompleted() {
-                        notifyDataSetChanged();
-                    }
-
-                    @Override public void onError(Throwable e) {
-
-                    }
-
-                    @Override public void onNext(T item) {
-                        filteredData.add(item);
-                    }
-                });
+                .subscribe(new FilteredDataSubscriber<>(this));
     }
 
     public void reset() {
@@ -55,8 +40,18 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder> e
         notifyDataSetChanged();
     }
 
-    protected List<T> getFilteredData() {
+    public List<T> getFilteredData() {
         return filteredData;
+    }
+
+    protected Observable<T> dataObservable() {
+        return Observable.from(getData())
+                .subscribeOn(io())
+                .observeOn(mainThread());
+    }
+
+    protected List<T> getData() {
+        return data;
     }
 
     @Override public int getItemCount() {

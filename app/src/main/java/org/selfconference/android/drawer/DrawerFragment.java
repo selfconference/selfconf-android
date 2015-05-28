@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.InjectView;
 
-import static org.selfconference.android.drawer.DrawerItem.SCHEDULE;
+import static org.selfconference.android.drawer.DrawerItem.SESSIONS;
 import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
 
 public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDrawerItemClickListener {
@@ -65,7 +65,7 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
         drawerRecyclerView.setAdapter(drawerAdapter);
 
         if (savedInstanceState == null) {
-            onDrawerItemClick(SCHEDULE);
+            onDrawerItemClick(SESSIONS);
         }
     }
 
@@ -81,7 +81,7 @@ public class DrawerFragment extends BaseFragment implements DrawerAdapter.OnDraw
             drawerAdapter.setSelectedPosition(drawerItem.ordinal());
         }
         switch (drawerItem) {
-            case SCHEDULE:
+            case SESSIONS:
                 changeFragment(new SessionContainerFragment(), SessionContainerFragment.TAG);
                 break;
             case SPEAKERS:

@@ -65,6 +65,10 @@ public class SessionPreferences {
         updatePreferences(KEY_FAVORITES, favorites);
     }
 
+    public boolean hasFavorites() {
+        return !getFavorites().isEmpty();
+    }
+
     private Set<String> getFavorites() {
         return getSessionsForKey(KEY_FAVORITES);
     }

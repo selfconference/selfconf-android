@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/drawer_header_background"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/drawer_header_image_height"
         android:layout_width="match_parent"
         android:background="?attr/colorPrimary"
         android:clickable="true"/>

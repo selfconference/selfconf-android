@@ -10,6 +10,7 @@ import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
+import org.selfconference.android.api.ApiRequestSubscriber;
 import org.selfconference.android.sponsors.SponsorAdapter.OnSponsorClickListener;
 import org.selfconference.android.utils.Intents;
 import org.selfconference.android.utils.rx.Transformers;
@@ -75,12 +76,10 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
         Intents.launchUrl(getActivity(), sponsor.getLink());
     }
 
-    private final Subscriber<List<Sponsor>> sponsorsSubscriber = new Subscriber<List<Sponsor>>() {
-        @Override public void onCompleted() {
-
-        }
+    private final Subscriber<List<Sponsor>> sponsorsSubscriber = new ApiRequestSubscriber<List<Sponsor>>() {
 
         @Override public void onError(Throwable e) {
+            super.onError(e);
             Timber.e(e, "Failed to load sponsors");
         }
 
