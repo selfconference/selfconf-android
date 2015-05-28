@@ -1,4 +1,4 @@
-# self.conference android
+# Self.conference Android
 
 [![Build Status](https://travis-ci.org/Selfconference/selfconf-android.svg?branch=master)](https://travis-ci.org/Selfconference/selfconf-android)
 
