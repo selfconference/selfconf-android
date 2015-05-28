@@ -33,3 +33,5 @@ proguard/
 
 debug.properties
 release.properties
+release.jks
+release-keystore.properties

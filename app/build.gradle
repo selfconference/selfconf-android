@@ -36,6 +36,13 @@ android {
     }
 
     signingConfigs {
+        release {
+            def prop = loadProperties('release-keystore.properties')
+            storeFile rootProject.file('release.jks')
+            storePassword prop.storePassword
+            keyAlias prop.keyAlias
+            keyPassword prop.keyPassword
+        }
         debug {
             storeFile rootProject.file('debug.keystore')
             storePassword 'android'
@@ -47,6 +54,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
 
             def prop = loadProperties('release.properties')
 
