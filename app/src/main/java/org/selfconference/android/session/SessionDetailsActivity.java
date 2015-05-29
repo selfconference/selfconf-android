@@ -3,8 +3,11 @@ package org.selfconference.android.session;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,6 +36,7 @@ import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
 
+import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.text.Html.fromHtml;
 import static butterknife.ButterKnife.Setter;
 import static butterknife.ButterKnife.apply;
@@ -80,6 +84,11 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         sessionTitle.setText(session.getTitle());
         favoriteButton.setChecked(preferences.isFavorite(session));
         favoriteButton.setOnCheckedChangeListener(this);
+        favoriteButton.setOnClickListener(new OnClickListener() {
+            @Override public void onClick(View v) {
+                showSnackbar();
+            }
+        });
         apply(headers, TEXT_COLOR_SETTER, session.getBrandColor().getPrimary());
 
         setupFeedbackButton();
@@ -167,5 +176,19 @@ public class SessionDetailsActivity extends BaseActivity implements OnSpeakerCli
         speakerAdapter.setOnSpeakerClickListener(this);
         speakerRecyclerView.setAdapter(speakerAdapter);
         speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
+    }
+
+    private void showSnackbar() {
+        final boolean isChecked = favoriteButton.isChecked();
+        final String message = isChecked ? "Session favorited" : "Session unfavorited";
+        final Snackbar snackbar = Snackbar.make(favoriteButton, message, LENGTH_SHORT);
+        snackbar.setAction("Undo", new OnClickListener() {
+            @Override public void onClick(View v) {
+                favoriteButton.setChecked(!isChecked);
+                snackbar.dismiss();
+            }
+        });
+        snackbar.setActionTextColor(session.getBrandColor().getPrimary());
+        snackbar.show();
     }
 }
