@@ -8,6 +8,4 @@
     <string name="key_push_notifications">pref_key_push_notifications</string>
     <string name="title_push_notifications">Enable push notifications</string>
     <string name="summary_push_notifications">Receive push notifications during Self.conference</string>
-    <string name="title_code_of_conduct">Code of Conduct</string>
-    <string name="key_code_of_conduct">pref_key_code_of_conduct</string>
 </resources>

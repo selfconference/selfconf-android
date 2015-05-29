@@ -13,7 +13,6 @@ import org.selfconference.android.api.Api;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
-import org.selfconference.android.drawer.DrawerFragment;
 import org.selfconference.android.feedback.SubmitFeedbackIntentService;
 import org.selfconference.android.feedback.Vote;
 import org.selfconference.android.feedback.VoteTypeAdapter;
@@ -59,7 +58,6 @@ import static retrofit.RestAdapter.LogLevel.NONE;
                 BaseFragment.class,
                 SessionContainerFragment.class,
                 SpeakerListFragment.class,
-                DrawerFragment.class,
                 SessionListFragment.class,
                 CodeOfConductFragment.class,
                 SpeakerAdapter.class,

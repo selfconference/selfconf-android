@@ -2,23 +2,27 @@ package org.selfconference.android;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 
-import org.selfconference.android.drawer.DrawerCloser;
-import org.selfconference.android.drawer.DrawerFragment;
+import org.selfconference.android.drawer.DrawerItem;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
 import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 
-public class MainActivity extends BaseActivity implements DrawerCloser {
+public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @InjectView(R.id.nav_view) NavigationView navigationView;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -49,10 +53,8 @@ public class MainActivity extends BaseActivity implements DrawerCloser {
             }
         };
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.drawer_container, new DrawerFragment(), DrawerFragment.TAG)
-                .commit();
+        setupDrawerContent();
+        clickNavigationDrawerItem(R.id.menu_item_sessions);
     }
 
     @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -65,7 +67,31 @@ public class MainActivity extends BaseActivity implements DrawerCloser {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override public void closeDrawer() {
-        drawerLayout.closeDrawer(Gravity.START);
+    private void clickNavigationDrawerItem(@IdRes int menuIdRes) {
+        navigationItemSelectedListener.onNavigationItemSelected(navigationView.getMenu().findItem(menuIdRes));
     }
+
+    private void setupDrawerContent() {
+        navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener);
+    }
+
+    private void changeFragment(DrawerItem drawerItem) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, drawerItem.getFragment(), drawerItem.getFragmentTag())
+                .commit();
+    }
+
+    private final OnNavigationItemSelectedListener navigationItemSelectedListener = new OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem menuItem) {
+            final DrawerItem drawerItem = DrawerItem.fromMenuItem(menuItem);
+            if (drawerItem != SETTINGS) {
+                changeFragment(drawerItem);
+            }
+            menuItem.setChecked(true);
+            drawerLayout.closeDrawers();
+            return true;
+        }
+    };
 }
