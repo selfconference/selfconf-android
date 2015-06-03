@@ -2,15 +2,13 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="192dp">
+    android:layout_height="match_parent">
 
-    <ImageView
+    <View
         android:id="@+id/drawer_header_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/drawer_header_image_height"
-        android:background="?attr/colorPrimary"
-        android:clickable="true"
-        android:src="@drawable/core_toolbar"/>
+        android:background="?attr/colorPrimary"/>
 
     <TextView
         android:layout_width="match_parent"
