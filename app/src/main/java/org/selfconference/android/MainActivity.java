@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity {
 
         setSupportActionBar(getToolbar());
 
-        drawerLayout.setStatusBarBackgroundColor(getColor(R.color.primary_dark));
+        drawerLayout.setStatusBarBackgroundColor(getColor(R.color.green_dark));
 
         drawerToggle = new ActionBarDrawerToggle(
                 this,

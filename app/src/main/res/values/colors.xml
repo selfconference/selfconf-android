@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#339194</color>
-    <color name="primary_dark">#2d8285</color>
+    <color name="green">#339194</color>
+    <color name="green_dark">#2d8285</color>
 
-    <color name="accent">#FB6B40</color>
-    <color name="accent_dark">#e16039</color>
+    <color name="orange">#FB6B40</color>
+    <color name="orange_dark">#e16039</color>
 
     <color name="purple">#A70267</color>
     <color name="purple_dark">#96015c</color>
@@ -12,7 +12,6 @@
     <color name="red">#F10D49</color>
     <color name="red_dark">#d80b41</color>
 
-    <color name="schedule_item_background">#ececec</color>
     <color name="divider_color">#ddd</color>
 
     <color name="fab_unchecked">#2196F3</color>
@@ -23,5 +22,4 @@
 
     <color name="image_tint_dark">#8A000000</color>
     <color name="image_tint_light">#36000000</color>
-    <color name="text_tint">#DE000000</color>
 </resources>

@@ -17,7 +17,6 @@ import org.selfconference.android.session.Session;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import static android.graphics.PorterDuff.Mode.SRC_ATOP;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -56,8 +55,6 @@ public class FeedbackFragment extends DialogFragment implements OnVoteSelectedLi
         session = checkNotNull((Session) getArguments().getParcelable(EXTRA_SESSION));
 
         voteButton.setOnVoteSelectedListener(this);
-        voteButton.setBrandColor(session.getBrandColor());
-        comments.getBackground().setColorFilter(session.getBrandColor().getPrimary(), SRC_ATOP);
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

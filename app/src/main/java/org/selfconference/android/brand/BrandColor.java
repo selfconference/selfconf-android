@@ -1,5 +1,7 @@
 package org.selfconference.android.brand;
 
+import android.support.annotation.StyleRes;
+
 import com.google.common.base.Objects;
 
 import org.selfconference.android.R;
@@ -11,16 +13,28 @@ import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 public final class BrandColor {
     private static final int[][] COLORS = new int[][]{
-            {R.color.primary, R.color.primary_dark},
-            {R.color.accent, R.color.accent_dark},
+            {R.color.green, R.color.green_dark},
+            {R.color.orange, R.color.orange_dark},
             {R.color.purple, R.color.purple_dark},
             {R.color.red, R.color.red_dark}
+    };
+
+    private static final int[] THEMES = new int[]{
+            R.style.GreenTheme,
+            R.style.OrangeTheme,
+            R.style.PurpleTheme,
+            R.style.RedTheme
     };
 
     private final int primary;
     private final int secondary;
 
-    public static BrandColor withIdentifier(final int id) {
+    @StyleRes
+    public static int forId(final int id) {
+        return THEMES[id % THEMES.length];
+    }
+
+    public static BrandColor makeBrand(final int id) {
         return new BrandColor(
                 getPrimaryColorForPosition(id),
                 getSecondaryColorForPosition(id)
@@ -34,10 +48,6 @@ public final class BrandColor {
 
     public int getPrimary() {
         return primary;
-    }
-
-    public int getSecondary() {
-        return secondary;
     }
 
     @Override public boolean equals(Object o) {

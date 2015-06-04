@@ -13,7 +13,6 @@ import com.google.gson.JsonParseException;
 
 import org.joda.time.DateTime;
 import org.selfconference.android.brand.BrandColor;
-import org.selfconference.android.brand.Brandable;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.utils.DateTimeHelper;
 
@@ -26,7 +25,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.joda.time.DateTime.now;
 import static org.selfconference.android.session.Room.emptyRoom;
 
-public class Session implements Parcelable, Brandable {
+public class Session implements Parcelable {
     private final int id;
     private final String title;
     private final Room room;
@@ -86,10 +85,6 @@ public class Session implements Parcelable, Brandable {
 
     public List<Speaker> getSpeakers() {
         return speakers;
-    }
-
-    @Override public BrandColor getBrandColor() {
-        return BrandColor.withIdentifier(getId());
     }
 
     @Override public String toString() {

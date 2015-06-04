@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.selfconference.android.R;
-import org.selfconference.android.brand.BrandColor;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,16 +22,6 @@ import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 /**
  * A wrapper view for providing thumbs up or thumbs down feedback for a session.
- * <p/>
- * In order to use this view, you must abide to a contact by calling
- * {@link #setOnVoteSelectedListener(OnVoteSelectedListener)} and
- * {@link #setBrandColor(BrandColor)}.
- * <p/>
- * <pre>
- * VoteButton voteButton = (VoteButton) findViewById(R.id.vote_button);
- * voteButton.setOnVoteSelectedListener(this);
- * voteButton.setBrandColor(session.getBrandColor());
- * </pre>
  */
 public class VoteButton extends LinearLayout implements OnClickListener {
     /**
@@ -52,7 +41,6 @@ public class VoteButton extends LinearLayout implements OnClickListener {
     @InjectView(R.id.thumbs_up_view) ImageView thumbsUpView;
 
     private OnVoteSelectedListener onVoteSelectedListener;
-    private BrandColor brandColor;
 
     public VoteButton(Context context) {
         this(context, null, 0);
@@ -70,11 +58,7 @@ public class VoteButton extends LinearLayout implements OnClickListener {
         setOrientation(HORIZONTAL);
 
         if (!isInEditMode()) {
-            thumbsDownView.setTag(NEGATIVE);
-            thumbsUpView.setTag(POSITIVE);
-
-            deselect(thumbsDownView);
-            deselect(thumbsUpView);
+            applyColor(thumbsDownView, thumbsUpView);
 
             thumbsDownView.setOnClickListener(this);
             thumbsUpView.setOnClickListener(this);
@@ -90,26 +74,11 @@ public class VoteButton extends LinearLayout implements OnClickListener {
         this.onVoteSelectedListener = onVoteSelectedListener;
     }
 
-    /**
-     * Set a brand color for this button.
-     * This color will be used by the thumb images as the selected color.
-     * The brand color should be passed in from the session associated with this button.
-     *
-     * @param brandColor The brand color for the thumbs. Must not be {@code null}.
-     */
-    public void setBrandColor(@NonNull BrandColor brandColor) {
-        this.brandColor = brandColor;
-    }
-
     @Override public void onClick(@NonNull View v) {
         if (v == thumbsDownView) {
-            notifyClicked((Vote) thumbsDownView.getTag());
-            select(thumbsDownView);
-            deselect(thumbsUpView);
+            notifyClicked(NEGATIVE);
         } else {
-            notifyClicked((Vote) thumbsUpView.getTag());
-            select(thumbsUpView);
-            deselect(thumbsDownView);
+            notifyClicked(POSITIVE);
         }
     }
 
@@ -119,17 +88,11 @@ public class VoteButton extends LinearLayout implements OnClickListener {
         }
     }
 
-    private void select(ImageView view) {
-        applyColor(view, brandColor.getPrimary());
-    }
-
-    private void deselect(ImageView view) {
-        applyColor(view, getColor(R.color.image_tint_dark));
-    }
-
-    private static void applyColor(ImageView view, int color) {
-        final Drawable wrappedDrawable = wrap(view.getDrawable());
-        setTint(wrappedDrawable, color);
-        view.setImageDrawable(wrappedDrawable);
+    private static void applyColor(ImageView... imageViews) {
+        for (ImageView imageView : imageViews) {
+            final Drawable wrappedDrawable = wrap(imageView.getDrawable());
+            setTint(wrappedDrawable, getColor(R.color.image_tint_dark));
+            imageView.setImageDrawable(wrappedDrawable);
+        }
     }
 }

@@ -92,7 +92,7 @@
             android:layout_gravity="right|top"
             android:layout_marginTop="8dp"
             android:padding="4dp"
-            android:tint="@color/accent"
+            android:tint="@color/orange"
             android:visibility="gone"
             tools:visibility="visible"/>
     </FrameLayout>

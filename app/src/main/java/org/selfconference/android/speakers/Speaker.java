@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.google.common.base.Objects;
 
 import org.selfconference.android.brand.BrandColor;
-import org.selfconference.android.brand.Brandable;
 import org.selfconference.android.session.Session;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Speaker implements Parcelable, Brandable {
+public class Speaker implements Parcelable {
     private final int id;
     private final String name;
     private final String twitter;
@@ -68,10 +67,6 @@ public class Speaker implements Parcelable, Brandable {
 
     public List<Session> getSessions() {
         return sessions;
-    }
-
-    @Override public BrandColor getBrandColor() {
-        return BrandColor.withIdentifier(getId());
     }
 
     @Override public String toString() {

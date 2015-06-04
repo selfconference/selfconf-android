@@ -36,7 +36,7 @@ public class SettingsCategoryHeader extends PreferenceCategory {
         final TextView titleTextView = (TextView) view.findViewById(android.R.id.title);
         if (titleTextView != null) {
             titleTextView.setAllCaps(true);
-            titleTextView.setTextColor(getColor(R.color.accent));
+            titleTextView.setTextColor(getColor(R.color.orange));
         }
     }
 }

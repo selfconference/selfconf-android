@@ -17,8 +17,8 @@ public final class SelfConferenceSwipeRefreshLayout extends SwipeRefreshLayout {
     public SelfConferenceSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setColorSchemeResources(
-                R.color.primary,
-                R.color.accent,
+                R.color.green,
+                R.color.orange,
                 R.color.red,
                 R.color.purple
         );

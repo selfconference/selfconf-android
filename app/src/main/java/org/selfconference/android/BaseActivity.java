@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import org.selfconference.android.utils.ResourceProvider;
-
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -27,7 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             setTaskDescription(new TaskDescription(
                     getString(R.string.app_name),
                     BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_task),
-                    getColor(R.color.primary)
+                    getColor(R.color.green)
             ));
         }
     }
