@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,7 +47,6 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
 
     private final SessionAdapter sessionAdapter = new SessionAdapter();
     private Day day;
-    private MenuItem favoritesItem;
 
     public static SessionListFragment newInstance(Day day) {
         final Bundle bundle = new Bundle();
@@ -82,21 +82,21 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
         super.onCreateOptionsMenu(menu, inflater);
         if (sessionPreferences.hasFavorites()) {
             inflater.inflate(R.menu.favorites, menu);
-            favoritesItem = menu.findItem(R.id.action_favorites);
-            favoritesItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-                @Override public boolean onMenuItemClick(MenuItem item) {
-                    item.setChecked(!item.isChecked());
-                    sessionAdapter.filterFavorites(item.isChecked());
-                    return true;
-                }
-            });
+            menu.findItem(R.id.action_favorites)
+                    .setOnMenuItemClickListener(new OnMenuItemClickListener() {
+                        @Override public boolean onMenuItemClick(MenuItem item) {
+                            item.setChecked(!item.isChecked());
+                            sessionAdapter.filterFavorites(item.isChecked());
+                            return true;
+                        }
+                    });
         }
     }
 
     @Override public void onResume() {
         super.onResume();
         sessionAdapter.refresh();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().invalidateOptionsMenu();
+        refreshFavoritesMenu();
     }
 
     @Override protected int layoutResId() {
@@ -120,6 +120,13 @@ public class SessionListFragment extends BaseListFragment implements OnSessionCl
         final Observable<List<Session>> getSessionsByDay = bindFragment(this, api.getSessionsByDay(day))
                 .compose(Transformers.<List<Session>>setRefreshing(swipeRefreshLayout));
         addSubscription(getSessionsByDay.subscribe(new SessionListSubscriber(sessionAdapter)));
+    }
+
+    private void refreshFavoritesMenu() {
+        final ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.invalidateOptionsMenu();
+        }
     }
 
     private static final class SessionListSubscriber extends ApiRequestSubscriber<List<Session>> {
