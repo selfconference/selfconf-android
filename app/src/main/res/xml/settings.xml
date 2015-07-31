@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <org.selfconference.android.settings.SettingsCategoryHeader
-        android:title="@string/header_title_notifications">
-        <CheckBoxPreference
-            android:key="@string/key_push_notifications"
-            android:title="@string/title_push_notifications"
-            android:summary="@string/summary_push_notifications"
-            android:defaultValue="true"/>
-    </org.selfconference.android.settings.SettingsCategoryHeader>
+  <org.selfconference.android.settings.SettingsCategoryHeader
+      android:title="@string/header_title_notifications">
+    <CheckBoxPreference
+        android:key="@string/key_push_notifications"
+        android:title="@string/title_push_notifications"
+        android:summary="@string/summary_push_notifications"
+        android:defaultValue="true"
+        />
+  </org.selfconference.android.settings.SettingsCategoryHeader>
 
-    <org.selfconference.android.settings.SettingsCategoryHeader
-        android:title="@string/header_title_about">
+  <org.selfconference.android.settings.SettingsCategoryHeader
+      android:title="@string/header_title_about">
 
-        <Preference
-            android:key="@string/key_app_version"
-            android:title="@string/title_app_version"/>
-    </org.selfconference.android.settings.SettingsCategoryHeader>
+    <Preference
+        android:key="@string/key_app_version"
+        android:title="@string/title_app_version"
+        />
+  </org.selfconference.android.settings.SettingsCategoryHeader>
 
 </PreferenceScreen>

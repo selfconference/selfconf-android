@@ -19,44 +19,45 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
 import com.squareup.picasso.Transformation;
+
+import static android.graphics.Shader.TileMode.CLAMP;
 
 final class CircularTransformation implements Transformation {
 
-    private final String key;
+  private final String key;
 
-    public CircularTransformation(String key) {
-        this.key = key;
+  public CircularTransformation(String key) {
+    this.key = key;
+  }
+
+  @Override public Bitmap transform(Bitmap source) {
+    int size = Math.min(source.getWidth(), source.getHeight());
+
+    int x = (source.getWidth() - size) / 2;
+    int y = (source.getHeight() - size) / 2;
+
+    Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
+    if (squaredBitmap != source) {
+      source.recycle();
     }
 
-    @Override public Bitmap transform(Bitmap source) {
-        int size = Math.min(source.getWidth(), source.getHeight());
+    Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
 
-        int x = (source.getWidth() - size) / 2;
-        int y = (source.getHeight() - size) / 2;
+    Canvas canvas = new Canvas(bitmap);
+    Paint paint = new Paint();
+    BitmapShader shader = new BitmapShader(squaredBitmap, CLAMP, CLAMP);
+    paint.setShader(shader);
+    paint.setAntiAlias(true);
 
-        Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-        if (squaredBitmap != source) {
-            source.recycle();
-        }
+    float r = size / 2f;
+    canvas.drawCircle(r, r, r, paint);
 
-        Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
+    squaredBitmap.recycle();
+    return bitmap;
+  }
 
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        BitmapShader shader = new BitmapShader(squaredBitmap, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-        paint.setShader(shader);
-        paint.setAntiAlias(true);
-
-        float r = size / 2f;
-        canvas.drawCircle(r, r, r, paint);
-
-        squaredBitmap.recycle();
-        return bitmap;
-    }
-
-    @Override public String key() {
-        return String.format("circle(key=%s)", key);
-    }
+  @Override public String key() {
+    return String.format("circle(key=%s)", key);
+  }
 }

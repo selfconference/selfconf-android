@@ -18,11 +18,11 @@ import org.selfconference.android.api.SelfConferenceClient;
  * <p/>
  * This object allows Gson to serialize the request as above.
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
+@SuppressWarnings({ "FieldCanBeLocal", "unused" }) //
 public class FeedbackRequest {
-    private final Feedback feedback;
+  private final Feedback feedback;
 
-    public FeedbackRequest(Feedback feedback) {
-        this.feedback = feedback;
-    }
+  public FeedbackRequest(Feedback feedback) {
+    this.feedback = feedback;
+  }
 }

@@ -6,48 +6,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import butterknife.InjectView;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-
+import java.util.List;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
 
-import java.util.List;
+public final class SessionDetailAdapter
+    extends RecyclerView.Adapter<SessionDetailAdapter.ViewHolder> {
 
-import butterknife.InjectView;
+  private final List<SessionDetail> sessionDetails;
 
-public final class SessionDetailAdapter extends RecyclerView.Adapter<SessionDetailAdapter.ViewHolder> {
+  public SessionDetailAdapter(List<SessionDetail> sessionDetails) {
+    this.sessionDetails =
+        Optional.fromNullable(sessionDetails).or(Lists.<SessionDetail>newArrayList());
+  }
 
-    private final List<SessionDetail> sessionDetails;
+  @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    final View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.include_session_detail_item, parent, false);
+    return new ViewHolder(view);
+  }
 
-    public SessionDetailAdapter(List<SessionDetail> sessionDetails) {
-        this.sessionDetails = Optional.fromNullable(sessionDetails).or(Lists.<SessionDetail>newArrayList());
+  @Override public void onBindViewHolder(ViewHolder holder, int position) {
+    final SessionDetail sessionDetail = sessionDetails.get(position);
+
+    holder.icon.setImageDrawable(sessionDetail.drawable);
+    holder.title.setText(sessionDetail.info);
+  }
+
+  @Override public int getItemCount() {
+    return sessionDetails.size();
+  }
+
+  public static class ViewHolder extends ButterKnifeViewHolder {
+
+    @InjectView(R.id.row_icon) public ImageView icon;
+    @InjectView(R.id.row_title) public TextView title;
+
+    public ViewHolder(View itemView) {
+      super(itemView);
     }
-
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_session_detail_item, parent, false);
-        return new ViewHolder(view);
-    }
-
-    @Override public void onBindViewHolder(ViewHolder holder, int position) {
-        final SessionDetail sessionDetail = sessionDetails.get(position);
-
-        holder.icon.setImageDrawable(sessionDetail.drawable);
-        holder.title.setText(sessionDetail.info);
-    }
-
-    @Override public int getItemCount() {
-        return sessionDetails.size();
-    }
-
-    public static class ViewHolder extends ButterKnifeViewHolder {
-
-        @InjectView(R.id.row_icon) public ImageView icon;
-        @InjectView(R.id.row_title) public TextView title;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
+  }
 }

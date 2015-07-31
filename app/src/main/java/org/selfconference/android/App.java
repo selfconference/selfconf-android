@@ -3,13 +3,11 @@ package org.selfconference.android;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 import com.squareup.leakcanary.LeakCanary;
-
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -22,55 +20,54 @@ import static org.selfconference.android.BuildConfig.PARSE_CLIENT_ID;
 
 public class App extends Application {
 
-    private static App INSTANCE;
+  private static App INSTANCE;
 
-    private ObjectGraph objectGraph;
+  private ObjectGraph objectGraph;
 
-    public static App getInstance() {
-        return INSTANCE;
+  public static App getInstance() {
+    return INSTANCE;
+  }
+
+  @Override public void onCreate() {
+    super.onCreate();
+    installLeakCanary();
+    setupFabric();
+    INSTANCE = this;
+    if (DEBUG) {
+      Timber.plant(new DebugTree());
     }
+    setUpPushNotifications();
+    objectGraph = ObjectGraph.create(new SelfConferenceAppModule(this));
+  }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        installLeakCanary();
-        setupFabric();
-        INSTANCE = this;
-        if (DEBUG) {
-            Timber.plant(new DebugTree());
+  public void inject(Object object) {
+    objectGraph.inject(object);
+  }
+
+  protected void installLeakCanary() {
+    LeakCanary.install(this);
+  }
+
+  protected void setupFabric() {
+    Fabric.with(this, new Crashlytics());
+  }
+
+  protected void setUpPushNotifications() {
+    Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_ID);
+    subscribeInBackground("", new SaveCallback() {
+      @Override public void done(ParseException e) {
+        if (e == null) {
+          Timber.d("Successfully subscribed to Parse Push");
+        } else {
+          Timber.e(e, "Error subscribing to Parse Push");
         }
-        setUpPushNotifications();
-        objectGraph = ObjectGraph.create(new SelfConferenceAppModule(this));
+      }
+    });
+    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    final boolean arePushNotificationsEnabled =
+        preferences.getBoolean(getString(R.string.key_push_notifications), true);
+    if (arePushNotificationsEnabled) {
+      subscribeInBackground("all");
     }
-
-    public void inject(Object object) {
-        objectGraph.inject(object);
-    }
-
-    protected void installLeakCanary() {
-        LeakCanary.install(this);
-    }
-
-    protected void setupFabric() {
-        Fabric.with(this, new Crashlytics());
-    }
-
-    protected void setUpPushNotifications() {
-        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_ID);
-        subscribeInBackground("", new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Timber.d("Successfully subscribed to Parse Push");
-                } else {
-                    Timber.e(e, "Error subscribing to Parse Push");
-                }
-            }
-        });
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final boolean arePushNotificationsEnabled = preferences.getBoolean(getString(R.string.key_push_notifications), true);
-        if (arePushNotificationsEnabled) {
-            subscribeInBackground("all");
-        }
-    }
+  }
 }

@@ -1,10 +1,8 @@
 package org.selfconference.android.utils;
 
 import android.os.Handler;
-
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
-
 import timber.log.Timber;
 
 import static android.os.Looper.getMainLooper;
@@ -18,27 +16,27 @@ import static android.os.Looper.myLooper;
  */
 public final class PostFromAnyThreadBus extends Bus {
 
-    public PostFromAnyThreadBus() {
-        super(ThreadEnforcer.MAIN);
-    }
+  public PostFromAnyThreadBus() {
+    super(ThreadEnforcer.MAIN);
+  }
 
-    @Override public void post(final Object event) {
-        if (myLooper() != getMainLooper()) {
-            new Handler(getMainLooper()).post(new Runnable() {
-                @Override public void run() {
-                    PostFromAnyThreadBus.super.post(event);
-                }
-            });
-        } else {
-            super.post(event);
+  @Override public void post(final Object event) {
+    if (myLooper() != getMainLooper()) {
+      new Handler(getMainLooper()).post(new Runnable() {
+        @Override public void run() {
+          PostFromAnyThreadBus.super.post(event);
         }
+      });
+    } else {
+      super.post(event);
     }
+  }
 
-    @Override public void unregister(final Object object) {
-        try {
-            super.unregister(object);
-        } catch (IllegalArgumentException e) {
-            Timber.e(e, e.getMessage());
-        }
+  @Override public void unregister(final Object object) {
+    try {
+      super.unregister(object);
+    } catch (IllegalArgumentException e) {
+      Timber.e(e, e.getMessage());
     }
+  }
 }

@@ -12,24 +12,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.selfconference.android.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class)
-@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
-public class SpeakerTest {
+@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml") public class SpeakerTest {
 
-    @Test
-    public void speakerParcelsWithoutErrors() throws Exception {
-        final Speaker speaker = Speaker.builder()
-                .bio("bio")
-                .photo("http://test.com/img.png")
-                .id(10)
-                .name("Dave")
-                .sessions(asList(
-                        Session.builder().id(10).build(),
-                        Session.builder().id(25).build()))
-                .twitter("dave")
-                .build();
+  @Test public void speakerParcelsWithoutErrors() throws Exception {
+    final Speaker speaker = Speaker.builder()
+        .bio("bio")
+        .photo("http://test.com/img.png")
+        .id(10)
+        .name("Dave")
+        .sessions(asList(Session.builder().id(10).build(), Session.builder().id(25).build()))
+        .twitter("dave")
+        .build();
 
-        final Container<Speaker> speakerContainer = testParceling(speaker, Speaker.CREATOR);
+    final Container<Speaker> speakerContainer = testParceling(speaker, Speaker.CREATOR);
 
-        assertThat(speakerContainer.original).isEqualTo(speakerContainer.parceled);
-    }
+    assertThat(speakerContainer.original).isEqualTo(speakerContainer.parceled);
+  }
 }

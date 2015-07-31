@@ -13,27 +13,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
 public class SessionPreferencesTest {
 
-    private SessionPreferences preferences;
+  private SessionPreferences preferences;
 
-    @Before
-    public void setUp() throws Exception {
-        preferences = new SessionPreferences(Robolectric.application);
-    }
+  @Before public void setUp() throws Exception {
+    preferences = new SessionPreferences(Robolectric.application);
+  }
 
-    @Test
-    public void testSavedSessionPreferences() throws Exception {
-        final Session session = Session.builder()
-                .id(13)
-                .build();
+  @Test public void testSavedSessionPreferences() throws Exception {
+    final Session session = Session.builder().id(13).build();
 
-        assertThat(preferences.isFavorite(session)).isFalse();
+    assertThat(preferences.isFavorite(session)).isFalse();
 
-        preferences.favorite(session);
+    preferences.favorite(session);
 
-        assertThat(preferences.isFavorite(session)).isTrue();
+    assertThat(preferences.isFavorite(session)).isTrue();
 
-        preferences.unfavorite(session);
+    preferences.unfavorite(session);
 
-        assertThat(preferences.isFavorite(session)).isFalse();
-    }
+    assertThat(preferences.isFavorite(session)).isFalse();
+  }
 }

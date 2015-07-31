@@ -4,18 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.selfconference.android.session.SessionContainerFragment">
+    tools:context="org.selfconference.android.session.SessionContainerFragment"
+    >
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+  <android.support.design.widget.TabLayout
+      android:id="@+id/tabs"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?attr/colorPrimary"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/schedule_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+  <android.support.v4.view.ViewPager
+      android:id="@+id/schedule_view_pager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
 
 </LinearLayout>

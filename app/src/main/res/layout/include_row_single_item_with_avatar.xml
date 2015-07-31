@@ -10,35 +10,39 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:paddingRight="16dp"
-    tools:background="#fcc">
+    tools:background="#fcc"
+    >
 
-    <ImageView
-        android:id="@+id/row_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        tools:src="@drawable/round_button"/>
+  <ImageView
+      android:id="@+id/row_icon"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_marginRight="16dp"
+      android:layout_marginLeft="16dp"
+      tools:src="@drawable/round_button"
+      />
 
-    <TextView
-        android:id="@+id/row_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:gravity="center_vertical"
-        android:textColor="#DE000000"
-        android:textSize="16sp"
-        android:layout_toRightOf="@+id/row_icon"
-        tools:text="David Klawitter"/>
+  <TextView
+      android:id="@+id/row_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="40dp"
+      android:gravity="center_vertical"
+      android:textColor="#DE000000"
+      android:textSize="16sp"
+      android:layout_toRightOf="@+id/row_icon"
+      tools:text="David Klawitter"
+      />
 
-    <TextView
-        android:id="@+id/row_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:textSize="16sp"
-        tools:text="David Klawitter's description"
-        android:layout_toRightOf="@+id/row_icon"
-        android:layout_below="@+id/row_title"/>
+  <TextView
+      android:id="@+id/row_subtitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:textSize="16sp"
+      tools:text="David Klawitter's description"
+      android:layout_toRightOf="@+id/row_icon"
+      android:layout_below="@+id/row_title"
+      />
 
 </RelativeLayout>

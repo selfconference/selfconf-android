@@ -1,14 +1,14 @@
 allprojects {
-    buildscript {
-        repositories {
-            mavenCentral()
-        }
-    }
-
+  buildscript {
     repositories {
-        mavenCentral()
-        maven {
-            url 'http://dl.bintray.com/amulyakhare/maven'
-        }
+      mavenCentral()
     }
+  }
+
+  repositories {
+    mavenCentral()
+    maven {
+      url 'http://dl.bintray.com/amulyakhare/maven'
+    }
+  }
 }

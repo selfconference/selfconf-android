@@ -3,19 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
-    <EditText
-        android:id="@+id/feedback_fragment_comment_section"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/feedback_comments_edit_text_padding"
-        android:hint="Comments (Optional)"
-        android:textCursorDrawable="@null"/>
+  <EditText
+      android:id="@+id/feedback_fragment_comment_section"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/feedback_comments_edit_text_padding"
+      android:hint="Comments (Optional)"
+      android:textCursorDrawable="@null"
+      />
 
-    <org.selfconference.android.feedback.VoteButton
-        android:id="@+id/vote_button"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:gravity="center_vertical"/>
+  <org.selfconference.android.feedback.VoteButton
+      android:id="@+id/vote_button"
+      android:layout_width="match_parent"
+      android:layout_height="96dp"
+      android:gravity="center_vertical"
+      />
 </LinearLayout>

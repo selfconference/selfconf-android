@@ -19,12 +19,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:enterFadeDuration="@android:integer/config_shortAnimTime">
 
-    <item android:state_checked="true">
-        <bitmap android:src="@drawable/ic_toggle_star_blue"/>
-    </item>
+  <item android:state_checked="true">
+    <bitmap android:src="@drawable/ic_toggle_star_blue"/>
+  </item>
 
-    <item>
-        <bitmap android:src="@drawable/ic_content_add_white"/>
-    </item>
+  <item>
+    <bitmap android:src="@drawable/ic_content_add_white"/>
+  </item>
 
 </selector>

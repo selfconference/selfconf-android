@@ -4,132 +4,145 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="org.selfconference.android.speakers.SessionDetailsActivity">
+    tools:context="org.selfconference.android.speakers.SessionDetailsActivity"
+    >
 
-    <android.support.v7.widget.Toolbar
-        android:id="@id/toolbar"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        tools:background="@color/purple">
+  <android.support.v7.widget.Toolbar
+      android:id="@id/toolbar"
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?attr/colorPrimary"
+      android:minHeight="?attr/actionBarSize"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+      tools:background="@color/purple"
+      >
 
-        <TextView
-            android:id="@+id/long_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:ellipsize="end"
-            android:gravity="bottom"
-            android:maxLines="3"
-            android:minHeight="120dp"
-            android:padding="16dp"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            tools:background="@color/purple"
-            tools:ignore="UnknownId"
-            tools:text="Teaching Agile Principles Through Experiential Exercises"/>
-
-    </android.support.v7.widget.Toolbar>
-
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <TextView
+        android:id="@+id/long_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:paddingBottom="16dp">
+        android:ellipsize="end"
+        android:gravity="bottom"
+        android:maxLines="3"
+        android:minHeight="120dp"
+        android:padding="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        tools:background="@color/purple"
+        tools:ignore="UnknownId"
+        tools:text="Teaching Agile Principles Through Experiential Exercises"
+        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="20dp">
+  </android.support.v7.widget.Toolbar>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/session_detail_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+  <ScrollView
+      android:id="@+id/scroll_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/toolbar"
+      android:clipToPadding="false"
+      android:fillViewport="true"
+      android:paddingBottom="16dp"
+      >
 
-            <TextView
-                android:id="@+id/speakers_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="72dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:text="Speakers"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                tools:textColor="@color/purple"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        >
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/speaker_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"/>
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/session_detail_recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="72dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/divider_color"/>
+      <TextView
+          android:id="@+id/speakers_header"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          android:layout_marginLeft="72dp"
+          android:layout_marginRight="16dp"
+          android:layout_marginTop="8dp"
+          android:text="Speakers"
+          android:textColor="?attr/colorPrimary"
+          android:textSize="20sp"
+          tools:textColor="@color/purple"
+          />
 
-            <TextView
-                android:id="@+id/more_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="72dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:text="More"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                tools:textColor="@color/purple"/>
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/speaker_recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:clipToPadding="false"
+          />
 
-            <TextView
-                android:id="@+id/submit_feedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:minHeight="48dp"
-                android:paddingLeft="72dp"
-                android:text="@string/submit_feedback"
-                android:textSize="18sp"/>
-        </LinearLayout>
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginLeft="72dp"
+          android:layout_marginRight="16dp"
+          android:layout_marginTop="16dp"
+          android:background="@color/divider_color"
+          />
 
-    </ScrollView>
+      <TextView
+          android:id="@+id/more_header"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          android:layout_marginLeft="72dp"
+          android:layout_marginRight="16dp"
+          android:layout_marginTop="8dp"
+          android:text="More"
+          android:textColor="?attr/colorPrimary"
+          android:textSize="20sp"
+          tools:textColor="@color/purple"
+          />
 
-    <org.selfconference.android.views.FloatingActionButton
-        android:id="@+id/favorite_button"
-        android:layout_width="@dimen/fab_size_small"
-        android:layout_height="@dimen/fab_size_small"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/toolbar"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="-20dp"
-        android:background="@drawable/fab_background"
-        android:elevation="@dimen/fab_elevation"
-        android:stateListAnimator="@animator/fab_anim">
+      <TextView
+          android:id="@+id/submit_feedback"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="?attr/selectableItemBackground"
+          android:gravity="center_vertical"
+          android:minHeight="48dp"
+          android:paddingLeft="72dp"
+          android:text="@string/submit_feedback"
+          android:textSize="18sp"
+          />
+    </LinearLayout>
 
-        <ImageView
-            android:layout_width="@dimen/fab_icon_size"
-            android:layout_height="@dimen/fab_icon_size"
-            android:layout_gravity="center"
-            android:duplicateParentState="true"
-            android:src="@drawable/fab_icons"/>
-    </org.selfconference.android.views.FloatingActionButton>
+  </ScrollView>
+
+  <org.selfconference.android.views.FloatingActionButton
+      android:id="@+id/favorite_button"
+      android:layout_width="@dimen/fab_size_small"
+      android:layout_height="@dimen/fab_size_small"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:layout_below="@id/toolbar"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginLeft="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="-20dp"
+      android:background="@drawable/fab_background"
+      android:elevation="@dimen/fab_elevation"
+      android:stateListAnimator="@animator/fab_anim"
+      >
+
+    <ImageView
+        android:layout_width="@dimen/fab_icon_size"
+        android:layout_height="@dimen/fab_icon_size"
+        android:layout_gravity="center"
+        android:duplicateParentState="true"
+        android:src="@drawable/fab_icons"
+        />
+  </org.selfconference.android.views.FloatingActionButton>
 </RelativeLayout>

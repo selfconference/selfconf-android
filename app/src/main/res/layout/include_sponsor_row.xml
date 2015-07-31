@@ -14,44 +14,49 @@
     android:orientation="vertical"
     android:padding="1dp"
     app:cardCornerRadius="@dimen/cardview_default_radius"
-    app:cardElevation="@dimen/cardview_default_elevation">
+    app:cardElevation="@dimen/cardview_default_elevation"
+    >
 
-    <LinearLayout
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:orientation="vertical"
+      >
+
+    <ImageView
+        android:id="@+id/sponsor_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical">
+        android:minHeight="180dp"
+        android:padding="8dp"
+        />
 
-        <ImageView
-            android:id="@+id/sponsor_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="180dp"
-            android:padding="8dp"/>
+    <TextView
+        android:id="@+id/sponsor_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:minHeight="48dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="24dp"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        tools:text="Cool Company, LLC"
+        />
 
-        <TextView
-            android:id="@+id/sponsor_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:minHeight="48dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="24dp"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            tools:text="Cool Company, LLC"/>
+    <TextView
+        android:id="@+id/sponsor_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="14sp"
+        tools:text="Sponsoring: Diversity"
+        />
 
-        <TextView
-            android:id="@+id/sponsor_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textSize="14sp"
-            tools:text="Sponsoring: Diversity"/>
-
-    </LinearLayout>
+  </LinearLayout>
 
 </android.support.v7.widget.CardView>
