@@ -6,8 +6,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.view.View.OnFocusChangeListener;
 
 public abstract class BaseListFragment extends BaseFragment {
 
@@ -31,11 +29,9 @@ public abstract class BaseListFragment extends BaseFragment {
         return true;
       }
     });
-    searchView.setOnFocusChangeListener(new OnFocusChangeListener() {
-      @Override public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
-          getFilterableAdapter().reset();
-        }
+    searchView.setOnFocusChangeListener((v, hasFocus) -> {
+      if (!hasFocus) {
+        getFilterableAdapter().reset();
       }
     });
   }

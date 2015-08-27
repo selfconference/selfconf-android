@@ -5,14 +5,13 @@ import com.google.gson.GsonBuilder;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.selfconference.android.feedback.Vote.POSITIVE;
+import static org.selfconference.android.feedback.VoteButton.VOTE_POSITIVE;
 
 public class FeedbackRequestTest {
-  private static final Gson gson =
-      new GsonBuilder().registerTypeAdapter(Vote.class, new VoteTypeAdapter()).create();
+  private static final Gson gson = new GsonBuilder().create();
 
   @Test public void feedbackRequestSerializedAsExpected() {
-    final Feedback feedback = new Feedback(POSITIVE, "That session was awesome!");
+    final Feedback feedback = new Feedback(VOTE_POSITIVE, "That session was awesome!");
     final FeedbackRequest feedbackRequest = new FeedbackRequest(feedback);
 
     final String json = gson.toJson(feedbackRequest);

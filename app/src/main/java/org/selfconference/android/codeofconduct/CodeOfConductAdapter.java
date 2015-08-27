@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.InjectView;
+import butterknife.Bind;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
 
@@ -42,8 +42,8 @@ public class CodeOfConductAdapter extends RecyclerView.Adapter<CodeOfConductAdap
 
   public static final class ViewHolder extends ButterKnifeViewHolder {
 
-    @InjectView(R.id.code_of_conduct_title) public TextView title;
-    @InjectView(R.id.code_of_conduct_subtitle) public TextView subtitle;
+    @Bind(R.id.code_of_conduct_title) public TextView title;
+    @Bind(R.id.code_of_conduct_subtitle) public TextView subtitle;
 
     public ViewHolder(View itemView) {
       super(itemView);

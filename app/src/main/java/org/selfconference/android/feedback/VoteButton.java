@@ -2,41 +2,49 @@ package org.selfconference.android.feedback;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import java.lang.annotation.Retention;
 import org.selfconference.android.R;
 
 import static android.support.v4.graphics.drawable.DrawableCompat.setTint;
 import static android.support.v4.graphics.drawable.DrawableCompat.wrap;
-import static org.selfconference.android.feedback.Vote.NEGATIVE;
-import static org.selfconference.android.feedback.Vote.POSITIVE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 /**
  * A wrapper view for providing thumbs up or thumbs down feedback for a session.
  */
 public class VoteButton extends LinearLayout implements OnClickListener {
+
+  @Retention(CLASS) @IntDef({ VOTE_NEGATIVE, VOTE_POSITIVE }) public @interface Vote {
+  }
+
+  public static final int VOTE_NEGATIVE = -1;
+  public static final int VOTE_POSITIVE = 1;
+
   /**
-   * The interface definition for a callback to be invoked when a vote is selected
+   * The interface definition for a callback to be invoked when a vote is selected.
    */
   public interface OnVoteSelectedListener {
     /**
-     * Called when a vote has been selected
+     * Called when a vote has been selected.
      *
-     * @param voteButton The VoteButton that was clicked
+     * @param voteButton The {@link VoteButton} that was clicked
      * @param vote The type of vote that was selected
      */
-    void onVoteSelected(VoteButton voteButton, Vote vote);
+    void onVoteSelected(VoteButton voteButton, @Vote int vote);
   }
 
-  @InjectView(R.id.thumbs_down_view) ImageView thumbsDownView;
-  @InjectView(R.id.thumbs_up_view) ImageView thumbsUpView;
+  @Bind(R.id.thumbs_down_view) ImageView thumbsDownView;
+  @Bind(R.id.thumbs_up_view) ImageView thumbsUpView;
 
   private OnVoteSelectedListener onVoteSelectedListener;
 
@@ -51,7 +59,7 @@ public class VoteButton extends LinearLayout implements OnClickListener {
   public VoteButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     View.inflate(context, R.layout.view_thumbs_up_button, this);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     setOrientation(HORIZONTAL);
 
@@ -66,7 +74,7 @@ public class VoteButton extends LinearLayout implements OnClickListener {
   /**
    * Register a callback to be invoked when a vote has been selected
    *
-   * @param onVoteSelectedListener The callback that will be run
+   * @param onVoteSelectedListener The callback that will be invoked
    */
   public void setOnVoteSelectedListener(OnVoteSelectedListener onVoteSelectedListener) {
     this.onVoteSelectedListener = onVoteSelectedListener;
@@ -74,13 +82,13 @@ public class VoteButton extends LinearLayout implements OnClickListener {
 
   @Override public void onClick(@NonNull View v) {
     if (v == thumbsDownView) {
-      notifyClicked(NEGATIVE);
+      notifyClicked(VOTE_NEGATIVE);
     } else {
-      notifyClicked(POSITIVE);
+      notifyClicked(VOTE_POSITIVE);
     }
   }
 
-  private void notifyClicked(Vote feedback) {
+  private void notifyClicked(@Vote int feedback) {
     if (onVoteSelectedListener != null) {
       onVoteSelectedListener.onVoteSelected(this, feedback);
     }

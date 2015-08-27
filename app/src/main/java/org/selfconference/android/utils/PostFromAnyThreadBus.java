@@ -22,11 +22,7 @@ public final class PostFromAnyThreadBus extends Bus {
 
   @Override public void post(final Object event) {
     if (myLooper() != getMainLooper()) {
-      new Handler(getMainLooper()).post(new Runnable() {
-        @Override public void run() {
-          PostFromAnyThreadBus.super.post(event);
-        }
-      });
+      new Handler(getMainLooper()).post(() -> PostFromAnyThreadBus.super.post(event));
     } else {
       super.post(event);
     }

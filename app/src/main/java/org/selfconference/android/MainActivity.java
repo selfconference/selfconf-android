@@ -10,25 +10,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import org.selfconference.android.drawer.DrawerItem;
 import org.selfconference.android.settings.SettingsActivity;
 
 import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
-import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 public class MainActivity extends BaseActivity {
 
-  @InjectView(R.id.drawer_layout) DrawerLayout drawerLayout;
-  @InjectView(R.id.navigation_view) NavigationView navigationView;
+  @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
+  @Bind(R.id.navigation_view) NavigationView navigationView;
 
   private ActionBarDrawerToggle drawerToggle;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     setSupportActionBar(getToolbar());
 
@@ -65,8 +64,8 @@ public class MainActivity extends BaseActivity {
   }
 
   private void clickNavigationDrawerItem(@IdRes int menuIdRes) {
-    navigationItemSelectedListener.onNavigationItemSelected(
-        navigationView.getMenu().findItem(menuIdRes));
+    final MenuItem clickedMenuItem = navigationView.getMenu().findItem(menuIdRes);
+    navigationItemSelectedListener.onNavigationItemSelected(clickedMenuItem);
   }
 
   private void setupDrawerContent() {
@@ -74,8 +73,9 @@ public class MainActivity extends BaseActivity {
   }
 
   private void changeFragment(DrawerItem drawerItem) {
-    getSupportFragmentManager().beginTransaction()
-        .replace(R.id.container, drawerItem.getFragment(), drawerItem.getFragmentTag())
+    getSupportFragmentManager() //
+        .beginTransaction() //
+        .replace(R.id.container, drawerItem.getFragment(), drawerItem.getFragmentTag()) //
         .commit();
   }
 

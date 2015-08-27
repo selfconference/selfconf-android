@@ -8,11 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -41,13 +40,13 @@ public class SessionDetailsActivity extends BaseActivity
     implements OnSpeakerClickListener, OnCheckedChangeListener {
   private static final String EXTRA_SESSION = "org.selfconference.android.session.SESSION";
 
-  @InjectView(R.id.long_title) TextView sessionTitle;
-  @InjectView(R.id.scroll_view) ScrollView scrollView;
-  @InjectView(R.id.speakers_header) TextView speakersHeader;
-  @InjectView(R.id.favorite_button) FloatingActionButton favoriteButton;
-  @InjectView(R.id.session_detail_recycler_view) RecyclerView sessionDetailRecyclerView;
-  @InjectView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
-  @InjectView(R.id.submit_feedback) TextView submitFeedback;
+  @Bind(R.id.long_title) TextView sessionTitle;
+  @Bind(R.id.scroll_view) ScrollView scrollView;
+  @Bind(R.id.speakers_header) TextView speakersHeader;
+  @Bind(R.id.favorite_button) FloatingActionButton favoriteButton;
+  @Bind(R.id.session_detail_recycler_view) RecyclerView sessionDetailRecyclerView;
+  @Bind(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
+  @Bind(R.id.submit_feedback) TextView submitFeedback;
 
   @Inject SessionPreferences preferences;
   @Inject Bus bus;
@@ -69,18 +68,14 @@ public class SessionDetailsActivity extends BaseActivity
 
     setContentView(R.layout.activity_session_details);
     App.getInstance().inject(this);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     setUpActionBar();
 
     sessionTitle.setText(session.getTitle());
     favoriteButton.setChecked(preferences.isFavorite(session));
     favoriteButton.setOnCheckedChangeListener(this);
-    favoriteButton.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        showSnackbar();
-      }
-    });
+    favoriteButton.setOnClickListener(this::showSnackbar);
 
     setupFeedbackButton();
 
@@ -150,11 +145,7 @@ public class SessionDetailsActivity extends BaseActivity
     final SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
     sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);
     sessionDetailRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
-    scrollView.post(new Runnable() {
-      @Override public void run() {
-        scrollView.scrollTo(0, 0);
-      }
-    });
+    scrollView.post(() -> scrollView.scrollTo(0, 0));
   }
 
   private void setUpSpeakerList() {
@@ -166,15 +157,13 @@ public class SessionDetailsActivity extends BaseActivity
     speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
   }
 
-  private void showSnackbar() {
+  private void showSnackbar(View view) {
     final boolean isChecked = favoriteButton.isChecked();
     final String message = isChecked ? "Session favorited" : "Session unfavorited";
     final Snackbar snackbar = Snackbar.make(favoriteButton, message, LENGTH_SHORT);
-    snackbar.setAction("Undo", new OnClickListener() {
-      @Override public void onClick(View v) {
-        favoriteButton.setChecked(!isChecked);
-        snackbar.dismiss();
-      }
+    snackbar.setAction("Undo", v -> {
+      favoriteButton.setChecked(!isChecked);
+      snackbar.dismiss();
     });
     snackbar.show();
   }

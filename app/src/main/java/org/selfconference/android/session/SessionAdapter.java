@@ -1,11 +1,10 @@
 package org.selfconference.android.session;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.InjectView;
+import butterknife.Bind;
 import java.util.Locale;
 import javax.inject.Inject;
 import org.selfconference.android.ButterKnifeViewHolder;
@@ -17,7 +16,6 @@ import rx.functions.Func1;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
-import static android.view.View.OnClickListener;
 import static android.view.View.VISIBLE;
 import static org.selfconference.android.utils.DateStringer.toShortDateString;
 
@@ -48,11 +46,9 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   @Override public void onBindViewHolder(final SessionViewHolder holder, final int position) {
     final Session session = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(@NonNull View v) {
-        if (onSessionClickListener != null) {
-          onSessionClickListener.onSessionClick(session);
-        }
+    holder.itemView.setOnClickListener(v -> {
+      if (onSessionClickListener != null) {
+        onSessionClickListener.onSessionClick(session);
       }
     });
 
@@ -75,22 +71,14 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   public void filterFavorites(final boolean show) {
     getFilteredData().clear();
     dataObservable() //
-        .filter(new Func1<Session, Boolean>() {
-          @Override public Boolean call(Session session) {
-            return !show || preferences.isFavorite(session);
-          }
-        }) //
+        .filter(session -> !show || preferences.isFavorite(session)) //
         .subscribe(new FilteredDataSubscriber<>(this));
   }
 
   @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
-    return new Func1<Session, Boolean>() {
-      @Override public Boolean call(Session session) {
-        return session.getTitle() //
-            .toLowerCase(Locale.US) //
-            .contains(query.toLowerCase(Locale.US));
-      }
-    };
+    return session -> session.getTitle() //
+        .toLowerCase(Locale.US) //
+        .contains(query.toLowerCase(Locale.US));
   }
 
   private static void setStartTime(SessionViewHolder holder, Session session) {
@@ -100,10 +88,10 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
   public static class SessionViewHolder extends ButterKnifeViewHolder {
 
-    @InjectView(R.id.start_time) public TextView startTime;
-    @InjectView(R.id.slot_title) public TextView sessionTitle;
-    @InjectView(R.id.slot_subtitle) public TextView sessionSubtitle;
-    @InjectView(R.id.favorite_session_indicator) public View favoriteSessionIndicator;
+    @Bind(R.id.start_time) public TextView startTime;
+    @Bind(R.id.slot_title) public TextView sessionTitle;
+    @Bind(R.id.slot_subtitle) public TextView sessionSubtitle;
+    @Bind(R.id.favorite_session_indicator) public View favoriteSessionIndicator;
 
     public SessionViewHolder(View itemView) {
       super(itemView);

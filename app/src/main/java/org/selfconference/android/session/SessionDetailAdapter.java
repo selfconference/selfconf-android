@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import java.util.List;
@@ -42,8 +42,8 @@ public final class SessionDetailAdapter
 
   public static class ViewHolder extends ButterKnifeViewHolder {
 
-    @InjectView(R.id.row_icon) public ImageView icon;
-    @InjectView(R.id.row_title) public TextView title;
+    @Bind(R.id.row_icon) public ImageView icon;
+    @Bind(R.id.row_title) public TextView title;
 
     public ViewHolder(View itemView) {
       super(itemView);

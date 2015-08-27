@@ -11,33 +11,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import butterknife.InjectView;
-import java.lang.ref.WeakReference;
-import java.util.List;
+import butterknife.Bind;
 import javax.inject.Inject;
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
-import org.selfconference.android.api.ApiRequestSubscriber;
 import org.selfconference.android.session.SessionAdapter.OnSessionClickListener;
-import org.selfconference.android.utils.rx.Transformers;
-import rx.Observable;
 import timber.log.Timber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static rx.android.app.AppObservable.bindFragment;
+import static org.selfconference.android.utils.rx.Transformers.ioSchedulers;
+import static org.selfconference.android.utils.rx.Transformers.setRefreshing;
 
 public class SessionListFragment extends BaseListFragment
     implements OnSessionClickListener, OnRefreshListener {
   private static final String EXTRA_DAY =
       "org.selfconference.android.session.SessionListFragment.EXTRA_DAY";
 
-  @InjectView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-  @InjectView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
+  @Bind(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+  @Bind(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
   @Inject Api api;
   @Inject SessionPreferences sessionPreferences;
@@ -79,14 +73,11 @@ public class SessionListFragment extends BaseListFragment
     super.onCreateOptionsMenu(menu, inflater);
     if (sessionPreferences.hasFavorites()) {
       inflater.inflate(R.menu.favorites, menu);
-      menu.findItem(R.id.action_favorites)
-          .setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override public boolean onMenuItemClick(MenuItem item) {
-              item.setChecked(!item.isChecked());
-              sessionAdapter.filterFavorites(item.isChecked());
-              return true;
-            }
-          });
+      menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(item -> {
+        item.setChecked(!item.isChecked());
+        sessionAdapter.filterFavorites(item.isChecked());
+        return true;
+      });
     }
   }
 
@@ -114,38 +105,20 @@ public class SessionListFragment extends BaseListFragment
   }
 
   private void fetchData() {
-    final Observable<List<Session>> getSessionsByDay =
-        bindFragment(this, api.getSessionsByDay(day)) //
-            .compose(Transformers.<List<Session>>setRefreshing(swipeRefreshLayout));
-    addSubscription(getSessionsByDay.subscribe(new SessionListSubscriber(sessionAdapter)));
+    api.getSessionsByDay(day) //
+        .compose(setRefreshing(swipeRefreshLayout)) //
+        .compose(bindToLifecycle()) //
+        .compose(ioSchedulers()) //
+        .subscribe(sessionAdapter::setData, //
+            throwable -> {
+              Timber.e(throwable, "Schedule failed to load");
+            });
   }
 
   private void refreshFavoritesMenu() {
     final ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
     if (supportActionBar != null) {
       supportActionBar.invalidateOptionsMenu();
-    }
-  }
-
-  private static final class SessionListSubscriber extends ApiRequestSubscriber<List<Session>> {
-
-    private final WeakReference<SessionAdapter> sessionAdapter;
-
-    public SessionListSubscriber(SessionAdapter sessionAdapter) {
-      super();
-      this.sessionAdapter = new WeakReference<>(sessionAdapter);
-    }
-
-    @Override public void onError(Throwable e) {
-      super.onError(e);
-      Timber.e(e, "Schedule failed to load");
-    }
-
-    @Override public void onNext(List<Session> sessions) {
-      final SessionAdapter sessionAdapter = this.sessionAdapter.get();
-      if (sessionAdapter != null) {
-        sessionAdapter.setData(sessions);
-      }
     }
   }
 }
