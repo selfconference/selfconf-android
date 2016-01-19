@@ -5,8 +5,6 @@ import android.view.MenuItem;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
 
-import static org.selfconference.android.utils.ResourceProvider.getColor;
-
 public class SettingsActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {

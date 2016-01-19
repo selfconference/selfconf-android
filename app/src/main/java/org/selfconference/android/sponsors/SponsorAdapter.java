@@ -2,12 +2,11 @@ package org.selfconference.android.sponsors;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.squareup.picasso.Picasso;
 import java.util.Locale;
 import javax.inject.Inject;
@@ -15,8 +14,8 @@ import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import rx.Observable;
+import rx.Observable.Transformer;
 import rx.Subscription;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.observables.StringObservable;
 import rx.subscriptions.CompositeSubscription;
@@ -38,13 +37,9 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
   }
 
   @Override protected Func1<Sponsor, Boolean> filterPredicate(final String query) {
-    return new Func1<Sponsor, Boolean>() {
-      @Override public Boolean call(Sponsor sponsor) {
-        return sponsor.getName() //
-            .toLowerCase(Locale.US) //
-            .contains(query.toLowerCase(Locale.US));
-      }
-    };
+    return sponsor -> sponsor.getName() //
+        .toLowerCase(Locale.US) //
+        .contains(query.toLowerCase(Locale.US));
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,11 +51,9 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     final Sponsor sponsor = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        if (onSponsorClickListener != null) {
-          onSponsorClickListener.onSponsorClicked(sponsor);
-        }
+    holder.itemView.setOnClickListener(v -> {
+      if (onSponsorClickListener != null) {
+        onSponsorClickListener.onSponsorClicked(sponsor);
       }
     });
 
@@ -77,25 +70,13 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     });
 
     holder.sponsorName.setText(sponsor.getName());
-    final Observable<String> sponsorNames = Observable.from(sponsor.getSponsorLevels()) //
-        .map(new Func1<SponsorLevel, String>() {
-          @Override public String call(SponsorLevel sponsorLevel) {
-            return sponsorLevel.getName();
-          }
-        });
-
-    final Subscription sponsorNameSubscription = StringObservable.join(sponsorNames, ", ") //
-        .map(new Func1<String, String>() {
-          @Override public String call(String s) {
-            final int sponsorLevels = sponsor.getSponsorLevels().size();
-            return getQuantityString(R.plurals.sponsor_levels, sponsorLevels, s);
-          }
+    final Subscription sponsorNameSubscription = Observable.from(sponsor.getSponsorLevels()) //
+        .map(SponsorLevel::getName) //
+        .compose(joinStringsWith(", ")) //
+        .map(s -> {
+          return getQuantityString(R.plurals.sponsor_levels, sponsor.getSponsorLevels().size(), s);
         }) //
-        .subscribe(new Action1<String>() {
-          @Override public void call(String s) {
-            holder.sponsorType.setText(s);
-          }
-        });
+        .subscribe(holder.sponsorType::setText);
     compositeSubscription.add(sponsorNameSubscription);
   }
 
@@ -104,11 +85,15 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     compositeSubscription.unsubscribe();
   }
 
+  private static Transformer<String, String> joinStringsWith(String delimiter) {
+    return stringObservable -> StringObservable.join(stringObservable, delimiter);
+  }
+
   public static final class ViewHolder extends ButterKnifeViewHolder {
 
-    @InjectView(R.id.sponsor_logo) public ImageView sponsorLogo;
-    @InjectView(R.id.sponsor_name) public TextView sponsorName;
-    @InjectView(R.id.sponsor_type) public TextView sponsorType;
+    @Bind(R.id.sponsor_logo) public ImageView sponsorLogo;
+    @Bind(R.id.sponsor_name) public TextView sponsorName;
+    @Bind(R.id.sponsor_type) public TextView sponsorType;
 
     public ViewHolder(View itemView) {
       super(itemView);

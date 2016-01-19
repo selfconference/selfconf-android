@@ -9,10 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import org.selfconference.android.R;
 import org.selfconference.android.feedback.VoteButton.OnVoteSelectedListener;
+import org.selfconference.android.feedback.VoteButton.Vote;
 import org.selfconference.android.session.Session;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -28,8 +29,8 @@ public class FeedbackFragment extends DialogFragment implements OnVoteSelectedLi
   private static final String EXTRA_SESSION =
       "org.selfconference.android.feedback.FeedbackFragment.EXTRA_SESSION";
 
-  @InjectView(R.id.vote_button) VoteButton voteButton;
-  @InjectView(R.id.feedback_fragment_comment_section) EditText comments;
+  @Bind(R.id.vote_button) VoteButton voteButton;
+  @Bind(R.id.feedback_fragment_comment_section) EditText comments;
 
   private Session session;
 
@@ -62,20 +63,16 @@ public class FeedbackFragment extends DialogFragment implements OnVoteSelectedLi
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.inject(this, view);
+    ButterKnife.bind(this, view);
     getDialog().setTitle(R.string.feedback_dialog_title);
     getDialog().getWindow().getAttributes().windowAnimations = R.style.FeedbackFragment;
   }
 
-  @Override public void onVoteSelected(VoteButton voteButton, final Vote vote) {
+  @Override public void onVoteSelected(VoteButton voteButton, @Vote final int vote) {
     final Feedback feedback = new Feedback(vote, comments.getText().toString());
     final Intent submitFeedbackServiceIntent =
         SubmitFeedbackIntentService.newIntent(session, feedback);
     getActivity().startService(submitFeedbackServiceIntent);
-    voteButton.postDelayed(new Runnable() {
-      @Override public void run() {
-        dismiss();
-      }
-    }, 200);
+    voteButton.postDelayed(this::dismiss, 200);
   }
 }

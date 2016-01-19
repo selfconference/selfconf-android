@@ -1,12 +1,10 @@
 package org.selfconference.android;
 
 import android.app.Application;
-import android.net.Uri;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Picasso.Listener;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -15,8 +13,6 @@ import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.feedback.SubmitFeedbackIntentService;
-import org.selfconference.android.feedback.Vote;
-import org.selfconference.android.feedback.VoteTypeAdapter;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.session.SessionAdapter;
 import org.selfconference.android.session.SessionContainerFragment;
@@ -39,7 +35,7 @@ import timber.log.Timber;
 
 import static org.selfconference.android.BuildConfig.DEBUG;
 import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOINT;
-import static retrofit.RestAdapter.LogLevel.BASIC;
+import static retrofit.RestAdapter.LogLevel.FULL;
 import static retrofit.RestAdapter.LogLevel.NONE;
 
 @Module(
@@ -78,7 +74,6 @@ public class SelfConferenceAppModule {
         .registerTypeAdapter(Session.class, new Session.Deserializer())
         .registerTypeAdapter(Speaker.class, new SpeakerTypeAdapter())
         .registerTypeAdapter(Sponsor.class, new SponsorTypeAdapter())
-        .registerTypeAdapter(Vote.class, new VoteTypeAdapter())
         .create();
   }
 
@@ -87,18 +82,15 @@ public class SelfConferenceAppModule {
         .setEndpoint(SELF_CONFERENCE_API_ENDPOINT)
         .setClient(new OkClient())
         .setConverter(new GsonConverter(gson))
-        .setLogLevel(DEBUG ? BASIC : NONE)
+        .setLogLevel(DEBUG ? FULL : NONE)
         .build()
         .create(SelfConferenceClient.class);
   }
 
   @Provides @Singleton Picasso picasso() {
     return new Picasso.Builder(application) //
-        .listener(new Listener() {
-          @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-            Timber.e(exception, "Image load failed for URI: %s", uri);
-          }
-        }).build();
+        .listener((picasso, uri, e) -> Timber.e(e, "Image load failed for URI: %s", uri)) //
+        .build();
   }
 
   @Provides SessionPreferences savedSessionPreferences() {

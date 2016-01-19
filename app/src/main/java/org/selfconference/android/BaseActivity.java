@@ -3,19 +3,15 @@ package org.selfconference.android;
 import android.app.ActivityManager.TaskDescription;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.selfconference.android.utils.ResourceProvider.getColor;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends RxAppCompatActivity {
 
-  private final CompositeSubscription compositeSubscription = new CompositeSubscription();
   private Toolbar toolbar;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +21,6 @@ public abstract class BaseActivity extends AppCompatActivity {
           BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_task),
           getColor(R.color.green)));
     }
-  }
-
-  @Override public void onDestroy() {
-    super.onDestroy();
-    compositeSubscription.unsubscribe();
   }
 
   protected Toolbar getToolbar() {
@@ -43,9 +34,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     if (SDK_INT >= LOLLIPOP) {
       getWindow().setStatusBarColor(color);
     }
-  }
-
-  protected void addSubscription(Subscription subscription) {
-    compositeSubscription.add(subscription);
   }
 }

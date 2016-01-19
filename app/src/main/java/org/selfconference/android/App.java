@@ -1,22 +1,14 @@
 package org.selfconference.android;
 
 import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import com.crashlytics.android.Crashlytics;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 import com.squareup.leakcanary.LeakCanary;
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
-import static com.parse.ParsePush.subscribeInBackground;
 import static org.selfconference.android.BuildConfig.DEBUG;
-import static org.selfconference.android.BuildConfig.PARSE_APPLICATION_ID;
-import static org.selfconference.android.BuildConfig.PARSE_CLIENT_ID;
 
 public class App extends Application {
 
@@ -36,7 +28,6 @@ public class App extends Application {
     if (DEBUG) {
       Timber.plant(new DebugTree());
     }
-    setUpPushNotifications();
     objectGraph = ObjectGraph.create(new SelfConferenceAppModule(this));
   }
 
@@ -50,24 +41,5 @@ public class App extends Application {
 
   protected void setupFabric() {
     Fabric.with(this, new Crashlytics());
-  }
-
-  protected void setUpPushNotifications() {
-    Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_ID);
-    subscribeInBackground("", new SaveCallback() {
-      @Override public void done(ParseException e) {
-        if (e == null) {
-          Timber.d("Successfully subscribed to Parse Push");
-        } else {
-          Timber.e(e, "Error subscribing to Parse Push");
-        }
-      }
-    });
-    final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-    final boolean arePushNotificationsEnabled =
-        preferences.getBoolean(getString(R.string.key_push_notifications), true);
-    if (arePushNotificationsEnabled) {
-      subscribeInBackground("all");
-    }
   }
 }

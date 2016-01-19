@@ -12,7 +12,6 @@ import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
 import retrofit.client.Response;
 import rx.Observable;
-import rx.functions.Func1;
 import rx.functions.Func2;
 
 import static org.selfconference.android.utils.DateTimeHelper.intervalForDay;
@@ -44,16 +43,10 @@ public final class SelfConferenceApi implements Api {
 
   @Override public Observable<List<Session>> getSessionsByDay(final Day day) {
     return getSessions() //
-        .flatMap(new Func1<List<Session>, Observable<Session>>() {
-          @Override public Observable<Session> call(List<Session> list) {
-            return Observable.from(list);
-          }
-        }) //
-        .filter(new Func1<Session, Boolean>() {
-          @Override public Boolean call(Session session) {
-            final Interval interval = intervalForDay(day);
-            return interval.contains(session.getBeginning());
-          }
+        .flatMap(Observable::from) //
+        .filter(session -> {
+          final Interval interval = intervalForDay(day);
+          return interval.contains(session.getBeginning());
         }) //
         .toSortedList(sortByDate());
   }
@@ -63,10 +56,6 @@ public final class SelfConferenceApi implements Api {
   }
 
   private static Func2<Session, Session, Integer> sortByDate() {
-    return new Func2<Session, Session, Integer>() {
-      @Override public Integer call(Session session, Session session2) {
-        return session.getBeginning().compareTo(session2.getBeginning());
-      }
-    };
+    return (session, session2) -> session.getBeginning().compareTo(session2.getBeginning());
   }
 }

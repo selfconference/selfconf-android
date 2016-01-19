@@ -1,13 +1,11 @@
 package org.selfconference.android.speakers;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.InjectView;
+import butterknife.Bind;
 import com.squareup.picasso.Picasso;
 import java.util.Locale;
 import javax.inject.Inject;
@@ -41,11 +39,9 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
   }
 
   @Override protected Func1<Speaker, Boolean> filterPredicate(final String query) {
-    return new Func1<Speaker, Boolean>() {
-      @Override public Boolean call(Speaker speaker) {
-        return speaker.getName().toLowerCase(Locale.US).contains(query.toLowerCase(Locale.US));
-      }
-    };
+    return speaker -> speaker.getName()
+        .toLowerCase(Locale.US)
+        .contains(query.toLowerCase(Locale.US));
   }
 
   @Override public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,11 +53,9 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
   @Override public void onBindViewHolder(final SpeakerViewHolder holder, final int position) {
     final Speaker speaker = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(@NonNull View v) {
-        if (onSpeakerClickListener != null) {
-          onSpeakerClickListener.onSpeakerClick(speaker);
-        }
+    holder.itemView.setOnClickListener(v -> {
+      if (onSpeakerClickListener != null) {
+        onSpeakerClickListener.onSpeakerClick(speaker);
       }
     });
     holder.speakerName.setText(speaker.getName());
@@ -88,9 +82,9 @@ public class SpeakerAdapter extends FilterableAdapter<Speaker, SpeakerAdapter.Sp
 
   public static class SpeakerViewHolder extends ButterKnifeViewHolder {
 
-    @InjectView(R.id.row_icon) public ImageView speakerPhoto;
-    @InjectView(R.id.row_title) public TextView speakerName;
-    @InjectView(R.id.row_subtitle) public TextView speakerDescription;
+    @Bind(R.id.row_icon) public ImageView speakerPhoto;
+    @Bind(R.id.row_title) public TextView speakerName;
+    @Bind(R.id.row_subtitle) public TextView speakerDescription;
 
     public SpeakerViewHolder(View itemView) {
       super(itemView);

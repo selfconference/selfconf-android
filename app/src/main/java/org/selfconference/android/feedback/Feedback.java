@@ -3,25 +3,25 @@ package org.selfconference.android.feedback;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.common.base.Objects;
+import org.selfconference.android.feedback.VoteButton.Vote;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
-import static org.selfconference.android.feedback.Vote.NEGATIVE;
-import static org.selfconference.android.feedback.Vote.POSITIVE;
 
 @SuppressWarnings({ "FieldCanBeLocal", "unused" }) //
 public class Feedback implements Parcelable {
-  private final Vote vote;
+  @Vote private final int vote;
   private final String comments;
 
-  public Feedback(Vote vote, String comments) {
+  public Feedback(@Vote int vote, String comments) {
     this.vote = vote;
     this.comments = comments;
   }
 
   private Feedback(Parcel parcel) {
-    vote = parcel.readInt() == 1 ? POSITIVE : NEGATIVE;
-    comments = parcel.readString();
+    @Vote final int vote = parcel.readInt();
+    this.vote = vote;
+    this.comments = parcel.readString();
   }
 
   @Override public boolean equals(Object o) {
@@ -51,7 +51,7 @@ public class Feedback implements Parcelable {
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(this.vote == POSITIVE ? 1 : -1);
+    dest.writeInt(this.vote);
     dest.writeString(this.comments);
   }
 

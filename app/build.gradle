@@ -1,6 +1,6 @@
 // Manifest version information!
-def versionMajor = 1
-def versionMinor = 1
+def versionMajor = 2
+def versionMinor = 0
 def versionPatch = 0
 def versionBuild = 0
 // bump for dogfood builds, public betas, etc.
@@ -10,9 +10,11 @@ buildscript {
     maven { url 'https://maven.fabric.io/public' }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.2.3'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    classpath 'com.android.tools.build:gradle:1.5.0'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
     classpath 'io.fabric.tools:gradle:1.+'
+    classpath 'me.tatarka:gradle-retrolambda:3.2.2'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
   }
 }
 
@@ -21,17 +23,19 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.github.ben-manes.versions'
 
 android {
-  compileSdkVersion 22
-  buildToolsVersion "22.0.1"
+  compileSdkVersion rootProject.compileSdkVersion
+  buildToolsVersion rootProject.buildToolsVersion
 
   defaultConfig {
     applicationId "org.selfconference.android"
-    minSdkVersion 16
-    targetSdkVersion 22
+    minSdkVersion rootProject.minSdkVersion
+    targetSdkVersion rootProject.targetSdkVersion
     versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
   }
@@ -57,74 +61,72 @@ android {
       minifyEnabled false
       signingConfig signingConfigs.release
 
-      def prop = loadProperties('release.properties')
-
       resValue "string", "app_name", "Self.conference"
 
-      buildConfigField "String", "PARSE_APPLICATION_ID", parseApplicationId(prop)
-      buildConfigField "String", "PARSE_CLIENT_ID", parseClientSecret(prop)
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api\""
     }
     debug {
       applicationIdSuffix '.debug'
       signingConfig signingConfigs.debug
 
-      def prop = loadProperties('debug.properties')
-
       resValue "string", "app_name", "Self.conference Debug"
 
-      buildConfigField "String", "PARSE_APPLICATION_ID", parseApplicationId(prop)
-      buildConfigField "String", "PARSE_CLIENT_ID", parseClientSecret(prop)
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT",
           "\"http://selfconf-dev.herokuapp.com/api\""
     }
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_7
-    targetCompatibility JavaVersion.VERSION_1_7
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}
+
+configurations.all {
+  resolutionStrategy {
+    force "com.android.support:support-annotations:$rootProject.deps.supportLibrary"
   }
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: '*.jar')
-  compile 'com.android.support:support-annotations:22.2.0'
-  compile 'com.android.support:appcompat-v7:22.2.0'
-  compile 'com.android.support:support-v4:22.2.0'
-  compile 'com.android.support:design:22.2.0'
-  compile 'com.android.support:recyclerview-v7:22.2.0'
-  compile 'com.android.support:cardview-v7:22.2.0'
+  compile "com.android.support:support-annotations:$rootProject.deps.supportLibrary"
+  compile "com.android.support:appcompat-v7:$rootProject.deps.supportLibrary"
+  compile "com.android.support:support-v4:$rootProject.deps.supportLibrary"
+  compile "com.android.support:design:$rootProject.deps.supportLibrary"
+  compile "com.android.support:recyclerview-v7:$rootProject.deps.supportLibrary"
+  compile "com.android.support:cardview-v7:$rootProject.deps.supportLibrary"
 
-  compile 'com.jakewharton:butterknife:6.1.0'
-  compile 'com.jakewharton.timber:timber:3.0.2'
-  compile 'com.squareup.dagger:dagger:1.2.2'
-  apt 'com.squareup.dagger:dagger-compiler:1.2.2'
-  compile 'com.squareup.picasso:picasso:2.5.2'
-  compile 'com.squareup.okhttp:okhttp:2.3.0'
-  compile 'com.squareup.retrofit:retrofit:1.9.0'
-  compile 'com.squareup:otto:1.3.7'
+  compile "com.jakewharton:butterknife:$rootProject.deps.butterknife"
+  compile "com.jakewharton.timber:timber:$rootProject.deps.timber"
+  compile "com.squareup.dagger:dagger:$rootProject.deps.dagger"
+  apt "com.squareup.dagger:dagger-compiler:$rootProject.deps.dagger"
+  compile "com.squareup.picasso:picasso:$rootProject.deps.picasso"
+  compile "com.squareup.okhttp:okhttp:$rootProject.deps.okhttp"
+  compile "com.squareup.retrofit:retrofit:$rootProject.deps.retrofit"
+  compile "com.squareup:otto:$rootProject.deps.otto"
 
-  compile 'com.google.code.gson:gson:2.3.1'
-  compile 'joda-time:joda-time:2.7'
+  compile "com.google.code.gson:gson:$rootProject.deps.gson"
+  compile "joda-time:joda-time:$rootProject.deps.jodaTime"
 
-  compile 'com.google.guava:guava:18.0'
+  compile "com.google.guava:guava:$rootProject.deps.guava"
 
-  compile 'io.reactivex:rxandroid:0.24.0'
-  compile 'io.reactivex:rxjava-string:0.22.0'
+  compile "io.reactivex:rxjava:$rootProject.deps.rxJava"
+  compile "io.reactivex:rxandroid:$rootProject.deps.rxJava"
+  compile "io.reactivex:rxjava-string:$rootProject.deps.rxJavaString"
+  compile "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
+  compile "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
 
-  compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-  compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
+  compile "com.amulyakhare:com.amulyakhare.textdrawable:$rootProject.deps.textDrawable"
+  compile("com.crashlytics.sdk.android:crashlytics:$rootProject.deps.crashlytics") {
     transitive = true;
   }
 
-  debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-  releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+  debugCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
+  releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
 
-  testCompile 'org.robolectric:robolectric:2.4'
-  testCompile 'junit:junit:4.12'
-  testCompile('com.squareup.assertj:assertj-android:1.0.0') {
-    exclude group: 'com.android.support', module: 'support-annotations'
-  }
+  testCompile "org.robolectric:robolectric:$rootProject.deps.robolectric"
+  testCompile "junit:junit:$rootProject.deps.junit"
+  testCompile "com.squareup.assertj:assertj-android:$rootProject.deps.assertjAndroid"
 }
 
 def Properties loadProperties(String filename) {
@@ -133,12 +135,4 @@ def Properties loadProperties(String filename) {
     properties.load(new FileInputStream(rootProject.file(filename)))
   }
   return properties
-}
-
-def String parseApplicationId(Properties prop) {
-  return "\"${prop.parseApplicationId ?: System.getenv('parseApplicationId')}\""
-}
-
-def String parseClientSecret(Properties prop) {
-  return "\"${prop.parseClientSecret ?: System.getenv('parseClientSecret')}\""
 }

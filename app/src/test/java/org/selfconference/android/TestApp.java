@@ -6,10 +6,6 @@ public class TestApp extends App {
     // do not install Canary for tests
   }
 
-  @Override protected void setUpPushNotifications() {
-    // do not set up Parse for tests
-  }
-
   @Override protected void setupFabric() {
     // do not initialize Fabric for tests
   }
