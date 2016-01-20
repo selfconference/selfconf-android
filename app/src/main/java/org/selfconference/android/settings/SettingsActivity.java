@@ -1,17 +1,18 @@
 package org.selfconference.android.settings;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
 
-public class SettingsActivity extends BaseActivity {
+public final class SettingsActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
     setSupportActionBar(getToolbar());
-    setStatusBarColor(getColor(R.color.green_dark));
+    setStatusBarColor(ContextCompat.getColor(this, R.color.green_dark));
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
   }
 

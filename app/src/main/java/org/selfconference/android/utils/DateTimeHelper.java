@@ -17,8 +17,8 @@ public final class DateTimeHelper {
   }
 
   public static Interval intervalForDay(Day day) {
-    final DateTime startTime = day.getStartTime();
-    final DateTime end = startTime.plusDays(1).minusSeconds(1);
+    DateTime startTime = day.getStartTime();
+    DateTime end = startTime.plusDays(1).minusSeconds(1);
     return new Interval(startTime, end);
   }
 

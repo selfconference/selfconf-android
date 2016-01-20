@@ -22,9 +22,11 @@ import static org.selfconference.android.utils.ResourceProvider.getColor;
 /**
  * A wrapper view for providing thumbs up or thumbs down feedback for a session.
  */
-public class VoteButton extends LinearLayout implements OnClickListener {
+public final class VoteButton extends LinearLayout implements OnClickListener {
 
-  @Retention(CLASS) @IntDef({ VOTE_NEGATIVE, VOTE_POSITIVE }) public @interface Vote {
+  @Retention(CLASS) //
+  @IntDef({ VOTE_NEGATIVE, VOTE_POSITIVE }) //
+  public @interface Vote {
   }
 
   public static final int VOTE_NEGATIVE = -1;
@@ -96,7 +98,7 @@ public class VoteButton extends LinearLayout implements OnClickListener {
 
   private static void applyColor(ImageView... imageViews) {
     for (ImageView imageView : imageViews) {
-      final Drawable wrappedDrawable = wrap(imageView.getDrawable());
+      Drawable wrappedDrawable = wrap(imageView.getDrawable());
       setTint(wrappedDrawable, getColor(R.color.image_tint_dark));
       imageView.setImageDrawable(wrappedDrawable);
     }

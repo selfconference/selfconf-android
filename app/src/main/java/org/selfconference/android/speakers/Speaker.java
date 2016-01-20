@@ -10,7 +10,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Speaker implements Parcelable {
+public final class Speaker implements Parcelable {
   private final int id;
   private final String name;
   private final String twitter;

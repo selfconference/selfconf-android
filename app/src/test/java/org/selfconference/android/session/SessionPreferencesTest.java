@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(CustomTestRunner.class)
 @Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
-public class SessionPreferencesTest {
+public final class SessionPreferencesTest {
 
   private SessionPreferences preferences;
 
@@ -20,7 +20,7 @@ public class SessionPreferencesTest {
   }
 
   @Test public void testSavedSessionPreferences() throws Exception {
-    final Session session = Session.builder().id(13).build();
+    Session session = Session.builder().id(13).build();
 
     assertThat(preferences.isFavorite(session)).isFalse();
 

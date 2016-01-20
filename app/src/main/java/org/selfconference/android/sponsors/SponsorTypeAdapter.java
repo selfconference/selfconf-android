@@ -23,8 +23,8 @@ public final class SponsorTypeAdapter extends TypeAdapter<Sponsor> {
   }
 
   @Override public Sponsor read(JsonReader in) throws IOException {
-    final Sponsor.Builder builder = Sponsor.builder();
-    final Set<SponsorLevel> sponsorLevelsSet = newHashSet();
+    Sponsor.Builder builder = Sponsor.builder();
+    Set<SponsorLevel> sponsorLevelsSet = newHashSet();
 
     in.beginObject();
     while (in.hasNext()) {
@@ -44,7 +44,7 @@ public final class SponsorTypeAdapter extends TypeAdapter<Sponsor> {
         case KEY_SPONSOR_LEVELS:
           in.beginArray();
           while (in.hasNext()) {
-            final SponsorLevel sponsorLevel = GSON.fromJson(in, SponsorLevel.class);
+            SponsorLevel sponsorLevel = GSON.fromJson(in, SponsorLevel.class);
             sponsorLevelsSet.add(sponsorLevel);
           }
           builder.sponsorLevels(newArrayList(sponsorLevelsSet));
