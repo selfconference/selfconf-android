@@ -9,7 +9,7 @@ import butterknife.Bind;
 import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
 
-public class CodeOfConductFragment extends BaseFragment {
+public final class CodeOfConductFragment extends BaseFragment {
   public static final String TAG = CodeOfConductFragment.class.getName();
 
   @Bind(R.id.code_of_conduct_recycler_view) RecyclerView recyclerView;

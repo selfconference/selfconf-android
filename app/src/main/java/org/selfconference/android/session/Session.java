@@ -21,7 +21,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.joda.time.DateTime.now;
 import static org.selfconference.android.session.Room.emptyRoom;
 
-public class Session implements Parcelable {
+public final class Session implements Parcelable {
   private final int id;
   private final String title;
   private final Room room;
@@ -115,19 +115,19 @@ public class Session implements Parcelable {
     return Objects.hashCode(id, title, room, description, beginning, speakers);
   }
 
-  public static class Deserializer implements JsonDeserializer<Session> {
+  public static final class Deserializer implements JsonDeserializer<Session> {
     @Override
     public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
         throws JsonParseException {
-      final JsonObject jsonObject = json.getAsJsonObject();
-      final JsonElement id = jsonObject.get("id");
-      final JsonElement title = jsonObject.get("name");
-      final JsonElement roomJsonObject = jsonObject.get("room");
-      final JsonElement beginning = jsonObject.get("slot");
-      final JsonElement description = jsonObject.get("abstract");
-      final JsonElement speakers = jsonObject.get("speakers");
-      final JsonElement keynote = jsonObject.get("keynote");
-      final Room room = context.deserialize(roomJsonObject, Room.class);
+      JsonObject jsonObject = json.getAsJsonObject();
+      JsonElement id = jsonObject.get("id");
+      JsonElement title = jsonObject.get("name");
+      JsonElement roomJsonObject = jsonObject.get("room");
+      JsonElement beginning = jsonObject.get("slot");
+      JsonElement description = jsonObject.get("abstract");
+      JsonElement speakers = jsonObject.get("speakers");
+      JsonElement keynote = jsonObject.get("keynote");
+      Room room = context.deserialize(roomJsonObject, Room.class);
       return new Builder() //
           .id(id.getAsInt())
           .title(title.getAsString())
@@ -141,13 +141,13 @@ public class Session implements Parcelable {
 
     private static List<Speaker> determineSpeakers(JsonDeserializationContext context,
         JsonElement jsonElement) {
-      final List<Speaker> speakers = newArrayList();
+      List<Speaker> speakers = newArrayList();
       if (jsonElement == null) {
         return speakers;
       } else {
-        final JsonArray jsonArray = jsonElement.getAsJsonArray();
+        JsonArray jsonArray = jsonElement.getAsJsonArray();
         for (JsonElement element : jsonArray) {
-          final Speaker speaker = context.deserialize(element, Speaker.class);
+          Speaker speaker = context.deserialize(element, Speaker.class);
           speakers.add(speaker);
         }
         return speakers;

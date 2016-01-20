@@ -6,6 +6,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public abstract class BaseListFragment extends BaseFragment {
 
@@ -17,8 +18,8 @@ public abstract class BaseListFragment extends BaseFragment {
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
     inflater.inflate(R.menu.search, menu);
-    final SearchView searchView =
-        (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+    MenuItem searchItem = menu.findItem(R.id.action_search);
+    SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
     searchView.setOnQueryTextListener(new OnQueryTextListener() {
       @Override public boolean onQueryTextSubmit(String s) {
         return false;

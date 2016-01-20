@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -17,7 +18,7 @@ import org.selfconference.android.settings.SettingsActivity;
 
 import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
 
-public class MainActivity extends BaseActivity {
+public final class MainActivity extends BaseActivity {
 
   @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
   @Bind(R.id.navigation_view) NavigationView navigationView;
@@ -31,7 +32,7 @@ public class MainActivity extends BaseActivity {
 
     setSupportActionBar(getToolbar());
 
-    drawerLayout.setStatusBarBackgroundColor(getColor(R.color.green_dark));
+    drawerLayout.setStatusBarBackgroundColor(ContextCompat.getColor(this, R.color.green_dark));
 
     drawerToggle = new ActionBarDrawerToggle(this, //
         drawerLayout, //
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity {
   }
 
   private void clickNavigationDrawerItem(@IdRes int menuIdRes) {
-    final MenuItem clickedMenuItem = navigationView.getMenu().findItem(menuIdRes);
+    MenuItem clickedMenuItem = navigationView.getMenu().findItem(menuIdRes);
     navigationItemSelectedListener.onNavigationItemSelected(clickedMenuItem);
   }
 
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivity {
   private final OnNavigationItemSelectedListener navigationItemSelectedListener =
       new OnNavigationItemSelectedListener() {
         @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
-          final DrawerItem drawerItem = DrawerItem.fromMenuItem(menuItem);
+          DrawerItem drawerItem = DrawerItem.fromMenuItem(menuItem);
           if (drawerItem != SETTINGS) {
             changeFragment(drawerItem);
             menuItem.setChecked(true);

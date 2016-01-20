@@ -36,22 +36,21 @@ public final class SelfConferenceApi implements Api {
     return client.getSponsors();
   }
 
-  @Override
-  public Observable<Response> submitFeedback(final Session session, final Feedback feedback) {
+  @Override public Observable<Response> submitFeedback(Session session, Feedback feedback) {
     return client.submitFeedback(session.getId(), new FeedbackRequest(feedback));
   }
 
-  @Override public Observable<List<Session>> getSessionsByDay(final Day day) {
+  @Override public Observable<List<Session>> getSessionsByDay(Day day) {
     return getSessions() //
         .flatMap(Observable::from) //
         .filter(session -> {
-          final Interval interval = intervalForDay(day);
+          Interval interval = intervalForDay(day);
           return interval.contains(session.getBeginning());
         }) //
         .toSortedList(sortByDate());
   }
 
-  @Override public Observable<Session> getSessionById(final int id) {
+  @Override public Observable<Session> getSessionById(int id) {
     return client.getSessionById(id);
   }
 

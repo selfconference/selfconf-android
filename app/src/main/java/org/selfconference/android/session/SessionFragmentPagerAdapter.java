@@ -7,14 +7,14 @@ import org.selfconference.android.R;
 
 import static org.selfconference.android.utils.ResourceProvider.getString;
 
-public class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
+public final class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
   public SessionFragmentPagerAdapter(FragmentManager fm) {
     super(fm);
   }
 
   @Override public Fragment getItem(int position) {
-    final Day day = Day.fromPosition(position);
+    Day day = Day.fromPosition(position);
     return SessionListFragment.newInstance(day);
   }
 

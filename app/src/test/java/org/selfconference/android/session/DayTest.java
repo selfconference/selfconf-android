@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DayTest {
+public final class DayTest {
 
   @Test public void zeroPositionEquatesToDayOne() throws Exception {
     assertThat(Day.fromPosition(0)).isEqualTo(Day.ONE);

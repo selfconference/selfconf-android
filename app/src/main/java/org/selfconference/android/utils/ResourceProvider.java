@@ -13,7 +13,7 @@ public final class ResourceProvider {
   private static final Resources RESOURCES = App.getInstance().getResources();
 
   public static int getColor(@ColorRes int colorResId) {
-    return RESOURCES.getColor(colorResId);
+    return ContextCompat.getColor(App.getInstance(), colorResId);
   }
 
   public static String getString(@StringRes int stringResId, Object... formatArgs) {

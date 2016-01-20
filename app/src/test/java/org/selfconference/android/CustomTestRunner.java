@@ -3,7 +3,7 @@ package org.selfconference.android;
 import org.junit.runners.model.InitializationError;
 import org.robolectric.RobolectricTestRunner;
 
-public class CustomTestRunner extends RobolectricTestRunner {
+public final class CustomTestRunner extends RobolectricTestRunner {
   /**
    * Creates a runner to run {@code testClass}. Looks in your working directory for your
    * AndroidManifest.xml file

@@ -40,12 +40,12 @@ public final class SessionDetailAdapter
     return sessionDetails.size();
   }
 
-  public static class ViewHolder extends ButterKnifeViewHolder {
+  static final class ViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.row_icon) public ImageView icon;
-    @Bind(R.id.row_title) public TextView title;
+    @Bind(R.id.row_icon) ImageView icon;
+    @Bind(R.id.row_title) TextView title;
 
-    public ViewHolder(View itemView) {
+    ViewHolder(View itemView) {
       super(itemView);
     }
   }

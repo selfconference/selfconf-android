@@ -13,10 +13,11 @@ import static org.joda.time.DateTime.now;
 import static org.selfconference.android.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class)
-@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml") public class SessionTest {
+@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
+public final class SessionTest {
 
   @Test public void sessionParcelsWithoutError() throws Exception {
-    final Session session = Session.builder()
+    Session session = Session.builder()
         .id(4)
         .beginning(now())
         .description("description")
@@ -25,7 +26,7 @@ import static org.selfconference.android.Parceler.testParceling;
         .title("title")
         .build();
 
-    final Container<Session> sessionContainer = testParceling(session, Session.CREATOR);
+    Container<Session> sessionContainer = testParceling(session, Session.CREATOR);
 
     assertThat(sessionContainer.original).isEqualTo(sessionContainer.parceled);
   }

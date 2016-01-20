@@ -19,8 +19,7 @@ import timber.log.Timber;
 import static org.selfconference.android.utils.rx.Transformers.ioSchedulers;
 import static org.selfconference.android.utils.rx.Transformers.setRefreshing;
 
-public class SpeakerListFragment extends BaseListFragment
-    implements SpeakerAdapter.OnSpeakerClickListener, SwipeRefreshLayout.OnRefreshListener {
+public final class SpeakerListFragment extends BaseListFragment {
   public static final String TAG = SpeakerListFragment.class.getName();
 
   @Bind(R.id.speaker_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
@@ -36,12 +35,26 @@ public class SpeakerListFragment extends BaseListFragment
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    speakerAdapter.setOnSpeakerClickListener(this);
+    speakerAdapter.setOnSpeakerClickListener(speaker -> {
+      Timber.d("Speaker clicked: %s", speaker);
+      Observable.from(speaker.getSessions())
+          .first()
+          .flatMap(session -> api.getSessionById(session.getId()))
+          .compose(setRefreshing(swipeRefreshLayout))
+          .compose(bindToLifecycle())
+          .compose(ioSchedulers())
+          .subscribe(session -> {
+            Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
+            startActivity(intent);
+          }, throwable -> {
+            Timber.e(throwable, "Failed to load sessions for speaker");
+          });
+    });
 
     speakerRecyclerView.setAdapter(speakerAdapter);
     speakerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-    swipeRefreshLayout.setOnRefreshListener(this);
+    swipeRefreshLayout.setOnRefreshListener(this::fetchData);
 
     fetchData();
   }
@@ -52,26 +65,6 @@ public class SpeakerListFragment extends BaseListFragment
 
   @Override protected FilterableAdapter getFilterableAdapter() {
     return speakerAdapter;
-  }
-
-  @Override public void onSpeakerClick(Speaker speaker) {
-    Timber.d("Speaker clicked: %s", speaker);
-    Observable.from(speaker.getSessions())
-        .first()
-        .flatMap(session -> api.getSessionById(session.getId()))
-        .compose(setRefreshing(swipeRefreshLayout))
-        .compose(bindToLifecycle())
-        .compose(ioSchedulers())
-        .subscribe(session -> {
-          final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
-          startActivity(intent);
-        }, throwable -> {
-          Timber.e(throwable, "Failed to load sessions for speaker");
-        });
-  }
-
-  @Override public void onRefresh() {
-    fetchData();
   }
 
   private void fetchData() {

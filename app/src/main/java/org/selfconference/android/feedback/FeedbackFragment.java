@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Contains a {@link VoteButton} used for providing thumbs up or thumbs down feedback.
  * Also contains an {@link EditText} for optional comments.
  */
-public class FeedbackFragment extends DialogFragment implements OnVoteSelectedListener {
+public final class FeedbackFragment extends DialogFragment implements OnVoteSelectedListener {
   public static final String TAG = FeedbackFragment.class.getName();
   private static final String EXTRA_SESSION =
       "org.selfconference.android.feedback.FeedbackFragment.EXTRA_SESSION";
@@ -41,10 +41,11 @@ public class FeedbackFragment extends DialogFragment implements OnVoteSelectedLi
    * @return a FeedbackFragment for the provided session.
    */
   public static FeedbackFragment newInstance(@NonNull Session session) {
-    final Bundle args = new Bundle(1);
+    checkNotNull(session, "session == null");
+    Bundle args = new Bundle(1);
     args.putParcelable(EXTRA_SESSION, session);
 
-    final FeedbackFragment feedbackFragment = new FeedbackFragment();
+    FeedbackFragment feedbackFragment = new FeedbackFragment();
     feedbackFragment.setArguments(args);
     return feedbackFragment;
   }
@@ -68,10 +69,9 @@ public class FeedbackFragment extends DialogFragment implements OnVoteSelectedLi
     getDialog().getWindow().getAttributes().windowAnimations = R.style.FeedbackFragment;
   }
 
-  @Override public void onVoteSelected(VoteButton voteButton, @Vote final int vote) {
-    final Feedback feedback = new Feedback(vote, comments.getText().toString());
-    final Intent submitFeedbackServiceIntent =
-        SubmitFeedbackIntentService.newIntent(session, feedback);
+  @Override public void onVoteSelected(VoteButton voteButton, @Vote int vote) {
+    Feedback feedback = new Feedback(vote, comments.getText().toString());
+    Intent submitFeedbackServiceIntent = SubmitFeedbackIntentService.newIntent(session, feedback);
     getActivity().startService(submitFeedbackServiceIntent);
     voteButton.postDelayed(this::dismiss, 200);
   }

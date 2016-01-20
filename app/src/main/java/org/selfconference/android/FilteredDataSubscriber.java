@@ -3,7 +3,8 @@ package org.selfconference.android;
 import android.support.v7.widget.RecyclerView;
 import rx.Subscriber;
 
-public class FilteredDataSubscriber<T, VH extends RecyclerView.ViewHolder> extends Subscriber<T> {
+public final class FilteredDataSubscriber<T, VH extends RecyclerView.ViewHolder>
+    extends Subscriber<T> {
 
   private final FilterableAdapter<T, VH> filterableAdapter;
 

@@ -7,8 +7,8 @@ import org.selfconference.android.speakers.Speaker;
 public final class PlaceholderDrawable {
 
   public static TextDrawable forSpeaker(Speaker speaker) {
-    final BrandColor brandColor = BrandColor.makeBrand(speaker.getId());
-    final String firstInitial = speaker.getName().substring(0, 1);
+    BrandColor brandColor = BrandColor.makeBrand(speaker.getId());
+    String firstInitial = speaker.getName().substring(0, 1);
     return TextDrawable.builder().buildRound(firstInitial, brandColor.getPrimary());
   }
 

@@ -57,7 +57,7 @@ import static retrofit.RestAdapter.LogLevel.NONE;
         SessionDetailsActivity.class, //
         SubmitFeedbackIntentService.class //
     }) //
-public class SelfConferenceAppModule {
+public final class SelfConferenceAppModule {
 
   private final Application application;
 

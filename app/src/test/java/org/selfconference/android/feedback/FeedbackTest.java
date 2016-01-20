@@ -10,20 +10,21 @@ import static org.selfconference.android.Parceler.testParceling;
 import static org.selfconference.android.feedback.VoteButton.VOTE_NEGATIVE;
 import static org.selfconference.android.feedback.VoteButton.VOTE_POSITIVE;
 
-@RunWith(CustomTestRunner.class) public class FeedbackTest {
+@RunWith(CustomTestRunner.class) //
+public final class FeedbackTest {
 
   @Test public void parcelsNegativeFeedbackWithoutError() {
-    final Feedback feedback = new Feedback(VOTE_NEGATIVE, "test comments");
+    Feedback feedback = new Feedback(VOTE_NEGATIVE, "test comments");
 
-    final Container<Feedback> feedbackContainer = testParceling(feedback, Feedback.CREATOR);
+    Container<Feedback> feedbackContainer = testParceling(feedback, Feedback.CREATOR);
 
     assertThat(feedbackContainer.original).isEqualTo(feedbackContainer.parceled);
   }
 
   @Test public void parcelsPositiveFeedbackWithoutError() {
-    final Feedback feedback = new Feedback(VOTE_POSITIVE, "test comments");
+    Feedback feedback = new Feedback(VOTE_POSITIVE, "test comments");
 
-    final Container<Feedback> feedbackContainer = testParceling(feedback, Feedback.CREATOR);
+    Container<Feedback> feedbackContainer = testParceling(feedback, Feedback.CREATOR);
 
     assertThat(feedbackContainer.original).isEqualTo(feedbackContainer.parceled);
   }

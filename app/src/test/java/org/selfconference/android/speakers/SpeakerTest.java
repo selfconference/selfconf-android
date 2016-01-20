@@ -12,10 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.selfconference.android.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class)
-@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml") public class SpeakerTest {
+@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
+public final class SpeakerTest {
 
   @Test public void speakerParcelsWithoutErrors() throws Exception {
-    final Speaker speaker = Speaker.builder()
+    Speaker speaker = Speaker.builder()
         .bio("bio")
         .photo("http://test.com/img.png")
         .id(10)
@@ -24,7 +25,7 @@ import static org.selfconference.android.Parceler.testParceling;
         .twitter("dave")
         .build();
 
-    final Container<Speaker> speakerContainer = testParceling(speaker, Speaker.CREATOR);
+    Container<Speaker> speakerContainer = testParceling(speaker, Speaker.CREATOR);
 
     assertThat(speakerContainer.original).isEqualTo(speakerContainer.parceled);
   }

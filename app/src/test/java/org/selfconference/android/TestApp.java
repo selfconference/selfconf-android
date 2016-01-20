@@ -1,6 +1,6 @@
 package org.selfconference.android;
 
-public class TestApp extends App {
+public final class TestApp extends App {
 
   @Override protected void installLeakCanary() {
     // do not install Canary for tests

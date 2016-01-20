@@ -12,13 +12,14 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.robolectric.Robolectric.shadowOf;
 
-@RunWith(CustomTestRunner.class) public class IntentsTest {
+@RunWith(CustomTestRunner.class) //
+public final class IntentsTest {
 
   @Test public void testLaunchUrl() {
     Intents.launchUrl(Robolectric.application, "https://google.com");
 
-    final Intent intent = Robolectric.getShadowApplication().peekNextStartedActivity();
-    final ShadowIntent shadowIntent = shadowOf(intent);
+    Intent intent = Robolectric.getShadowApplication().getNextStartedActivity();
+    ShadowIntent shadowIntent = shadowOf(intent);
 
     assertThat(shadowIntent.getAction()).isEqualTo(ACTION_VIEW);
 
