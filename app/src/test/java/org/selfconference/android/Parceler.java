@@ -7,11 +7,11 @@ public final class Parceler {
 
   public static <T extends Parcelable> Container<T> testParceling(T object,
       Parcelable.Creator<T> creator) {
-    final Parcel parcel = Parcel.obtain();
+    Parcel parcel = Parcel.obtain();
     object.writeToParcel(parcel, 0);
     parcel.setDataPosition(0);
 
-    final T parceled = creator.createFromParcel(parcel);
+    T parceled = creator.createFromParcel(parcel);
 
     return new Container<>(object, parceled);
   }

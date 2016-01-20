@@ -17,9 +17,9 @@ import rx.Observable;
 public interface Api {
   Observable<List<Session>> getSessions();
 
-  Observable<List<Session>> getSessionsByDay(final Day day);
+  Observable<List<Session>> getSessionsByDay(Day day);
 
-  Observable<Session> getSessionById(final int id);
+  Observable<Session> getSessionById(int id);
 
   Observable<List<Speaker>> getSpeakers();
 

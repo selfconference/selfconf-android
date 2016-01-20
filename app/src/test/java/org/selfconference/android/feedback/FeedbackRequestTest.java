@@ -7,16 +7,16 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.selfconference.android.feedback.VoteButton.VOTE_POSITIVE;
 
-public class FeedbackRequestTest {
+public final class FeedbackRequestTest {
   private static final Gson gson = new GsonBuilder().create();
 
   @Test public void feedbackRequestSerializedAsExpected() {
-    final Feedback feedback = new Feedback(VOTE_POSITIVE, "That session was awesome!");
-    final FeedbackRequest feedbackRequest = new FeedbackRequest(feedback);
+    Feedback feedback = new Feedback(VOTE_POSITIVE, "That session was awesome!");
+    FeedbackRequest feedbackRequest = new FeedbackRequest(feedback);
 
-    final String json = gson.toJson(feedbackRequest);
+    String json = gson.toJson(feedbackRequest);
 
-    assertThat(json).isEqualTo(
-        "{\"feedback\":{\"vote\":1,\"comments\":\"That session was awesome!\"}}");
+    assertThat(json) //
+        .isEqualTo("{\"feedback\":{\"vote\":1,\"comments\":\"That session was awesome!\"}}");
   }
 }

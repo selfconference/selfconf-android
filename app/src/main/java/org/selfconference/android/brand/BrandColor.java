@@ -22,11 +22,11 @@ public final class BrandColor {
   private final int primary;
   private final int secondary;
 
-  @StyleRes public static int forId(final int id) {
+  @StyleRes public static int forId(int id) {
     return THEMES[id % THEMES.length];
   }
 
-  public static BrandColor makeBrand(final int id) {
+  public static BrandColor makeBrand(int id) {
     return new BrandColor(getPrimaryColorForPosition(id), getSecondaryColorForPosition(id));
   }
 

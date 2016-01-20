@@ -53,5 +53,5 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder>
     return getFilteredData().size();
   }
 
-  protected abstract Func1<T, Boolean> filterPredicate(final String query);
+  protected abstract Func1<T, Boolean> filterPredicate(String query);
 }

@@ -10,6 +10,7 @@ android:
     - android-23
     - build-tools-23.0.2
     - extra-android-m2repository
+    - extra-android-support
 
 script: ./gradlew assembleDebug testDebug
 
@@ -17,3 +18,7 @@ notifications:
   email: false
 
 sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle

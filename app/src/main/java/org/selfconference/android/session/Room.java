@@ -7,7 +7,7 @@ import com.google.common.base.Objects;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 
-public class Room implements Parcelable {
+public final class Room implements Parcelable {
   private final int id;
   private final String name;
 
@@ -68,7 +68,7 @@ public class Room implements Parcelable {
     dest.writeString(this.name);
   }
 
-  public static final Parcelable.Creator<Room> CREATOR = new Creator<Room>() {
+  public static final Creator<Room> CREATOR = new Creator<Room>() {
     @Override public Room createFromParcel(Parcel source) {
       return new Room(source);
     }

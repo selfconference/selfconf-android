@@ -6,14 +6,15 @@ import org.junit.Test;
 
 import static org.selfconference.android.sponsors.SponsorAssert.assertThat;
 
-public class SponsorTypeAdapterTest {
+public final class SponsorTypeAdapterTest {
   private static final Gson GSON =
       new GsonBuilder().registerTypeAdapter(Sponsor.class, new SponsorTypeAdapter()).create();
 
   @Test public void duplicateSponsorLevelsAreRemovedWhenSerializingFromJson() {
-    final Sponsor sponsor = GSON.fromJson(sponsorWithDuplicateSponsorLevelsJson(), Sponsor.class);
+    Sponsor sponsor = GSON.fromJson(sponsorWithDuplicateSponsorLevelsJson(), Sponsor.class);
 
-    assertThat(sponsor).hasId(3)
+    assertThat(sponsor) //
+        .hasId(3)
         .hasName("Detroit Labs")
         .hasLink("http://detroitlabs.com")
         .hasPhoto("http://s3.amazonaws.com/selfconf/sponsors/dl.png")

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 import org.selfconference.android.session.Session;
 
-public class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
+public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
 
   private static final String KEY_ID = "id";
   private static final String KEY_NAME = "name";
@@ -30,7 +30,7 @@ public class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
   }
 
   @Override public Speaker read(JsonReader in) throws IOException {
-    final Speaker.Builder builder = Speaker.builder();
+    Speaker.Builder builder = Speaker.builder();
 
     in.beginObject();
     while (in.hasNext()) {
@@ -45,7 +45,7 @@ public class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           builder.bio(in.nextString());
           break;
         case KEY_PHOTO:
-          final String url = parsePhoto(in);
+          String url = parsePhoto(in);
           builder.photo(Optional.fromNullable(url).or("http://google.com"));
           break;
         case KEY_TWITTER:
@@ -53,7 +53,7 @@ public class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           break;
         case KEY_SESSIONS:
           if (in.peek() == JsonToken.BEGIN_ARRAY) {
-            final List<Session> sessions = GSON.fromJson(in, new TypeToken<List<Session>>() {
+            List<Session> sessions = GSON.fromJson(in, new TypeToken<List<Session>>() {
             }.getType());
             builder.sessions(sessions);
           }
@@ -72,7 +72,7 @@ public class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
       in.nextNull();
       return null;
     } else {
-      final String url = in.nextString();
+      String url = in.nextString();
       if (url.trim().isEmpty()) {
         return null;
       }

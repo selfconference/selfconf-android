@@ -7,7 +7,7 @@ import butterknife.Bind;
 import org.selfconference.android.BaseFragment;
 import org.selfconference.android.R;
 
-public class SessionContainerFragment extends BaseFragment {
+public final class SessionContainerFragment extends BaseFragment {
   public static final String TAG = SessionContainerFragment.class.getName();
 
   @Bind(R.id.tabs) TabLayout tabLayout;

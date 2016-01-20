@@ -1,5 +1,6 @@
 package org.selfconference.android.drawer;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import org.selfconference.android.R;
@@ -59,7 +60,7 @@ public enum DrawerItem {
 
   public abstract String getFragmentTag();
 
-  public static DrawerItem fromMenuItem(MenuItem menuItem) {
+  public static DrawerItem fromMenuItem(@NonNull MenuItem menuItem) {
     switch (menuItem.getItemId()) {
       case R.id.menu_item_sessions:
         return SESSIONS;

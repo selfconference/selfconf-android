@@ -89,13 +89,13 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     return stringObservable -> StringObservable.join(stringObservable, delimiter);
   }
 
-  public static final class ViewHolder extends ButterKnifeViewHolder {
+  static final class ViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.sponsor_logo) public ImageView sponsorLogo;
-    @Bind(R.id.sponsor_name) public TextView sponsorName;
-    @Bind(R.id.sponsor_type) public TextView sponsorType;
+    @Bind(R.id.sponsor_logo) ImageView sponsorLogo;
+    @Bind(R.id.sponsor_name) TextView sponsorName;
+    @Bind(R.id.sponsor_type) TextView sponsorType;
 
-    public ViewHolder(View itemView) {
+    ViewHolder(View itemView) {
       super(itemView);
     }
   }

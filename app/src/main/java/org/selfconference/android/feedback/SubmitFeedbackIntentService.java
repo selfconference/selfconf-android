@@ -48,25 +48,26 @@ public final class SubmitFeedbackIntentService extends IntentService {
   /**
    * A factory method to create an {@link Intent} to start the {@link SubmitFeedbackIntentService}
    *
-   * @param session the session associated with this feedback
-   * @param feedback the feedback associated with this session
+   * @param session the session associated with this feedback. Cannot be {@code null}.
+   * @param feedback the feedback associated with this session. Cannot be {@code null}.
    * @return an Intent used to start the {@link SubmitFeedbackIntentService}
-   * @throws NullPointerException If session or feedback param's are {@code null}
    */
   public static Intent newIntent(@NonNull Session session, @NonNull Feedback feedback) {
+    checkNotNull(session, "session == null");
+    checkNotNull(feedback, "feedback == null");
     return new Intent(App.getInstance(), SubmitFeedbackIntentService.class) //
         .putExtra(KEY_SESSION, session) //
         .putExtra(KEY_FEEDBACK, feedback);
   }
 
   @Override protected void onHandleIntent(Intent intent) {
-    final Session session = intent.getParcelableExtra(KEY_SESSION);
-    final Feedback feedback = intent.getParcelableExtra(KEY_FEEDBACK);
+    Session session = intent.getParcelableExtra(KEY_SESSION);
+    Feedback feedback = intent.getParcelableExtra(KEY_FEEDBACK);
 
     checkNotNull(session);
     checkNotNull(feedback);
 
-    final Response response = api.submitFeedback(session, feedback).toBlocking().single();
+    Response response = api.submitFeedback(session, feedback).toBlocking().single();
     if (isSuccessful(response)) {
       preferences.submitFeedback(session);
       bus.post(new SuccessfulFeedbackSubmission());

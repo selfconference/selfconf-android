@@ -4,15 +4,16 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.preference.PreferenceCategory;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import org.selfconference.android.R;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
-import static org.selfconference.android.utils.ResourceProvider.getColor;
 
-public class SettingsCategoryHeader extends PreferenceCategory {
+public final class SettingsCategoryHeader extends PreferenceCategory {
 
   public SettingsCategoryHeader(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
@@ -34,10 +35,10 @@ public class SettingsCategoryHeader extends PreferenceCategory {
 
   @Override protected void onBindView(@NonNull View view) {
     super.onBindView(view);
-    final TextView titleTextView = (TextView) view.findViewById(android.R.id.title);
+    TextView titleTextView = ButterKnife.findById(view, android.R.id.title);
     if (titleTextView != null) {
       titleTextView.setAllCaps(true);
-      titleTextView.setTextColor(getColor(R.color.orange));
+      titleTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.orange));
     }
   }
 }

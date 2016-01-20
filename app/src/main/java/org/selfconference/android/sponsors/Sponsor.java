@@ -9,7 +9,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class Sponsor implements Parcelable {
+public final class Sponsor implements Parcelable {
   private final int id;
   private final String name;
   private final String link;

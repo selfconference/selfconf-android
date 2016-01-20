@@ -11,7 +11,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.selfconference.android.BuildConfig.APPLICATION_ID;
 
-public class SessionPreferences {
+public final class SessionPreferences {
   private static final String PREFS_NAME = APPLICATION_ID + ".sessions";
   private static final String KEY_FAVORITES = "favorites";
   private static final String KEY_FEEDBACKS = "feedbacks";
@@ -19,7 +19,8 @@ public class SessionPreferences {
   private final SharedPreferences sharedPreferences;
 
   public SessionPreferences(Context context) {
-    this.sharedPreferences = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    this.sharedPreferences =
+        context.getApplicationContext().getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
   }
 
   public void favorite(Session session) {
