@@ -27,7 +27,7 @@ final class CircularTransformation implements Transformation {
 
   private final String key;
 
-  public CircularTransformation(String key) {
+  CircularTransformation(String key) {
     this.key = key;
   }
 

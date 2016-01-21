@@ -9,7 +9,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 
 @SuppressWarnings({ "FieldCanBeLocal", "unused" }) //
-public class Feedback implements Parcelable {
+public final class Feedback implements Parcelable {
   @Vote private final int vote;
   private final String comments;
 
@@ -19,7 +19,7 @@ public class Feedback implements Parcelable {
   }
 
   private Feedback(Parcel parcel) {
-    @Vote final int vote = parcel.readInt();
+    @Vote int vote = parcel.readInt();
     this.vote = vote;
     this.comments = parcel.readString();
   }

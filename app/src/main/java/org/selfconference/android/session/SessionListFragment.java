@@ -2,9 +2,9 @@ package org.selfconference.android.session;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,15 +18,13 @@ import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
-import org.selfconference.android.session.SessionAdapter.OnSessionClickListener;
 import timber.log.Timber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.selfconference.android.utils.rx.Transformers.ioSchedulers;
 import static org.selfconference.android.utils.rx.Transformers.setRefreshing;
 
-public class SessionListFragment extends BaseListFragment
-    implements OnSessionClickListener, OnRefreshListener {
+public final class SessionListFragment extends BaseListFragment {
   private static final String EXTRA_DAY =
       "org.selfconference.android.session.SessionListFragment.EXTRA_DAY";
 
@@ -39,10 +37,13 @@ public class SessionListFragment extends BaseListFragment
   private final SessionAdapter sessionAdapter = new SessionAdapter();
   private Day day;
 
-  public static SessionListFragment newInstance(Day day) {
-    final Bundle bundle = new Bundle();
+  public static SessionListFragment newInstance(@NonNull Day day) {
+    checkNotNull(day, "day == null");
+
+    Bundle bundle = new Bundle(1);
     bundle.putSerializable(EXTRA_DAY, day);
-    final SessionListFragment fragment = new SessionListFragment();
+
+    SessionListFragment fragment = new SessionListFragment();
     fragment.setArguments(bundle);
     return fragment;
   }
@@ -53,9 +54,12 @@ public class SessionListFragment extends BaseListFragment
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    swipeRefreshLayout.setOnRefreshListener(this);
+    swipeRefreshLayout.setOnRefreshListener(this::fetchData);
 
-    sessionAdapter.setOnSessionClickListener(this);
+    sessionAdapter.setOnSessionClickListener(session -> {
+      Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
+      getActivity().startActivity(intent);
+    });
 
     scheduleItemRecyclerView.setAdapter(sessionAdapter);
     scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -95,15 +99,6 @@ public class SessionListFragment extends BaseListFragment
     return sessionAdapter;
   }
 
-  @Override public void onSessionClick(Session session) {
-    final Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
-    getActivity().startActivity(intent);
-  }
-
-  @Override public void onRefresh() {
-    fetchData();
-  }
-
   private void fetchData() {
     api.getSessionsByDay(day) //
         .compose(setRefreshing(swipeRefreshLayout)) //
@@ -116,7 +111,7 @@ public class SessionListFragment extends BaseListFragment
   }
 
   private void refreshFavoritesMenu() {
-    final ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+    ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
     if (supportActionBar != null) {
       supportActionBar.invalidateOptionsMenu();
     }

@@ -86,14 +86,14 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     holder.startTime.setVisibility(VISIBLE);
   }
 
-  public static class SessionViewHolder extends ButterKnifeViewHolder {
+  static final class SessionViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.start_time) public TextView startTime;
-    @Bind(R.id.slot_title) public TextView sessionTitle;
-    @Bind(R.id.slot_subtitle) public TextView sessionSubtitle;
-    @Bind(R.id.favorite_session_indicator) public View favoriteSessionIndicator;
+    @Bind(R.id.start_time) TextView startTime;
+    @Bind(R.id.slot_title) TextView sessionTitle;
+    @Bind(R.id.slot_subtitle) TextView sessionSubtitle;
+    @Bind(R.id.favorite_session_indicator) View favoriteSessionIndicator;
 
-    public SessionViewHolder(View itemView) {
+    SessionViewHolder(View itemView) {
       super(itemView);
     }
   }

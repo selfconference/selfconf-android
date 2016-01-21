@@ -16,7 +16,7 @@ public enum Day {
     return startTime;
   }
 
-  public static Day fromPosition(final int position) {
+  public static Day fromPosition(int position) {
     switch (position) {
       case 0:
         return ONE;

@@ -9,17 +9,17 @@ import static org.selfconference.android.utils.ResourceProvider.getString;
 public final class DateStringer {
 
   public static String toDateString(DateTime dateTime) {
-    final DateTime now = DateTime.now();
+    DateTime now = DateTime.now();
 
-    final LocalDate today = now.toLocalDate();
-    final LocalDate tomorrow = today.plusDays(1);
-    final LocalDate twoDaysAway = today.plusDays(2);
+    LocalDate today = now.toLocalDate();
+    LocalDate tomorrow = today.plusDays(1);
+    LocalDate twoDaysAway = today.plusDays(2);
 
-    final DateTime startOfToday = today.toDateTimeAtStartOfDay(now.getZone());
-    final DateTime startOfTomorrow = tomorrow.toDateTimeAtStartOfDay(now.getZone());
-    final DateTime startOfTwoDaysAway = twoDaysAway.toDateTimeAtStartOfDay(now.getZone());
+    DateTime startOfToday = today.toDateTimeAtStartOfDay(now.getZone());
+    DateTime startOfTomorrow = tomorrow.toDateTimeAtStartOfDay(now.getZone());
+    DateTime startOfTwoDaysAway = twoDaysAway.toDateTimeAtStartOfDay(now.getZone());
 
-    final StringBuilder stringBuilder = new StringBuilder();
+    StringBuilder stringBuilder = new StringBuilder();
 
     if (dateTime.isAfter(startOfToday) && dateTime.isBefore(startOfTomorrow)) {
       stringBuilder.append(getString(R.string.today));
@@ -35,7 +35,7 @@ public final class DateStringer {
   }
 
   public static String toShortDateString(DateTime dateTime) {
-    final String timeString = dateTime.toString("ha");
+    String timeString = dateTime.toString("ha");
     return timeString.substring(0, timeString.length() - 1);
   }
 

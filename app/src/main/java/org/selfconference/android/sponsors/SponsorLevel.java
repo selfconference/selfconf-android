@@ -2,13 +2,14 @@ package org.selfconference.android.sponsors;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 
-public class SponsorLevel implements Parcelable, Comparable<SponsorLevel> {
+public final class SponsorLevel implements Parcelable, Comparable<SponsorLevel> {
   private final int id;
   private final String name;
   private final int order;
@@ -86,7 +87,7 @@ public class SponsorLevel implements Parcelable, Comparable<SponsorLevel> {
     }
   };
 
-  @Override public int compareTo(SponsorLevel that) {
+  @Override public int compareTo(@NonNull SponsorLevel that) {
     return ComparisonChain.start() //
         .compare(this.order, that.order) //
         .result();
@@ -100,17 +101,17 @@ public class SponsorLevel implements Parcelable, Comparable<SponsorLevel> {
     private Builder() {
     }
 
-    public Builder id(final int id) {
+    public Builder id(int id) {
       this.id = id;
       return this;
     }
 
-    public Builder name(final String name) {
+    public Builder name(String name) {
       this.name = name;
       return this;
     }
 
-    public Builder order(final int order) {
+    public Builder order(int order) {
       this.order = order;
       return this;
     }

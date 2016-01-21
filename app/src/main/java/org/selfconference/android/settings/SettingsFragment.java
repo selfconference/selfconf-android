@@ -6,7 +6,7 @@ import org.selfconference.android.R;
 
 import static org.selfconference.android.BuildConfig.VERSION_NAME;
 
-public class SettingsFragment extends PreferenceFragment {
+public final class SettingsFragment extends PreferenceFragment {
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);

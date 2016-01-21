@@ -6,9 +6,9 @@ import java.util.Comparator;
 
 final class SponsorComparator implements Comparator<Sponsor> {
   @Override public int compare(Sponsor lhs, Sponsor rhs) {
-    final SponsorLevel lhsMin = Collections.min(lhs.getSponsorLevels());
-    final SponsorLevel rhsMin = Collections.min(rhs.getSponsorLevels());
-    final int result = ComparisonChain.start() //
+    SponsorLevel lhsMin = Collections.min(lhs.getSponsorLevels());
+    SponsorLevel rhsMin = Collections.min(rhs.getSponsorLevels());
+    int result = ComparisonChain.start() //
         .compare(lhsMin, rhsMin) //
         .result();
     if (result == 0) {
