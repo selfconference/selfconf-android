@@ -1,7 +1,12 @@
 package org.selfconference.android.api;
 
+import com.google.common.base.Optional;
+
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
+
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.selfconference.android.App;
 import org.selfconference.android.feedback.Feedback;
@@ -14,6 +19,8 @@ import retrofit.client.Response;
 import rx.Observable;
 import rx.functions.Func2;
 
+import static com.google.common.base.Optional.fromNullable;
+import static org.joda.time.DateTime.now;
 import static org.selfconference.android.utils.DateTimeHelper.intervalForDay;
 
 public final class SelfConferenceApi implements Api {
@@ -42,12 +49,9 @@ public final class SelfConferenceApi implements Api {
 
   @Override public Observable<List<Session>> getSessionsByDay(Day day) {
     return getSessions() //
-        .flatMap(Observable::from) //
-        .filter(session -> {
-          Interval interval = intervalForDay(day);
-          return interval.contains(session.getBeginning());
-        }) //
-        .toSortedList(sortByDate());
+            .flatMap(Observable::from) //
+            .filter(session -> intervalForDay(day).contains(session.getBeginning()) || session.getBeginning() == null) //
+            .toSortedList(sortByDate());
   }
 
   @Override public Observable<Session> getSessionById(int id) {
@@ -55,6 +59,9 @@ public final class SelfConferenceApi implements Api {
   }
 
   private static Func2<Session, Session, Integer> sortByDate() {
-    return (session, session2) -> session.getBeginning().compareTo(session2.getBeginning());
+    return (session, session2) -> {
+      DateTime now = now();
+      return fromNullable(session.getBeginning()).or(now).compareTo(fromNullable(session2.getBeginning()).or(now));
+    };
   }
 }

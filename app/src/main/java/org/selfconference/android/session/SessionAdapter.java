@@ -55,16 +55,19 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
 
     holder.sessionTitle.setText(session.getTitle());
-    holder.sessionSubtitle.setText(session.getRoom().getName());
+    if (session.getRoom() != null) {
+      holder.sessionSubtitle.setText(session.getRoom().getName());
+    }
     try {
       final Session previousSession = getFilteredData().get(position - 1);
-      if (session.getBeginning().isEqual(previousSession.getBeginning())) {
-        holder.startTime.setVisibility(INVISIBLE);
-      } else {
-        setStartTime(holder, session);
+      if (session.getBeginning() != null) {
+        if (session.getBeginning().isEqual(previousSession.getBeginning())) {
+          holder.startTime.setVisibility(INVISIBLE);
+        } else {
+          setStartTime(holder, session);
+        }
       }
     } catch (IndexOutOfBoundsException e) {
-      setStartTime(holder, session);
     }
   }
 
