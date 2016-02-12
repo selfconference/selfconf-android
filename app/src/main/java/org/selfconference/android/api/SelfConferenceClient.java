@@ -18,16 +18,16 @@ import rx.Observable;
  * @see Api
  */
 public interface SelfConferenceClient {
-  @GET("/events/1/sessions") //
+  @GET("/events/latest/sessions") //
   Observable<List<Session>> getSessions();
 
-  @GET("/events/1/sessions/{id}") //
+  @GET("/sessions/{id}") //
   Observable<Session> getSessionById(@Path("id") int id);
 
-  @GET("/events/1/speakers") //
+  @GET("/events/latest/speakers") //
   Observable<List<Speaker>> getSpeakers();
 
-  @GET("/events/1/sponsors") //
+  @GET("/events/latest/sponsors") //
   Observable<List<Sponsor>> getSponsors();
 
   @POST("/sessions/{id}/feedbacks") //

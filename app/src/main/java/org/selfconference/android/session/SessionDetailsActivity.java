@@ -17,6 +17,8 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import java.util.List;
 import javax.inject.Inject;
+
+import org.joda.time.DateTime;
 import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
@@ -121,14 +123,19 @@ public final class SessionDetailsActivity extends BaseActivity {
   private void setupFeedbackButton() {
     final boolean hasSubmittedFeedback = preferences.hasSubmittedFeedback(session);
     submitFeedback.setText(
-        hasSubmittedFeedback ? R.string.feedback_submitted : R.string.submit_feedback);
+            hasSubmittedFeedback ? R.string.feedback_submitted : R.string.submit_feedback);
     submitFeedback.setEnabled(!hasSubmittedFeedback);
   }
 
   private void setUpSessionDetailList() {
-    List<SessionDetail> sessionDetails = SessionDetails.builder()
-        .add(R.drawable.ic_action_schedule, toDateString(session.getBeginning()))
-        .add(R.drawable.ic_maps_place, session.getRoom().getName())
+    SessionDetails.Builder builder = SessionDetails.builder();
+    if (session.getRoom() != null) {
+      builder.add(R.drawable.ic_maps_place, session.getRoom().getName());
+    }
+    if (session.getBeginning() != null) {
+      builder.add(R.drawable.ic_action_schedule, toDateString(session.getBeginning()));
+    }
+    List<SessionDetail> sessionDetails = builder
         .add(R.drawable.ic_action_description, fromHtml(session.getDescription()))
         .toList();
 

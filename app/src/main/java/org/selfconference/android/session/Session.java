@@ -158,7 +158,7 @@ public final class Session implements Parcelable {
       try {
         return DateTimeHelper.parseDateTime(jsonElement.getAsString());
       } catch (Exception e) {
-        return now();
+        return null;
       }
     }
 
@@ -175,7 +175,7 @@ public final class Session implements Parcelable {
     private Room room = emptyRoom();
     private String description = "";
     private boolean isKeynote = false;
-    private DateTime beginning = now();
+    private DateTime beginning = null;
     private List<Speaker> speakers = newArrayList();
 
     private Builder() {

@@ -42,10 +42,11 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           builder.name(in.nextString());
           break;
         case KEY_BIO:
-          builder.bio(in.nextString());
+          String bio = parseNullableString(in);
+          builder.bio(Optional.fromNullable(bio).or(""));
           break;
         case KEY_PHOTO:
-          String url = parsePhoto(in);
+          String url = parseNullableString(in);
           builder.photo(Optional.fromNullable(url).or("http://google.com"));
           break;
         case KEY_TWITTER:
@@ -67,7 +68,7 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
     return builder.build();
   }
 
-  @Nullable private static String parsePhoto(JsonReader in) throws IOException {
+  @Nullable private static String parseNullableString(JsonReader in) throws IOException {
     if (in.peek() == JsonToken.NULL) {
       in.nextNull();
       return null;
