@@ -7,26 +7,26 @@ def versionBuild = 0
 
 buildscript {
   repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://maven.fabric.io/public" }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.5.0'
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
-    classpath 'io.fabric.tools:gradle:1.+'
-    classpath 'me.tatarka:gradle-retrolambda:3.2.2'
-    classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+    classpath "com.android.tools.build:gradle:$rootProject.deps.androidGradlePlugin"
+    classpath "com.neenbedankt.gradle.plugins:android-apt:$rootProject.deps.androidApt"
+    classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
+    classpath "me.tatarka:gradle-retrolambda:$rootProject.deps.retrolambda"
+    classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
   }
 }
 
 repositories {
-  maven { url 'https://maven.fabric.io/public' }
+  maven { url "https://maven.fabric.io/public" }
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'io.fabric'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.github.ben-manes.versions'
+apply plugin: "com.android.application"
+apply plugin: "me.tatarka.retrolambda"
+apply plugin: "io.fabric"
+apply plugin: "com.neenbedankt.android-apt"
+apply plugin: "com.github.ben-manes.versions"
 
 android {
   compileSdkVersion rootProject.compileSdkVersion
@@ -42,17 +42,17 @@ android {
 
   signingConfigs {
     release {
-      def prop = loadProperties('release-keystore.properties')
-      storeFile rootProject.file('release.jks')
+      def prop = loadProperties("release-keystore.properties")
+      storeFile rootProject.file("release.jks")
       storePassword prop.storePassword
       keyAlias prop.keyAlias
       keyPassword prop.keyPassword
     }
     debug {
-      storeFile rootProject.file('debug.keystore')
-      storePassword 'android'
-      keyAlias 'android'
-      keyPassword 'android'
+      storeFile rootProject.file("debug.keystore")
+      storePassword "android"
+      keyAlias "android"
+      keyPassword "android"
     }
   }
 
@@ -66,7 +66,7 @@ android {
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api\""
     }
     debug {
-      applicationIdSuffix '.debug'
+      applicationIdSuffix ".debug"
       signingConfig signingConfigs.debug
 
       resValue "string", "app_name", "Self.conference Debug"
@@ -111,7 +111,7 @@ dependencies {
   compile "com.google.guava:guava:$rootProject.deps.guava"
 
   compile "io.reactivex:rxjava:$rootProject.deps.rxJava"
-  compile "io.reactivex:rxandroid:$rootProject.deps.rxJava"
+  compile "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
   compile "io.reactivex:rxjava-string:$rootProject.deps.rxJavaString"
   compile "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
   compile "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"

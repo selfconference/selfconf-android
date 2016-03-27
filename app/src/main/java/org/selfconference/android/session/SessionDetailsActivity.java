@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -17,8 +18,6 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import java.util.List;
 import javax.inject.Inject;
-
-import org.joda.time.DateTime;
 import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
@@ -28,7 +27,6 @@ import org.selfconference.android.feedback.SuccessfulFeedbackSubmission;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.utils.Intents;
-import org.selfconference.android.utils.NestedLinearLayoutManager;
 import org.selfconference.android.views.FloatingActionButton;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
@@ -141,7 +139,7 @@ public final class SessionDetailsActivity extends BaseActivity {
 
     SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
     sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);
-    sessionDetailRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
+    sessionDetailRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     scrollView.post(() -> scrollView.scrollTo(0, 0));
   }
 
@@ -154,7 +152,7 @@ public final class SessionDetailsActivity extends BaseActivity {
       Intents.launchUrl(this, twitterUrl);
     });
     speakerRecyclerView.setAdapter(speakerAdapter);
-    speakerRecyclerView.setLayoutManager(new NestedLinearLayoutManager(this));
+    speakerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
   }
 
   private void showSnackbar(View view) {
