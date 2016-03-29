@@ -15,7 +15,7 @@ public final class SponsorLevelTest {
     SponsorLevel sponsorLevel = SponsorLevel.builder().id(1).order(1).name("Gold").build();
 
     Container<SponsorLevel> sponsorLevelContainer =
-        testParceling(sponsorLevel, SponsorLevel.CREATOR);
+        testParceling(sponsorLevel, AutoValue_SponsorLevel.CREATOR);
 
     assertThat(sponsorLevelContainer.original).isEqualTo(sponsorLevelContainer.parceled);
   }

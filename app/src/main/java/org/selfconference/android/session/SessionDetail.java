@@ -1,13 +1,17 @@
 package org.selfconference.android.session;
 
 import android.graphics.drawable.Drawable;
+import com.google.auto.value.AutoValue;
 
-public final class SessionDetail {
-  public final Drawable drawable;
-  public final CharSequence info;
+@AutoValue public abstract class SessionDetail {
 
-  public SessionDetail(Drawable drawable, CharSequence info) {
-    this.drawable = drawable;
-    this.info = info;
+  public static SessionDetail create(Drawable drawable, CharSequence info) {
+    return new AutoValue_SessionDetail(drawable, info);
   }
+
+  SessionDetail() {}
+
+  public abstract Drawable drawable();
+
+  public abstract CharSequence info();
 }

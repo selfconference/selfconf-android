@@ -19,7 +19,7 @@ public final class SponsorTest {
         .link("https://s3.amazonaws.com/selfconf/sponsors/apprend.png")
         .build();
 
-    Container<Sponsor> sponsorContainer = testParceling(sponsor, Sponsor.CREATOR);
+    Container<Sponsor> sponsorContainer = testParceling(sponsor, AutoValue_Sponsor.CREATOR);
 
     assertThat(sponsorContainer.original).isEqualTo(sponsorContainer.parceled);
   }

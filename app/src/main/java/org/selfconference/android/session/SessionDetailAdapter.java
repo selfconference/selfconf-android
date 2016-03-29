@@ -19,6 +19,7 @@ public final class SessionDetailAdapter
   private final List<SessionDetail> sessionDetails;
 
   public SessionDetailAdapter(List<SessionDetail> sessionDetails) {
+    // TODO the constructor parameter is not null, so no need to wrap it in an Optional
     this.sessionDetails =
         Optional.fromNullable(sessionDetails).or(Lists.<SessionDetail>newArrayList());
   }
@@ -32,8 +33,8 @@ public final class SessionDetailAdapter
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     final SessionDetail sessionDetail = sessionDetails.get(position);
 
-    holder.icon.setImageDrawable(sessionDetail.drawable);
-    holder.title.setText(sessionDetail.info);
+    holder.icon.setImageDrawable(sessionDetail.drawable());
+    holder.title.setText(sessionDetail.info());
   }
 
   @Override public int getItemCount() {
