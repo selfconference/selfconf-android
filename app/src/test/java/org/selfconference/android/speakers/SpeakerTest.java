@@ -28,7 +28,7 @@ public final class SpeakerTest {
         .addSessions(asList(Session.builder() //
             .id(10)
             .title("Title")
-            .room(Room.emptyRoom())
+            .room(Room.nullRoom())
             .description("Description")
             .keynote(false)
             .speakers(ImmutableList.of())

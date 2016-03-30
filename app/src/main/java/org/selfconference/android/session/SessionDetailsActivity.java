@@ -14,7 +14,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.google.common.collect.ImmutableList;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import java.util.List;
@@ -122,21 +121,18 @@ public final class SessionDetailsActivity extends BaseActivity {
   private void setupFeedbackButton() {
     final boolean hasSubmittedFeedback = preferences.hasSubmittedFeedback(session);
     submitFeedback.setText(
-            hasSubmittedFeedback ? R.string.feedback_submitted : R.string.submit_feedback);
+        hasSubmittedFeedback ? R.string.feedback_submitted : R.string.submit_feedback);
     submitFeedback.setEnabled(!hasSubmittedFeedback);
   }
 
   private void setUpSessionDetailList() {
     SessionDetails.Builder builder = SessionDetails.builder();
-    if (session.room() != null) {
-      builder.add(R.drawable.ic_maps_place, session.room().name());
-    }
+    builder.add(R.drawable.ic_maps_place, session.room().name());
     if (session.beginning() != null) {
       builder.add(R.drawable.ic_action_schedule, toDateString(session.beginning()));
     }
-    List<SessionDetail> sessionDetails = builder
-        .add(R.drawable.ic_action_description, fromHtml(session.description()))
-        .toList();
+    List<SessionDetail> sessionDetails =
+        builder.add(R.drawable.ic_action_description, fromHtml(session.description())).toList();
 
     SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
     sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);

@@ -55,9 +55,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
 
     holder.sessionTitle.setText(session.title());
-    if (session.room() != null) {
-      holder.sessionSubtitle.setText(session.room().name());
-    }
+    holder.sessionSubtitle.setText(session.room().name());
     try {
       final Session previousSession = getFilteredData().get(position - 1);
       if (session.beginning() != null) {
