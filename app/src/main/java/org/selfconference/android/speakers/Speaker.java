@@ -1,167 +1,53 @@
 package org.selfconference.android.speakers;
 
-import android.os.Parcel;
 import android.os.Parcelable;
-import com.google.common.base.Objects;
+import com.google.auto.value.AutoValue;
+import com.google.common.collect.ImmutableList;
+import com.ryanharter.auto.value.parcel.ParcelAdapter;
 import java.util.List;
+import org.selfconference.android.session.ImmutableListSessionTypeAdapter;
 import org.selfconference.android.session.Session;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
-import static com.google.common.base.Objects.equal;
-import static com.google.common.collect.Lists.newArrayList;
-
-public final class Speaker implements Parcelable {
-  private final int id;
-  private final String name;
-  private final String twitter;
-  private final String bio;
-  private final String photo;
-  private final List<Session> sessions;
+@AutoValue public abstract class Speaker implements Parcelable {
 
   public static Builder builder() {
-    return new Builder();
+    return new AutoValue_Speaker.Builder();
   }
 
-  private Speaker(Builder builder) {
-    id = builder.id;
-    name = builder.name;
-    twitter = builder.twitter;
-    bio = builder.bio;
-    photo = builder.photo;
-    sessions = builder.sessions;
-  }
+  Speaker() {}
 
-  private Speaker(Parcel in) {
-    this.id = in.readInt();
-    this.name = in.readString();
-    this.twitter = in.readString();
-    this.bio = in.readString();
-    this.photo = in.readString();
-    this.sessions = newArrayList();
-    in.readList(this.sessions, Integer.class.getClassLoader());
-  }
+  public abstract int id();
 
-  public int getId() {
-    return id;
-  }
+  public abstract String name();
 
-  public String getName() {
-    return name;
-  }
+  public abstract String twitter();
 
-  public String getTwitter() {
-    return twitter;
-  }
+  public abstract String bio();
 
-  public String getBio() {
-    return bio;
-  }
+  public abstract String photo();
 
-  public String getPhoto() {
-    return photo;
-  }
+  @ParcelAdapter(ImmutableListSessionTypeAdapter.class)
+  public abstract ImmutableList<Session> sessions();
 
-  public List<Session> getSessions() {
-    return sessions;
-  }
+  @AutoValue.Builder public abstract static class Builder {
 
-  @Override public String toString() {
-    return toStringHelper(this) //
-        .add("twitter", twitter)
-        .add("id", id)
-        .add("name", name)
-        .add("sessions", sessions)
-        .toString();
-  }
+    public abstract Builder id(int id);
 
-  @Override public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    public abstract Builder name(String name);
 
-    Speaker that = (Speaker) o;
+    public abstract Builder twitter(String twitter);
 
-    return equal(this.id, that.id) &&
-        equal(this.name, that.name) &&
-        equal(this.twitter, that.twitter) &&
-        equal(this.bio, that.bio) &&
-        equal(this.photo, that.photo) &&
-        equal(this.sessions, that.sessions);
-  }
+    public abstract Builder bio(String bio);
 
-  @Override public int hashCode() {
-    return Objects.hashCode(id, name, twitter, bio, photo, sessions);
-  }
+    public abstract Builder photo(String photo);
 
-  public static final class Builder {
-    private int id = -1;
-    private String name = "";
-    private String twitter = "";
-    private String bio = "";
-    private String photo = "";
-    private List<Session> sessions = newArrayList();
+    abstract ImmutableList.Builder<Session> sessionsBuilder();
 
-    private Builder() {
-    }
-
-    public Builder id(int id) {
-      this.id = id;
+    public Builder addSessions(List<Session> sessions) {
+      sessionsBuilder().addAll(sessions);
       return this;
     }
 
-    public Builder name(String name) {
-      this.name = name;
-      return this;
-    }
-
-    public Builder twitter(String twitter) {
-      this.twitter = twitter;
-      return this;
-    }
-
-    public Builder bio(String bio) {
-      this.bio = bio;
-      return this;
-    }
-
-    public Builder photo(String photo) {
-      this.photo = photo;
-      return this;
-    }
-
-    public Builder sessions(List<Session> sessions) {
-      this.sessions = sessions;
-      return this;
-    }
-
-    public Speaker build() {
-      return new Speaker(this);
-    }
+    public abstract Speaker build();
   }
-
-  @Override public int describeContents() {
-    return 0;
-  }
-
-  @Override public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(this.id);
-    dest.writeString(this.name);
-    dest.writeString(this.twitter);
-    dest.writeString(this.bio);
-    dest.writeString(this.photo);
-    dest.writeList(this.sessions);
-  }
-
-  public static final Creator<Speaker> CREATOR = new Creator<Speaker>() {
-    @Override public Speaker createFromParcel(Parcel source) {
-      return new Speaker(source);
-    }
-
-    @Override public Speaker[] newArray(int size) {
-      return new Speaker[size];
-    }
-  };
 }

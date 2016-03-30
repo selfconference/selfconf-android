@@ -7,17 +7,16 @@ import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
+import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
-import rx.Observable;
-import rx.Observable.Transformer;
-import rx.Subscription;
 import rx.functions.Func1;
-import rx.observables.StringObservable;
 import rx.subscriptions.CompositeSubscription;
 
 import static org.selfconference.android.utils.ResourceProvider.getQuantityString;
@@ -37,19 +36,19 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
   }
 
   @Override protected Func1<Sponsor, Boolean> filterPredicate(final String query) {
-    return sponsor -> sponsor.getName() //
+    return sponsor -> sponsor.name() //
         .toLowerCase(Locale.US) //
         .contains(query.toLowerCase(Locale.US));
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    final View view = LayoutInflater.from(parent.getContext())
+    View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.include_sponsor_row, parent, false);
     return new ViewHolder(view);
   }
 
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
-    final Sponsor sponsor = getFilteredData().get(position);
+    Sponsor sponsor = getFilteredData().get(position);
 
     holder.itemView.setOnClickListener(v -> {
       if (onSponsorClickListener != null) {
@@ -61,7 +60,7 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
       @Override public boolean onPreDraw() {
         holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-        picasso.load(sponsor.getPhoto())
+        picasso.load(sponsor.photo())
             .resize(holder.sponsorLogo.getWidth(), holder.sponsorLogo.getHeight())
             .centerInside()
             .into(holder.sponsorLogo);
@@ -69,15 +68,10 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
       }
     });
 
-    holder.sponsorName.setText(sponsor.getName());
-    final Subscription sponsorNameSubscription = Observable.from(sponsor.getSponsorLevels()) //
-        .map(SponsorLevel::getName) //
-        .compose(joinStringsWith(", ")) //
-        .map(s -> {
-          return getQuantityString(R.plurals.sponsor_levels, sponsor.getSponsorLevels().size(), s);
-        }) //
-        .subscribe(holder.sponsorType::setText);
-    compositeSubscription.add(sponsorNameSubscription);
+    holder.sponsorName.setText(sponsor.name());
+
+    String formattedSponsorLevels = formattedSponsorLevels(sponsor);
+    holder.sponsorType.setText(formattedSponsorLevels);
   }
 
   @Override public void onViewDetachedFromWindow(ViewHolder holder) {
@@ -85,8 +79,11 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     compositeSubscription.unsubscribe();
   }
 
-  private static Transformer<String, String> joinStringsWith(String delimiter) {
-    return stringObservable -> StringObservable.join(stringObservable, delimiter);
+  private static String formattedSponsorLevels(Sponsor sponsor) {
+    List<String> sponsorLevelNames = Lists.transform(sponsor.sponsorLevels(), SponsorLevel::name);
+    String sponsorLevels = Joiner.on(",").join(sponsorLevelNames);
+    int numSponsorLevels = sponsor.sponsorLevels().size();
+    return getQuantityString(R.plurals.sponsor_levels, numSponsorLevels, sponsorLevels);
   }
 
   static final class ViewHolder extends ButterKnifeViewHolder {

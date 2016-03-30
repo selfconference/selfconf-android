@@ -13,10 +13,13 @@ import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.feedback.SubmitFeedbackIntentService;
+import org.selfconference.android.session.Room;
+import org.selfconference.android.session.RoomJsonDeserializer;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.session.SessionAdapter;
 import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.session.SessionDetailsActivity;
+import org.selfconference.android.session.SessionJsonDeserializer;
 import org.selfconference.android.session.SessionListFragment;
 import org.selfconference.android.session.SessionPreferences;
 import org.selfconference.android.speakers.Speaker;
@@ -25,8 +28,10 @@ import org.selfconference.android.speakers.SpeakerListFragment;
 import org.selfconference.android.speakers.SpeakerTypeAdapter;
 import org.selfconference.android.sponsors.Sponsor;
 import org.selfconference.android.sponsors.SponsorAdapter;
+import org.selfconference.android.sponsors.SponsorJsonDeserializer;
+import org.selfconference.android.sponsors.SponsorLevel;
+import org.selfconference.android.sponsors.SponsorLevelJsonDeserializer;
 import org.selfconference.android.sponsors.SponsorListFragment;
-import org.selfconference.android.sponsors.SponsorTypeAdapter;
 import org.selfconference.android.utils.PostFromAnyThreadBus;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -71,9 +76,11 @@ public final class SelfConferenceAppModule {
 
   @Provides @Singleton Gson gson() {
     return new GsonBuilder() //
-        .registerTypeAdapter(Session.class, new Session.Deserializer())
+        .registerTypeAdapter(Session.class, new SessionJsonDeserializer())
         .registerTypeAdapter(Speaker.class, new SpeakerTypeAdapter())
-        .registerTypeAdapter(Sponsor.class, new SponsorTypeAdapter())
+        .registerTypeAdapter(Sponsor.class, new SponsorJsonDeserializer())
+        .registerTypeAdapter(SponsorLevel.class, new SponsorLevelJsonDeserializer())
+        .registerTypeAdapter(Room.class, new RoomJsonDeserializer())
         .create();
   }
 

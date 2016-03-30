@@ -37,9 +37,9 @@ public final class SpeakerListFragment extends BaseListFragment {
 
     speakerAdapter.setOnSpeakerClickListener(speaker -> {
       Timber.d("Speaker clicked: %s", speaker);
-      Observable.from(speaker.getSessions())
+      Observable.from(speaker.sessions())
           .first()
-          .flatMap(session -> api.getSessionById(session.getId()))
+          .flatMap(session -> api.getSessionById(session.id()))
           .compose(setRefreshing(swipeRefreshLayout))
           .compose(bindToLifecycle())
           .compose(ioSchedulers())

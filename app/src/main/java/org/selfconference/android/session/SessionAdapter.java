@@ -54,14 +54,14 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
 
-    holder.sessionTitle.setText(session.getTitle());
-    if (session.getRoom() != null) {
-      holder.sessionSubtitle.setText(session.getRoom().getName());
+    holder.sessionTitle.setText(session.title());
+    if (session.room() != null) {
+      holder.sessionSubtitle.setText(session.room().name());
     }
     try {
       final Session previousSession = getFilteredData().get(position - 1);
-      if (session.getBeginning() != null) {
-        if (session.getBeginning().isEqual(previousSession.getBeginning())) {
+      if (session.beginning() != null) {
+        if (session.beginning().isEqual(previousSession.beginning())) {
           holder.startTime.setVisibility(INVISIBLE);
         } else {
           setStartTime(holder, session);
@@ -79,13 +79,13 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   }
 
   @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
-    return session -> session.getTitle() //
+    return session -> session.title() //
         .toLowerCase(Locale.US) //
         .contains(query.toLowerCase(Locale.US));
   }
 
   private static void setStartTime(SessionViewHolder holder, Session session) {
-    holder.startTime.setText(toShortDateString(session.getBeginning()));
+    holder.startTime.setText(toShortDateString(session.beginning()));
     holder.startTime.setVisibility(VISIBLE);
   }
 

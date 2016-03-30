@@ -60,7 +60,7 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
   }
 
   @Override public void onSponsorClicked(Sponsor sponsor) {
-    Intents.launchUrl(getActivity(), sponsor.getLink());
+    Intents.launchUrl(getActivity(), sponsor.link());
   }
 
   private final Subscriber<List<Sponsor>> sponsorsSubscriber =

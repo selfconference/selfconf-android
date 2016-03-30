@@ -89,6 +89,6 @@ public final class SessionPreferences {
   }
 
   private static String idAsString(Session session) {
-    return String.valueOf(session.getId());
+    return String.valueOf(session.id());
   }
 }

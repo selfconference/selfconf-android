@@ -11,7 +11,10 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import org.selfconference.android.session.Room;
+import org.selfconference.android.session.RoomJsonDeserializer;
 import org.selfconference.android.session.Session;
+import org.selfconference.android.session.SessionJsonDeserializer;
 
 public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
 
@@ -22,8 +25,10 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
   private static final String KEY_TWITTER = "twitter";
   private static final String KEY_SESSIONS = "sessions";
 
-  private static final Gson GSON =
-      new GsonBuilder().registerTypeAdapter(Session.class, new Session.Deserializer()).create();
+  private static final Gson GSON = new GsonBuilder() //
+      .registerTypeAdapter(Session.class, new SessionJsonDeserializer())
+      .registerTypeAdapter(Room.class, new RoomJsonDeserializer())
+      .create();
 
   @Override public void write(JsonWriter out, Speaker value) throws IOException {
 
@@ -46,6 +51,7 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           builder.bio(Optional.fromNullable(bio).or(""));
           break;
         case KEY_PHOTO:
+          // TODO change how this is serialized; see selfconference/selfconf@cec25ae
           String url = parseNullableString(in);
           builder.photo(Optional.fromNullable(url).or("http://google.com"));
           break;
@@ -56,7 +62,7 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           if (in.peek() == JsonToken.BEGIN_ARRAY) {
             List<Session> sessions = GSON.fromJson(in, new TypeToken<List<Session>>() {
             }.getType());
-            builder.sessions(sessions);
+            builder.addSessions(sessions);
           }
           break;
         default:

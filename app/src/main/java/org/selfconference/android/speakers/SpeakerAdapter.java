@@ -40,7 +40,7 @@ public final class SpeakerAdapter
   }
 
   @Override protected Func1<Speaker, Boolean> filterPredicate(String query) {
-    return speaker -> speaker.getName()
+    return speaker -> speaker.name()
         .toLowerCase(Locale.US)
         .contains(query.toLowerCase(Locale.US));
   }
@@ -59,23 +59,23 @@ public final class SpeakerAdapter
         onSpeakerClickListener.onSpeakerClick(speaker);
       }
     });
-    holder.speakerName.setText(speaker.getName());
+    holder.speakerName.setText(speaker.name());
 
     holder.itemView.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
       @Override public boolean onPreDraw() {
         holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-        picasso.load(speaker.getPhoto())
+        picasso.load(speaker.photo())
             .resize(holder.speakerPhoto.getWidth(), holder.speakerPhoto.getHeight())
             .centerCrop()
-            .transform(new CircularTransformation(speaker.getPhoto()))
+            .transform(new CircularTransformation(speaker.photo()))
             .placeholder(PlaceholderDrawable.forSpeaker(speaker))
             .into(holder.speakerPhoto);
         return true;
       }
     });
     if (showDescription) {
-      holder.speakerDescription.setText(fromHtml(speaker.getBio()));
+      holder.speakerDescription.setText(fromHtml(speaker.bio()));
     } else {
       holder.speakerDescription.setVisibility(GONE);
     }

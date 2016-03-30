@@ -1,5 +1,6 @@
 package org.selfconference.android.session;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,14 @@ public final class SessionPreferencesTest {
   }
 
   @Test public void testSavedSessionPreferences() throws Exception {
-    Session session = Session.builder().id(13).build();
+    Session session = Session.builder() //
+        .id(13)
+        .title("Title")
+        .room(Room.emptyRoom())
+        .description("Description")
+        .keynote(false)
+        .speakers(ImmutableList.of())
+        .build();
 
     assertThat(preferences.isFavorite(session)).isFalse();
 

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public final class Parceler {
 
   public static <T extends Parcelable> Container<T> testParceling(T object,
-      Parcelable.Creator<T> creator) {
+      Parcelable.Creator<? extends T> creator) {
     Parcel parcel = Parcel.obtain();
     object.writeToParcel(parcel, 0);
     parcel.setDataPosition(0);

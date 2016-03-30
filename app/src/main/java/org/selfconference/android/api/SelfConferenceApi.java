@@ -1,13 +1,8 @@
 package org.selfconference.android.api;
 
-import com.google.common.base.Optional;
-
-import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
-
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
 import org.selfconference.android.App;
 import org.selfconference.android.feedback.Feedback;
 import org.selfconference.android.feedback.FeedbackRequest;
@@ -44,13 +39,13 @@ public final class SelfConferenceApi implements Api {
   }
 
   @Override public Observable<Response> submitFeedback(Session session, Feedback feedback) {
-    return client.submitFeedback(session.getId(), new FeedbackRequest(feedback));
+    return client.submitFeedback(session.id(), new FeedbackRequest(feedback));
   }
 
   @Override public Observable<List<Session>> getSessionsByDay(Day day) {
     return getSessions() //
             .flatMap(Observable::from) //
-            .filter(session -> intervalForDay(day).contains(session.getBeginning()) || session.getBeginning() == null) //
+            .filter(session -> intervalForDay(day).contains(session.beginning()) || session.beginning() == null) //
             .toSortedList(sortByDate());
   }
 
@@ -61,7 +56,7 @@ public final class SelfConferenceApi implements Api {
   private static Func2<Session, Session, Integer> sortByDate() {
     return (session, session2) -> {
       DateTime now = now();
-      return fromNullable(session.getBeginning()).or(now).compareTo(fromNullable(session2.getBeginning()).or(now));
+      return fromNullable(session.beginning()).or(now).compareTo(fromNullable(session2.beginning()).or(now));
     };
   }
 }

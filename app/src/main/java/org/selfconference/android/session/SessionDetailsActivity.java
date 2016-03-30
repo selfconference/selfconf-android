@@ -14,6 +14,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.google.common.collect.ImmutableList;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import java.util.List;
@@ -60,7 +61,7 @@ public final class SessionDetailsActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     session = checkNotNull((Session) getIntent().getParcelableExtra(EXTRA_SESSION));
 
-    setTheme(BrandColor.forId(session.getId()));
+    setTheme(BrandColor.forId(session.id()));
     setStatusBarColor(resolveStatusBarColor());
 
     setContentView(R.layout.activity_session_details);
@@ -69,7 +70,7 @@ public final class SessionDetailsActivity extends BaseActivity {
 
     setUpActionBar();
 
-    sessionTitle.setText(session.getTitle());
+    sessionTitle.setText(session.title());
     favoriteButton.setChecked(preferences.isFavorite(session));
     favoriteButton.setOnCheckedChangeListener((fabView, isChecked) -> {
       if (isChecked) {
@@ -127,14 +128,14 @@ public final class SessionDetailsActivity extends BaseActivity {
 
   private void setUpSessionDetailList() {
     SessionDetails.Builder builder = SessionDetails.builder();
-    if (session.getRoom() != null) {
-      builder.add(R.drawable.ic_maps_place, session.getRoom().getName());
+    if (session.room() != null) {
+      builder.add(R.drawable.ic_maps_place, session.room().name());
     }
-    if (session.getBeginning() != null) {
-      builder.add(R.drawable.ic_action_schedule, toDateString(session.getBeginning()));
+    if (session.beginning() != null) {
+      builder.add(R.drawable.ic_action_schedule, toDateString(session.beginning()));
     }
     List<SessionDetail> sessionDetails = builder
-        .add(R.drawable.ic_action_description, fromHtml(session.getDescription()))
+        .add(R.drawable.ic_action_description, fromHtml(session.description()))
         .toList();
 
     SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
@@ -144,11 +145,11 @@ public final class SessionDetailsActivity extends BaseActivity {
   }
 
   private void setUpSpeakerList() {
-    List<Speaker> speakers = session.getSpeakers();
+    List<Speaker> speakers = session.speakers();
     speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
     speakerAdapter.setData(speakers);
     speakerAdapter.setOnSpeakerClickListener(speaker -> {
-      String twitterUrl = getString(R.string.twitter_url, speaker.getTwitter());
+      String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
       Intents.launchUrl(this, twitterUrl);
     });
     speakerRecyclerView.setAdapter(speakerAdapter);
