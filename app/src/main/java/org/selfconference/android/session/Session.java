@@ -1,6 +1,7 @@
 package org.selfconference.android.session;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
@@ -21,7 +22,7 @@ import org.selfconference.android.speakers.Speaker;
 
   public abstract String title();
 
-  public abstract Room room();
+  @NonNull public abstract Room room();
 
   public abstract String description();
 

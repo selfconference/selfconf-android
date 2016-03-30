@@ -20,7 +20,7 @@ public final class RoomJsonDeserializer implements JsonDeserializer<Room> {
       return Room.create(id, name);
     }
 
-    return Room.emptyRoom();
+    return Room.nullRoom();
   }
 
   private static boolean hasRoomProperties(JsonObject jsonObject) {

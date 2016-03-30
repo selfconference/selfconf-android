@@ -37,7 +37,7 @@ public final class SessionJsonDeserializerTest {
   @Test public void deserializesMissingRoomAsEmptyRoom() {
     Session session = gson.fromJson(sessionWithoutRoomJson(), Session.class);
 
-    assertThat(session).hasRoom(Room.emptyRoom());
+    assertThat(session).hasRoom(Room.nullRoom());
   }
 
   private static String completeSessionJson() {

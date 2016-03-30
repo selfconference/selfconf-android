@@ -23,7 +23,7 @@ public final class SessionTest {
         .id(4)
         .beginning(now())
         .description("description")
-        .room(Room.emptyRoom())
+        .room(Room.nullRoom())
         .speakers(ImmutableList.of(Speaker.builder() //
             .id(3)
             .name("Name")

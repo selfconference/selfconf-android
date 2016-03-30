@@ -24,7 +24,7 @@ public final class SessionPreferencesTest {
     Session session = Session.builder() //
         .id(13)
         .title("Title")
-        .room(Room.emptyRoom())
+        .room(Room.nullRoom())
         .description("Description")
         .keynote(false)
         .speakers(ImmutableList.of())

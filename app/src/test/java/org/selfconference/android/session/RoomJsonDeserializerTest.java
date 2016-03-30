@@ -18,7 +18,7 @@ public final class RoomJsonDeserializerTest {
   @Test public void deserializesNullRoom() {
     Room room = gson.fromJson("{}", Room.class);
 
-    assertThat(room).isEqualTo(Room.emptyRoom());
+    assertThat(room).isEqualTo(Room.nullRoom());
   }
 
   @Test public void deserializesValidRoom() {
