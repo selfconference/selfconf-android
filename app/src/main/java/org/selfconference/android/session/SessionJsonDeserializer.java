@@ -52,7 +52,8 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
     }
 
     Room room() {
-      JsonElement roomJsonObject = jsonObject.get("room");
+      JsonElement roomJsonObject =
+          Optional.fromNullable(jsonObject.get("room")).or(new JsonObject());
       Room room = context.deserialize(roomJsonObject, Room.class);
       return Optional.fromNullable(room).or(Room.nullRoom());
     }
