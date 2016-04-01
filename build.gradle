@@ -22,7 +22,7 @@ allprojects {
             autoValue           : "1.2-rc1",
             autoValueParcel     : "0.2.1",
             butterknife         : "7.0.1",
-            timber              : "3.1.0",
+            timber              : "4.1.2",
             dagger              : "1.2.2",
             picasso             : "2.5.2",
             okhttp              : "2.5.0",
