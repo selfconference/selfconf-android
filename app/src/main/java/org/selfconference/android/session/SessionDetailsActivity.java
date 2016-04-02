@@ -119,7 +119,7 @@ public final class SessionDetailsActivity extends BaseActivity {
   }
 
   private void setupFeedbackButton() {
-    final boolean hasSubmittedFeedback = preferences.hasSubmittedFeedback(session);
+    boolean hasSubmittedFeedback = preferences.hasSubmittedFeedback(session);
     submitFeedback.setText(
         hasSubmittedFeedback ? R.string.feedback_submitted : R.string.submit_feedback);
     submitFeedback.setEnabled(!hasSubmittedFeedback);

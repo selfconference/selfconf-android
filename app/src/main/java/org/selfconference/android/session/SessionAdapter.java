@@ -38,13 +38,13 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   }
 
   @Override public SessionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    final View view = LayoutInflater.from(parent.getContext())
+    View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.include_session_row, parent, false);
     return new SessionViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(final SessionViewHolder holder, final int position) {
-    final Session session = getFilteredData().get(position);
+  @Override public void onBindViewHolder(SessionViewHolder holder, int position) {
+    Session session = getFilteredData().get(position);
 
     holder.itemView.setOnClickListener(v -> {
       if (onSessionClickListener != null) {
@@ -57,7 +57,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     holder.sessionTitle.setText(session.title());
     holder.sessionSubtitle.setText(session.room().name());
     try {
-      final Session previousSession = getFilteredData().get(position - 1);
+      Session previousSession = getFilteredData().get(position - 1);
       if (session.beginning() != null) {
         if (session.beginning().isEqual(previousSession.beginning())) {
           holder.startTime.setVisibility(INVISIBLE);
@@ -69,14 +69,14 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     }
   }
 
-  public void filterFavorites(final boolean show) {
+  public void filterFavorites(boolean show) {
     getFilteredData().clear();
     dataObservable() //
         .filter(session -> !show || preferences.isFavorite(session)) //
         .subscribe(new FilteredDataSubscriber<>(this));
   }
 
-  @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
+  @Override protected Func1<Session, Boolean> filterPredicate(String query) {
     return session -> session.title() //
         .toLowerCase(Locale.US) //
         .contains(query.toLowerCase(Locale.US));

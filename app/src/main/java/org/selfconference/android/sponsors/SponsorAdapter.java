@@ -35,7 +35,7 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     this.onSponsorClickListener = sponsorClickListener;
   }
 
-  @Override protected Func1<Sponsor, Boolean> filterPredicate(final String query) {
+  @Override protected Func1<Sponsor, Boolean> filterPredicate(String query) {
     return sponsor -> sponsor.name() //
         .toLowerCase(Locale.US) //
         .contains(query.toLowerCase(Locale.US));
@@ -47,7 +47,7 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     return new ViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(final ViewHolder holder, int position) {
+  @Override public void onBindViewHolder(ViewHolder holder, int position) {
     Sponsor sponsor = getFilteredData().get(position);
 
     holder.itemView.setOnClickListener(v -> {

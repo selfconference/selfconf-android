@@ -25,13 +25,13 @@ public final class SessionDetailAdapter
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    final View view = LayoutInflater.from(parent.getContext())
+    View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.include_session_detail_item, parent, false);
     return new ViewHolder(view);
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    final SessionDetail sessionDetail = sessionDetails.get(position);
+    SessionDetail sessionDetail = sessionDetails.get(position);
 
     holder.icon.setImageDrawable(sessionDetail.drawable());
     holder.title.setText(sessionDetail.info());

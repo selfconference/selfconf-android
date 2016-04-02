@@ -26,31 +26,31 @@ public final class SessionPreferences {
   public void favorite(Session session) {
     Timber.d("Add session to favorites: %s", session);
 
-    final Set<String> favorites = getFavorites();
+    Set<String> favorites = getFavorites();
     favorites.add(idAsString(session));
 
     saveFavorites(favorites);
   }
 
-  public void unfavorite(final Session session) {
+  public void unfavorite(Session session) {
     Timber.d("Remove session from favorites: %s", session);
 
-    final Set<String> favorites = getFavorites();
+    Set<String> favorites = getFavorites();
     favorites.remove(idAsString(session));
 
     saveFavorites(favorites);
   }
 
-  public void submitFeedback(final Session session) {
+  public void submitFeedback(Session session) {
     Timber.d("Add session to feedback: %s", session);
 
-    final Set<String> feedbacks = getFeedbacks();
+    Set<String> feedbacks = getFeedbacks();
     feedbacks.add(idAsString(session));
 
     saveFeedbacks(feedbacks);
   }
 
-  public boolean hasSubmittedFeedback(final Session session) {
+  public boolean hasSubmittedFeedback(Session session) {
     return getFeedbacks().contains(idAsString(session));
   }
 
