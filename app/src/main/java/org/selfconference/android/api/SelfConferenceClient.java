@@ -1,15 +1,16 @@
 package org.selfconference.android.api;
 
 import java.util.List;
+import okhttp3.ResponseBody;
 import org.selfconference.android.feedback.FeedbackRequest;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
-import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Path;
+import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -18,18 +19,19 @@ import rx.Observable;
  * @see Api
  */
 public interface SelfConferenceClient {
-  @GET("/events/latest/sessions") //
+  @GET("events/latest/sessions") //
   Observable<List<Session>> getSessions();
 
-  @GET("/sessions/{id}") //
+  @GET("sessions/{id}") //
   Observable<Session> getSessionById(@Path("id") int id);
 
-  @GET("/events/latest/speakers") //
+  @GET("events/latest/speakers") //
   Observable<List<Speaker>> getSpeakers();
 
-  @GET("/events/latest/sponsors") //
+  @GET("events/latest/sponsors") //
   Observable<List<Sponsor>> getSponsors();
 
-  @POST("/sessions/{id}/feedbacks") //
-  Observable<Response> submitFeedback(@Path("id") int id, @Body FeedbackRequest feedbackRequest);
+  @POST("sessions/{id}/feedbacks") //
+  Observable<Response<ResponseBody>> submitFeedback(@Path("id") int id,
+      @Body FeedbackRequest feedbackRequest);
 }

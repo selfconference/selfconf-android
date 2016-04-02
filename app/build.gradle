@@ -63,7 +63,7 @@ android {
 
       resValue "string", "app_name", "Self.conference"
 
-      buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api\""
+      buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api/\""
     }
     debug {
       applicationIdSuffix ".debug"
@@ -72,7 +72,7 @@ android {
       resValue "string", "app_name", "Self.conference Debug"
 
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT",
-          "\"http://selfconf-dev.herokuapp.com/api\""
+          "\"http://selfconf-dev.herokuapp.com/api/\""
     }
   }
 
@@ -108,8 +108,11 @@ dependencies {
   compile "com.squareup.dagger:dagger:$rootProject.deps.dagger"
   apt "com.squareup.dagger:dagger-compiler:$rootProject.deps.dagger"
   compile "com.squareup.picasso:picasso:$rootProject.deps.picasso"
-  compile "com.squareup.okhttp:okhttp:$rootProject.deps.okhttp"
-  compile "com.squareup.retrofit:retrofit:$rootProject.deps.retrofit"
+  compile "com.squareup.okhttp3:okhttp:$rootProject.deps.okhttp"
+  compile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
+  compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
+  compile "com.squareup.retrofit2:converter-gson:$rootProject.deps.retrofit"
+  compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
   compile "com.squareup:otto:$rootProject.deps.otto"
 
   compile "com.google.code.gson:gson:$rootProject.deps.gson"

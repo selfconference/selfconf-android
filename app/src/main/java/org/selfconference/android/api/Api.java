@@ -1,12 +1,13 @@
 package org.selfconference.android.api;
 
 import java.util.List;
+import okhttp3.ResponseBody;
 import org.selfconference.android.feedback.Feedback;
 import org.selfconference.android.session.Day;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
-import retrofit.client.Response;
+import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -30,5 +31,5 @@ public interface Api {
    *
    * @return an observable response to determine success or failure of call
    */
-  Observable<Response> submitFeedback(Session session, Feedback feedback);
+  Observable<Response<ResponseBody>> submitFeedback(Session session, Feedback feedback);
 }

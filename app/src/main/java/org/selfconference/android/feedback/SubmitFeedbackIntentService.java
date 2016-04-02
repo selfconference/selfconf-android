@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
+import okhttp3.ResponseBody;
 import org.selfconference.android.App;
 import org.selfconference.android.api.Api;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.session.SessionDetailsActivity;
 import org.selfconference.android.session.SessionPreferences;
-import retrofit.client.Response;
+import retrofit2.Response;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -67,14 +68,10 @@ public final class SubmitFeedbackIntentService extends IntentService {
     checkNotNull(session);
     checkNotNull(feedback);
 
-    Response response = api.submitFeedback(session, feedback).toBlocking().single();
-    if (isSuccessful(response)) {
+    Response<ResponseBody> response = api.submitFeedback(session, feedback).toBlocking().single();
+    if (response.isSuccessful()) {
       preferences.submitFeedback(session);
       bus.post(new SuccessfulFeedbackSubmission());
     }
-  }
-
-  private static boolean isSuccessful(Response response) {
-    return response.getStatus() == 200;
   }
 }

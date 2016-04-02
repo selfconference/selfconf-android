@@ -8,6 +8,9 @@ import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.selfconference.android.api.Api;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
@@ -33,15 +36,16 @@ import org.selfconference.android.sponsors.SponsorLevel;
 import org.selfconference.android.sponsors.SponsorLevelJsonDeserializer;
 import org.selfconference.android.sponsors.SponsorListFragment;
 import org.selfconference.android.utils.PostFromAnyThreadBus;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
+import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
+import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 import static org.selfconference.android.BuildConfig.DEBUG;
 import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOINT;
-import static retrofit.RestAdapter.LogLevel.FULL;
-import static retrofit.RestAdapter.LogLevel.NONE;
 
 @Module(
     library = true,
@@ -84,14 +88,29 @@ public final class SelfConferenceAppModule {
         .create();
   }
 
-  @Provides @Singleton SelfConferenceClient selfConferenceClient(Gson gson) {
-    return new RestAdapter.Builder() //
-        .setEndpoint(SELF_CONFERENCE_API_ENDPOINT)
-        .setClient(new OkClient())
-        .setConverter(new GsonConverter(gson))
-        .setLogLevel(DEBUG ? FULL : NONE)
+  @Provides @Singleton SelfConferenceClient selfConferenceClient(Gson gson,
+      OkHttpClient okHttpClient) {
+    return new Retrofit.Builder() //
+        .baseUrl(SELF_CONFERENCE_API_ENDPOINT)
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .client(okHttpClient)
+        .validateEagerly(DEBUG)
         .build()
         .create(SelfConferenceClient.class);
+  }
+
+  @Provides OkHttpClient okHttpClient() {
+    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+    httpLoggingInterceptor.setLevel(DEBUG ? BODY : NONE);
+
+    long cacheSize = 10 * 10 * 1024; // 10 MiB
+    Cache cache = new Cache(application.getCacheDir(), cacheSize);
+
+    return new OkHttpClient.Builder() //
+        .addInterceptor(httpLoggingInterceptor) //
+        .cache(cache) //
+        .build();
   }
 
   @Provides @Singleton Picasso picasso() {
