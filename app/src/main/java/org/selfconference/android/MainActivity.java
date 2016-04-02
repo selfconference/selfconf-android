@@ -1,6 +1,5 @@
 package org.selfconference.android;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -14,9 +13,6 @@ import android.view.View;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import org.selfconference.android.drawer.DrawerItem;
-import org.selfconference.android.settings.SettingsActivity;
-
-import static org.selfconference.android.drawer.DrawerItem.SETTINGS;
 
 public final class MainActivity extends BaseActivity {
 
@@ -84,12 +80,8 @@ public final class MainActivity extends BaseActivity {
       new OnNavigationItemSelectedListener() {
         @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
           DrawerItem drawerItem = DrawerItem.fromMenuItem(menuItem);
-          if (drawerItem != SETTINGS) {
-            changeFragment(drawerItem);
-            menuItem.setChecked(true);
-          } else {
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-          }
+          changeFragment(drawerItem);
+          menuItem.setChecked(true);
           drawerLayout.closeDrawers();
           return true;
         }

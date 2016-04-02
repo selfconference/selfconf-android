@@ -8,15 +8,15 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
   <application
-      android:name=".App"
       android:allowBackup="true"
       android:icon="@mipmap/ic_launcher"
       android:label="@string/app_name"
+      android:name=".App"
       android:theme="@style/AppTheme"
       >
     <activity
-        android:name=".MainActivity"
         android:label="@string/app_name"
+        android:name=".MainActivity"
         android:screenOrientation="portrait"
         android:windowSoftInputMode="adjustResize"
         >
@@ -27,20 +27,8 @@
       </intent-filter>
     </activity>
     <activity
-        android:name=".session.SessionDetailsActivity"
         android:label="@string/app_name"
-        android:parentActivityName=".MainActivity"
-        android:screenOrientation="portrait"
-        >
-      <meta-data
-          android:name="android.support.PARENT_ACTIVITY"
-          android:value=".MainActivity"
-          />
-    </activity>
-
-    <activity
-        android:name=".settings.SettingsActivity"
-        android:label="Settings"
+        android:name=".session.SessionDetailsActivity"
         android:parentActivityName=".MainActivity"
         android:screenOrientation="portrait"
         >
@@ -51,8 +39,8 @@
     </activity>
 
     <service
-        android:name=".feedback.SubmitFeedbackIntentService"
         android:exported="false"
+        android:name=".feedback.SubmitFeedbackIntentService"
         />
 
     <meta-data

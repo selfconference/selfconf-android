@@ -25,12 +25,5 @@
         android:orderInCategory="4"
         android:title="@string/code_of_conduct"
         />
-    <item
-        android:id="@+id/menu_item_settings"
-        android:checkable="false"
-        android:icon="@drawable/ic_action_settings"
-        android:orderInCategory="5"
-        android:title="@string/settings"
-        />
   </group>
 </menu>

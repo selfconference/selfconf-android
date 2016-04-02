@@ -45,15 +45,6 @@ public enum DrawerItem {
     @Override public String getFragmentTag() {
       return CodeOfConductFragment.TAG;
     }
-  },
-  SETTINGS {
-    @Override public Fragment getFragment() {
-      return null;
-    }
-
-    @Override public String getFragmentTag() {
-      return null;
-    }
   };
 
   public abstract Fragment getFragment();
@@ -70,8 +61,6 @@ public enum DrawerItem {
         return SPONSORS;
       case R.id.menu_item_code_of_conduct:
         return CODE_OF_CONDUCT;
-      case R.id.menu_item_settings:
-        return SETTINGS;
     }
     throw new IllegalStateException("menuItemId was not passed in from @menu/drawer_view");
   }
