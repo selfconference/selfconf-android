@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -11,7 +12,7 @@
       android:layout_height="wrap_content"
       android:layout_weight="1"
       android:background="?attr/selectableItemBackgroundBorderless"
-      android:src="@drawable/ic_action_thumb_down"
+      app:srcCompat="@drawable/ic_action_thumb_down"
       />
 
   <ImageView
@@ -20,7 +21,7 @@
       android:layout_height="wrap_content"
       android:layout_weight="1"
       android:background="?attr/selectableItemBackgroundBorderless"
-      android:src="@drawable/ic_action_thumb_up"
+      app:srcCompat="@drawable/ic_action_thumb_up"
       />
 
 </merge>

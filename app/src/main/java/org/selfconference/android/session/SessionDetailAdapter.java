@@ -33,7 +33,7 @@ public final class SessionDetailAdapter
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     SessionDetail sessionDetail = sessionDetails.get(position);
 
-    holder.icon.setImageDrawable(sessionDetail.drawable());
+    holder.icon.setImageResource(sessionDetail.drawableResId());
     holder.title.setText(sessionDetail.info());
   }
 
