@@ -15,6 +15,8 @@ import org.selfconference.android.api.Api;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
+import org.selfconference.android.data.api.json.EventJsonDeserializer;
+import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.feedback.SubmitFeedbackIntentService;
 import org.selfconference.android.session.Room;
 import org.selfconference.android.session.RoomJsonDeserializer;
@@ -85,6 +87,7 @@ public final class SelfConferenceAppModule {
         .registerTypeAdapter(Sponsor.class, new SponsorJsonDeserializer())
         .registerTypeAdapter(SponsorLevel.class, new SponsorLevelJsonDeserializer())
         .registerTypeAdapter(Room.class, new RoomJsonDeserializer())
+        .registerTypeAdapter(Event.class, new EventJsonDeserializer())
         .create();
   }
 
