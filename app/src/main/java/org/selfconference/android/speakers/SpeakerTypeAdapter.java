@@ -51,9 +51,7 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           builder.bio(Optional.fromNullable(bio).or(""));
           break;
         case KEY_PHOTO:
-          // TODO change how this is serialized; see selfconference/selfconf@cec25ae
-          String url = parseNullableString(in);
-          builder.photo(Optional.fromNullable(url).or("http://google.com"));
+          builder.photo(in.nextString());
           break;
         case KEY_TWITTER:
           builder.twitter(in.nextString());
