@@ -1,7 +1,6 @@
 package org.selfconference.android.speakers;
 
-import android.support.annotation.Nullable;
-import com.google.common.base.Optional;
+import android.support.annotation.NonNull;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,7 +47,7 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           break;
         case KEY_BIO:
           String bio = parseNullableString(in);
-          builder.bio(Optional.fromNullable(bio).or(""));
+          builder.bio(bio);
           break;
         case KEY_PHOTO:
           builder.photo(in.nextString());
@@ -72,16 +71,11 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
     return builder.build();
   }
 
-  @Nullable private static String parseNullableString(JsonReader in) throws IOException {
+  @NonNull private static String parseNullableString(JsonReader in) throws IOException {
     if (in.peek() == JsonToken.NULL) {
       in.nextNull();
-      return null;
-    } else {
-      String url = in.nextString();
-      if (url.trim().isEmpty()) {
-        return null;
-      }
-      return url;
+      return "";
     }
+    return in.nextString().trim();
   }
 }
