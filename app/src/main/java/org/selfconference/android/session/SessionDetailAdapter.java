@@ -1,5 +1,6 @@
 package org.selfconference.android.session;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import java.util.List;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.R;
@@ -18,10 +17,8 @@ public final class SessionDetailAdapter
 
   private final List<SessionDetail> sessionDetails;
 
-  public SessionDetailAdapter(List<SessionDetail> sessionDetails) {
-    // TODO the constructor parameter is not null, so no need to wrap it in an Optional
-    this.sessionDetails =
-        Optional.fromNullable(sessionDetails).or(Lists.<SessionDetail>newArrayList());
+  public SessionDetailAdapter(@NonNull List<SessionDetail> sessionDetails) {
+    this.sessionDetails = sessionDetails;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
