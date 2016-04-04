@@ -12,12 +12,11 @@ import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.FilteredDataSubscriber;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
+import org.selfconference.android.ui.decorators.DateTimeDecorator;
 import rx.functions.Func1;
 
 import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static org.selfconference.android.utils.DateStringer.toShortDateString;
 
 public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.SessionViewHolder> {
   public interface OnSessionClickListener {
@@ -45,6 +44,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
   @Override public void onBindViewHolder(SessionViewHolder holder, int position) {
     Session session = getFilteredData().get(position);
+    DateTimeDecorator dateTimeDecorator = DateTimeDecorator.fromDateTime(session.beginning());
 
     holder.itemView.setOnClickListener(v -> {
       if (onSessionClickListener != null) {
@@ -56,17 +56,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     holder.sessionTitle.setText(session.title());
     holder.sessionSubtitle.setText(session.room().name());
-    try {
-      Session previousSession = getFilteredData().get(position - 1);
-      if (session.beginning() != null) {
-        if (session.beginning().isEqual(previousSession.beginning())) {
-          holder.startTime.setVisibility(INVISIBLE);
-        } else {
-          setStartTime(holder, session);
-        }
-      }
-    } catch (IndexOutOfBoundsException e) {
-    }
+    holder.startTime.setText(dateTimeDecorator.shortTimeString());
   }
 
   public void filterFavorites(boolean show) {
@@ -80,11 +70,6 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     return session -> session.title() //
         .toLowerCase(Locale.US) //
         .contains(query.toLowerCase(Locale.US));
-  }
-
-  private static void setStartTime(SessionViewHolder holder, Session session) {
-    holder.startTime.setText(toShortDateString(session.beginning()));
-    holder.startTime.setVisibility(VISIBLE);
   }
 
   static final class SessionViewHolder extends ButterKnifeViewHolder {

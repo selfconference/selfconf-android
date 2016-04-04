@@ -26,13 +26,13 @@ import org.selfconference.android.feedback.FeedbackFragment;
 import org.selfconference.android.feedback.SuccessfulFeedbackSubmission;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.speakers.SpeakerAdapter;
+import org.selfconference.android.ui.decorators.DateTimeDecorator;
 import org.selfconference.android.utils.Intents;
 import org.selfconference.android.views.FloatingActionButton;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.text.Html.fromHtml;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.selfconference.android.utils.DateStringer.toDateString;
 
 public final class SessionDetailsActivity extends BaseActivity {
   private static final String EXTRA_SESSION = "org.selfconference.android.session.SESSION";
@@ -58,7 +58,8 @@ public final class SessionDetailsActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    session = checkNotNull((Session) getIntent().getParcelableExtra(EXTRA_SESSION));
+    session = getIntent().getParcelableExtra(EXTRA_SESSION);
+    checkNotNull(session, "session == null");
 
     setTheme(BrandColor.forId(session.id()));
     setStatusBarColor(resolveStatusBarColor());
@@ -126,13 +127,12 @@ public final class SessionDetailsActivity extends BaseActivity {
   }
 
   private void setUpSessionDetailList() {
-    SessionDetails.Builder builder = SessionDetails.builder();
-    builder.add(R.drawable.ic_maps_place, session.room().name());
-    if (session.beginning() != null) {
-      builder.add(R.drawable.ic_action_schedule, toDateString(session.beginning()));
-    }
-    List<SessionDetail> sessionDetails =
-        builder.add(R.drawable.ic_action_description, fromHtml(session.description())).toList();
+    DateTimeDecorator dateTimeDecorator = DateTimeDecorator.fromDateTime(session.beginning());
+    List<SessionDetail> sessionDetails = SessionDetails.builder()
+        .add(R.drawable.ic_maps_place, session.room().name())
+        .add(R.drawable.ic_action_schedule, dateTimeDecorator.fullDateString())
+        .add(R.drawable.ic_action_description, fromHtml(session.description()))
+        .toList();
 
     SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
     sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);

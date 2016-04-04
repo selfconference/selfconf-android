@@ -2,11 +2,10 @@ package org.selfconference.android.session;
 
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.ryanharter.auto.value.parcel.ParcelAdapter;
-import org.joda.time.DateTime;
+import org.joda.time.ReadableDateTime;
 import org.selfconference.android.speakers.ImmutableListSpeakerTypeAdapter;
 import org.selfconference.android.speakers.Speaker;
 
@@ -28,7 +27,8 @@ import org.selfconference.android.speakers.Speaker;
 
   public abstract boolean keynote();
 
-  @Nullable @ParcelAdapter(DateTimeTypeAdapter.class) public abstract DateTime beginning();
+  @NonNull @ParcelAdapter(ReadableDateTimeTypeAdapter.class)
+  public abstract ReadableDateTime beginning();
 
   @ParcelAdapter(ImmutableListSpeakerTypeAdapter.class)
   public abstract ImmutableList<Speaker> speakers();
@@ -45,7 +45,7 @@ import org.selfconference.android.speakers.Speaker;
 
     public abstract Builder keynote(boolean keynote);
 
-    public abstract Builder beginning(DateTime beginning);
+    public abstract Builder beginning(ReadableDateTime beginning);
 
     public abstract Builder speakers(ImmutableList<Speaker> speakers);
 

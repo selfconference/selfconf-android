@@ -3,7 +3,6 @@ package org.selfconference.android.api;
 import java.util.List;
 import javax.inject.Inject;
 import okhttp3.ResponseBody;
-import org.joda.time.DateTime;
 import org.selfconference.android.App;
 import org.selfconference.android.feedback.Feedback;
 import org.selfconference.android.feedback.FeedbackRequest;
@@ -14,10 +13,6 @@ import org.selfconference.android.sponsors.Sponsor;
 import retrofit2.Response;
 import rx.Observable;
 import rx.functions.Func2;
-
-import static com.google.common.base.Optional.fromNullable;
-import static org.joda.time.DateTime.now;
-import static org.selfconference.android.utils.DateTimeHelper.intervalForDay;
 
 public final class SelfConferenceApi implements Api {
 
@@ -39,15 +34,15 @@ public final class SelfConferenceApi implements Api {
     return client.getSponsors();
   }
 
-  @Override public Observable<Response<ResponseBody>> submitFeedback(Session session, Feedback feedback) {
+  @Override
+  public Observable<Response<ResponseBody>> submitFeedback(Session session, Feedback feedback) {
     return client.submitFeedback(session.id(), new FeedbackRequest(feedback));
   }
 
   @Override public Observable<List<Session>> getSessionsByDay(Day day) {
     return getSessions() //
-            .flatMap(Observable::from) //
-            .filter(session -> intervalForDay(day).contains(session.beginning()) || session.beginning() == null) //
-            .toSortedList(sortByDate());
+        .flatMap(Observable::from) //
+        .toSortedList(sortByDate());
   }
 
   @Override public Observable<Session> getSessionById(int id) {
@@ -55,9 +50,6 @@ public final class SelfConferenceApi implements Api {
   }
 
   private static Func2<Session, Session, Integer> sortByDate() {
-    return (session, session2) -> {
-      DateTime now = now();
-      return fromNullable(session.beginning()).or(now).compareTo(fromNullable(session2.beginning()).or(now));
-    };
+    return (session, session2) -> session.beginning().compareTo(session2.beginning());
   }
 }

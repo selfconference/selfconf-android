@@ -4,8 +4,8 @@ import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.ryanharter.auto.value.parcel.ParcelAdapter;
-import org.joda.time.DateTime;
-import org.selfconference.android.session.DateTimeTypeAdapter;
+import org.joda.time.ReadableDateTime;
+import org.selfconference.android.session.ReadableDateTimeTypeAdapter;
 import org.selfconference.android.speakers.ImmutableListSpeakerTypeAdapter;
 import org.selfconference.android.speakers.Speaker;
 
@@ -21,9 +21,9 @@ import org.selfconference.android.speakers.Speaker;
 
   public abstract String ticketsLink();
 
-  @ParcelAdapter(DateTimeTypeAdapter.class) public abstract DateTime startDate();
+  @ParcelAdapter(ReadableDateTimeTypeAdapter.class) public abstract ReadableDateTime startDate();
 
-  @ParcelAdapter(DateTimeTypeAdapter.class) public abstract DateTime endDate();
+  @ParcelAdapter(ReadableDateTimeTypeAdapter.class) public abstract ReadableDateTime endDate();
 
   @ParcelAdapter(ImmutableListSpeakerTypeAdapter.class)
   public abstract ImmutableList<Speaker> organizers();
@@ -35,9 +35,9 @@ import org.selfconference.android.speakers.Speaker;
 
     public abstract Builder ticketsLink(String ticketsLink);
 
-    public abstract Builder startDate(DateTime startDate);
+    public abstract Builder startDate(ReadableDateTime startDate);
 
-    public abstract Builder endDate(DateTime endDate);
+    public abstract Builder endDate(ReadableDateTime endDate);
 
     public abstract Builder organizers(Iterable<Speaker> organizers);
 

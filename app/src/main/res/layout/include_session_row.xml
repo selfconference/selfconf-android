@@ -37,7 +37,7 @@
       android:layout_marginEnd="16dp"
       android:layout_marginLeft="16dp"
       android:layout_marginRight="16dp"
-      tools:text="12P"
+      tools:text="12PM"
       />
 
   <FrameLayout

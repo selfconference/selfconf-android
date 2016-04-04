@@ -8,10 +8,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
-import org.joda.time.DateTime;
+import org.joda.time.ReadableDateTime;
 import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.speakers.Speaker;
-import org.selfconference.android.utils.DateTimeHelper;
+import org.selfconference.android.utils.DateTimes;
 
 public final class EventJsonDeserializer implements JsonDeserializer<Event> {
   @Override
@@ -59,14 +59,14 @@ public final class EventJsonDeserializer implements JsonDeserializer<Event> {
       return jsonObject.get(KEY_TICKETS_LINK).getAsString();
     }
 
-    DateTime startDate() {
+    ReadableDateTime startDate() {
       String startDate = jsonObject.get(KEY_START_DATE).getAsString();
-      return DateTimeHelper.parseDateTime(startDate);
+      return DateTimes.parseEst(startDate);
     }
 
-    DateTime endDate() {
+    ReadableDateTime endDate() {
       String endDate = jsonObject.get(KEY_END_DATE).getAsString();
-      return DateTimeHelper.parseDateTime(endDate);
+      return DateTimes.parseEst(endDate);
     }
 
     Iterable<Speaker> organizers() {

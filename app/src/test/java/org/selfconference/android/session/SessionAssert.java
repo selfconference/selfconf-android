@@ -2,7 +2,7 @@ package org.selfconference.android.session;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
-import org.joda.time.DateTime;
+import org.joda.time.ReadableDateTime;
 
 public final class SessionAssert extends AbstractAssert<SessionAssert, Session> {
 
@@ -32,7 +32,7 @@ public final class SessionAssert extends AbstractAssert<SessionAssert, Session> 
     return this;
   }
 
-  public SessionAssert hasBeginning(DateTime beginning) {
+  public SessionAssert hasBeginning(ReadableDateTime beginning) {
     Assertions.assertThat(actual.beginning()).isEqualTo(beginning);
 
     return this;

@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
+import org.selfconference.android.data.api.NullDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,6 +28,7 @@ public final class SessionPreferencesTest {
         .room(Room.nullRoom())
         .description("Description")
         .keynote(false)
+        .beginning(NullDateTime.create())
         .speakers(ImmutableList.of())
         .build();
 

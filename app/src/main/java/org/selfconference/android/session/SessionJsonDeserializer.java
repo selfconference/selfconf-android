@@ -1,6 +1,6 @@
 package org.selfconference.android.session;
 
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
@@ -10,9 +10,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
-import org.joda.time.DateTime;
+import org.joda.time.ReadableDateTime;
+import org.selfconference.android.data.api.NullDateTime;
 import org.selfconference.android.speakers.Speaker;
-import org.selfconference.android.utils.DateTimeHelper;
+import org.selfconference.android.utils.DateTimes;
 
 public final class SessionJsonDeserializer implements JsonDeserializer<Session> {
 
@@ -58,12 +59,12 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
       return Optional.fromNullable(room).or(Room.nullRoom());
     }
 
-    @Nullable DateTime beginning() {
+    @NonNull ReadableDateTime beginning() {
       try {
-        JsonElement beginning = jsonObject.get("slot");
-        return DateTimeHelper.parseDateTime(beginning.getAsString());
+        String beginning = jsonObject.get("slot").getAsString();
+        return DateTimes.parseEst(beginning);
       } catch (Exception e) {
-        return null;
+        return NullDateTime.create();
       }
     }
 
