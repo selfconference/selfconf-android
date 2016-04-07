@@ -88,6 +88,12 @@ android {
   packagingOptions {
     exclude "META-INF/services/javax.annotation.processing.Processor"
   }
+
+  testOptions.unitTests.all {
+    testLogging {
+      events "passed", "skipped", "failed"
+    }
+  }
 }
 
 configurations.all {
