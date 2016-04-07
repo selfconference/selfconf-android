@@ -42,7 +42,7 @@ allprojects {
             robolectric         : "2.4",
             junit               : "4.12",
             assertjAndroid      : "1.0.0",
-            androidGradlePlugin : "2.0.0-rc2",
+            androidGradlePlugin : "2.0.0",
             androidApt          : "1.8",
             fabric              : "1.+",
             retrolambda         : "3.2.2",
