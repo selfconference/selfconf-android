@@ -3,7 +3,6 @@ package org.selfconference.android;
 import android.app.Application;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
@@ -11,6 +10,7 @@ import javax.inject.Singleton;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.greenrobot.eventbus.EventBus;
 import org.selfconference.android.api.Api;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
@@ -37,7 +37,6 @@ import org.selfconference.android.sponsors.SponsorJsonDeserializer;
 import org.selfconference.android.sponsors.SponsorLevel;
 import org.selfconference.android.sponsors.SponsorLevelJsonDeserializer;
 import org.selfconference.android.sponsors.SponsorListFragment;
-import org.selfconference.android.utils.PostFromAnyThreadBus;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -126,7 +125,7 @@ public final class SelfConferenceAppModule {
     return new SessionPreferences(application);
   }
 
-  @Provides @Singleton Bus bus() {
-    return new PostFromAnyThreadBus();
+  @Provides @Singleton EventBus eventBus() {
+    return EventBus.getDefault();
   }
 }

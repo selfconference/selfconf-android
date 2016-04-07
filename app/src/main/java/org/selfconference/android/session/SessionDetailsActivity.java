@@ -14,10 +14,10 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import java.util.List;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
@@ -46,7 +46,7 @@ public final class SessionDetailsActivity extends BaseActivity {
   @Bind(R.id.submit_feedback) TextView submitFeedback;
 
   @Inject SessionPreferences preferences;
-  @Inject Bus bus;
+  @Inject EventBus eventBus;
 
   private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(true);
 
@@ -89,12 +89,12 @@ public final class SessionDetailsActivity extends BaseActivity {
 
   @Override protected void onResume() {
     super.onResume();
-    bus.register(this);
+    eventBus.register(this);
   }
 
   @Override protected void onPause() {
     super.onPause();
-    bus.unregister(this);
+    eventBus.unregister(this);
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
