@@ -50,8 +50,14 @@ public final class SessionAssert extends AbstractAssert<SessionAssert, Session> 
     return this;
   }
 
-  public SessionAssert isKeynote(boolean keynote) {
-    Assertions.assertThat(actual.keynote()).isEqualTo(keynote);
+  public SessionAssert isKeynote() {
+    Assertions.assertThat(actual.keynote()).isEqualTo(true);
+
+    return this;
+  }
+
+  public SessionAssert isNotKeynote() {
+    Assertions.assertThat(actual.keynote()).isEqualTo(false);
 
     return this;
   }

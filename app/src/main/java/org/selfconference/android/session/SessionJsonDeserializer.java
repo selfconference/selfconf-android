@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
@@ -36,6 +37,14 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
   }
 
   private static final class SessionJsonObjectDecorator {
+    private static final String KEY_ID = "id";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_ROOM = "room";
+    private static final String KEY_SLOT = "slot";
+    private static final String KEY_ABSTRACT = "abstract";
+    private static final String KEY_KEYNOTE = "keynote";
+    private static final String KEY_SPEAKERS = "speakers";
+
     private final JsonDeserializationContext context;
     private final JsonObject jsonObject;
 
@@ -45,23 +54,23 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
     }
 
     int id() {
-      return jsonObject.get("id").getAsInt();
+      return jsonObject.get(KEY_ID).getAsInt();
     }
 
     String title() {
-      return jsonObject.get("name").getAsString();
+      return jsonObject.get(KEY_NAME).getAsString();
     }
 
     Room room() {
-      JsonElement roomJsonObject =
-          Optional.fromNullable(jsonObject.get("room")).or(new JsonObject());
+      JsonElement roomJsonElement = jsonObject.get(KEY_ROOM);
+      JsonElement roomJsonObject = Optional.fromNullable(roomJsonElement).or(new JsonObject());
       Room room = context.deserialize(roomJsonObject, Room.class);
       return Optional.fromNullable(room).or(Room.nullRoom());
     }
 
     @NonNull ReadableDateTime beginning() {
       try {
-        String beginning = jsonObject.get("slot").getAsString();
+        String beginning = jsonObject.get(KEY_SLOT).getAsString();
         return DateTimes.parseEst(beginning);
       } catch (Exception e) {
         return NullDateTime.create();
@@ -69,18 +78,21 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
     }
 
     String description() {
-      return jsonObject.get("abstract").getAsString();
+      return jsonObject.get(KEY_ABSTRACT).getAsString();
     }
 
     boolean keynote() {
-      JsonElement keynote = jsonObject.get("keynote");
-      return keynote != null &&
-          !keynote.isJsonNull() &&
-          keynote.getAsBoolean();
+      JsonElement keyNoteElement = jsonObject.get(KEY_KEYNOTE);
+      JsonElement keynote = Optional.fromNullable(keyNoteElement).or(JsonNull.INSTANCE);
+      //noinspection SimplifiableIfStatement
+      if (keynote.isJsonNull()) {
+        return false;
+      }
+      return keynote.getAsBoolean();
     }
 
     ImmutableList<Speaker> speakers() {
-      JsonElement speakersElement = jsonObject.get("speakers");
+      JsonElement speakersElement = jsonObject.get(KEY_SPEAKERS);
       ImmutableList.Builder<Speaker> speakers = new ImmutableList.Builder<>();
 
       if (speakersElement == null) {

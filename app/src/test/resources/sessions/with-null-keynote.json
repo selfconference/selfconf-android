@@ -1,0 +1,32 @@
+{
+  "abstract": "To write code efficiently, we need to be able to rely on our tools. Editors always save files when we ask them to, version control systems restore old files when we ask them to, and so on. This is reproducibility: the tool reliably does the same thing when given the same inputs. Many tools lack this reliability, but there does seem to be a positive trend, which we examine in this talk. First, we compare the designs of Git, React, and Bundler, each of which relies on reproducibility and was a huge improvement over its predecessors. Then, we imagine what other benefits might come from continuing to focus on reproducibility in our tools.",
+  "created_at": "2016-02-02T20:33:17.880-05:00",
+  "event_id": 2,
+  "id": 57,
+  "keynote": null,
+  "name": "Reproducibility",
+  "room": {
+    "created_at": "2015-07-23T13:24:47.094-05:00",
+    "event_id": 2,
+    "id": 7,
+    "name": "Salon A",
+    "order": 0,
+    "updated_at": "2016-03-03T00:56:47.320-05:00",
+    "venue_id": 1
+  },
+  "room_id": 7,
+  "slot_id": 16,
+  "speakers": [
+    {
+      "bio": "Gary Bernhardt is a creator and destroyer of software compelled to understand both sides of heated software debates: Vim and Emacs; Python and Ruby; Git and Mercurial. He runs Destroy All Software, which publishes advanced screencasts for serious developers covering Unix, OO design, TDD, and dynamic languages.",
+      "created_at": "2016-02-02T20:32:20.498-05:00",
+      "event_id": 2,
+      "id": 62,
+      "name": "Gary Bernhardt",
+      "photo": "https://s3.amazonaws.com/selfconf/speakers/gary-bernhardt.png",
+      "twitter": "garybernhardt",
+      "updated_at": "2016-02-02T21:00:26.659-05:00"
+    }
+  ],
+  "updated_at": "2016-03-06T18:40:32.797-05:00"
+}
