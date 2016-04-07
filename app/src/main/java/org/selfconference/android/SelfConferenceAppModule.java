@@ -19,6 +19,7 @@ import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
 import org.selfconference.android.data.api.model.Event;
+import org.selfconference.android.data.jobs.GetSponsorsJob;
 import org.selfconference.android.data.jobs.SubmitFeedbackJob;
 import org.selfconference.android.feedback.FeedbackFragment;
 import org.selfconference.android.session.Room;
@@ -70,7 +71,8 @@ import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOIN
         SpeakerAdapter.class, //
         BaseActivity.class, //
         SessionDetailsActivity.class, //
-        SubmitFeedbackJob.class //
+        SubmitFeedbackJob.class, //
+        GetSponsorsJob.class, //
     }) //
 public final class SelfConferenceAppModule {
 

@@ -7,6 +7,7 @@ import org.selfconference.android.session.Day;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
+import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
 
@@ -24,7 +25,7 @@ public interface Api {
 
   Observable<List<Speaker>> getSpeakers();
 
-  Observable<List<Sponsor>> getSponsors();
+  Call<List<Sponsor>> getSponsors();
 
   /**
    * A POST request to submit feedback for a session

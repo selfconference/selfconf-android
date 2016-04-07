@@ -6,6 +6,7 @@ import org.selfconference.android.feedback.FeedbackRequest;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -29,7 +30,7 @@ public interface SelfConferenceClient {
   Observable<List<Speaker>> getSpeakers();
 
   @GET("events/latest/sponsors") //
-  Observable<List<Sponsor>> getSponsors();
+  Call<List<Sponsor>> getSponsors();
 
   @POST("sessions/{id}/feedbacks") //
   Observable<Response<ResponseBody>> submitFeedback(@Path("id") int id,

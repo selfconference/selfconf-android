@@ -10,6 +10,7 @@ import org.selfconference.android.session.Day;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
+import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
 import rx.functions.Func2;
@@ -30,7 +31,7 @@ public final class SelfConferenceApi implements Api {
     return client.getSpeakers();
   }
 
-  @Override public Observable<List<Sponsor>> getSponsors() {
+  @Override public Call<List<Sponsor>> getSponsors() {
     return client.getSponsors();
   }
 
