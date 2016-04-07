@@ -123,6 +123,8 @@ dependencies {
   compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
   compile "com.squareup.retrofit2:converter-gson:$rootProject.deps.retrofit"
   compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
+
+  compile "com.birbit:android-priority-jobqueue:$rootProject.deps.jobQueue"
   compile "org.greenrobot:eventbus:$rootProject.deps.eventBus"
 
   compile "com.google.code.gson:gson:$rootProject.deps.gson"
