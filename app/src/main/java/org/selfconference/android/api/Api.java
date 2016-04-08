@@ -23,7 +23,7 @@ public interface Api {
 
   Observable<Session> getSessionById(int id);
 
-  Observable<List<Speaker>> getSpeakers();
+  Call<List<Speaker>> getSpeakers();
 
   Call<List<Sponsor>> getSponsors();
 

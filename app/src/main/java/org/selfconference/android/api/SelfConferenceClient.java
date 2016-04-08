@@ -27,7 +27,7 @@ public interface SelfConferenceClient {
   Observable<Session> getSessionById(@Path("id") int id);
 
   @GET("events/latest/speakers") //
-  Observable<List<Speaker>> getSpeakers();
+  Call<List<Speaker>> getSpeakers();
 
   @GET("events/latest/sponsors") //
   Call<List<Sponsor>> getSponsors();

@@ -27,7 +27,7 @@ public final class SelfConferenceApi implements Api {
     return client.getSessions();
   }
 
-  @Override public Observable<List<Speaker>> getSpeakers() {
+  @Override public Call<List<Speaker>> getSpeakers() {
     return client.getSpeakers();
   }
 

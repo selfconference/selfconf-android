@@ -7,7 +7,6 @@ import com.birbit.android.jobqueue.RetryConstraint;
 import javax.inject.Inject;
 import okhttp3.ResponseBody;
 import org.greenrobot.eventbus.EventBus;
-import org.selfconference.android.App;
 import org.selfconference.android.api.Api;
 import org.selfconference.android.data.events.SubmitFeedbackAddEvent;
 import org.selfconference.android.data.events.SubmitFeedbackSuccessEvent;
@@ -37,7 +36,6 @@ public final class SubmitFeedbackJob extends Job {
     super(new Params(Priorities.DEFAULT).requireNetwork());
     this.session = session;
     this.feedback = feedback;
-    App.getInstance().inject(this);
   }
 
   @Override public void onAdded() {

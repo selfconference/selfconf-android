@@ -19,6 +19,7 @@ import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
 import org.selfconference.android.data.api.model.Event;
+import org.selfconference.android.data.jobs.GetSpeakersJob;
 import org.selfconference.android.data.jobs.GetSponsorsJob;
 import org.selfconference.android.data.jobs.SubmitFeedbackJob;
 import org.selfconference.android.feedback.FeedbackFragment;
@@ -73,6 +74,7 @@ import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOIN
         SessionDetailsActivity.class, //
         SubmitFeedbackJob.class, //
         GetSponsorsJob.class, //
+        GetSpeakersJob.class, //
     }) //
 public final class SelfConferenceAppModule {
 
@@ -139,6 +141,7 @@ public final class SelfConferenceAppModule {
   @Provides @Singleton JobManager jobManager() {
     return new JobManager(new Configuration.Builder(application) //
         .customLogger(new TimberJobManagerLogger()) //
+        .injector(job -> ((App) application).inject(job))
         .build());
   }
 }
