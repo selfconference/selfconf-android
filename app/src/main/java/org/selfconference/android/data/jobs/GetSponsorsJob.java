@@ -14,10 +14,6 @@ import retrofit2.Response;
 
 public final class GetSponsorsJob extends ApiJob<List<Sponsor>> {
 
-  public GetSponsorsJob() {
-    super();
-  }
-
   @NonNull @Override protected Object createAddEvent() {
     return new GetSponsorsAddEvent();
   }
