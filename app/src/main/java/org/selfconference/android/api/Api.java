@@ -21,7 +21,7 @@ public interface Api {
 
   Observable<List<Session>> getSessionsByDay(Day day);
 
-  Observable<Session> getSessionById(int id);
+  Call<Session> getSessionById(int id);
 
   Call<List<Speaker>> getSpeakers();
 

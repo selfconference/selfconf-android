@@ -46,7 +46,7 @@ public final class SelfConferenceApi implements Api {
         .toSortedList(sortByDate());
   }
 
-  @Override public Observable<Session> getSessionById(int id) {
+  @Override public Call<Session> getSessionById(int id) {
     return client.getSessionById(id);
   }
 

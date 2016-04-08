@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import butterknife.Bind;
 import com.birbit.android.jobqueue.JobManager;
+import com.google.common.collect.ImmutableList;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -15,16 +16,17 @@ import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
+import org.selfconference.android.data.events.GetSessionAddEvent;
+import org.selfconference.android.data.events.GetSessionSuccessEvent;
 import org.selfconference.android.data.events.GetSpeakersAddEvent;
 import org.selfconference.android.data.events.GetSpeakersSuccessEvent;
+import org.selfconference.android.data.jobs.GetSessionJob;
 import org.selfconference.android.data.jobs.GetSpeakersJob;
+import org.selfconference.android.session.Session;
 import org.selfconference.android.session.SessionDetailsActivity;
-import rx.Observable;
 import timber.log.Timber;
 
 import static org.greenrobot.eventbus.ThreadMode.MAIN;
-import static org.selfconference.android.utils.rx.Transformers.ioSchedulers;
-import static org.selfconference.android.utils.rx.Transformers.setRefreshing;
 
 public final class SpeakerListFragment extends BaseListFragment {
   public static final String TAG = SpeakerListFragment.class.getName();
@@ -46,18 +48,13 @@ public final class SpeakerListFragment extends BaseListFragment {
 
     speakerAdapter.setOnSpeakerClickListener(speaker -> {
       Timber.d("Speaker clicked: %s", speaker);
-      Observable.from(speaker.sessions())
-          .first()
-          .flatMap(session -> api.getSessionById(session.id()))
-          .compose(setRefreshing(swipeRefreshLayout))
-          .compose(bindToLifecycle())
-          .compose(ioSchedulers())
-          .subscribe(session -> {
-            Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
-            startActivity(intent);
-          }, throwable -> {
-            Timber.e(throwable, "Failed to load sessions for speaker");
-          });
+      ImmutableList<Session> sessions = speaker.sessions();
+      if (sessions.isEmpty()) {
+        // TODO handle empty state
+      } else {
+        // TODO handle possibility where speaker has more than one session
+        jobManager.addJobInBackground(GetSessionJob.create(sessions.get(0).id()));
+      }
     });
 
     speakerRecyclerView.setAdapter(speakerAdapter);
@@ -76,6 +73,16 @@ public final class SpeakerListFragment extends BaseListFragment {
   @Override public void onPause() {
     super.onPause();
     eventBus.unregister(this);
+  }
+
+  @Subscribe(threadMode = MAIN) public void onGetSessionAdded(GetSessionAddEvent event) {
+    swipeRefreshLayout.setRefreshing(true);
+  }
+
+  @Subscribe(threadMode = MAIN) public void onGetSessionSucceeded(GetSessionSuccessEvent event) {
+    swipeRefreshLayout.setRefreshing(false);
+    Intent intent = SessionDetailsActivity.newIntent(getActivity(), event.session);
+    startActivity(intent);
   }
 
   @Subscribe(threadMode = MAIN) public void onGetSpeakersAdded(GetSpeakersAddEvent event) {
