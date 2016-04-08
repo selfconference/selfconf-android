@@ -3,8 +3,8 @@ package org.selfconference.android.data.api;
 import com.google.common.collect.ComparisonChain;
 import java.util.Collections;
 import java.util.Comparator;
-import org.selfconference.android.sponsors.Sponsor;
-import org.selfconference.android.sponsors.SponsorLevel;
+import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.data.api.model.SponsorLevel;
 
 /**
  * A {@link Comparator} used to compare two {@link Sponsor}s in the following order:

@@ -12,6 +12,7 @@ import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.FilteredDataSubscriber;
 import org.selfconference.android.R;
 import org.selfconference.android.api.Api;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.ui.decorators.DateTimeDecorator;
 import rx.functions.Func1;
 

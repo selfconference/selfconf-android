@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.support.Sponsors;
 
 import static org.selfconference.android.sponsors.SponsorAssert.assertThat;

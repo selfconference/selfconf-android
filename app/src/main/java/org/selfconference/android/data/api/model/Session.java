@@ -1,13 +1,15 @@
-package org.selfconference.android.session;
+package org.selfconference.android.data.api.model;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.ryanharter.auto.value.parcel.ParcelAdapter;
+import com.ryanharter.auto.value.parcel.TypeAdapter;
+import java.util.List;
 import org.joda.time.ReadableDateTime;
-import org.selfconference.android.speakers.ImmutableListSpeakerTypeAdapter;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.session.ReadableDateTimeTypeAdapter;
 
 @AutoValue public abstract class Session implements Parcelable {
 
@@ -15,7 +17,8 @@ import org.selfconference.android.speakers.Speaker;
     return new AutoValue_Session.Builder();
   }
 
-  Session() {}
+  Session() {
+  }
 
   public abstract int id();
 
@@ -30,7 +33,7 @@ import org.selfconference.android.speakers.Speaker;
   @NonNull @ParcelAdapter(ReadableDateTimeTypeAdapter.class)
   public abstract ReadableDateTime beginning();
 
-  @ParcelAdapter(ImmutableListSpeakerTypeAdapter.class)
+  @ParcelAdapter(Speaker.ImmutableListTypeAdapter.class)
   public abstract ImmutableList<Speaker> speakers();
 
   @AutoValue.Builder public static abstract class Builder {
@@ -50,5 +53,17 @@ import org.selfconference.android.speakers.Speaker;
     public abstract Builder speakers(ImmutableList<Speaker> speakers);
 
     public abstract Session build();
+  }
+
+  public static final class ImmutableListTypeAdapter
+      implements TypeAdapter<ImmutableList<Session>> {
+    @Override public ImmutableList<Session> fromParcel(Parcel in) {
+      List<AutoValue_Session> typedArrayList = in.createTypedArrayList(AutoValue_Session.CREATOR);
+      return ImmutableList.copyOf(typedArrayList);
+    }
+
+    @Override public void toParcel(ImmutableList<Session> value, Parcel dest) {
+      dest.writeTypedList(value);
+    }
   }
 }

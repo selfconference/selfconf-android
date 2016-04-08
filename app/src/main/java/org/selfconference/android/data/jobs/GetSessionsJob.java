@@ -6,7 +6,7 @@ import java.util.List;
 import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.events.GetSessionsAddEvent;
 import org.selfconference.android.data.events.GetSessionsSuccessEvent;
-import org.selfconference.android.session.Session;
+import org.selfconference.android.data.api.model.Session;
 import retrofit2.Call;
 import retrofit2.Response;
 

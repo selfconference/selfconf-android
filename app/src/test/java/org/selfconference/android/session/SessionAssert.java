@@ -3,6 +3,8 @@ package org.selfconference.android.session;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.joda.time.ReadableDateTime;
+import org.selfconference.android.data.api.model.Room;
+import org.selfconference.android.data.api.model.Session;
 
 public final class SessionAssert extends AbstractAssert<SessionAssert, Session> {
 

@@ -2,7 +2,7 @@ package org.selfconference.android.utils;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import org.selfconference.android.brand.BrandColor;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.data.api.model.Speaker;
 
 public final class PlaceholderDrawable {
 

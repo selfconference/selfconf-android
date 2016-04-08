@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.events.GetSessionAddEvent;
 import org.selfconference.android.data.events.GetSessionSuccessEvent;
-import org.selfconference.android.session.Session;
+import org.selfconference.android.data.api.model.Session;
 import retrofit2.Call;
 import retrofit2.Response;
 

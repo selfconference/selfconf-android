@@ -1,4 +1,4 @@
-package org.selfconference.android.sponsors;
+package org.selfconference.android.data.api.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -10,7 +10,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import org.joda.time.ReadableDateTime;
 import org.selfconference.android.data.api.model.Event;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.utils.DateTimes;
 
 public final class EventJsonDeserializer implements JsonDeserializer<Event> {

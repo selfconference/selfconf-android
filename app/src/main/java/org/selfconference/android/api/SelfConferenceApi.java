@@ -6,13 +6,10 @@ import okhttp3.ResponseBody;
 import org.selfconference.android.App;
 import org.selfconference.android.feedback.Feedback;
 import org.selfconference.android.feedback.FeedbackRequest;
-import org.selfconference.android.session.Day;
-import org.selfconference.android.session.Session;
-import org.selfconference.android.speakers.Speaker;
-import org.selfconference.android.sponsors.Sponsor;
+import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.android.data.api.model.Sponsor;
 import retrofit2.Call;
-import retrofit2.Response;
-import rx.Observable;
 import rx.functions.Func2;
 
 public final class SelfConferenceApi implements Api {

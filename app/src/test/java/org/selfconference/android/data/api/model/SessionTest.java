@@ -1,4 +1,4 @@
-package org.selfconference.android.session;
+package org.selfconference.android.data.api.model;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Ignore;
@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.Parceler.Container;
-import org.selfconference.android.speakers.Speaker;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.time.DateTime.now;

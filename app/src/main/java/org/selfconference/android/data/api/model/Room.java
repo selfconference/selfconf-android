@@ -1,4 +1,4 @@
-package org.selfconference.android.session;
+package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
 import android.support.annotation.NonNull;

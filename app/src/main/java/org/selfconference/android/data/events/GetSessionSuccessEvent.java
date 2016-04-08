@@ -1,6 +1,6 @@
 package org.selfconference.android.data.events;
 
-import org.selfconference.android.session.Session;
+import org.selfconference.android.data.api.model.Session;
 
 /** Posts when a {@link org.selfconference.android.data.jobs.GetSessionJob} succeeds. */
 public final class GetSessionSuccessEvent {

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.support.Rooms;
 
 import static org.assertj.core.api.Assertions.assertThat;

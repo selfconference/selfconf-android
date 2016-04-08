@@ -6,7 +6,7 @@ import java.util.List;
 import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.events.GetSpeakersAddEvent;
 import org.selfconference.android.data.events.GetSpeakersSuccessEvent;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.data.api.model.Speaker;
 import retrofit2.Call;
 import retrofit2.Response;
 

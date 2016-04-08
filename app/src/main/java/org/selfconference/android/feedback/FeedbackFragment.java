@@ -17,7 +17,7 @@ import org.selfconference.android.R;
 import org.selfconference.android.data.jobs.SubmitFeedbackJob;
 import org.selfconference.android.feedback.VoteButton.OnVoteSelectedListener;
 import org.selfconference.android.feedback.VoteButton.Vote;
-import org.selfconference.android.session.Session;
+import org.selfconference.android.data.api.model.Session;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

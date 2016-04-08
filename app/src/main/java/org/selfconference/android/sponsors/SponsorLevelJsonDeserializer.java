@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
+import org.selfconference.android.data.api.model.SponsorLevel;
 
 public final class SponsorLevelJsonDeserializer implements JsonDeserializer<SponsorLevel> {
   @Override public SponsorLevel deserialize(JsonElement json, Type typeOfT,

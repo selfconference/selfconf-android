@@ -8,7 +8,7 @@ import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.SponsorComparator;
 import org.selfconference.android.data.events.GetSponsorsAddEvent;
 import org.selfconference.android.data.events.GetSponsorsSuccessEvent;
-import org.selfconference.android.sponsors.Sponsor;
+import org.selfconference.android.data.api.model.Sponsor;
 import retrofit2.Call;
 import retrofit2.Response;
 

@@ -1,12 +1,12 @@
-package org.selfconference.android.speakers;
+package org.selfconference.android.data.api.model;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.ryanharter.auto.value.parcel.ParcelAdapter;
+import com.ryanharter.auto.value.parcel.TypeAdapter;
 import java.util.List;
-import org.selfconference.android.session.ImmutableListSessionTypeAdapter;
-import org.selfconference.android.session.Session;
 
 @AutoValue public abstract class Speaker implements Parcelable {
 
@@ -26,7 +26,7 @@ import org.selfconference.android.session.Session;
 
   public abstract String photo();
 
-  @ParcelAdapter(ImmutableListSessionTypeAdapter.class)
+  @ParcelAdapter(Session.ImmutableListTypeAdapter.class)
   public abstract ImmutableList<Session> sessions();
 
   @AutoValue.Builder public abstract static class Builder {
@@ -49,5 +49,17 @@ import org.selfconference.android.session.Session;
     }
 
     public abstract Speaker build();
+  }
+
+  public static final class ImmutableListTypeAdapter
+      implements TypeAdapter<ImmutableList<Speaker>> {
+    @Override public ImmutableList<Speaker> fromParcel(Parcel in) {
+      List<AutoValue_Speaker> typedArrayList = in.createTypedArrayList(AutoValue_Speaker.CREATOR);
+      return ImmutableList.copyOf(typedArrayList);
+    }
+
+    @Override public void toParcel(ImmutableList<Speaker> value, Parcel dest) {
+      dest.writeTypedList(value);
+    }
   }
 }

@@ -8,6 +8,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
+import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.data.api.model.SponsorLevel;
 
 public final class SponsorJsonDeserializer implements JsonDeserializer<Sponsor> {
 

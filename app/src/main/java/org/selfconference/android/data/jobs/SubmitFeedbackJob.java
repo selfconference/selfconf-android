@@ -7,7 +7,7 @@ import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.events.SubmitFeedbackAddEvent;
 import org.selfconference.android.data.events.SubmitFeedbackSuccessEvent;
 import org.selfconference.android.feedback.Feedback;
-import org.selfconference.android.session.Session;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.session.SessionPreferences;
 import retrofit2.Call;
 import retrofit2.Response;

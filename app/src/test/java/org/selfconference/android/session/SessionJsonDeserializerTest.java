@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.selfconference.android.data.api.NullDateTime;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.data.api.model.Room;
+import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.speakers.SpeakerTypeAdapter;
 import org.selfconference.android.support.Sessions;
 

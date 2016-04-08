@@ -1,4 +1,4 @@
-package org.selfconference.android.speakers;
+package org.selfconference.android.data.api.model;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Ignore;
@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.Parceler.Container;
-import org.selfconference.android.session.Room;
-import org.selfconference.android.session.Session;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;

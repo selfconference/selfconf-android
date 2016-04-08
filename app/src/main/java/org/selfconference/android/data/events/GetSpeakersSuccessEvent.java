@@ -1,7 +1,7 @@
 package org.selfconference.android.data.events;
 
 import com.google.common.collect.ImmutableList;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.data.api.model.Speaker;
 
 /** Posts when a {@link org.selfconference.android.data.jobs.GetSpeakersJob} succeeds. */
 public final class GetSpeakersSuccessEvent {

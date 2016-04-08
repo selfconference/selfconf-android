@@ -1,9 +1,8 @@
-package org.selfconference.android.sponsors;
+package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.ryanharter.auto.value.parcel.ParcelAdapter;
 
 @AutoValue public abstract class Sponsor implements Parcelable {
@@ -22,10 +21,10 @@ import com.ryanharter.auto.value.parcel.ParcelAdapter;
 
   public abstract String photo();
 
-  @ParcelAdapter(ImmutableListSponsorLevelTypeAdapter.class)
+  @ParcelAdapter(SponsorLevel.ImmutableListTypeAdapter.class)
   public abstract ImmutableList<SponsorLevel> sponsorLevels();
 
-  @AutoValue.Builder abstract static class Builder {
+  @AutoValue.Builder public abstract static class Builder {
 
     public abstract Builder id(int id);
 

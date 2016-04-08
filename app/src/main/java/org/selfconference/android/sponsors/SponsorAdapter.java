@@ -16,6 +16,8 @@ import javax.inject.Inject;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.data.api.model.SponsorLevel;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 

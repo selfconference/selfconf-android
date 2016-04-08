@@ -21,7 +21,7 @@ import org.selfconference.android.data.events.GetSpeakersAddEvent;
 import org.selfconference.android.data.events.GetSpeakersSuccessEvent;
 import org.selfconference.android.data.jobs.GetSessionJob;
 import org.selfconference.android.data.jobs.GetSpeakersJob;
-import org.selfconference.android.session.Session;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.session.SessionDetailsActivity;
 import timber.log.Timber;
 

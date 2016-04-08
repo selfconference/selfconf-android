@@ -13,7 +13,9 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import org.joda.time.ReadableDateTime;
 import org.selfconference.android.data.api.NullDateTime;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.data.api.model.Room;
+import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.utils.DateTimes;
 
 public final class SessionJsonDeserializer implements JsonDeserializer<Session> {

@@ -8,7 +8,7 @@ import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.selfconference.android.data.api.model.Event;
-import org.selfconference.android.speakers.Speaker;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.speakers.SpeakerTypeAdapter;
 import org.selfconference.android.support.Events;
 

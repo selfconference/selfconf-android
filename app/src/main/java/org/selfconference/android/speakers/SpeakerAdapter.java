@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.selfconference.android.ButterKnifeViewHolder;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.utils.PlaceholderDrawable;
 import rx.functions.Func1;
 

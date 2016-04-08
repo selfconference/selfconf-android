@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.events.GetSponsorsAddEvent;
 import org.selfconference.android.data.events.GetSponsorsSuccessEvent;
 import org.selfconference.android.data.jobs.GetSponsorsJob;

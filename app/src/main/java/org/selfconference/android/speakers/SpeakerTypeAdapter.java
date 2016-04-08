@@ -10,9 +10,10 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import org.selfconference.android.session.Room;
+import org.selfconference.android.data.api.model.Room;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.session.RoomJsonDeserializer;
-import org.selfconference.android.session.Session;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.session.SessionJsonDeserializer;
 
 public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {

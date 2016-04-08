@@ -8,6 +8,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.data.api.NullDateTime;
+import org.selfconference.android.data.api.model.Room;
+import org.selfconference.android.data.api.model.Session;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
