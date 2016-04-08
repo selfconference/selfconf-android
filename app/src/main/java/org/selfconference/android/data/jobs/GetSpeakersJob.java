@@ -1,51 +1,30 @@
 package org.selfconference.android.data.jobs;
 
-import com.birbit.android.jobqueue.Job;
-import com.birbit.android.jobqueue.Params;
-import com.birbit.android.jobqueue.RetryConstraint;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
-import javax.inject.Inject;
-import org.greenrobot.eventbus.EventBus;
-import org.selfconference.android.api.Api;
+import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.events.GetSpeakersAddEvent;
 import org.selfconference.android.data.events.GetSpeakersSuccessEvent;
 import org.selfconference.android.speakers.Speaker;
+import retrofit2.Call;
 import retrofit2.Response;
 
-public final class GetSpeakersJob extends Job {
+public final class GetSpeakersJob extends ApiJob<List<Speaker>> {
 
-  @Inject Api api;
-  @Inject EventBus eventBus;
-
-  public static Job create() {
-    return new GetSpeakersJob();
+  @Override protected Object onAddEvent() {
+    return new GetSpeakersAddEvent();
   }
 
-  private GetSpeakersJob() {
-    super(new Params(Priorities.DEFAULT).requireNetwork());
+  @Override protected Call<List<Speaker>> apiCall() {
+    return api.getSpeakers();
   }
 
-  @Override public void onAdded() {
-    eventBus.post(new GetSpeakersAddEvent());
+  @Override protected void onApiSuccess(Response<List<Speaker>> response) {
+    ImmutableList<Speaker> speakers = ImmutableList.copyOf(response.body());
+    eventBus.post(new GetSpeakersSuccessEvent(speakers));
   }
 
-  @Override public void onRun() throws Throwable {
-    Response<List<Speaker>> response = api.getSpeakers().execute();
-    if (response.isSuccessful()) {
-      ImmutableList<Speaker> speakers = ImmutableList.copyOf(response.body());
-      eventBus.post(new GetSpeakersSuccessEvent(speakers));
-    } else {
-      // TODO handle error
-    }
-  }
+  @Override protected void onApiFailure(Response<List<Speaker>> response) {
 
-  @Override protected void onCancel(int cancelReason) {
-
-  }
-
-  @Override protected RetryConstraint shouldReRunOnThrowable(Throwable throwable, int runCount,
-      int maxRunCount) {
-    return RetryConstraint.createExponentialBackoff(runCount, 1000);
   }
 }

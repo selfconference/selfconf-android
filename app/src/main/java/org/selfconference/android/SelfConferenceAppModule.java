@@ -17,6 +17,7 @@ import org.selfconference.android.api.Api;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
+import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
 import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.jobs.GetSessionJob;
@@ -73,6 +74,7 @@ import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOIN
         SpeakerAdapter.class, //
         BaseActivity.class, //
         SessionDetailsActivity.class, //
+        ApiJob.class, //
         SubmitFeedbackJob.class, //
         GetSponsorsJob.class, //
         GetSpeakersJob.class, //

@@ -36,7 +36,7 @@ public final class SelfConferenceApi implements Api {
   }
 
   @Override
-  public Observable<Response<ResponseBody>> submitFeedback(Session session, Feedback feedback) {
+  public Call<ResponseBody> submitFeedback(Session session, Feedback feedback) {
     return client.submitFeedback(session.id(), new FeedbackRequest(feedback));
   }
 

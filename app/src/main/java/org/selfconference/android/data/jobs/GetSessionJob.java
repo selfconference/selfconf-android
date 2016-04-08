@@ -1,51 +1,35 @@
 package org.selfconference.android.data.jobs;
 
-import com.birbit.android.jobqueue.Job;
-import com.birbit.android.jobqueue.Params;
-import com.birbit.android.jobqueue.RetryConstraint;
-import javax.inject.Inject;
-import org.greenrobot.eventbus.EventBus;
-import org.selfconference.android.api.Api;
+import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.events.GetSessionAddEvent;
 import org.selfconference.android.data.events.GetSessionSuccessEvent;
 import org.selfconference.android.session.Session;
+import retrofit2.Call;
 import retrofit2.Response;
 
-public final class GetSessionJob extends Job {
-
-  @Inject Api api;
-  @Inject EventBus eventBus;
+public final class GetSessionJob extends ApiJob<Session> {
 
   private final int id;
 
-  public static Job create(int id) {
-    return new GetSessionJob(id);
-  }
-
-  private GetSessionJob(int id) {
-    super(new Params(Priorities.DEFAULT).requireNetwork());
+  public GetSessionJob(int id) {
+    super();
     this.id = id;
   }
 
-  @Override public void onAdded() {
-    eventBus.post(new GetSessionAddEvent());
+  @Override protected Object onAddEvent() {
+    return new GetSessionAddEvent();
   }
 
-  @Override public void onRun() throws Throwable {
-    Response<Session> response = api.getSessionById(id).execute();
-    if (response.isSuccessful()) {
-      eventBus.post(new GetSessionSuccessEvent(response.body()));
-    } else {
-      // TODO handle error
-    }
+  @Override protected Call<Session> apiCall() {
+    return api.getSessionById(id);
   }
 
-  @Override protected void onCancel(int cancelReason) {
-
+  @Override protected void onApiSuccess(Response<Session> response) {
+    Session session = response.body();
+    eventBus.post(new GetSessionSuccessEvent(session));
   }
 
-  @Override protected RetryConstraint shouldReRunOnThrowable(Throwable throwable, int runCount,
-      int maxRunCount) {
-    return RetryConstraint.createExponentialBackoff(runCount, 1000);
+  @Override protected void onApiFailure(Response<Session> response) {
+
   }
 }

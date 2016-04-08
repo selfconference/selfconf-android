@@ -53,7 +53,8 @@ public final class SpeakerListFragment extends BaseListFragment {
         // TODO handle empty state
       } else {
         // TODO handle possibility where speaker has more than one session
-        jobManager.addJobInBackground(GetSessionJob.create(sessions.get(0).id()));
+        Session firstSession = sessions.get(0);
+        jobManager.addJobInBackground(new GetSessionJob(firstSession.id()));
       }
     });
 
@@ -103,6 +104,6 @@ public final class SpeakerListFragment extends BaseListFragment {
   }
 
   private void fetchData() {
-    jobManager.addJobInBackground(GetSpeakersJob.create());
+    jobManager.addJobInBackground(new GetSpeakersJob());
   }
 }

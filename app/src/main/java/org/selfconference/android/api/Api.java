@@ -8,7 +8,6 @@ import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
 import retrofit2.Call;
-import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -32,5 +31,5 @@ public interface Api {
    *
    * @return an observable response to determine success or failure of call
    */
-  Observable<Response<ResponseBody>> submitFeedback(Session session, Feedback feedback);
+  Call<ResponseBody> submitFeedback(Session session, Feedback feedback);
 }

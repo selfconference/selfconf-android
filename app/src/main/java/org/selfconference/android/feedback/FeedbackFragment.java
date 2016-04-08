@@ -77,7 +77,7 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
   @Override public void onVoteSelected(VoteButton voteButton, @Vote int vote) {
     Feedback feedback = new Feedback(vote, comments.getText().toString());
-    jobManager.addJobInBackground(SubmitFeedbackJob.create(session, feedback));
+    jobManager.addJobInBackground(new SubmitFeedbackJob(session, feedback));
 
     voteButton.postDelayed(this::dismiss, 200);
   }

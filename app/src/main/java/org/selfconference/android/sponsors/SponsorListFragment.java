@@ -43,7 +43,7 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
     sponsorRecyclerView.setAdapter(sponsorAdapter);
     sponsorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-    jobManager.addJobInBackground(GetSponsorsJob.create());
+    jobManager.addJobInBackground(new GetSponsorsJob());
   }
 
   @Override public void onResume() {
