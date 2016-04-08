@@ -1,5 +1,6 @@
 package org.selfconference.android.data.jobs;
 
+import android.support.annotation.NonNull;
 import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.events.GetSessionAddEvent;
 import org.selfconference.android.data.events.GetSessionSuccessEvent;
@@ -16,7 +17,7 @@ public final class GetSessionJob extends ApiJob<Session> {
     this.id = id;
   }
 
-  @Override protected Object onAddEvent() {
+  @NonNull @Override protected Object createAddEvent() {
     return new GetSessionAddEvent();
   }
 

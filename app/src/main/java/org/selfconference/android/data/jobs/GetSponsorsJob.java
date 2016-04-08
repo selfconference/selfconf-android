@@ -1,5 +1,6 @@
 package org.selfconference.android.data.jobs;
 
+import android.support.annotation.NonNull;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Ordering;
 import java.util.List;
@@ -17,7 +18,7 @@ public final class GetSponsorsJob extends ApiJob<List<Sponsor>> {
     super();
   }
 
-  @Override protected Object onAddEvent() {
+  @NonNull @Override protected Object createAddEvent() {
     return new GetSponsorsAddEvent();
   }
 

@@ -1,5 +1,6 @@
 package org.selfconference.android.data.jobs;
 
+import android.support.annotation.NonNull;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import org.selfconference.android.data.api.ApiJob;
@@ -11,7 +12,7 @@ import retrofit2.Response;
 
 public final class GetSpeakersJob extends ApiJob<List<Speaker>> {
 
-  @Override protected Object onAddEvent() {
+  @NonNull @Override protected Object createAddEvent() {
     return new GetSpeakersAddEvent();
   }
 

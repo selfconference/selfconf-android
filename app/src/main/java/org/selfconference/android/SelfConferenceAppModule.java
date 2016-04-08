@@ -21,6 +21,7 @@ import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
 import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.jobs.GetSessionJob;
+import org.selfconference.android.data.jobs.GetSessionsJob;
 import org.selfconference.android.data.jobs.GetSpeakersJob;
 import org.selfconference.android.data.jobs.GetSponsorsJob;
 import org.selfconference.android.data.jobs.SubmitFeedbackJob;
@@ -44,7 +45,6 @@ import org.selfconference.android.sponsors.SponsorJsonDeserializer;
 import org.selfconference.android.sponsors.SponsorLevel;
 import org.selfconference.android.sponsors.SponsorLevelJsonDeserializer;
 import org.selfconference.android.sponsors.SponsorListFragment;
-import org.selfconference.android.utils.TimberJobManagerLogger;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -79,6 +79,7 @@ import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOIN
         GetSponsorsJob.class, //
         GetSpeakersJob.class, //
         GetSessionJob.class, //
+        GetSessionsJob.class, //
     }) //
 public final class SelfConferenceAppModule {
 
@@ -144,7 +145,6 @@ public final class SelfConferenceAppModule {
 
   @Provides @Singleton JobManager jobManager() {
     return new JobManager(new Configuration.Builder(application) //
-        .customLogger(new TimberJobManagerLogger()) //
         .injector(job -> ((App) application).inject(job)).build());
   }
 }

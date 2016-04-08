@@ -27,7 +27,7 @@ public final class SubmitFeedbackJob extends ApiJob<ResponseBody> {
     this.feedback = checkNotNull(feedback, "feedback == null");
   }
 
-  @Override protected Object onAddEvent() {
+  @NonNull @Override protected Object createAddEvent() {
     return new SubmitFeedbackAddEvent();
   }
 

@@ -11,7 +11,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import rx.Observable;
 
 /**
  * A Retrofit client to access the Self.conference API
@@ -20,7 +19,7 @@ import rx.Observable;
  */
 public interface SelfConferenceClient {
   @GET("events/latest/sessions") //
-  Observable<List<Session>> getSessions();
+  Call<List<Session>> getSessions();
 
   @GET("sessions/{id}") //
   Call<Session> getSessionById(@Path("id") int id);

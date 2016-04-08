@@ -3,12 +3,10 @@ package org.selfconference.android.api;
 import java.util.List;
 import okhttp3.ResponseBody;
 import org.selfconference.android.feedback.Feedback;
-import org.selfconference.android.session.Day;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
 import retrofit2.Call;
-import rx.Observable;
 
 /**
  * A wrapper around the Self.conference API
@@ -16,9 +14,7 @@ import rx.Observable;
  * Current implementations include {@link SelfConferenceApi}
  */
 public interface Api {
-  Observable<List<Session>> getSessions();
-
-  Observable<List<Session>> getSessionsByDay(Day day);
+  Call<List<Session>> getSessions();
 
   Call<Session> getSessionById(int id);
 

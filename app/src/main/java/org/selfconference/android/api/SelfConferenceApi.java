@@ -23,7 +23,7 @@ public final class SelfConferenceApi implements Api {
     App.getInstance().inject(this);
   }
 
-  @Override public Observable<List<Session>> getSessions() {
+  @Override public Call<List<Session>> getSessions() {
     return client.getSessions();
   }
 
@@ -38,12 +38,6 @@ public final class SelfConferenceApi implements Api {
   @Override
   public Call<ResponseBody> submitFeedback(Session session, Feedback feedback) {
     return client.submitFeedback(session.id(), new FeedbackRequest(feedback));
-  }
-
-  @Override public Observable<List<Session>> getSessionsByDay(Day day) {
-    return getSessions() //
-        .flatMap(Observable::from) //
-        .toSortedList(sortByDate());
   }
 
   @Override public Call<Session> getSessionById(int id) {

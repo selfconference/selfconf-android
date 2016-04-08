@@ -1,5 +1,6 @@
 package org.selfconference.android.data.api;
 
+import android.support.annotation.NonNull;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
@@ -10,6 +11,8 @@ import org.selfconference.android.data.jobs.Priorities;
 import retrofit2.Call;
 import retrofit2.Response;
 import timber.log.Timber;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class ApiJob<T> extends Job {
 
@@ -41,10 +44,13 @@ public abstract class ApiJob<T> extends Job {
   }
 
   @Override public void onAdded() {
-    eventBus.post(onAddEvent());
+    Object addEvent = createAddEvent();
+    checkNotNull(addEvent, "createAddEvent() must return a non-null object");
+
+    eventBus.post(addEvent);
   }
 
-  protected abstract Object onAddEvent();
+  @NonNull protected abstract Object createAddEvent();
 
   protected abstract Call<T> apiCall();
 
