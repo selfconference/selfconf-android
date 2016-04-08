@@ -22,8 +22,9 @@ import org.selfconference.android.App;
 import org.selfconference.android.BaseActivity;
 import org.selfconference.android.R;
 import org.selfconference.android.brand.BrandColor;
+import org.selfconference.android.data.events.SubmitFeedbackAddEvent;
+import org.selfconference.android.data.events.SubmitFeedbackSuccessEvent;
 import org.selfconference.android.feedback.FeedbackFragment;
-import org.selfconference.android.feedback.SuccessfulFeedbackSubmission;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.ui.decorators.DateTimeDecorator;
@@ -33,6 +34,7 @@ import org.selfconference.android.views.FloatingActionButton;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.text.Html.fromHtml;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
 public final class SessionDetailsActivity extends BaseActivity {
   private static final String EXTRA_SESSION = "org.selfconference.android.session.SESSION";
@@ -110,7 +112,13 @@ public final class SessionDetailsActivity extends BaseActivity {
     fragment.show(getSupportFragmentManager(), FeedbackFragment.TAG);
   }
 
-  @Subscribe public void onSuccessfulFeedbackSubmitted(SuccessfulFeedbackSubmission event) {
+  @Subscribe(threadMode = MAIN) public void onSubmitFeedbackAdded(SubmitFeedbackAddEvent event) {
+    submitFeedback.setEnabled(false);
+    submitFeedback.setText("Submitting feedback...");
+  }
+
+  @Subscribe(threadMode = MAIN)
+  public void onSuccessfulFeedbackSubmitted(SubmitFeedbackSuccessEvent event) {
     setupFeedbackButton();
   }
 

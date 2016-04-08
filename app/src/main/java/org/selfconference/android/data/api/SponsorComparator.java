@@ -1,8 +1,10 @@
-package org.selfconference.android.sponsors;
+package org.selfconference.android.data.api;
 
 import com.google.common.collect.ComparisonChain;
 import java.util.Collections;
 import java.util.Comparator;
+import org.selfconference.android.sponsors.Sponsor;
+import org.selfconference.android.sponsors.SponsorLevel;
 
 /**
  * A {@link Comparator} used to compare two {@link Sponsor}s in the following order:
@@ -15,7 +17,7 @@ import java.util.Comparator;
  *  they are ordered alphabetically using {@link SponsorLevel#name()}.</li>
  * </ul>
  */
-final class SponsorComparator implements Comparator<Sponsor> {
+public final class SponsorComparator implements Comparator<Sponsor> {
   @Override public int compare(Sponsor lhs, Sponsor rhs) {
     SponsorLevel lhsMin = Collections.min(lhs.sponsorLevels());
     SponsorLevel rhsMin = Collections.min(rhs.sponsorLevels());

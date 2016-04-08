@@ -2,7 +2,6 @@ package org.selfconference.android.session;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -13,35 +12,32 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import butterknife.Bind;
+import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
-import org.selfconference.android.api.Api;
-import timber.log.Timber;
+import org.selfconference.android.data.events.GetSessionsAddEvent;
+import org.selfconference.android.data.events.GetSessionsSuccessEvent;
+import org.selfconference.android.data.jobs.GetSessionsJob;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.selfconference.android.utils.rx.Transformers.ioSchedulers;
-import static org.selfconference.android.utils.rx.Transformers.setRefreshing;
+import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
 public final class SessionListFragment extends BaseListFragment {
-  private static final String EXTRA_DAY =
-      "org.selfconference.android.session.SessionListFragment.EXTRA_DAY";
 
   @Bind(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
   @Bind(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
-  @Inject Api api;
   @Inject SessionPreferences sessionPreferences;
+  @Inject JobManager jobManager;
+  @Inject EventBus eventBus;
 
   private final SessionAdapter sessionAdapter = new SessionAdapter();
-  private Day day;
 
-  public static SessionListFragment newInstance(@NonNull Day day) {
-    checkNotNull(day, "day == null");
-
-    Bundle bundle = new Bundle(1);
-    bundle.putSerializable(EXTRA_DAY, day);
+  public static SessionListFragment newInstance() {
+    Bundle bundle = new Bundle();
 
     SessionListFragment fragment = new SessionListFragment();
     fragment.setArguments(bundle);
@@ -67,9 +63,6 @@ public final class SessionListFragment extends BaseListFragment {
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-
-    day = checkNotNull((Day) getArguments().getSerializable(EXTRA_DAY));
-
     fetchData();
   }
 
@@ -87,8 +80,23 @@ public final class SessionListFragment extends BaseListFragment {
 
   @Override public void onResume() {
     super.onResume();
+    eventBus.register(this);
     sessionAdapter.refresh();
     refreshFavoritesMenu();
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    eventBus.unregister(this);
+  }
+
+  @Subscribe(threadMode = MAIN) public void onGetSessionsAdded(GetSessionsAddEvent event) {
+    swipeRefreshLayout.setRefreshing(true);
+  }
+
+  @Subscribe(threadMode = MAIN) public void onGetSessionsSucceeded(GetSessionsSuccessEvent event) {
+    swipeRefreshLayout.setRefreshing(false);
+    sessionAdapter.setData(event.sessions);
   }
 
   @Override protected int layoutResId() {
@@ -100,14 +108,7 @@ public final class SessionListFragment extends BaseListFragment {
   }
 
   private void fetchData() {
-    api.getSessionsByDay(day) //
-        .compose(setRefreshing(swipeRefreshLayout)) //
-        .compose(bindToLifecycle()) //
-        .compose(ioSchedulers()) //
-        .subscribe(sessionAdapter::setData, //
-            throwable -> {
-              Timber.e(throwable, "Schedule failed to load");
-            });
+    jobManager.addJobInBackground(new GetSessionsJob());
   }
 
   private void refreshFavoritesMenu() {

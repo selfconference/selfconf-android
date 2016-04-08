@@ -38,11 +38,6 @@
           />
     </activity>
 
-    <service
-        android:exported="false"
-        android:name=".feedback.SubmitFeedbackIntentService"
-        />
-
     <meta-data
         android:name="com.crashlytics.ApiKey"
         android:value="fbff2890832b0c5f6b9c86553264ab3030dad587"

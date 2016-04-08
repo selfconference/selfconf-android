@@ -1,6 +1,5 @@
 package org.selfconference.android.feedback;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.birbit.android.jobqueue.JobManager;
+import javax.inject.Inject;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
+import org.selfconference.android.data.jobs.SubmitFeedbackJob;
 import org.selfconference.android.feedback.VoteButton.OnVoteSelectedListener;
 import org.selfconference.android.feedback.VoteButton.Vote;
 import org.selfconference.android.session.Session;
@@ -28,6 +31,8 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
   public static final String TAG = FeedbackFragment.class.getName();
   private static final String EXTRA_SESSION =
       "org.selfconference.android.feedback.FeedbackFragment.EXTRA_SESSION";
+
+  @Inject JobManager jobManager;
 
   @Bind(R.id.vote_button) VoteButton voteButton;
   @Bind(R.id.feedback_fragment_comment_section) EditText comments;
@@ -52,6 +57,7 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    App.getInstance().inject(this);
     session = checkNotNull((Session) getArguments().getParcelable(EXTRA_SESSION));
 
     voteButton.setOnVoteSelectedListener(this);
@@ -71,8 +77,8 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
   @Override public void onVoteSelected(VoteButton voteButton, @Vote int vote) {
     Feedback feedback = new Feedback(vote, comments.getText().toString());
-    Intent submitFeedbackServiceIntent = SubmitFeedbackIntentService.newIntent(session, feedback);
-    getActivity().startService(submitFeedbackServiceIntent);
+    jobManager.addJobInBackground(new SubmitFeedbackJob(session, feedback));
+
     voteButton.postDelayed(this::dismiss, 200);
   }
 }

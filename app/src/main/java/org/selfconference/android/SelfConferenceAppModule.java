@@ -1,6 +1,8 @@
 package org.selfconference.android;
 
 import android.app.Application;
+import com.birbit.android.jobqueue.JobManager;
+import com.birbit.android.jobqueue.config.Configuration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
@@ -15,9 +17,15 @@ import org.selfconference.android.api.Api;
 import org.selfconference.android.api.SelfConferenceApi;
 import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
+import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
 import org.selfconference.android.data.api.model.Event;
-import org.selfconference.android.feedback.SubmitFeedbackIntentService;
+import org.selfconference.android.data.jobs.GetSessionJob;
+import org.selfconference.android.data.jobs.GetSessionsJob;
+import org.selfconference.android.data.jobs.GetSpeakersJob;
+import org.selfconference.android.data.jobs.GetSponsorsJob;
+import org.selfconference.android.data.jobs.SubmitFeedbackJob;
+import org.selfconference.android.feedback.FeedbackFragment;
 import org.selfconference.android.session.Room;
 import org.selfconference.android.session.RoomJsonDeserializer;
 import org.selfconference.android.session.Session;
@@ -62,10 +70,16 @@ import static org.selfconference.android.BuildConfig.SELF_CONFERENCE_API_ENDPOIN
         SpeakerListFragment.class, //
         SessionListFragment.class, //
         CodeOfConductFragment.class, //
+        FeedbackFragment.class, //
         SpeakerAdapter.class, //
         BaseActivity.class, //
         SessionDetailsActivity.class, //
-        SubmitFeedbackIntentService.class //
+        ApiJob.class, //
+        SubmitFeedbackJob.class, //
+        GetSponsorsJob.class, //
+        GetSpeakersJob.class, //
+        GetSessionJob.class, //
+        GetSessionsJob.class, //
     }) //
 public final class SelfConferenceAppModule {
 
@@ -127,5 +141,10 @@ public final class SelfConferenceAppModule {
 
   @Provides @Singleton EventBus eventBus() {
     return EventBus.getDefault();
+  }
+
+  @Provides @Singleton JobManager jobManager() {
+    return new JobManager(new Configuration.Builder(application) //
+        .injector(job -> ((App) application).inject(job)).build());
   }
 }

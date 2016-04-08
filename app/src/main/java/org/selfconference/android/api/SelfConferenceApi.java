@@ -10,6 +10,7 @@ import org.selfconference.android.session.Day;
 import org.selfconference.android.session.Session;
 import org.selfconference.android.speakers.Speaker;
 import org.selfconference.android.sponsors.Sponsor;
+import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
 import rx.functions.Func2;
@@ -22,30 +23,24 @@ public final class SelfConferenceApi implements Api {
     App.getInstance().inject(this);
   }
 
-  @Override public Observable<List<Session>> getSessions() {
+  @Override public Call<List<Session>> getSessions() {
     return client.getSessions();
   }
 
-  @Override public Observable<List<Speaker>> getSpeakers() {
+  @Override public Call<List<Speaker>> getSpeakers() {
     return client.getSpeakers();
   }
 
-  @Override public Observable<List<Sponsor>> getSponsors() {
+  @Override public Call<List<Sponsor>> getSponsors() {
     return client.getSponsors();
   }
 
   @Override
-  public Observable<Response<ResponseBody>> submitFeedback(Session session, Feedback feedback) {
+  public Call<ResponseBody> submitFeedback(Session session, Feedback feedback) {
     return client.submitFeedback(session.id(), new FeedbackRequest(feedback));
   }
 
-  @Override public Observable<List<Session>> getSessionsByDay(Day day) {
-    return getSessions() //
-        .flatMap(Observable::from) //
-        .toSortedList(sortByDate());
-  }
-
-  @Override public Observable<Session> getSessionById(int id) {
+  @Override public Call<Session> getSessionById(int id) {
     return client.getSessionById(id);
   }
 
