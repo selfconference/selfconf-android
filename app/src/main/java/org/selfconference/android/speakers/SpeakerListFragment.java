@@ -15,7 +15,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.BaseListFragment;
 import org.selfconference.android.FilterableAdapter;
 import org.selfconference.android.R;
-import org.selfconference.android.api.Api;
 import org.selfconference.android.data.events.GetSessionAddEvent;
 import org.selfconference.android.data.events.GetSessionSuccessEvent;
 import org.selfconference.android.data.events.GetSpeakersAddEvent;
@@ -34,7 +33,6 @@ public final class SpeakerListFragment extends BaseListFragment {
   @Bind(R.id.speaker_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
   @Bind(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
 
-  @Inject Api api;
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;
 
