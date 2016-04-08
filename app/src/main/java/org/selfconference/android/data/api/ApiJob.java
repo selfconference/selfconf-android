@@ -14,6 +14,12 @@ import timber.log.Timber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * A base {@link Job} for communicating with the Self.conference API.
+ *
+ * @param <T> the expected type returned by the API.
+ * @see Api
+ */
 public abstract class ApiJob<T> extends Job {
 
   private static final long INITIAL_BACKOFF_MS = 1000;
@@ -22,7 +28,7 @@ public abstract class ApiJob<T> extends Job {
   @Inject protected EventBus eventBus;
 
   protected ApiJob() {
-    super(new Params(Priorities.DEFAULT).requireNetwork());
+    super(new Params(Priorities.NORMAL).requireNetwork());
   }
 
   @Override protected RetryConstraint shouldReRunOnThrowable(Throwable throwable, int runCount,
@@ -50,11 +56,25 @@ public abstract class ApiJob<T> extends Job {
     eventBus.post(addEvent);
   }
 
+  /** Returns an event to be posted when this job is added to the queue. Must not be null. */
   @NonNull protected abstract Object createAddEvent();
 
+  /** Returns the API call to be executed when this job is run. */
   protected abstract Call<T> apiCall();
 
+  /**
+   * A callback to be invoked when the {@link #apiCall()} has succeeded.
+   * Success is determined by a status code that falls within the range of [200, 300).
+   *
+   * @param response the response returned from {@link Call#execute()}.
+   */
   protected abstract void onApiSuccess(Response<T> response);
 
+  /**
+   * A callback to be invoked when the {@link #apiCall()} has failed.
+   * Failure is determined by a status code that does not fall within the range of [200, 300).
+   *
+   * @param response the response returned from {@link Call#execute()}.
+   */
   protected abstract void onApiFailure(Response<T> response);
 }
