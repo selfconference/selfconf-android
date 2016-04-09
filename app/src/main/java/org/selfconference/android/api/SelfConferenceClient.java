@@ -2,10 +2,10 @@ package org.selfconference.android.api;
 
 import java.util.List;
 import okhttp3.ResponseBody;
-import org.selfconference.android.feedback.FeedbackRequest;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.feedback.Feedback;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -31,5 +31,5 @@ public interface SelfConferenceClient {
   Call<List<Sponsor>> getSponsors();
 
   @POST("sessions/{id}/feedbacks") //
-  Call<ResponseBody> submitFeedback(@Path("id") int id, @Body FeedbackRequest feedbackRequest);
+  Call<ResponseBody> submitFeedback(@Path("id") int id, @Body Feedback feedback);
 }

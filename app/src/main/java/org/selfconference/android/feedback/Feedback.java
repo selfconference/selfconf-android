@@ -8,7 +8,6 @@ import org.selfconference.android.feedback.VoteButton.Vote;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Objects.equal;
 
-@SuppressWarnings({ "FieldCanBeLocal", "unused" }) //
 public final class Feedback implements Parcelable {
   @Vote private final int vote;
   private final String comments;

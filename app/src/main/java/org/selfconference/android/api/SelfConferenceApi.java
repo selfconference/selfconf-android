@@ -4,11 +4,10 @@ import java.util.List;
 import javax.inject.Inject;
 import okhttp3.ResponseBody;
 import org.selfconference.android.App;
-import org.selfconference.android.feedback.Feedback;
-import org.selfconference.android.feedback.FeedbackRequest;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.feedback.Feedback;
 import retrofit2.Call;
 import rx.functions.Func2;
 
@@ -32,9 +31,8 @@ public final class SelfConferenceApi implements Api {
     return client.getSponsors();
   }
 
-  @Override
-  public Call<ResponseBody> submitFeedback(Session session, Feedback feedback) {
-    return client.submitFeedback(session.id(), new FeedbackRequest(feedback));
+  @Override public Call<ResponseBody> submitFeedback(Session session, Feedback feedback) {
+    return client.submitFeedback(session.id(), feedback);
   }
 
   @Override public Call<Session> getSessionById(int id) {
