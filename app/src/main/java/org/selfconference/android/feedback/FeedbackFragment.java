@@ -14,10 +14,11 @@ import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
+import org.selfconference.android.data.api.model.Feedback;
+import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Vote;
 import org.selfconference.android.data.jobs.SubmitFeedbackJob;
 import org.selfconference.android.feedback.VoteButton.OnVoteSelectedListener;
-import org.selfconference.android.feedback.VoteButton.Vote;
-import org.selfconference.android.data.api.model.Session;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -75,8 +76,12 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
     getDialog().getWindow().getAttributes().windowAnimations = R.style.FeedbackFragment;
   }
 
-  @Override public void onVoteSelected(VoteButton voteButton, @Vote int vote) {
-    Feedback feedback = new Feedback(vote, comments.getText().toString());
+  @Override public void onVoteSelected(VoteButton voteButton, Vote vote) {
+    Feedback feedback = Feedback.builder() //
+        .vote(vote) //
+        .comments(comments.getText().toString()) //
+        .build();
+
     jobManager.addJobInBackground(new SubmitFeedbackJob(session, feedback));
 
     voteButton.postDelayed(this::dismiss, 200);

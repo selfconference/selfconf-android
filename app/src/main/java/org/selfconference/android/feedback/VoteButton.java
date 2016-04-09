@@ -2,7 +2,6 @@ package org.selfconference.android.feedback;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -11,12 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import java.lang.annotation.Retention;
 import org.selfconference.android.R;
+import org.selfconference.android.data.api.model.Vote;
 
 import static android.support.v4.graphics.drawable.DrawableCompat.setTint;
 import static android.support.v4.graphics.drawable.DrawableCompat.wrap;
-import static java.lang.annotation.RetentionPolicy.CLASS;
 import static org.selfconference.android.utils.ResourceProvider.getColor;
 
 /**
@@ -24,25 +22,16 @@ import static org.selfconference.android.utils.ResourceProvider.getColor;
  */
 public final class VoteButton extends LinearLayout implements OnClickListener {
 
-  @Retention(CLASS) //
-  @IntDef({ VOTE_NEGATIVE, VOTE_POSITIVE }) //
-  public @interface Vote {
-  }
-
-  public static final int VOTE_NEGATIVE = -1;
-  public static final int VOTE_POSITIVE = 1;
-
   /**
    * The interface definition for a callback to be invoked when a vote is selected.
    */
   public interface OnVoteSelectedListener {
     /**
      * Called when a vote has been selected.
-     *
-     * @param voteButton The {@link VoteButton} that was clicked
+     *  @param voteButton The {@link VoteButton} that was clicked
      * @param vote The type of vote that was selected
      */
-    void onVoteSelected(VoteButton voteButton, @Vote int vote);
+    void onVoteSelected(VoteButton voteButton, Vote vote);
   }
 
   @Bind(R.id.thumbs_down_view) ImageView thumbsDownView;
@@ -84,15 +73,15 @@ public final class VoteButton extends LinearLayout implements OnClickListener {
 
   @Override public void onClick(@NonNull View v) {
     if (v == thumbsDownView) {
-      notifyClicked(VOTE_NEGATIVE);
+      notifyClicked(Vote.NEGATIVE);
     } else {
-      notifyClicked(VOTE_POSITIVE);
+      notifyClicked(Vote.POSITIVE);
     }
   }
 
-  private void notifyClicked(@Vote int feedback) {
+  private void notifyClicked(Vote vote) {
     if (onVoteSelectedListener != null) {
-      onVoteSelectedListener.onVoteSelected(this, feedback);
+      onVoteSelectedListener.onVoteSelected(this, vote);
     }
   }
 

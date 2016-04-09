@@ -2,7 +2,7 @@ package org.selfconference.android.api;
 
 import java.util.List;
 import okhttp3.ResponseBody;
-import org.selfconference.android.feedback.Feedback;
+import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;

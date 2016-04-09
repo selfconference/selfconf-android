@@ -19,30 +19,32 @@ import org.selfconference.android.api.SelfConferenceClient;
 import org.selfconference.android.codeofconduct.CodeOfConductFragment;
 import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
+import org.selfconference.android.data.api.json.FeedbackJsonSerializer;
 import org.selfconference.android.data.api.model.Event;
+import org.selfconference.android.data.api.model.Room;
+import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.data.jobs.GetSessionJob;
 import org.selfconference.android.data.jobs.GetSessionsJob;
 import org.selfconference.android.data.jobs.GetSpeakersJob;
 import org.selfconference.android.data.jobs.GetSponsorsJob;
 import org.selfconference.android.data.jobs.SubmitFeedbackJob;
+import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.feedback.FeedbackFragment;
-import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.session.RoomJsonDeserializer;
-import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.session.SessionAdapter;
 import org.selfconference.android.session.SessionContainerFragment;
 import org.selfconference.android.session.SessionDetailsActivity;
 import org.selfconference.android.session.SessionJsonDeserializer;
 import org.selfconference.android.session.SessionListFragment;
 import org.selfconference.android.session.SessionPreferences;
-import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.speakers.SpeakerAdapter;
 import org.selfconference.android.speakers.SpeakerListFragment;
 import org.selfconference.android.speakers.SpeakerTypeAdapter;
-import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.sponsors.SponsorAdapter;
 import org.selfconference.android.sponsors.SponsorJsonDeserializer;
-import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.sponsors.SponsorLevelJsonDeserializer;
 import org.selfconference.android.sponsors.SponsorListFragment;
 import retrofit2.Retrofit;
@@ -100,6 +102,7 @@ public final class SelfConferenceAppModule {
         .registerTypeAdapter(Sponsor.class, new SponsorJsonDeserializer())
         .registerTypeAdapter(SponsorLevel.class, new SponsorLevelJsonDeserializer())
         .registerTypeAdapter(Room.class, new RoomJsonDeserializer())
+        .registerTypeAdapter(Feedback.class, new FeedbackJsonSerializer())
         .registerTypeAdapter(Event.class, new EventJsonDeserializer())
         .create();
   }

@@ -7,7 +7,7 @@ import org.selfconference.android.App;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.feedback.Feedback;
+import org.selfconference.android.data.api.model.Feedback;
 import retrofit2.Call;
 import rx.functions.Func2;
 
