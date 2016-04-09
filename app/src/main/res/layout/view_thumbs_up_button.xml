@@ -2,6 +2,7 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -13,6 +14,7 @@
       android:layout_weight="1"
       android:background="?attr/selectableItemBackgroundBorderless"
       app:srcCompat="@drawable/ic_action_thumb_down"
+      tools:ignore="MissingPrefix"
       />
 
   <ImageView
@@ -22,6 +24,7 @@
       android:layout_weight="1"
       android:background="?attr/selectableItemBackgroundBorderless"
       app:srcCompat="@drawable/ic_action_thumb_up"
+      tools:ignore="MissingPrefix"
       />
 
 </merge>
