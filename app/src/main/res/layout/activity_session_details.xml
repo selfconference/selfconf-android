@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="org.selfconference.android.speakers.SessionDetailsActivity"
+    tools:context=".ui.speaker.SessionDetailsActivity"
     >
 
   <android.support.v7.widget.Toolbar
@@ -121,7 +121,7 @@
 
   </ScrollView>
 
-  <org.selfconference.android.views.FloatingActionButton
+  <org.selfconference.android.ui.view.FloatingActionButton
       android:id="@+id/favorite_button"
       android:layout_width="@dimen/fab_size_small"
       android:layout_height="@dimen/fab_size_small"
@@ -144,5 +144,5 @@
         android:duplicateParentState="true"
         android:src="@drawable/fab_icons"
         />
-  </org.selfconference.android.views.FloatingActionButton>
+  </org.selfconference.android.ui.view.FloatingActionButton>
 </RelativeLayout>

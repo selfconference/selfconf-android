@@ -3,10 +3,10 @@ package org.selfconference.android.data.api.model;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.selfconference.android.CustomTestRunner;
-import org.selfconference.android.Parceler.Container;
+import org.selfconference.android.support.Parceler.Container;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.selfconference.android.Parceler.testParceling;
+import static org.selfconference.android.support.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class) //
 public final class SponsorLevelTest {

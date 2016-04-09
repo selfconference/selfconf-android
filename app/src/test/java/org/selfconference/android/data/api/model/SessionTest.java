@@ -6,11 +6,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
-import org.selfconference.android.Parceler.Container;
+import org.selfconference.android.support.Parceler.Container;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.joda.time.DateTime.now;
-import static org.selfconference.android.Parceler.testParceling;
+import static org.selfconference.android.support.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class)
 @Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")

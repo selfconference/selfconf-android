@@ -9,8 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.speakers.SpeakerTypeAdapter;
-import org.selfconference.android.support.Events;
+import org.selfconference.android.support.file.Events;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

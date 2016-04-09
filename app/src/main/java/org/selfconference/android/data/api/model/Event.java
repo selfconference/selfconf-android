@@ -5,7 +5,7 @@ import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.ryanharter.auto.value.parcel.ParcelAdapter;
 import org.joda.time.ReadableDateTime;
-import org.selfconference.android.session.ReadableDateTimeTypeAdapter;
+import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
 
 @AutoValue public abstract class Event implements Parcelable {
 

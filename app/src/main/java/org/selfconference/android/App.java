@@ -28,7 +28,7 @@ public class App extends Application {
     if (DEBUG) {
       Timber.plant(new DebugTree());
     }
-    objectGraph = ObjectGraph.create(new SelfConferenceAppModule(this));
+    objectGraph = ObjectGraph.create(new AppModule(this));
   }
 
   public void inject(Object object) {

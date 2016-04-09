@@ -3,7 +3,7 @@ package org.selfconference.android.data.api;
 import org.joda.time.Chronology;
 import org.joda.time.base.AbstractDateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.selfconference.android.utils.DateTimes;
+import org.selfconference.android.util.DateTimes;
 
 /** A Null Object implementation that represents {@link org.joda.time.DateTime}. */
 public final class NullDateTime extends AbstractDateTime {

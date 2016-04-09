@@ -9,7 +9,7 @@ import com.ryanharter.auto.value.parcel.ParcelAdapter;
 import com.ryanharter.auto.value.parcel.TypeAdapter;
 import java.util.List;
 import org.joda.time.ReadableDateTime;
-import org.selfconference.android.session.ReadableDateTimeTypeAdapter;
+import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
 
 @AutoValue public abstract class Session implements Parcelable {
 

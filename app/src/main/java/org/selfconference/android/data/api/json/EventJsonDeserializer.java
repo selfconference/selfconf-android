@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 import org.joda.time.ReadableDateTime;
 import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.utils.DateTimes;
+import org.selfconference.android.util.DateTimes;
 
 public final class EventJsonDeserializer implements JsonDeserializer<Event> {
   @Override

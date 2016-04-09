@@ -15,7 +15,7 @@
       android:textCursorDrawable="@null"
       />
 
-  <org.selfconference.android.feedback.VoteButton
+  <org.selfconference.android.ui.view.VoteButton
       android:id="@+id/vote_button"
       android:layout_width="match_parent"
       android:layout_height="96dp"

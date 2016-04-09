@@ -1,10 +1,10 @@
-<org.selfconference.android.views.SelfConferenceSwipeRefreshLayout
+<org.selfconference.android.ui.view.SelfConferenceSwipeRefreshLayout
     android:id="@+id/sponsor_list_swipe_refresh_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.selfconference.android.sponsors.SponsorListFragment"
+    tools:context=".ui.sponsor.SponsorListFragment"
     >
 
   <android.support.v7.widget.RecyclerView
@@ -13,4 +13,4 @@
       android:layout_height="match_parent"
       />
 
-</org.selfconference.android.views.SelfConferenceSwipeRefreshLayout>
+</org.selfconference.android.ui.view.SelfConferenceSwipeRefreshLayout>
