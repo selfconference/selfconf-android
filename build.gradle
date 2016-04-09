@@ -18,7 +18,7 @@ allprojects {
     minSdkVersion = 16
     targetSdkVersion = 23
     compileSdkVersion = targetSdkVersion
-    deps = [supportLibrary      : "23.2.1",
+    deps = [supportLibrary      : "23.3.0",
             autoValue           : "1.2-rc1",
             autoValueParcel     : "0.2.1",
             butterknife         : "7.0.1",
