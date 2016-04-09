@@ -9,20 +9,22 @@ import android.support.v7.widget.RecyclerView;
 import butterknife.Bind;
 import com.birbit.android.jobqueue.JobManager;
 import com.google.common.collect.ImmutableList;
+import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.selfconference.android.ui.BaseListFragment;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Injector;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.event.GetSessionAddEvent;
 import org.selfconference.android.data.event.GetSessionSuccessEvent;
 import org.selfconference.android.data.event.GetSpeakersAddEvent;
 import org.selfconference.android.data.event.GetSpeakersSuccessEvent;
 import org.selfconference.android.data.job.GetSessionJob;
 import org.selfconference.android.data.job.GetSpeakersJob;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.ui.session.SessionDetailsActivity;
+import org.selfconference.android.ui.BaseListFragment;
+import org.selfconference.android.ui.misc.FilterableAdapter;
+import org.selfconference.android.ui.session.SessionDetailActivity;
 import timber.log.Timber;
 
 import static org.greenrobot.eventbus.ThreadMode.MAIN;
@@ -35,10 +37,18 @@ public final class SpeakerListFragment extends BaseListFragment {
 
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;
+  @Inject Picasso picasso;
 
-  private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(false);
+  private SpeakerAdapter speakerAdapter;
 
   public SpeakerListFragment() {
+  }
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Injector.obtain(getActivity().getApplicationContext()).inject(this);
+
+    speakerAdapter = new SpeakerAdapter(picasso, false);
   }
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -80,7 +90,7 @@ public final class SpeakerListFragment extends BaseListFragment {
 
   @Subscribe(threadMode = MAIN) public void onGetSessionSucceeded(GetSessionSuccessEvent event) {
     swipeRefreshLayout.setRefreshing(false);
-    Intent intent = SessionDetailsActivity.newIntent(getActivity(), event.session);
+    Intent intent = SessionDetailActivity.newIntent(getActivity(), event.session);
     startActivity(intent);
   }
 

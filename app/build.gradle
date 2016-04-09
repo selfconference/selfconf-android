@@ -148,7 +148,6 @@ dependencies {
   compile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
   compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
   compile "com.squareup.retrofit2:converter-gson:$rootProject.deps.retrofit"
-  compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
 
   compile "com.birbit:android-priority-jobqueue:$rootProject.deps.jobQueue"
   compile "org.greenrobot:eventbus:$rootProject.deps.eventBus"

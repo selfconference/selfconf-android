@@ -8,11 +8,10 @@ import android.widget.TextView;
 import butterknife.Bind;
 import com.squareup.picasso.Picasso;
 import java.util.Locale;
-import javax.inject.Inject;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.transform.CircularTransformation;
 import org.selfconference.android.util.PlaceholderDrawable;
 import rx.functions.Func1;
@@ -27,13 +26,14 @@ public final class SpeakerAdapter
     void onSpeakerClick(Speaker speaker);
   }
 
-  @Inject Picasso picasso;
-
-  private OnSpeakerClickListener onSpeakerClickListener;
+  private final Picasso picasso;
   private final boolean showDescription;
 
-  public SpeakerAdapter(boolean showDescription) {
+  private OnSpeakerClickListener onSpeakerClickListener;
+
+  public SpeakerAdapter(Picasso picasso, boolean showDescription) {
     super();
+    this.picasso = picasso;
     this.showDescription = showDescription;
   }
 

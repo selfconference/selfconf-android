@@ -16,13 +16,14 @@ import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.selfconference.android.data.pref.SessionPreferences;
-import org.selfconference.android.ui.BaseListFragment;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.event.GetSessionsAddEvent;
 import org.selfconference.android.data.event.GetSessionsSuccessEvent;
 import org.selfconference.android.data.job.GetSessionsJob;
+import org.selfconference.android.data.pref.SessionPreferences;
+import org.selfconference.android.ui.BaseListFragment;
+import org.selfconference.android.ui.misc.FilterableAdapter;
 
 import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
@@ -35,7 +36,7 @@ public final class SessionListFragment extends BaseListFragment {
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;
 
-  private final SessionAdapter sessionAdapter = new SessionAdapter();
+  private SessionAdapter sessionAdapter;
 
   public static SessionListFragment newInstance() {
     Bundle bundle = new Bundle();
@@ -48,23 +49,30 @@ public final class SessionListFragment extends BaseListFragment {
   public SessionListFragment() {
   }
 
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Injector.obtain(getActivity().getApplicationContext()).inject(this);
+
+    sessionAdapter = new SessionAdapter(sessionPreferences);
+  }
+
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    fetchData();
+  }
+
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     swipeRefreshLayout.setOnRefreshListener(this::fetchData);
 
     sessionAdapter.setOnSessionClickListener(session -> {
-      Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
+      Intent intent = SessionDetailActivity.newIntent(getActivity(), session);
       getActivity().startActivity(intent);
     });
 
     scheduleItemRecyclerView.setAdapter(sessionAdapter);
     scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-  }
-
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    fetchData();
   }
 
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

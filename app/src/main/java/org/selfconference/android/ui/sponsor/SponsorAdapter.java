@@ -12,12 +12,11 @@ import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
-import javax.inject.Inject;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.api.model.SponsorLevel;
+import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.android.ui.misc.FilterableAdapter;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
@@ -28,10 +27,13 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     void onSponsorClicked(final Sponsor sponsor);
   }
 
-  @Inject Picasso picasso;
-
+  private final Picasso picasso;
   private final CompositeSubscription compositeSubscription = new CompositeSubscription();
   private OnSponsorClickListener onSponsorClickListener;
+
+  public SponsorAdapter(Picasso picasso) {
+    this.picasso = picasso;
+  }
 
   public void setOnSponsorClickListener(OnSponsorClickListener sponsorClickListener) {
     this.onSponsorClickListener = sponsorClickListener;

@@ -7,16 +7,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import butterknife.Bind;
 import com.birbit.android.jobqueue.JobManager;
+import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.selfconference.android.ui.BaseListFragment;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.event.GetSponsorsAddEvent;
 import org.selfconference.android.data.event.GetSponsorsSuccessEvent;
 import org.selfconference.android.data.job.GetSponsorsJob;
+import org.selfconference.android.ui.BaseListFragment;
+import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.sponsor.SponsorAdapter.OnSponsorClickListener;
 import org.selfconference.android.util.Intents;
 
@@ -30,10 +32,18 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
 
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;
+  @Inject Picasso picasso;
 
-  private final SponsorAdapter sponsorAdapter = new SponsorAdapter();
+  private SponsorAdapter sponsorAdapter;
 
   public SponsorListFragment() {
+  }
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Injector.obtain(getActivity().getApplicationContext()).inject(this);
+
+    sponsorAdapter = new SponsorAdapter(picasso);
   }
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {

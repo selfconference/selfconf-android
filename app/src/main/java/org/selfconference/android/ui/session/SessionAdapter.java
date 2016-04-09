@@ -6,13 +6,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.Bind;
 import java.util.Locale;
-import javax.inject.Inject;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.misc.FilteredDataSubscriber;
 import org.selfconference.android.R;
-import org.selfconference.android.data.api.Api;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.ui.decorator.DateTimeDecorator;
 import rx.functions.Func1;
@@ -25,10 +23,14 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     void onSessionClick(Session event);
   }
 
-  @Inject Api api;
-  @Inject SessionPreferences preferences;
+  private final SessionPreferences preferences;
 
   private OnSessionClickListener onSessionClickListener;
+
+  public SessionAdapter(SessionPreferences preferences) {
+    super();
+    this.preferences = preferences;
+  }
 
   public void setOnSessionClickListener(OnSessionClickListener onSessionClickListener) {
     this.onSessionClickListener = onSessionClickListener;

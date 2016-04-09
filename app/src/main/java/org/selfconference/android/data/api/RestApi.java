@@ -1,9 +1,7 @@
 package org.selfconference.android.data.api;
 
 import java.util.List;
-import javax.inject.Inject;
 import okhttp3.ResponseBody;
-import org.selfconference.android.App;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
@@ -12,10 +10,10 @@ import retrofit2.Call;
 
 public final class RestApi implements Api {
 
-  @Inject RestClient client;
+  private final RestClient client;
 
-  public RestApi() {
-    App.getInstance().inject(this);
+  public RestApi(RestClient client) {
+    this.client = client;
   }
 
   @Override public Call<List<Session>> sessions() {

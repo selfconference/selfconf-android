@@ -14,32 +14,33 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.squareup.picasso.Picasso;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.selfconference.android.App;
-import org.selfconference.android.data.pref.SessionPreferences;
-import org.selfconference.android.ui.BaseActivity;
 import org.selfconference.android.R;
-import org.selfconference.android.ui.misc.BrandColor;
+import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.event.SubmitFeedbackAddEvent;
 import org.selfconference.android.data.event.SubmitFeedbackSuccessEvent;
-import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.ui.speaker.SpeakerAdapter;
+import org.selfconference.android.data.pref.SessionPreferences;
+import org.selfconference.android.ui.BaseActivity;
 import org.selfconference.android.ui.decorator.DateTimeDecorator;
+import org.selfconference.android.ui.misc.BrandColor;
+import org.selfconference.android.ui.speaker.SpeakerAdapter;
+import org.selfconference.android.ui.view.FloatingActionButton;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
 import org.selfconference.android.ui.viewmodel.SessionDetails;
 import org.selfconference.android.util.Intents;
-import org.selfconference.android.ui.view.FloatingActionButton;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.text.Html.fromHtml;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
-public final class SessionDetailsActivity extends BaseActivity {
+public final class SessionDetailActivity extends BaseActivity {
   private static final String EXTRA_SESSION = "org.selfconference.android.ui.session.SESSION";
 
   @Bind(R.id.long_title) TextView sessionTitle;
@@ -52,25 +53,26 @@ public final class SessionDetailsActivity extends BaseActivity {
 
   @Inject SessionPreferences preferences;
   @Inject EventBus eventBus;
-
-  private final SpeakerAdapter speakerAdapter = new SpeakerAdapter(true);
+  @Inject Picasso picasso;
 
   private Session session;
 
   public static Intent newIntent(Context context, Session session) {
-    return new Intent(context, SessionDetailsActivity.class).putExtra(EXTRA_SESSION, session);
+    return new Intent(context, SessionDetailActivity.class).putExtra(EXTRA_SESSION, session);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     session = getIntent().getParcelableExtra(EXTRA_SESSION);
     checkNotNull(session, "session == null");
+
+    Injector.obtain(getApplication()).inject(this);
 
     setTheme(BrandColor.forId(session.id()));
     setStatusBarColor(resolveStatusBarColor());
 
     setContentView(R.layout.activity_session_details);
-    App.getInstance().inject(this);
     ButterKnife.bind(this);
 
     setUpActionBar();
@@ -154,6 +156,7 @@ public final class SessionDetailsActivity extends BaseActivity {
   private void setUpSpeakerList() {
     List<Speaker> speakers = session.speakers();
     speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
+    SpeakerAdapter speakerAdapter = new SpeakerAdapter(picasso, true);
     speakerAdapter.setData(speakers);
     speakerAdapter.setOnSpeakerClickListener(speaker -> {
       String twitterUrl = getString(R.string.twitter_url, speaker.twitter());

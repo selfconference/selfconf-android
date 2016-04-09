@@ -2,7 +2,6 @@ package org.selfconference.android.ui.misc;
 
 import android.support.v7.widget.RecyclerView;
 import java.util.List;
-import org.selfconference.android.App;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -16,8 +15,7 @@ public abstract class FilterableAdapter<T, VH extends RecyclerView.ViewHolder>
   private final List<T> data = newArrayList();
   private final List<T> filteredData = newArrayList();
 
-  public FilterableAdapter() {
-    App.getInstance().inject(this);
+  protected FilterableAdapter() {
   }
 
   public void filter(String query) {

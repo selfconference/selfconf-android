@@ -1,10 +1,10 @@
 package org.selfconference.android;
 
 import android.app.Application;
-import com.crashlytics.android.Crashlytics;
+import android.support.annotation.NonNull;
 import com.squareup.leakcanary.LeakCanary;
 import dagger.ObjectGraph;
-import io.fabric.sdk.android.Fabric;
+import org.selfconference.android.data.Injector;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
@@ -22,17 +22,25 @@ public class App extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
+
     installLeakCanary();
     setupFabric();
+
     INSTANCE = this;
+
     if (DEBUG) {
       Timber.plant(new DebugTree());
     }
-    objectGraph = ObjectGraph.create(new AppModule(this));
+
+    objectGraph = ObjectGraph.create(Modules.list(this));
+    objectGraph.inject(this);
   }
 
-  public void inject(Object object) {
-    objectGraph.inject(object);
+  @Override public Object getSystemService(@NonNull String name) {
+    if (Injector.matchesService(name)) {
+      return objectGraph;
+    }
+    return super.getSystemService(name);
   }
 
   protected void installLeakCanary() {
@@ -40,6 +48,6 @@ public class App extends Application {
   }
 
   protected void setupFabric() {
-    Fabric.with(this, new Crashlytics());
+
   }
 }

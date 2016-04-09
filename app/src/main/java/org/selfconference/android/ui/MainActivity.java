@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import dagger.ObjectGraph;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Injector;
 import org.selfconference.android.ui.drawer.DrawerItem;
 
 public final class MainActivity extends BaseActivity {
@@ -24,6 +26,10 @@ public final class MainActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    ObjectGraph appGraph = Injector.obtain(getApplication());
+    appGraph.inject(this);
+
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
 
