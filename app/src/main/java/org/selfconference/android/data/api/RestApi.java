@@ -18,15 +18,15 @@ public final class RestApi implements Api {
     App.getInstance().inject(this);
   }
 
-  @Override public Call<List<Session>> getSessions() {
+  @Override public Call<List<Session>> sessions() {
     return client.getSessions();
   }
 
-  @Override public Call<List<Speaker>> getSpeakers() {
+  @Override public Call<List<Speaker>> speakers() {
     return client.getSpeakers();
   }
 
-  @Override public Call<List<Sponsor>> getSponsors() {
+  @Override public Call<List<Sponsor>> sponsors() {
     return client.getSponsors();
   }
 
@@ -34,7 +34,7 @@ public final class RestApi implements Api {
     return client.submitFeedback(session.id(), feedback);
   }
 
-  @Override public Call<Session> getSessionById(int id) {
+  @Override public Call<Session> sessionForId(int id) {
     return client.getSessionById(id);
   }
 }

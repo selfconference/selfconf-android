@@ -17,7 +17,7 @@ public final class GetSpeakersJob extends ApiJob<List<Speaker>> {
   }
 
   @Override protected Call<List<Speaker>> apiCall() {
-    return api.getSpeakers();
+    return api.speakers();
   }
 
   @Override protected void onApiSuccess(Response<List<Speaker>> response) {

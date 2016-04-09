@@ -14,13 +14,13 @@ import retrofit2.Call;
  * Current implementations include {@link RestApi}
  */
 public interface Api {
-  Call<List<Session>> getSessions();
+  Call<List<Session>> sessions();
 
-  Call<Session> getSessionById(int id);
+  Call<Session> sessionForId(int id);
 
-  Call<List<Speaker>> getSpeakers();
+  Call<List<Speaker>> speakers();
 
-  Call<List<Sponsor>> getSponsors();
+  Call<List<Sponsor>> sponsors();
 
   /**
    * A POST request to submit feedback for a session
