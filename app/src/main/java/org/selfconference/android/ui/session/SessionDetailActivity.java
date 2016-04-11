@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
+import org.selfconference.android.data.IntentFactory;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.event.SubmitFeedbackAddEvent;
@@ -33,7 +34,6 @@ import org.selfconference.android.ui.speaker.SpeakerAdapter;
 import org.selfconference.android.ui.view.FloatingActionButton;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
 import org.selfconference.android.ui.viewmodel.SessionDetails;
-import org.selfconference.android.util.Intents;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.text.Html.fromHtml;
@@ -54,6 +54,7 @@ public final class SessionDetailActivity extends BaseActivity {
   @Inject SessionPreferences preferences;
   @Inject EventBus eventBus;
   @Inject Picasso picasso;
+  @Inject IntentFactory intentFactory;
 
   private Session session;
 
@@ -160,7 +161,7 @@ public final class SessionDetailActivity extends BaseActivity {
     speakerAdapter.setData(speakers);
     speakerAdapter.setOnSpeakerClickListener(speaker -> {
       String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
-      Intents.launchUrl(this, twitterUrl);
+      startActivity(intentFactory.createUrlIntent(twitterUrl));
     });
     speakerRecyclerView.setAdapter(speakerAdapter);
     speakerRecyclerView.setLayoutManager(new LinearLayoutManager(this));

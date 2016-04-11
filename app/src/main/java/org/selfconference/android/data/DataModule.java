@@ -54,6 +54,10 @@ import static org.selfconference.android.BuildConfig.DEBUG;
     return new SessionPreferences(application);
   }
 
+  @Provides @Singleton IntentFactory intentFactory() {
+    return IntentFactory.REAL;
+  }
+
   @Provides @Singleton Picasso picasso(Application application) {
     return new Picasso.Builder(application) //
         .listener((picasso, uri, e) -> Timber.e(e, "Image load failed for URI: %s", uri)) //
