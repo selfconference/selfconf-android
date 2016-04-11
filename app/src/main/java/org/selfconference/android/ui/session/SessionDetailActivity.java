@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import butterknife.Bind;
@@ -28,6 +29,7 @@ import org.selfconference.android.data.event.SubmitFeedbackAddEvent;
 import org.selfconference.android.data.event.SubmitFeedbackSuccessEvent;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseActivity;
+import org.selfconference.android.ui.ViewContainer;
 import org.selfconference.android.ui.decorator.DateTimeDecorator;
 import org.selfconference.android.ui.misc.BrandColor;
 import org.selfconference.android.ui.speaker.SpeakerAdapter;
@@ -55,6 +57,7 @@ public final class SessionDetailActivity extends BaseActivity {
   @Inject EventBus eventBus;
   @Inject Picasso picasso;
   @Inject IntentFactory intentFactory;
+  @Inject ViewContainer viewContainer;
 
   private Session session;
 
@@ -73,8 +76,9 @@ public final class SessionDetailActivity extends BaseActivity {
     setTheme(BrandColor.forId(session.id()));
     setStatusBarColor(resolveStatusBarColor());
 
-    setContentView(R.layout.activity_session_details);
-    ButterKnife.bind(this);
+    ViewGroup container = viewContainer.forActivity(this);
+    getLayoutInflater().inflate(R.layout.activity_session_details, container);
+    ButterKnife.bind(this, container);
 
     setUpActionBar();
 

@@ -13,6 +13,11 @@ import org.greenrobot.eventbus.EventBus;
     library = true
 )
 public final class UiModule {
+
+  @Provides @Singleton ViewContainer viewContainer() {
+    return ViewContainer.DEFAULT;
+  }
+
   @Provides @Singleton EventBus eventBus() {
     return EventBus.getDefault();
   }
