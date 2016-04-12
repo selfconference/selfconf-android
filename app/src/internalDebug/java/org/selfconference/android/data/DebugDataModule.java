@@ -15,6 +15,7 @@ import javax.inject.Singleton;
 public final class DebugDataModule {
 
   private static final boolean DEFAULT_CAPTURE_INTENTS = true; // Capture external intents.
+  private static final boolean DEFAULT_PICASSO_DEBUGGING = false; // Debug indicators displayed
 
   @Provides @Singleton RxSharedPreferences rxSharedPreferences(SharedPreferences prefs) {
     return RxSharedPreferences.create(prefs);
@@ -29,4 +30,10 @@ public final class DebugDataModule {
   Preference<Boolean> captureIntents(RxSharedPreferences preferences) {
     return preferences.getBoolean("debug_capture_intents", DEFAULT_CAPTURE_INTENTS);
   }
+
+  @Provides @Singleton @PicassoDebugging
+  Preference<Boolean> picassoDebugging(RxSharedPreferences preferences) {
+    return preferences.getBoolean("debug_picasso_debugging", DEFAULT_PICASSO_DEBUGGING);
+  }
+
 }

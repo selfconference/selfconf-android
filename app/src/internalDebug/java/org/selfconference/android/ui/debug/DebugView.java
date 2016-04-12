@@ -11,11 +11,15 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.f2prateek.rx.preferences.Preference;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.StatsSnapshot;
 import javax.inject.Inject;
 import org.selfconference.android.R;
 import org.selfconference.android.data.CaptureIntents;
 import org.selfconference.android.data.Injector;
+import org.selfconference.android.data.PicassoDebugging;
 import org.selfconference.android.ui.decorator.DisplayMetricsDecorator;
+import org.selfconference.android.ui.decorator.StatsSnapshotDecorator;
 import timber.log.Timber;
 
 public final class DebugView extends FrameLayout {
@@ -29,7 +33,20 @@ public final class DebugView extends FrameLayout {
   @Bind(R.id.debug_device_release) TextView deviceReleaseView;
   @Bind(R.id.debug_device_api) TextView deviceApiView;
 
+  @Bind(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
+  @Bind(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
+  @Bind(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
+  @Bind(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
+  @Bind(R.id.debug_picasso_decoded) TextView picassoDecodedView;
+  @Bind(R.id.debug_picasso_decoded_total) TextView picassoDecodedTotalView;
+  @Bind(R.id.debug_picasso_decoded_avg) TextView picassoDecodedAvgView;
+  @Bind(R.id.debug_picasso_transformed) TextView picassoTransformedView;
+  @Bind(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
+  @Bind(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
+
+  @Inject Picasso picasso;
   @Inject @CaptureIntents Preference<Boolean> captureIntents;
+  @Inject @PicassoDebugging Preference<Boolean> picassoDebugging;
 
   public DebugView(Context context) {
     this(context, null);
@@ -44,6 +61,7 @@ public final class DebugView extends FrameLayout {
 
     setupMockBehaviorSection();
     setupDeviceSection();
+    setupPicassoSection();
   }
 
   private void setupMockBehaviorSection() {
@@ -64,6 +82,34 @@ public final class DebugView extends FrameLayout {
     deviceDensityView.setText(decorator.density());
     deviceReleaseView.setText(Build.VERSION.RELEASE);
     deviceApiView.setText(String.valueOf(Build.VERSION.SDK_INT));
+  }
+
+  private void setupPicassoSection() {
+    boolean picassoDebuggingValue = picassoDebugging.get();
+    picasso.setIndicatorsEnabled(picassoDebuggingValue);
+    picassoIndicatorView.setChecked(picassoDebuggingValue);
+    picassoIndicatorView.setOnCheckedChangeListener((button, isChecked) -> {
+      Timber.d("Setting Picasso debugging to " + isChecked);
+      picasso.setIndicatorsEnabled(isChecked);
+      picassoDebugging.set(isChecked);
+    });
+
+    refreshPicassoStats();
+  }
+
+  private void refreshPicassoStats() {
+    StatsSnapshot snapshot = picasso.getSnapshot();
+    StatsSnapshotDecorator decorator = StatsSnapshotDecorator.decorate(snapshot);
+
+    picassoCacheSizeView.setText(decorator.cacheSize());
+    picassoCacheHitView.setText(decorator.cacheHits());
+    picassoCacheMissView.setText(decorator.cacheMisses());
+    picassoDecodedView.setText(decorator.originalBitmapCount());
+    picassoDecodedTotalView.setText(decorator.totalOriginalBitmapSize());
+    picassoDecodedAvgView.setText(decorator.averageOriginalBitmapSize());
+    picassoTransformedView.setText(decorator.transformedBitmapCount());
+    picassoTransformedTotalView.setText(decorator.totalTransformedBitmapSize());
+    picassoTransformedAvgView.setText(decorator.averageTransformedBitmapSize());
   }
 
   private static String truncateAt(String string, int length) {
