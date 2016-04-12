@@ -16,7 +16,6 @@
   <style name="Widget.SelfConf.DebugDrawer.RowWidget" parent="None">
     <item name="android:minHeight">26dp</item>
     <item name="android:layout_marginTop">4dp</item>
-    <item name="android:fontFamily">sans-serif-medium</item>
   </style>
 
   <style name="Widget.SelfConf.DebugDrawer.RowTitle" parent="Widget.SelfConf.DebugDrawer.RowWidget">

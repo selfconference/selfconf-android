@@ -21,6 +21,8 @@
 
   </LinearLayout>
 
+  <!-- MOCK BEHAVIOR SECTION -->
+
   <TextView
       android:layout_width="0dp"
       android:layout_columnSpan="2"
@@ -39,6 +41,94 @@
       android:id="@+id/debug_capture_intents"
       android:layout_gravity="end|center_vertical"
       style="@style/Widget.SelfConf.DebugDrawer.RowWidget"
+      />
+
+  <!-- DEVICE INFORMATION SECTION -->
+
+  <TextView
+      android:layout_width="0dp"
+      android:layout_columnSpan="2"
+      android:layout_gravity="start|fill_horizontal"
+      android:text="Device Information"
+      style="@style/Widget.SelfConf.DebugDrawer.Header"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="Make"
+      style="@style/Widget.SelfConf.DebugDrawer.RowTitle"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_make"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.SelfConf.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="Model"
+      style="@style/Widget.SelfConf.DebugDrawer.RowTitle"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_model"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.SelfConf.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="Resolution"
+      style="@style/Widget.SelfConf.DebugDrawer.RowTitle"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_resolution"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.SelfConf.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="Density"
+      style="@style/Widget.SelfConf.DebugDrawer.RowTitle"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_density"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.SelfConf.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="Release"
+      style="@style/Widget.SelfConf.DebugDrawer.RowTitle"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_release"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.SelfConf.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="API"
+      style="@style/Widget.SelfConf.DebugDrawer.RowTitle"
+      />
+
+  <TextView
+      android:id="@+id/debug_device_api"
+      android:layout_width="0dp"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      style="@style/Widget.SelfConf.DebugDrawer.RowValue"
       />
 
 </GridLayout>
