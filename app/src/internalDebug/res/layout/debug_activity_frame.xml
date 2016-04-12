@@ -8,11 +8,21 @@
     android:fitsSystemWindows="true"
     >
 
-  <FrameLayout
-      android:id="@+id/debug_drawer_content"
+  <com.mattprecious.telescope.TelescopeLayout
+      android:id="@+id/telescope_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      />
+      app:telescope_progressColor="#F6D86B"
+      >
+
+    <FrameLayout
+        android:id="@+id/debug_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+  </com.mattprecious.telescope.TelescopeLayout>
+
 
   <android.support.design.widget.NavigationView
       android:layout_width="300dp"
@@ -24,7 +34,7 @@
       >
 
     <ScrollView
-        android:id="@+id/debug_drawer"
+        android:id="@+id/debug_drawer_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
