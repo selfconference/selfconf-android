@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.IntentFactory;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
@@ -70,8 +69,6 @@ public final class SessionDetailActivity extends BaseActivity {
 
     session = getIntent().getParcelableExtra(EXTRA_SESSION);
     checkNotNull(session, "session == null");
-
-    Injector.obtain(getApplication()).inject(this);
 
     setTheme(BrandColor.forId(session.id()));
     setStatusBarColor(resolveStatusBarColor());

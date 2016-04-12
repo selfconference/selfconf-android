@@ -24,13 +24,12 @@
   </com.mattprecious.telescope.TelescopeLayout>
 
 
-  <android.support.design.widget.NavigationView
+  <FrameLayout
       android:layout_width="300dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
       android:background="#fff"
       android:fitsSystemWindows="true"
-      app:headerLayout="@layout/debug_drawer_header"
       >
 
     <ScrollView
@@ -40,6 +39,6 @@
         android:clipToPadding="false"
         android:fitsSystemWindows="true"
         />
-  </android.support.design.widget.NavigationView>
+  </FrameLayout>
 
 </android.support.v4.widget.DrawerLayout>

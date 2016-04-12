@@ -12,7 +12,7 @@
       android:icon="@mipmap/ic_launcher"
       android:label="@string/application_name"
       android:name=".App"
-      android:theme="@style/AppTheme"
+      android:theme="@style/Theme.SelfConf"
       >
     <activity
         android:label="@string/launcher_name"

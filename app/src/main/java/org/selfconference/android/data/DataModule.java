@@ -1,8 +1,10 @@
 package org.selfconference.android.data;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
@@ -30,6 +32,7 @@ import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.data.pref.SessionPreferences;
 import timber.log.Timber;
 
+import static android.content.Context.MODE_PRIVATE;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 import static org.selfconference.android.BuildConfig.DEBUG;
@@ -37,7 +40,9 @@ import static org.selfconference.android.BuildConfig.DEBUG;
 @Module(
     includes = ApiModule.class,
     complete = false,
-    library = true) public final class DataModule {
+    library = true
+)
+public final class DataModule {
   @Provides @Singleton Gson gson() {
     return new GsonBuilder() //
         .registerTypeAdapter(Session.class, new SessionJsonDeserializer())
@@ -48,6 +53,14 @@ import static org.selfconference.android.BuildConfig.DEBUG;
         .registerTypeAdapter(Feedback.class, new FeedbackJsonSerializer())
         .registerTypeAdapter(Event.class, new EventJsonDeserializer())
         .create();
+  }
+
+  @Provides @Singleton SharedPreferences sharedPreferences(Application application) {
+    return application.getSharedPreferences("self_conf", MODE_PRIVATE);
+  }
+
+  @Provides @Singleton RxSharedPreferences rxSharedPreferences(SharedPreferences prefs) {
+    return RxSharedPreferences.create(prefs);
   }
 
   @Provides SessionPreferences sessionPreferences(Application application) {

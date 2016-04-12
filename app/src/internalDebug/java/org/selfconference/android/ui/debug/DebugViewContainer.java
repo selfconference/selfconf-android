@@ -1,8 +1,9 @@
-package org.selfconference.android.ui;
+package org.selfconference.android.ui.debug;
 
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
+import android.view.ContextThemeWrapper;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import butterknife.Bind;
@@ -13,6 +14,7 @@ import com.mattprecious.telescope.TelescopeLayout;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.selfconference.android.R;
+import org.selfconference.android.ui.ViewContainer;
 
 @Singleton public final class DebugViewContainer implements ViewContainer {
 
@@ -24,6 +26,11 @@ import org.selfconference.android.R;
 
     ViewHolder viewHolder = new ViewHolder();
     ButterKnife.bind(viewHolder, activity);
+
+    ContextThemeWrapper contextThemeWrapper =
+        new ContextThemeWrapper(activity, R.style.PurpleTheme);
+    DebugView debugView = new DebugView(contextThemeWrapper);
+    viewHolder.debugDrawer.addView(debugView);
 
     TelescopeLayout.cleanUp(activity);
     Lens lens = buildLens(activity);

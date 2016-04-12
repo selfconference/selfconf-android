@@ -160,6 +160,7 @@ dependencies {
   compile "io.reactivex:rxjava:$rootProject.deps.rxJava"
   compile "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
   compile "io.reactivex:rxjava-string:$rootProject.deps.rxJavaString"
+  compile "com.f2prateek.rx.preferences:rx-preferences:$rootProject.deps.rxPreferences"
   compile "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
   compile "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
 

@@ -4,11 +4,13 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 import org.selfconference.android.IsInstrumentationTest;
+import org.selfconference.android.ui.debug.DebugView;
+import org.selfconference.android.ui.debug.DebugViewContainer;
 
 @Module(
     injects = {
         DebugViewContainer.class,
-        //DebugView.class,
+        DebugView.class,
     },
     complete = false,
     library = true,

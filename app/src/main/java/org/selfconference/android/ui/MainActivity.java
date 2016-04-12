@@ -13,10 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import dagger.ObjectGraph;
 import javax.inject.Inject;
 import org.selfconference.android.R;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.ui.drawer.DrawerItem;
 
 public final class MainActivity extends BaseActivity {
@@ -30,9 +28,6 @@ public final class MainActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    ObjectGraph appGraph = Injector.obtain(getApplication());
-    appGraph.inject(this);
 
     ViewGroup container = viewContainer.forActivity(this);
 

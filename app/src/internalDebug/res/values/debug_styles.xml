@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="Theme.SelfConf.Debug" parent="Theme.AppCompat.NoActionBar">
+  </style>
+
+  <style name="Widget.SelfConf.DebugDrawer.Header" parent="None">
+    <item name="android:paddingBottom">2dp</item>
+    <item name="android:textColor">?attr/colorAccent</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:layout_marginTop">24dp</item>
+    <item name="android:layout_marginBottom">2dp</item>
+  </style>
+
+  <style name="Widget.SelfConf.DebugDrawer.RowWidget" parent="None">
+    <item name="android:minHeight">26dp</item>
+    <item name="android:layout_marginTop">4dp</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+  </style>
+
+  <style name="Widget.SelfConf.DebugDrawer.RowTitle" parent="Widget.SelfConf.DebugDrawer.RowWidget">
+    <item name="android:layout_marginRight">16dp</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">16sp</item>
+  </style>
+
+  <style name="Widget.SelfConf.DebugDrawer.RowValue" parent="Widget.SelfConf.DebugDrawer.RowWidget">
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">16sp</item>
+  </style>
+</resources>

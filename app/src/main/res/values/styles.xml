@@ -1,7 +1,10 @@
 <resources>
 
+  <style name="None">
+  </style>
+
   <!-- Base application theme. -->
-  <style name="AppTheme"
+  <style name="Theme.SelfConf"
       parent="Theme.AppCompat.Light.NoActionBar">
     <!-- Customize your theme here. -->
     <item name="android:windowActionBar">false</item>
@@ -11,26 +14,26 @@
   </style>
 
   <style name="GreenTheme"
-      parent="AppTheme">
+      parent="Theme.SelfConf">
     <item name="colorAccent">@color/green</item>
   </style>
 
   <style name="OrangeTheme"
-      parent="AppTheme">
+      parent="Theme.SelfConf">
     <item name="colorPrimary">@color/orange</item>
     <item name="colorPrimaryDark">@color/orange_dark</item>
     <item name="colorAccent">@color/orange</item>
   </style>
 
   <style name="RedTheme"
-      parent="AppTheme">
+      parent="Theme.SelfConf">
     <item name="colorPrimary">@color/red</item>
     <item name="colorPrimaryDark">@color/red_dark</item>
     <item name="colorAccent">@color/red</item>
   </style>
 
   <style name="PurpleTheme"
-      parent="AppTheme">
+      parent="Theme.SelfConf">
     <item name="colorPrimary">@color/purple</item>
     <item name="colorPrimaryDark">@color/purple_dark</item>
     <item name="colorAccent">@color/purple</item>
