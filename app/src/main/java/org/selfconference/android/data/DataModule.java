@@ -2,18 +2,21 @@ package org.selfconference.android.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
+import com.birbit.android.jobqueue.di.DependencyInjector;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
+import java.io.File;
 import javax.inject.Singleton;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import org.selfconference.android.data.api.ApiModule;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
 import org.selfconference.android.data.api.json.FeedbackJsonSerializer;
@@ -33,9 +36,7 @@ import org.selfconference.android.data.pref.SessionPreferences;
 import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
-import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
-import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
-import static org.selfconference.android.BuildConfig.DEBUG;
+import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
 
 @Module(
     includes = ApiModule.class,
@@ -43,6 +44,8 @@ import static org.selfconference.android.BuildConfig.DEBUG;
     library = true
 )
 public final class DataModule {
+  static final int DISK_CACHE_SIZE = (int) MEGABYTES.toBytes(50);
+
   @Provides @Singleton Gson gson() {
     return new GsonBuilder() //
         .registerTypeAdapter(Session.class, new SessionJsonDeserializer())
@@ -73,26 +76,33 @@ public final class DataModule {
 
   @Provides @Singleton Picasso picasso(Application application) {
     return new Picasso.Builder(application) //
-        .listener((picasso, uri, e) -> Timber.e(e, "Image load failed for URI: %s", uri)) //
+        .listener(new Picasso.Listener() {
+          @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception e) {
+            Timber.e(e, "Image load failed for URI: %s", uri);
+          }
+        }) //
         .build();
   }
 
-  @Provides OkHttpClient okHttpClient(Application application) {
-    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-    httpLoggingInterceptor.setLevel(DEBUG ? BODY : NONE);
+  @Provides @Singleton OkHttpClient okHttpClient(Application application) {
+    return createOkHttpClient(application).build();
+  }
 
-    long cacheSize = 10 * 10 * 1024; // 10 MiB
-    Cache cache = new Cache(application.getCacheDir(), cacheSize);
+  @Provides @Singleton JobManager jobManager(final Application application) {
+    return new JobManager(new Configuration.Builder(application) //
+        .injector(new DependencyInjector() {
+          @Override public void inject(Job job) {
+            Injector.obtain(application).inject(job);
+          }
+        }) //
+        .build());
+  }
+
+  static OkHttpClient.Builder createOkHttpClient(Application application) {
+    File cacheDirectory = new File(application.getCacheDir(), "http");
+    Cache cache = new Cache(cacheDirectory, DISK_CACHE_SIZE);
 
     return new OkHttpClient.Builder() //
-        .addInterceptor(httpLoggingInterceptor) //
-        .cache(cache) //
-        .build();
-  }
-
-  @Provides @Singleton JobManager jobManager(Application application) {
-    return new JobManager(new Configuration.Builder(application) //
-        .injector(job -> Injector.obtain(application).inject(job)) //
-        .build());
+        .cache(cache);
   }
 }

@@ -2,8 +2,7 @@ package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableList;
-import com.ryanharter.auto.value.parcel.ParcelAdapter;
+import java.util.List;
 
 @AutoValue public abstract class Sponsor implements Parcelable {
 
@@ -21,8 +20,8 @@ import com.ryanharter.auto.value.parcel.ParcelAdapter;
 
   public abstract String photo();
 
-  @ParcelAdapter(SponsorLevel.ImmutableListTypeAdapter.class)
-  public abstract ImmutableList<SponsorLevel> sponsorLevels();
+  // @ParcelAdapter(SponsorLevel.ImmutableListTypeAdapter.class)
+  public abstract List<SponsorLevel> sponsorLevels();
 
   @AutoValue.Builder public abstract static class Builder {
 
@@ -34,12 +33,7 @@ import com.ryanharter.auto.value.parcel.ParcelAdapter;
 
     public abstract Builder photo(String photo);
 
-    public Builder addSponsorLevels(Iterable<SponsorLevel> sponsorLevels) {
-      sponsorLevelsBuilder().addAll(sponsorLevels);
-      return this;
-    }
-
-    abstract ImmutableList.Builder<SponsorLevel> sponsorLevelsBuilder();
+    public abstract Builder sponsorLevels(List<SponsorLevel> sponsorLevels);
 
     public abstract Sponsor build();
   }

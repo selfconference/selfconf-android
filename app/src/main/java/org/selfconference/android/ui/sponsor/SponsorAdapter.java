@@ -7,6 +7,7 @@ import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
@@ -39,10 +40,14 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     this.onSponsorClickListener = sponsorClickListener;
   }
 
-  @Override protected Func1<Sponsor, Boolean> filterPredicate(String query) {
-    return sponsor -> sponsor.name() //
-        .toLowerCase(Locale.US) //
-        .contains(query.toLowerCase(Locale.US));
+  @Override protected Func1<Sponsor, Boolean> filterPredicate(final String query) {
+    return new Func1<Sponsor, Boolean>() {
+      @Override public Boolean call(Sponsor sponsor) {
+        return sponsor.name() //
+            .toLowerCase(Locale.US) //
+            .contains(query.toLowerCase(Locale.US));
+      }
+    };
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,12 +56,14 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     return new ViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    Sponsor sponsor = getFilteredData().get(position);
+  @Override public void onBindViewHolder(final ViewHolder holder, int position) {
+    final Sponsor sponsor = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(v -> {
-      if (onSponsorClickListener != null) {
-        onSponsorClickListener.onSponsorClicked(sponsor);
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (onSponsorClickListener != null) {
+          onSponsorClickListener.onSponsorClicked(sponsor);
+        }
       }
     });
 
@@ -84,7 +91,11 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
   }
 
   private static String formattedSponsorLevels(Sponsor sponsor) {
-    List<String> sponsorLevelNames = Lists.transform(sponsor.sponsorLevels(), SponsorLevel::name);
+    List<String> sponsorLevelNames = Lists.transform(sponsor.sponsorLevels(), new Function<SponsorLevel, String>() {
+      @Override public String apply(SponsorLevel sponsorLevel) {
+        return sponsorLevel.name();
+      }
+    });
     String sponsorLevels = Joiner.on(",").join(sponsorLevelNames);
     int numSponsorLevels = sponsor.sponsorLevels().size();
     return getQuantityString(R.plurals.sponsor_levels, numSponsorLevels, sponsorLevels);

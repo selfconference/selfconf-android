@@ -17,13 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A base {@link Job} for communicating with the Self.conference API.
  *
  * @param <T> the expected type returned by the API.
- * @see Api
  */
 public abstract class ApiJob<T> extends Job {
 
   private static final long INITIAL_BACKOFF_MS = 1000;
 
-  @Inject protected Api api;
+  @Inject protected RestClient restClient;
   @Inject protected EventBus eventBus;
 
   protected ApiJob() {

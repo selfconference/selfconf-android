@@ -8,6 +8,7 @@ import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.selfconference.android.data.api.model.Event;
+import org.selfconference.android.data.api.model.Organizer;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.support.file.Events;
 
@@ -33,13 +34,13 @@ public final class EventJsonDeserializerTest {
         .ticketsLink("http://selfconf2016.eventbrite.com")
         .startDate(new DateTime(2016, 5, 20, 8, 0, 0, 0, DateTimeZone.forOffsetHours(-5)))
         .endDate(new DateTime(2016, 5, 21, 18, 0, 0, 0, DateTimeZone.forOffsetHours(-5)))
-        .organizers(ImmutableList.of(Speaker.builder()
+        .organizers(ImmutableList.of(Organizer.builder()
             .id(1)
             .name("Amber Conville")
             .bio("Amber Conville is a developer.")
+            .email("amber@selfconference.org")
             .twitter("crebma")
             .photo("http://s3.amazonaws.com/selfconf/organizers/amber.jpg")
-            .addSessions(ImmutableList.of())
             .build()))
         .build());
   }

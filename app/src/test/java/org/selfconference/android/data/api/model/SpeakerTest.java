@@ -23,7 +23,7 @@ public final class SpeakerTest {
         .photo("http://test.com/img.png")
         .id(10)
         .name("Dave")
-        .addSessions(asList(Session.builder() //
+        .sessions(asList(Session.builder() //
             .id(10)
             .title("Title")
             .room(Room.nullRoom())

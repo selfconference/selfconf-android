@@ -81,14 +81,20 @@ public final class SessionDetailActivity extends BaseActivity {
 
     sessionTitle.setText(session.title());
     favoriteButton.setChecked(preferences.isFavorite(session));
-    favoriteButton.setOnCheckedChangeListener((fabView, isChecked) -> {
-      if (isChecked) {
-        preferences.favorite(session);
-      } else {
-        preferences.unfavorite(session);
+    favoriteButton.setOnCheckedChangeListener(new FloatingActionButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
+        if (isChecked) {
+          preferences.favorite(session);
+        } else {
+          preferences.unfavorite(session);
+        }
       }
     });
-    favoriteButton.setOnClickListener(this::showSnackbar);
+    favoriteButton.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        showSnackbar();
+      }
+    });
 
     setupFeedbackButton();
 
@@ -152,7 +158,11 @@ public final class SessionDetailActivity extends BaseActivity {
     SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
     sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);
     sessionDetailRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    scrollView.post(() -> scrollView.scrollTo(0, 0));
+    scrollView.post(new Runnable() {
+      @Override public void run() {
+        scrollView.scrollTo(0, 0);
+      }
+    });
   }
 
   private void setUpSpeakerList() {
@@ -160,21 +170,25 @@ public final class SessionDetailActivity extends BaseActivity {
     speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
     SpeakerAdapter speakerAdapter = new SpeakerAdapter(picasso, true);
     speakerAdapter.setData(speakers);
-    speakerAdapter.setOnSpeakerClickListener(speaker -> {
-      String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
-      startActivity(intentFactory.createUrlIntent(twitterUrl));
+    speakerAdapter.setOnSpeakerClickListener(new SpeakerAdapter.OnSpeakerClickListener() {
+      @Override public void onSpeakerClick(Speaker speaker) {
+        String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
+        startActivity(intentFactory.createUrlIntent(twitterUrl));
+      }
     });
     speakerRecyclerView.setAdapter(speakerAdapter);
     speakerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
   }
 
-  private void showSnackbar(View view) {
-    boolean isChecked = favoriteButton.isChecked();
+  private void showSnackbar() {
+    final boolean isChecked = favoriteButton.isChecked();
     String message = isChecked ? "Session favorited" : "Session unfavorited";
-    Snackbar snackbar = Snackbar.make(favoriteButton, message, LENGTH_SHORT);
-    snackbar.setAction("Undo", v -> {
-      favoriteButton.setChecked(!isChecked);
-      snackbar.dismiss();
+    final Snackbar snackbar = Snackbar.make(favoriteButton, message, LENGTH_SHORT);
+    snackbar.setAction("Undo", new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        favoriteButton.setChecked(!isChecked);
+        snackbar.dismiss();
+      }
     });
     snackbar.show();
   }

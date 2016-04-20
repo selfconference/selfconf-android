@@ -11,5 +11,9 @@ public interface ViewContainer {
   ViewGroup forActivity(Activity activity);
 
   /** An {@link ViewContainer} which returns the normal activity content view. */
-  ViewContainer DEFAULT = activity -> findById(activity, android.R.id.content);
+  ViewContainer DEFAULT = new ViewContainer() {
+    @Override public ViewGroup forActivity(Activity activity) {
+      return findById(activity, android.R.id.content);
+    }
+  };
 }

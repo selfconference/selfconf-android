@@ -8,14 +8,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import butterknife.Bind;
 import com.birbit.android.jobqueue.JobManager;
-import com.google.common.collect.ImmutableList;
 import com.squareup.picasso.Picasso;
+import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
-import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.event.GetSessionAddEvent;
 import org.selfconference.android.data.event.GetSessionSuccessEvent;
 import org.selfconference.android.data.event.GetSpeakersAddEvent;
@@ -54,22 +54,28 @@ public final class SpeakerListFragment extends BaseListFragment {
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    speakerAdapter.setOnSpeakerClickListener(speaker -> {
-      Timber.d("Speaker clicked: %s", speaker);
-      ImmutableList<Session> sessions = speaker.sessions();
-      if (sessions.isEmpty()) {
-        // TODO handle empty state
-      } else {
-        // TODO handle possibility where speaker has more than one session
-        Session firstSession = sessions.get(0);
-        jobManager.addJobInBackground(new GetSessionJob(firstSession.id()));
+    speakerAdapter.setOnSpeakerClickListener(new SpeakerAdapter.OnSpeakerClickListener() {
+      @Override public void onSpeakerClick(Speaker speaker) {
+        Timber.d("Speaker clicked: %s", speaker);
+        List<Integer> sessions = speaker.sessions();
+        if (sessions.isEmpty()) {
+          // TODO handle empty state
+        } else {
+          // TODO handle possibility where speaker has more than one session
+          int firstSessionId = sessions.get(0);
+          jobManager.addJobInBackground(new GetSessionJob(firstSessionId));
+        }
       }
     });
 
     speakerRecyclerView.setAdapter(speakerAdapter);
     speakerRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-    swipeRefreshLayout.setOnRefreshListener(this::fetchData);
+    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override public void onRefresh() {
+        fetchData();
+      }
+    });
 
     fetchData();
   }

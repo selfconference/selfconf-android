@@ -13,8 +13,6 @@ buildscript {
     classpath "com.android.tools.build:gradle:$rootProject.deps.androidGradlePlugin"
     classpath "com.neenbedankt.gradle.plugins:android-apt:$rootProject.deps.androidApt"
     classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
-    classpath "me.tatarka:gradle-retrolambda:$rootProject.deps.retrolambda"
-    classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
     classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
   }
   configurations.classpath.exclude group: "com.android.tools.external.lombok"
@@ -25,7 +23,6 @@ repositories {
 }
 
 apply plugin: "com.android.application"
-apply plugin: "me.tatarka.retrolambda"
 apply plugin: "io.fabric"
 apply plugin: "com.neenbedankt.android-apt"
 apply plugin: "com.github.ben-manes.versions"
@@ -77,15 +74,11 @@ android {
       minifyEnabled false
       signingConfig signingConfigs.release
 
-      resValue "string", "app_name", "Self.conference"
-
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api/\""
     }
     debug {
       applicationIdSuffix ".debug"
       signingConfig signingConfigs.debug
-
-      resValue "string", "app_name", "Self.conference Debug"
 
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT",
           "\"http://selfconf-dev.herokuapp.com/api/\""
@@ -102,8 +95,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
   }
 
   packagingOptions {
@@ -138,16 +131,20 @@ dependencies {
 
   apt "com.ryanharter.auto.value:auto-value-parcel:$rootProject.deps.autoValueParcel"
   compile "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
-  provided "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
+  apt "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
+  provided "com.jakewharton.auto.value:auto-value-annotations:1.2-update1"
   compile "com.jakewharton:butterknife:$rootProject.deps.butterknife"
   compile "com.jakewharton.timber:timber:$rootProject.deps.timber"
   compile "com.squareup.dagger:dagger:$rootProject.deps.dagger"
   apt "com.squareup.dagger:dagger-compiler:$rootProject.deps.dagger"
   compile "com.squareup.picasso:picasso:$rootProject.deps.picasso"
   compile "com.squareup.okhttp3:okhttp:$rootProject.deps.okhttp"
-  compile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
+  internalCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
   compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
   compile "com.squareup.retrofit2:converter-gson:$rootProject.deps.retrofit"
+  internalCompile "com.squareup.retrofit2:retrofit-mock:$rootProject.deps.retrofit"
+
+  compile 'com.jakewharton.byteunits:byteunits:0.9.1'
 
   compile "com.birbit:android-priority-jobqueue:$rootProject.deps.jobQueue"
   compile "org.greenrobot:eventbus:$rootProject.deps.eventBus"

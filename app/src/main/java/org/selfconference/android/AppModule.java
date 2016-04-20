@@ -6,7 +6,6 @@ import dagger.Provides;
 import javax.inject.Singleton;
 import org.selfconference.android.data.DataModule;
 import org.selfconference.android.data.api.ApiJob;
-import org.selfconference.android.data.api.RestApi;
 import org.selfconference.android.data.job.GetSessionJob;
 import org.selfconference.android.data.job.GetSessionsJob;
 import org.selfconference.android.data.job.GetSpeakersJob;
@@ -29,7 +28,6 @@ import org.selfconference.android.ui.sponsor.SponsorListFragment;
         DataModule.class
     },
     injects = {
-        RestApi.class, //
         SponsorListFragment.class, //
         BaseFragment.class, //
         SessionContainerFragment.class, //

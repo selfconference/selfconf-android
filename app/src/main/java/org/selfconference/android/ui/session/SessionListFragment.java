@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
 import com.birbit.android.jobqueue.JobManager;
@@ -18,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.event.GetSessionsAddEvent;
 import org.selfconference.android.data.event.GetSessionsSuccessEvent;
 import org.selfconference.android.data.job.GetSessionsJob;
@@ -64,11 +66,17 @@ public final class SessionListFragment extends BaseListFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    swipeRefreshLayout.setOnRefreshListener(this::fetchData);
+    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override public void onRefresh() {
+        fetchData();
+      }
+    });
 
-    sessionAdapter.setOnSessionClickListener(session -> {
-      Intent intent = SessionDetailActivity.newIntent(getActivity(), session);
-      getActivity().startActivity(intent);
+    sessionAdapter.setOnSessionClickListener(new SessionAdapter.OnSessionClickListener() {
+      @Override public void onSessionClick(Session session) {
+        Intent intent = SessionDetailActivity.newIntent(getActivity(), session);
+        getActivity().startActivity(intent);
+      }
     });
 
     scheduleItemRecyclerView.setAdapter(sessionAdapter);
@@ -79,11 +87,14 @@ public final class SessionListFragment extends BaseListFragment {
     super.onCreateOptionsMenu(menu, inflater);
     if (sessionPreferences.hasFavorites()) {
       inflater.inflate(R.menu.favorites, menu);
-      menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(item -> {
-        item.setChecked(!item.isChecked());
-        sessionAdapter.filterFavorites(item.isChecked());
-        return true;
-      });
+      menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(
+          new MenuItem.OnMenuItemClickListener() {
+            @Override public boolean onMenuItemClick(MenuItem item) {
+              item.setChecked(!item.isChecked());
+              sessionAdapter.filterFavorites(item.isChecked());
+              return true;
+            }
+          });
     }
   }
 

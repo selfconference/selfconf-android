@@ -47,12 +47,14 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   }
 
   @Override public void onBindViewHolder(SessionViewHolder holder, int position) {
-    Session session = getFilteredData().get(position);
+    final Session session = getFilteredData().get(position);
     DateTimeDecorator dateTimeDecorator = DateTimeDecorator.fromDateTime(session.beginning());
 
-    holder.itemView.setOnClickListener(v -> {
-      if (onSessionClickListener != null) {
-        onSessionClickListener.onSessionClick(session);
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (onSessionClickListener != null) {
+          onSessionClickListener.onSessionClick(session);
+        }
       }
     });
 
@@ -63,17 +65,25 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
     holder.startTime.setText(dateTimeDecorator.shortTimeString());
   }
 
-  public void filterFavorites(boolean show) {
+  public void filterFavorites(final boolean show) {
     getFilteredData().clear();
     dataObservable() //
-        .filter(session -> !show || preferences.isFavorite(session)) //
+        .filter(new Func1<Session, Boolean>() {
+          @Override public Boolean call(Session session) {
+            return !show || preferences.isFavorite(session);
+          }
+        }) //
         .subscribe(new FilteredDataSubscriber<>(this));
   }
 
-  @Override protected Func1<Session, Boolean> filterPredicate(String query) {
-    return session -> session.title() //
-        .toLowerCase(Locale.US) //
-        .contains(query.toLowerCase(Locale.US));
+  @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
+    return new Func1<Session, Boolean>() {
+      @Override public Boolean call(Session session) {
+        return session.title() //
+            .toLowerCase(Locale.US) //
+            .contains(query.toLowerCase(Locale.US));
+      }
+    };
   }
 
   static final class SessionViewHolder extends ButterKnifeViewHolder {

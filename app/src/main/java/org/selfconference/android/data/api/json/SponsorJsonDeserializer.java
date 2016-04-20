@@ -1,5 +1,7 @@
 package org.selfconference.android.data.api.json;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -8,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
+import java.util.List;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.api.model.SponsorLevel;
 
@@ -25,7 +28,7 @@ public final class SponsorJsonDeserializer implements JsonDeserializer<Sponsor> 
         .name(decorator.name())
         .link(decorator.link())
         .photo(decorator.photo())
-        .addSponsorLevels(decorator.sponsorLevels())
+        .sponsorLevels(decorator.sponsorLevels())
         .build();
   }
 
@@ -60,12 +63,16 @@ public final class SponsorJsonDeserializer implements JsonDeserializer<Sponsor> 
       return sponsorObject.get(KEY_PHOTO).getAsString();
     }
 
-    Iterable<SponsorLevel> sponsorLevels() {
+    List<SponsorLevel> sponsorLevels() {
       JsonArray sponsorLevelsArray = sponsorObject.get(KEY_SPONSOR_LEVELS).getAsJsonArray();
-      return Iterables.transform(sponsorLevelsArray, input -> {
-        JsonObject sponsorLevel = input.getAsJsonObject();
-        return context.deserialize(sponsorLevel, SponsorLevel.class);
-      });
+      Iterable<SponsorLevel> sponsorLevels =
+          Iterables.transform(sponsorLevelsArray, new Function<JsonElement, SponsorLevel>() {
+            @Override public SponsorLevel apply(JsonElement input) {
+              JsonObject sponsorLevel = input.getAsJsonObject();
+              return context.deserialize(sponsorLevel, SponsorLevel.class);
+            }
+          });
+      return ImmutableList.copyOf(sponsorLevels);
     }
   }
 }

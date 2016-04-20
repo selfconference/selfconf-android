@@ -1,6 +1,8 @@
 package org.selfconference.android.data.api.json;
 
 import android.support.annotation.NonNull;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,8 +13,8 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import org.selfconference.android.data.api.model.Room;
-import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
 
 public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
 
@@ -56,9 +58,13 @@ public final class SpeakerTypeAdapter extends TypeAdapter<Speaker> {
           break;
         case KEY_SESSIONS:
           if (in.peek() == JsonToken.BEGIN_ARRAY) {
-            List<Session> sessions = GSON.fromJson(in, new TypeToken<List<Session>>() {
-            }.getType());
-            builder.addSessions(sessions);
+            List<Session> sessions = GSON.fromJson(in, new TypeToken<List<Session>>() {}.getType());
+            List<Integer> sessionIds = Lists.transform(sessions, new Function<Session, Integer>() {
+              @Override public Integer apply(Session session) {
+                return session.id();
+              }
+            });
+            builder.sessions(sessionIds);
           }
           break;
         default:

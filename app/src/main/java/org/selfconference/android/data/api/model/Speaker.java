@@ -1,17 +1,16 @@
 package org.selfconference.android.data.api.model;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableList;
-import com.ryanharter.auto.value.parcel.ParcelAdapter;
-import com.ryanharter.auto.value.parcel.TypeAdapter;
+import com.google.common.collect.Lists;
 import java.util.List;
 
 @AutoValue public abstract class Speaker implements Parcelable {
 
   public static Builder builder() {
-    return new AutoValue_Speaker.Builder();
+    return new AutoValue_Speaker.Builder() //
+        .twitter("") //
+        .sessions(Lists.<Integer>newArrayList());
   }
 
   Speaker() {}
@@ -26,10 +25,9 @@ import java.util.List;
 
   public abstract String photo();
 
-  @ParcelAdapter(Session.ImmutableListTypeAdapter.class)
-  public abstract ImmutableList<Session> sessions();
+  public abstract List<Integer> sessions();
 
-  @AutoValue.Builder public abstract static class Builder {
+  @AutoValue.Builder public static abstract class Builder {
 
     public abstract Builder id(int id);
 
@@ -41,25 +39,8 @@ import java.util.List;
 
     public abstract Builder photo(String photo);
 
-    abstract ImmutableList.Builder<Session> sessionsBuilder();
-
-    public Builder addSessions(List<Session> sessions) {
-      sessionsBuilder().addAll(sessions);
-      return this;
-    }
+    public abstract Builder sessions(List<Integer> sessions);
 
     public abstract Speaker build();
-  }
-
-  public static final class ImmutableListTypeAdapter
-      implements TypeAdapter<ImmutableList<Speaker>> {
-    @Override public ImmutableList<Speaker> fromParcel(Parcel in) {
-      List<AutoValue_Speaker> typedArrayList = in.createTypedArrayList(AutoValue_Speaker.CREATOR);
-      return ImmutableList.copyOf(typedArrayList);
-    }
-
-    @Override public void toParcel(ImmutableList<Speaker> value, Parcel dest) {
-      dest.writeTypedList(value);
-    }
   }
 }

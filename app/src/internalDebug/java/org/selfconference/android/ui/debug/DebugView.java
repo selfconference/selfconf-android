@@ -5,6 +5,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -66,9 +67,11 @@ public final class DebugView extends FrameLayout {
 
   private void setupMockBehaviorSection() {
     captureIntentsView.setChecked(captureIntents.get());
-    captureIntentsView.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-      Timber.d("Capture intents set to %s", isChecked);
-      captureIntents.set(isChecked);
+    captureIntentsView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        Timber.d("Capture intents set to %s", isChecked);
+        captureIntents.set(isChecked);
+      }
     });
   }
 
@@ -88,10 +91,12 @@ public final class DebugView extends FrameLayout {
     boolean picassoDebuggingValue = picassoDebugging.get();
     picasso.setIndicatorsEnabled(picassoDebuggingValue);
     picassoIndicatorView.setChecked(picassoDebuggingValue);
-    picassoIndicatorView.setOnCheckedChangeListener((button, isChecked) -> {
-      Timber.d("Setting Picasso debugging to " + isChecked);
-      picasso.setIndicatorsEnabled(isChecked);
-      picassoDebugging.set(isChecked);
+    picassoIndicatorView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton button, boolean isChecked) {
+        Timber.d("Setting Picasso debugging to " + isChecked);
+        picasso.setIndicatorsEnabled(isChecked);
+        picassoDebugging.set(isChecked);
+      }
     });
 
     refreshPicassoStats();

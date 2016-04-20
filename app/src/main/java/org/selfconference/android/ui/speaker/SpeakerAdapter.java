@@ -41,10 +41,12 @@ public final class SpeakerAdapter
     this.onSpeakerClickListener = onSpeakerClickListener;
   }
 
-  @Override protected Func1<Speaker, Boolean> filterPredicate(String query) {
-    return speaker -> speaker.name()
-        .toLowerCase(Locale.US)
-        .contains(query.toLowerCase(Locale.US));
+  @Override protected Func1<Speaker, Boolean> filterPredicate(final String query) {
+    return new Func1<Speaker, Boolean>() {
+      @Override public Boolean call(Speaker speaker) {
+        return speaker.name().toLowerCase(Locale.US).contains(query.toLowerCase(Locale.US));
+      }
+    };
   }
 
   @Override public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,12 +55,14 @@ public final class SpeakerAdapter
     return new SpeakerViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(SpeakerViewHolder holder, int position) {
-    Speaker speaker = getFilteredData().get(position);
+  @Override public void onBindViewHolder(final SpeakerViewHolder holder, int position) {
+    final Speaker speaker = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(v -> {
-      if (onSpeakerClickListener != null) {
-        onSpeakerClickListener.onSpeakerClick(speaker);
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (onSpeakerClickListener != null) {
+          onSpeakerClickListener.onSpeakerClick(speaker);
+        }
       }
     });
     holder.speakerName.setText(speaker.name());

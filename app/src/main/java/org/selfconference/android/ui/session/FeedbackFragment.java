@@ -89,6 +89,10 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
     jobManager.addJobInBackground(new SubmitFeedbackJob(session, feedback));
 
-    voteButton.postDelayed(this::dismiss, 200);
+    voteButton.postDelayed(new Runnable() {
+      @Override public void run() {
+        dismiss();
+      }
+    }, 200);
   }
 }

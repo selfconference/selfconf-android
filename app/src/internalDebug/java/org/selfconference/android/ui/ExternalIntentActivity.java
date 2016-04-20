@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -41,14 +42,16 @@ public final class ExternalIntentActivity extends AppCompatActivity {
     ButterKnife.bind(this);
 
     toolbar.inflateMenu(R.menu.debug_external_intent);
-    toolbar.setOnMenuItemClickListener(item -> {
-      switch (item.getItemId()) {
-        case R.id.debug_launch:
-          startActivity(baseIntent);
-          finish();
-          return true;
-        default:
-          return false;
+    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+      @Override public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+          case R.id.debug_launch:
+            startActivity(baseIntent);
+            finish();
+            return true;
+          default:
+            return false;
+        }
       }
     });
 
