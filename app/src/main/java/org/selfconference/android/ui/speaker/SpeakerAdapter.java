@@ -71,7 +71,7 @@ public final class SpeakerAdapter
             .resize(holder.speakerPhoto.getWidth(), holder.speakerPhoto.getHeight())
             .centerCrop()
             .transform(new CircularTransformation(speaker.photo()))
-            .placeholder(PlaceholderDrawable.forSpeaker(speaker))
+            .placeholder(PlaceholderDrawable.forId(speaker.id()))
             .into(holder.speakerPhoto);
         return true;
       }

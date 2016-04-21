@@ -1,15 +1,35 @@
 package org.selfconference.android.util;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import org.selfconference.android.ui.misc.BrandColor;
-import org.selfconference.android.data.api.model.Speaker;
+import android.support.annotation.DrawableRes;
+import org.selfconference.android.R;
 
 public final class PlaceholderDrawable {
 
-  public static TextDrawable forSpeaker(Speaker speaker) {
-    BrandColor brandColor = BrandColor.makeBrand(speaker.id());
-    String firstInitial = speaker.name().substring(0, 1);
-    return TextDrawable.builder().buildRound(firstInitial, brandColor.getPrimary());
+  /** Robits!!! */
+  private static final int[] ROBITS = {
+      R.drawable.robit1, //
+      R.drawable.robit2, //
+      R.drawable.robit3, //
+      R.drawable.robit4, //
+      R.drawable.robit5, //
+      R.drawable.robit6, //
+  };
+
+  /**
+   * Returns a placeholder drawable resource reference for use
+   * by {@link com.squareup.picasso.Picasso}.
+   *
+   * This method requires an id parameter to map an object's id to a position in the array
+   * of placeholder drawables.
+   * For example, supplying {@link org.selfconference.android.data.api.model.Speaker#id()} to this
+   * method will return a consistent placeholder drawable for that object.
+   *
+   * @param id The id to map to a position in the {@link #ROBITS} array.
+   * @return The placeholder drawable resource id.
+   */
+  @DrawableRes public static int forId(int id) {
+    int index = Math.abs(id);
+    return ROBITS[index % ROBITS.length];
   }
 
   private PlaceholderDrawable() {
