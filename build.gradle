@@ -37,7 +37,6 @@ allprojects {
             rxJavaAndroid       : "1.1.0",
             rxJavaString        : "1.1.0",
             rxLifecycle         : "0.5.0",
-            textDrawable        : "1.0.1",
             crashlytics         : "2.5.5@aar",
             leakCanary          : "1.3.1",
             robolectric         : "2.4",

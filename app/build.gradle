@@ -138,7 +138,6 @@ dependencies {
   compile "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
   compile "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
 
-  compile "com.amulyakhare:com.amulyakhare.textdrawable:$rootProject.deps.textDrawable"
   compile("com.crashlytics.sdk.android:crashlytics:$rootProject.deps.crashlytics") {
     transitive = true;
   }
