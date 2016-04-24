@@ -16,3 +16,5 @@ notifications:
   email: false
 
 sudo: false
+
+script: ./gradlew --stacktrace --debug build connectedCheck
