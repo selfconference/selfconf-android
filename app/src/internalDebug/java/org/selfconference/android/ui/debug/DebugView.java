@@ -150,7 +150,11 @@ public final class DebugView extends FrameLayout {
     Timber.d("Setting network endpoint to %s", endpoint);
     networkEndpoint.set(endpoint);
 
-    ProcessPhoenix.triggerRebirth(getContext());
+    post(new Runnable() {
+      @Override public void run() {
+        ProcessPhoenix.triggerRebirth(getContext());
+      }
+    });
   }
 
   private static String truncateAt(String string, int length) {
