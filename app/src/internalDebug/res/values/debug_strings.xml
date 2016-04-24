@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="bug_report_email_address">macklinu+selfconf@gmail.com</string>
   <string name="bug_report_email_subject">%1$s Bug Report</string>
 </resources>

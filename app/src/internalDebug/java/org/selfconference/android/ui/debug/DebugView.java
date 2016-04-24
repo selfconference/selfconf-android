@@ -122,7 +122,7 @@ public final class DebugView extends FrameLayout {
     picassoIndicatorView.setChecked(picassoDebuggingValue);
     picassoIndicatorView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton button, boolean isChecked) {
-        Timber.d("Setting Picasso debugging to " + isChecked);
+        Timber.d("Setting Picasso debugging to %b", isChecked);
         picasso.setIndicatorsEnabled(isChecked);
         picassoDebugging.set(isChecked);
       }

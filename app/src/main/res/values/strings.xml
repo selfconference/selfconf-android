@@ -7,7 +7,6 @@
   <string name="speakers">Speakers</string>
 
   <string name="twitter_url">https://twitter.com/%1$s</string>
-  <string name="settings">Settings</string>
 
   <string name="code_of_conduct">Code of Conduct</string>
 
@@ -24,14 +23,11 @@
   <string name="coc_contact_information_subtitle">If you are being harassed, notice that someone else is being harassed, or have any other concerns, please contact a self.conference staff member or volunteer immediately.\n\nYou may also contact any volunteer and ask to be put in touch with the conference chair, Amber Conville.\n\nIf the matter is especially urgent, please contact conference co-chair Amber Conville at (734) 660-0754.\n\nConference staff will be happy to help participants contact hotel/venue security or local law enforcement, provide escorts, or otherwise assist those experiencing harassment to feel safe for the duration of the conference. We value your attendance.\n\nAdapted from http://geekfeminism.wikia.com/wiki/Conference_anti-harassment/Policy</string>
 
   <string name="search">Search</string>
-  <string name="today">Today</string>
-  <string name="tomorrow">Tomorrow</string>
   <string name="sponsors">Sponsors</string>
 
   <string name="feedback_dialog_title">What did you think?</string>
   <string name="submit_feedback">Submit Feedback</string>
   <string name="feedback_submitted">Thanks for submitting feedback!</string>
-  <string name="api_error">Failed to load data. Pull-to-refresh to try again.</string>
 
   <plurals name="speakers">
     <item quantity="one">Speaker</item>
