@@ -15,7 +15,6 @@ buildscript {
     classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
     classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
   }
-  configurations.classpath.exclude group: "com.android.tools.external.lombok"
 }
 
 repositories {
