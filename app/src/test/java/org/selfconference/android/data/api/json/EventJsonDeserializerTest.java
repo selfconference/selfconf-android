@@ -22,6 +22,7 @@ public final class EventJsonDeserializerTest {
     gson = new GsonBuilder() //
         .registerTypeAdapter(Event.class, new EventJsonDeserializer())
         .registerTypeAdapter(Speaker.class, new SpeakerTypeAdapter())
+        .registerTypeAdapter(Organizer.class, new OrganizerJsonDeserializer())
         .create();
   }
 

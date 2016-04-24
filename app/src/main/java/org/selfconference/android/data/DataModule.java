@@ -20,6 +20,7 @@ import okhttp3.OkHttpClient;
 import org.selfconference.android.data.api.ApiModule;
 import org.selfconference.android.data.api.json.EventJsonDeserializer;
 import org.selfconference.android.data.api.json.FeedbackJsonSerializer;
+import org.selfconference.android.data.api.json.OrganizerJsonDeserializer;
 import org.selfconference.android.data.api.json.RoomJsonDeserializer;
 import org.selfconference.android.data.api.json.SessionJsonDeserializer;
 import org.selfconference.android.data.api.json.SpeakerTypeAdapter;
@@ -27,6 +28,7 @@ import org.selfconference.android.data.api.json.SponsorJsonDeserializer;
 import org.selfconference.android.data.api.json.SponsorLevelJsonDeserializer;
 import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Feedback;
+import org.selfconference.android.data.api.model.Organizer;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
@@ -55,6 +57,7 @@ public final class DataModule {
         .registerTypeAdapter(Room.class, new RoomJsonDeserializer())
         .registerTypeAdapter(Feedback.class, new FeedbackJsonSerializer())
         .registerTypeAdapter(Event.class, new EventJsonDeserializer())
+        .registerTypeAdapter(Organizer.class, new OrganizerJsonDeserializer())
         .create();
   }
 
