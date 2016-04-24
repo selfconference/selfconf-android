@@ -1,5 +1,6 @@
 package org.selfconference.android.ui.sponsor;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.api.model.SponsorLevel;
@@ -20,8 +22,6 @@ import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.misc.FilterableAdapter;
 import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
-
-import static org.selfconference.android.util.ResourceProvider.getQuantityString;
 
 public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.ViewHolder> {
   public interface OnSponsorClickListener {
@@ -90,15 +90,17 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     compositeSubscription.unsubscribe();
   }
 
-  private static String formattedSponsorLevels(Sponsor sponsor) {
-    List<String> sponsorLevelNames = Lists.transform(sponsor.sponsorLevels(), new Function<SponsorLevel, String>() {
+  private String formattedSponsorLevels(Sponsor sponsor) {
+    Function<SponsorLevel, String> sponsorLevelToName = new Function<SponsorLevel, String>() {
       @Override public String apply(SponsorLevel sponsorLevel) {
         return sponsorLevel.name();
       }
-    });
+    };
+    List<String> sponsorLevelNames = Lists.transform(sponsor.sponsorLevels(), sponsorLevelToName);
     String sponsorLevels = Joiner.on(",").join(sponsorLevelNames);
     int numSponsorLevels = sponsor.sponsorLevels().size();
-    return getQuantityString(R.plurals.sponsor_levels, numSponsorLevels, sponsorLevels);
+    Resources resources = App.getInstance().getResources();
+    return resources.getQuantityString(R.plurals.sponsor_levels, numSponsorLevels, sponsorLevels);
   }
 
   static final class ViewHolder extends ButterKnifeViewHolder {

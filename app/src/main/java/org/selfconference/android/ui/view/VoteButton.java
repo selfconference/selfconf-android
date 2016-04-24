@@ -9,13 +9,13 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Vote;
 
 import static android.support.v4.graphics.drawable.DrawableCompat.setTint;
 import static android.support.v4.graphics.drawable.DrawableCompat.wrap;
-import static org.selfconference.android.util.ResourceProvider.getColor;
 
 /**
  * A wrapper view for providing thumbs up or thumbs down feedback for a session.
@@ -28,7 +28,8 @@ public final class VoteButton extends LinearLayout implements OnClickListener {
   public interface OnVoteSelectedListener {
     /**
      * Called when a vote has been selected.
-     *  @param voteButton The {@link VoteButton} that was clicked
+     *
+     * @param voteButton The {@link VoteButton} that was clicked
      * @param vote The type of vote that was selected
      */
     void onVoteSelected(VoteButton voteButton, Vote vote);
@@ -36,26 +37,23 @@ public final class VoteButton extends LinearLayout implements OnClickListener {
 
   @Bind(R.id.thumbs_down_view) ImageView thumbsDownView;
   @Bind(R.id.thumbs_up_view) ImageView thumbsUpView;
+  @BindColor(R.color.image_tint_dark) int darkTint;
 
   private OnVoteSelectedListener onVoteSelectedListener;
 
   public VoteButton(Context context) {
-    this(context, null, 0);
+    this(context, null);
   }
 
   public VoteButton(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
-  }
-
-  public VoteButton(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(context, attrs);
     View.inflate(context, R.layout.view_thumbs_up_button, this);
     ButterKnife.bind(this);
 
     setOrientation(HORIZONTAL);
 
     if (!isInEditMode()) {
-      applyColor(thumbsDownView, thumbsUpView);
+      applyTint(thumbsDownView, thumbsUpView);
 
       thumbsDownView.setOnClickListener(this);
       thumbsUpView.setOnClickListener(this);
@@ -85,10 +83,10 @@ public final class VoteButton extends LinearLayout implements OnClickListener {
     }
   }
 
-  private static void applyColor(ImageView... imageViews) {
+  private void applyTint(ImageView... imageViews) {
     for (ImageView imageView : imageViews) {
       Drawable wrappedDrawable = wrap(imageView.getDrawable());
-      setTint(wrappedDrawable, getColor(R.color.image_tint_dark));
+      setTint(wrappedDrawable, darkTint);
       imageView.setImageDrawable(wrappedDrawable);
     }
   }
