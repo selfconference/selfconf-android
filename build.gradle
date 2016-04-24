@@ -9,8 +9,6 @@ allprojects {
   repositories {
     jcenter()
     mavenCentral()
-    maven { url "http://dl.bintray.com/amulyakhare/maven" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
   }
 
   ext {
