@@ -174,12 +174,14 @@ dependencies {
   testCompile "com.squareup.assertj:assertj-android:$rootProject.deps.assertjAndroid"
 }
 
-def installAll = tasks.create("installAll")
-installAll.description = "Install all applications."
-android.applicationVariants.all { variant ->
-  installAll.dependsOn(variant.install)
-  // Ensure we end up in the same group as the other install tasks.
-  installAll.group = variant.install.group
+if (!isCi) {
+  def installAll = tasks.create("installAll")
+  installAll.description = "Install all applications."
+  android.applicationVariants.all { variant ->
+    installAll.dependsOn(variant.install)
+    // Ensure we end up in the same group as the other install tasks.
+    installAll.group = variant.install.group
+  }
 }
 
 // The default 'assemble' task only applies to normal variants. Add test variants as well.
