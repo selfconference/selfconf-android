@@ -11,7 +11,9 @@
   <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-  <application>
+  <application
+      android:icon="@mipmap/dev_ic_launcher"
+      tools:replace="icon">
     <activity
         android:name="org.selfconference.android.ui.ExternalIntentActivity"
         >
