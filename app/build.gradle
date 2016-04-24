@@ -131,7 +131,7 @@ dependencies {
   apt "com.ryanharter.auto.value:auto-value-parcel:$rootProject.deps.autoValueParcel"
   compile "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
   apt "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
-  provided "com.jakewharton.auto.value:auto-value-annotations:1.2-update1"
+  provided "com.jakewharton.auto.value:auto-value-annotations:$rootProject.deps.autoValueAnnotations"
   compile "com.jakewharton:butterknife:$rootProject.deps.butterknife"
   compile "com.jakewharton.timber:timber:$rootProject.deps.timber"
   compile "com.squareup.dagger:dagger:$rootProject.deps.dagger"
@@ -155,7 +155,6 @@ dependencies {
 
   compile "io.reactivex:rxjava:$rootProject.deps.rxJava"
   compile "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
-  compile "io.reactivex:rxjava-string:$rootProject.deps.rxJavaString"
   compile "com.f2prateek.rx.preferences:rx-preferences:$rootProject.deps.rxPreferences"
   compile "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
   compile "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
