@@ -1,5 +1,7 @@
 package org.selfconference.android.data.api.json;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -8,9 +10,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
+import java.util.List;
 import org.joda.time.ReadableDateTime;
 import org.selfconference.android.data.api.model.Event;
-import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.android.data.api.model.Organizer;
 import org.selfconference.android.util.DateTimes;
 
 public final class EventJsonDeserializer implements JsonDeserializer<Event> {
@@ -69,9 +72,15 @@ public final class EventJsonDeserializer implements JsonDeserializer<Event> {
       return DateTimes.parseEst(endDate);
     }
 
-    Iterable<Speaker> organizers() {
-      JsonArray organizers = jsonObject.get(KEY_ORGANIZERS).getAsJsonArray();
-      return Iterables.transform(organizers, input -> context.deserialize(input, Speaker.class));
+    List<Organizer> organizers() {
+      JsonArray organizersArray = jsonObject.get(KEY_ORGANIZERS).getAsJsonArray();
+      Iterable<Organizer> organizers =
+          Iterables.transform(organizersArray, new Function<JsonElement, Organizer>() {
+            @Override public Organizer apply(JsonElement input) {
+              return context.deserialize(input, Organizer.class);
+            }
+          });
+      return ImmutableList.copyOf(organizers);
     }
   }
 }

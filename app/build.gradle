@@ -13,7 +13,6 @@ buildscript {
     classpath "com.android.tools.build:gradle:$rootProject.deps.androidGradlePlugin"
     classpath "com.neenbedankt.gradle.plugins:android-apt:$rootProject.deps.androidApt"
     classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
-    classpath "me.tatarka:gradle-retrolambda:$rootProject.deps.retrolambda"
     classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
   }
 }
@@ -23,23 +22,32 @@ repositories {
 }
 
 apply plugin: "com.android.application"
-apply plugin: "me.tatarka.retrolambda"
 apply plugin: "io.fabric"
 apply plugin: "com.neenbedankt.android-apt"
 apply plugin: "com.github.ben-manes.versions"
 
 apply from: "test-resources.gradle"
 
+def isCi = "true".equals(System.getenv("CI"))
+def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+
 android {
   compileSdkVersion rootProject.compileSdkVersion
   buildToolsVersion rootProject.buildToolsVersion
 
+  dexOptions {
+    // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+    preDexLibraries = preDexEnabled && !isCi
+  }
+
   defaultConfig {
-    applicationId "org.selfconference.android"
     minSdkVersion rootProject.minSdkVersion
     targetSdkVersion rootProject.targetSdkVersion
+
     versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    signingConfig signingConfigs.debug
 
     vectorDrawables.useSupportLibrary = true
   }
@@ -65,24 +73,29 @@ android {
       minifyEnabled false
       signingConfig signingConfigs.release
 
-      resValue "string", "app_name", "Self.conference"
-
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api/\""
     }
     debug {
       applicationIdSuffix ".debug"
       signingConfig signingConfigs.debug
 
-      resValue "string", "app_name", "Self.conference Debug"
-
       buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT",
           "\"http://selfconf-dev.herokuapp.com/api/\""
     }
   }
 
+  productFlavors {
+    internal {
+      applicationId "org.selfconference.android.internal"
+    }
+    production {
+      applicationId "org.selfconference.android"
+    }
+  }
+
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
   }
 
   packagingOptions {
@@ -94,6 +107,11 @@ android {
       events "passed", "skipped", "failed"
     }
   }
+}
+
+// TODO remove eventually: http://b.android.com/162285
+configurations {
+  internalDebugCompile
 }
 
 configurations.all {
@@ -112,17 +130,20 @@ dependencies {
 
   apt "com.ryanharter.auto.value:auto-value-parcel:$rootProject.deps.autoValueParcel"
   compile "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
-  provided "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
+  apt "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
+  provided "com.jakewharton.auto.value:auto-value-annotations:$rootProject.deps.autoValueAnnotations"
   compile "com.jakewharton:butterknife:$rootProject.deps.butterknife"
   compile "com.jakewharton.timber:timber:$rootProject.deps.timber"
   compile "com.squareup.dagger:dagger:$rootProject.deps.dagger"
   apt "com.squareup.dagger:dagger-compiler:$rootProject.deps.dagger"
   compile "com.squareup.picasso:picasso:$rootProject.deps.picasso"
   compile "com.squareup.okhttp3:okhttp:$rootProject.deps.okhttp"
-  compile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
+  internalCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
   compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
   compile "com.squareup.retrofit2:converter-gson:$rootProject.deps.retrofit"
-  compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
+  internalCompile "com.squareup.retrofit2:retrofit-mock:$rootProject.deps.retrofit"
+
+  compile 'com.jakewharton.byteunits:byteunits:0.9.1'
 
   compile "com.birbit:android-priority-jobqueue:$rootProject.deps.jobQueue"
   compile "org.greenrobot:eventbus:$rootProject.deps.eventBus"
@@ -134,7 +155,7 @@ dependencies {
 
   compile "io.reactivex:rxjava:$rootProject.deps.rxJava"
   compile "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
-  compile "io.reactivex:rxjava-string:$rootProject.deps.rxJavaString"
+  compile "com.f2prateek.rx.preferences:rx-preferences:$rootProject.deps.rxPreferences"
   compile "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
   compile "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
 
@@ -145,9 +166,27 @@ dependencies {
   debugCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
   releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
 
+  internalCompile "com.mattprecious.telescope:telescope:$rootProject.deps.telescope"
+  internalDebugCompile "com.jakewharton:process-phoenix:$rootProject.deps.processPhoenix"
+
   testCompile "org.robolectric:robolectric:$rootProject.deps.robolectric"
   testCompile "junit:junit:$rootProject.deps.junit"
   testCompile "com.squareup.assertj:assertj-android:$rootProject.deps.assertjAndroid"
+}
+
+if (!isCi) {
+  def installAll = tasks.create("installAll")
+  installAll.description = "Install all applications."
+  android.applicationVariants.all { variant ->
+    installAll.dependsOn(variant.install)
+    // Ensure we end up in the same group as the other install tasks.
+    installAll.group = variant.install.group
+  }
+}
+
+// The default 'assemble' task only applies to normal variants. Add test variants as well.
+android.testVariants.all { variant ->
+  tasks.getByName("assemble").dependsOn variant.assemble
 }
 
 def Properties loadProperties(String filename) {

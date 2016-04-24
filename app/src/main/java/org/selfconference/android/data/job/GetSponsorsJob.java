@@ -19,7 +19,7 @@ public final class GetSponsorsJob extends ApiJob<List<Sponsor>> {
   }
 
   @Override protected Call<List<Sponsor>> apiCall() {
-    return api.getSponsors();
+    return restClient.getSponsors();
   }
 
   @Override protected void onApiSuccess(Response<List<Sponsor>> response) {

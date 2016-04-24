@@ -16,7 +16,7 @@ public final class GetSessionsJob extends ApiJob<List<Session>> {
   }
 
   @Override protected Call<List<Session>> apiCall() {
-    return api.getSessions();
+    return restClient.getSessions();
   }
 
   @Override protected void onApiSuccess(Response<List<Session>> response) {

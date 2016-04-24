@@ -10,8 +10,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import javax.inject.Inject;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.drawer.DrawerItem;
 
@@ -20,12 +22,17 @@ public final class MainActivity extends BaseActivity {
   @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
   @Bind(R.id.navigation_view) NavigationView navigationView;
 
+  @Inject ViewContainer viewContainer;
+
   private ActionBarDrawerToggle drawerToggle;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    ButterKnife.bind(this);
+
+    ViewGroup container = viewContainer.forActivity(this);
+
+    getLayoutInflater().inflate(R.layout.activity_main, container);
+    ButterKnife.bind(this, container);
 
     setSupportActionBar(getToolbar());
 

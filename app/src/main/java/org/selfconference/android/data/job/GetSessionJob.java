@@ -22,7 +22,7 @@ public final class GetSessionJob extends ApiJob<Session> {
   }
 
   @Override protected Call<Session> apiCall() {
-    return api.getSessionById(id);
+    return restClient.getSessionById(id);
   }
 
   @Override protected void onApiSuccess(Response<Session> response) {

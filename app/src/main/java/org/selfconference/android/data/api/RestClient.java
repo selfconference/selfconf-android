@@ -13,9 +13,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
- * A Retrofit client to access the Self.conference API
- *
- * @see Api
+ * A Retrofit client to access the Self.conference API.
  */
 public interface RestClient {
   @GET("events/latest/sessions") //

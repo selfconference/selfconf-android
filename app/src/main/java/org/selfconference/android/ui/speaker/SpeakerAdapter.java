@@ -8,11 +8,10 @@ import android.widget.TextView;
 import butterknife.Bind;
 import com.squareup.picasso.Picasso;
 import java.util.Locale;
-import javax.inject.Inject;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.transform.CircularTransformation;
 import org.selfconference.android.util.PlaceholderDrawable;
 import rx.functions.Func1;
@@ -27,13 +26,14 @@ public final class SpeakerAdapter
     void onSpeakerClick(Speaker speaker);
   }
 
-  @Inject Picasso picasso;
-
-  private OnSpeakerClickListener onSpeakerClickListener;
+  private final Picasso picasso;
   private final boolean showDescription;
 
-  public SpeakerAdapter(boolean showDescription) {
+  private OnSpeakerClickListener onSpeakerClickListener;
+
+  public SpeakerAdapter(Picasso picasso, boolean showDescription) {
     super();
+    this.picasso = picasso;
     this.showDescription = showDescription;
   }
 
@@ -41,10 +41,12 @@ public final class SpeakerAdapter
     this.onSpeakerClickListener = onSpeakerClickListener;
   }
 
-  @Override protected Func1<Speaker, Boolean> filterPredicate(String query) {
-    return speaker -> speaker.name()
-        .toLowerCase(Locale.US)
-        .contains(query.toLowerCase(Locale.US));
+  @Override protected Func1<Speaker, Boolean> filterPredicate(final String query) {
+    return new Func1<Speaker, Boolean>() {
+      @Override public Boolean call(Speaker speaker) {
+        return speaker.name().toLowerCase(Locale.US).contains(query.toLowerCase(Locale.US));
+      }
+    };
   }
 
   @Override public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -53,12 +55,14 @@ public final class SpeakerAdapter
     return new SpeakerViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(SpeakerViewHolder holder, int position) {
-    Speaker speaker = getFilteredData().get(position);
+  @Override public void onBindViewHolder(final SpeakerViewHolder holder, int position) {
+    final Speaker speaker = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(v -> {
-      if (onSpeakerClickListener != null) {
-        onSpeakerClickListener.onSpeakerClick(speaker);
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (onSpeakerClickListener != null) {
+          onSpeakerClickListener.onSpeakerClick(speaker);
+        }
       }
     });
     holder.speakerName.setText(speaker.name());

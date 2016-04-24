@@ -10,6 +10,7 @@ import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.data.api.NullDateTime;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Speaker;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +32,7 @@ public final class SessionPreferencesTest {
         .description("Description")
         .keynote(false)
         .beginning(NullDateTime.create())
-        .speakers(ImmutableList.of())
+        .speakers(ImmutableList.<Speaker>of())
         .build();
 
     assertThat(preferences.isFavorite(session)).isFalse();

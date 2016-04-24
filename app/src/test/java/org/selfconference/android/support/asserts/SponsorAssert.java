@@ -1,10 +1,12 @@
 package org.selfconference.android.support.asserts;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.data.api.model.SponsorLevel;
 
 public final class SponsorAssert extends AbstractAssert<SponsorAssert, Sponsor> {
 
@@ -41,9 +43,13 @@ public final class SponsorAssert extends AbstractAssert<SponsorAssert, Sponsor> 
   }
 
   public SponsorAssert hasSponsorLevels(String... names) {
-    List<String> sponsorLevelNames = Lists.transform(actual.sponsorLevels(), sponsorLevel -> {
-      return sponsorLevel.name();
-    });
+    Function<SponsorLevel, String> sponsorLevelNameFunction = new Function<SponsorLevel, String>() {
+      @Override public String apply(SponsorLevel sponsorLevel) {
+        return sponsorLevel.name();
+      }
+    };
+    List<String> sponsorLevelNames =
+        Lists.transform(actual.sponsorLevels(), sponsorLevelNameFunction);
     Assertions.assertThat(names).containsAll(sponsorLevelNames);
 
     return this;

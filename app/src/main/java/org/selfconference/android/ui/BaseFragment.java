@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.trello.rxlifecycle.components.support.RxFragment;
-import org.selfconference.android.App;
 
 public abstract class BaseFragment extends RxFragment {
 
@@ -23,7 +22,6 @@ public abstract class BaseFragment extends RxFragment {
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    App.getInstance().inject(this);
   }
 
   protected abstract int layoutResId();

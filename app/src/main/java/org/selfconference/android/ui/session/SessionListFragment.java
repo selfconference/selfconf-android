@@ -10,19 +10,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.selfconference.android.data.pref.SessionPreferences;
-import org.selfconference.android.ui.BaseListFragment;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Injector;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.event.GetSessionsAddEvent;
 import org.selfconference.android.data.event.GetSessionsSuccessEvent;
 import org.selfconference.android.data.job.GetSessionsJob;
+import org.selfconference.android.data.pref.SessionPreferences;
+import org.selfconference.android.ui.BaseListFragment;
+import org.selfconference.android.ui.misc.FilterableAdapter;
 
 import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
@@ -35,7 +38,7 @@ public final class SessionListFragment extends BaseListFragment {
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;
 
-  private final SessionAdapter sessionAdapter = new SessionAdapter();
+  private SessionAdapter sessionAdapter;
 
   public static SessionListFragment newInstance() {
     Bundle bundle = new Bundle();
@@ -48,18 +51,11 @@ public final class SessionListFragment extends BaseListFragment {
   public SessionListFragment() {
   }
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Injector.obtain(getActivity().getApplicationContext()).inject(this);
 
-    swipeRefreshLayout.setOnRefreshListener(this::fetchData);
-
-    sessionAdapter.setOnSessionClickListener(session -> {
-      Intent intent = SessionDetailsActivity.newIntent(getActivity(), session);
-      getActivity().startActivity(intent);
-    });
-
-    scheduleItemRecyclerView.setAdapter(sessionAdapter);
-    scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    sessionAdapter = new SessionAdapter(sessionPreferences);
   }
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -67,15 +63,38 @@ public final class SessionListFragment extends BaseListFragment {
     fetchData();
   }
 
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override public void onRefresh() {
+        fetchData();
+      }
+    });
+
+    sessionAdapter.setOnSessionClickListener(new SessionAdapter.OnSessionClickListener() {
+      @Override public void onSessionClick(Session session) {
+        Intent intent = SessionDetailActivity.newIntent(getActivity(), session);
+        getActivity().startActivity(intent);
+      }
+    });
+
+    scheduleItemRecyclerView.setAdapter(sessionAdapter);
+    scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+  }
+
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
     if (sessionPreferences.hasFavorites()) {
       inflater.inflate(R.menu.favorites, menu);
-      menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(item -> {
-        item.setChecked(!item.isChecked());
-        sessionAdapter.filterFavorites(item.isChecked());
-        return true;
-      });
+      menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(
+          new MenuItem.OnMenuItemClickListener() {
+            @Override public boolean onMenuItemClick(MenuItem item) {
+              item.setChecked(!item.isChecked());
+              sessionAdapter.filterFavorites(item.isChecked());
+              return true;
+            }
+          });
     }
   }
 

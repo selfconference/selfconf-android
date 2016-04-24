@@ -12,8 +12,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
-import org.selfconference.android.App;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Vote;
@@ -57,9 +57,13 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
     return feedbackFragment;
   }
 
+  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Injector.obtain(getActivity().getApplication()).inject(this);
+  }
+
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    App.getInstance().inject(this);
     session = checkNotNull((Session) getArguments().getParcelable(EXTRA_SESSION));
 
     voteButton.setOnVoteSelectedListener(this);
@@ -85,6 +89,10 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
     jobManager.addJobInBackground(new SubmitFeedbackJob(session, feedback));
 
-    voteButton.postDelayed(this::dismiss, 200);
+    voteButton.postDelayed(new Runnable() {
+      @Override public void run() {
+        dismiss();
+      }
+    }, 200);
   }
 }

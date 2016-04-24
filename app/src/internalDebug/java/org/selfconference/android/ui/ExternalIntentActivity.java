@@ -1,0 +1,110 @@
+package org.selfconference.android.ui;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import com.google.common.collect.ImmutableList;
+import org.selfconference.android.R;
+import org.selfconference.android.ui.decorator.IntentDecorator;
+import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.android.ui.viewmodel.TwoLineListItem;
+
+public final class ExternalIntentActivity extends AppCompatActivity {
+  public static final String ACTION = "org.selfconference.android.intent.EXTERNAL_INTENT";
+  public static final String EXTRA_BASE_INTENT = "debug_base_intent";
+
+  public static Intent createIntent(Intent baseIntent) {
+    Intent intent = new Intent();
+    intent.setAction(ACTION);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.putExtra(EXTRA_BASE_INTENT, baseIntent);
+    return intent;
+  }
+
+  @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.recycler_view) RecyclerView recyclerView;
+
+  private Intent baseIntent;
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.debug_external_intent_activity);
+    ButterKnife.bind(this);
+
+    toolbar.inflateMenu(R.menu.debug_external_intent);
+    toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+      @Override public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+          case R.id.debug_launch:
+            startActivity(baseIntent);
+            finish();
+            return true;
+          default:
+            return false;
+        }
+      }
+    });
+
+    baseIntent = getIntent().getParcelableExtra(EXTRA_BASE_INTENT);
+    IntentDecorator intentDecorator = IntentDecorator.decorate(baseIntent);
+
+    ImmutableList<TwoLineListItem> listItems = ImmutableList.<TwoLineListItem>builder() //
+        .add(TwoLineListItem.create("Action", intentDecorator.action()))
+        .add(TwoLineListItem.create("Data", intentDecorator.data()))
+        .add(TwoLineListItem.create("Extras", intentDecorator.extras()))
+        .add(TwoLineListItem.create("Flags", intentDecorator.flags()))
+        .build();
+
+    TwoLineListItemAdapter adapter = new TwoLineListItemAdapter(listItems);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    recyclerView.setAdapter(adapter);
+  }
+
+  static final class TwoLineListItemAdapter
+      extends RecyclerView.Adapter<TwoLineListItemViewHolder> {
+
+    private final ImmutableList<TwoLineListItem> listItems;
+
+    TwoLineListItemAdapter(ImmutableList<TwoLineListItem> listItems) {
+      this.listItems = listItems;
+    }
+
+    @Override public TwoLineListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      View view = LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.debug_two_line_list_item, parent, false);
+      return new TwoLineListItemViewHolder(view);
+    }
+
+    @Override public void onBindViewHolder(TwoLineListItemViewHolder holder, int position) {
+      TwoLineListItem listItem = listItems.get(position);
+
+      holder.lineOne.setText(listItem.lineOne());
+      holder.lineTwo.setText(listItem.lineTwo());
+    }
+
+    @Override public int getItemCount() {
+      return listItems.size();
+    }
+  }
+
+  static final class TwoLineListItemViewHolder extends ButterKnifeViewHolder {
+
+    @Bind(R.id.lineOne) TextView lineOne;
+    @Bind(R.id.lineTwo) TextView lineTwo;
+
+    TwoLineListItemViewHolder(View itemView) {
+      super(itemView);
+    }
+  }
+}

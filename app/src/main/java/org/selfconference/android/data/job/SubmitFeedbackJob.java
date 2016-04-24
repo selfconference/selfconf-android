@@ -32,7 +32,7 @@ public final class SubmitFeedbackJob extends ApiJob<ResponseBody> {
   }
 
   @Override protected Call<ResponseBody> apiCall() {
-    return api.submitFeedback(session, feedback);
+    return restClient.submitFeedback(session.id(), feedback);
   }
 
   @Override protected void onApiSuccess(Response<ResponseBody> response) {
