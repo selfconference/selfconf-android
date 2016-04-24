@@ -8,7 +8,6 @@ import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.support.Parceler.Container;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.selfconference.android.support.Parceler.testParceling;
 
@@ -23,14 +22,7 @@ public final class SpeakerTest {
         .photo("http://test.com/img.png")
         .id(10)
         .name("Dave")
-        .sessions(asList(Session.builder() //
-            .id(10)
-            .title("Title")
-            .room(Room.nullRoom())
-            .description("Description")
-            .keynote(false)
-            .speakers(ImmutableList.of())
-            .build()))
+        .sessions(ImmutableList.of(10))
         .twitter("dave")
         .build();
 
