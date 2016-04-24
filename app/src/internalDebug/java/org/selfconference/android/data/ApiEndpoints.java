@@ -5,8 +5,7 @@ import org.selfconference.android.data.api.ApiModule;
 public enum ApiEndpoints {
   PRODUCTION("Production", ApiModule.PRODUCTION_API_URL.toString()),
   STAGING("Staging", "http://selfconf-dev.herokuapp.com/api/"),
-  MOCK_MODE("Mock Mode", "http://localhost/mock/"),
-  CUSTOM("Custom", null);
+  MOCK_MODE("Mock Mode", "http://localhost/mock/");
 
   public final String name;
   public final String url;
@@ -22,11 +21,11 @@ public enum ApiEndpoints {
 
   public static ApiEndpoints from(String endpoint) {
     for (ApiEndpoints value : values()) {
-      if (value.url != null && value.url.equals(endpoint)) {
+      if (value.url.equals(endpoint)) {
         return value;
       }
     }
-    return CUSTOM;
+    throw new IllegalArgumentException("Invalid endpoint");
   }
 
   public static boolean isMockMode(String endpoint) {

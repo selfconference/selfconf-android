@@ -5,25 +5,34 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.f2prateek.rx.preferences.Preference;
+import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
 import javax.inject.Inject;
 import org.selfconference.android.R;
+import org.selfconference.android.data.ApiEndpoint;
+import org.selfconference.android.data.ApiEndpoints;
 import org.selfconference.android.data.CaptureIntents;
 import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.PicassoDebugging;
 import org.selfconference.android.ui.decorator.DisplayMetricsDecorator;
 import org.selfconference.android.ui.decorator.StatsSnapshotDecorator;
+import org.selfconference.android.ui.misc.EnumAdapter;
 import timber.log.Timber;
 
 public final class DebugView extends FrameLayout {
+
+  @Bind(R.id.debug_network_endpoint) Spinner endpointView;
 
   @Bind(R.id.debug_capture_intents) Switch captureIntentsView;
 
@@ -46,6 +55,7 @@ public final class DebugView extends FrameLayout {
   @Bind(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
 
   @Inject Picasso picasso;
+  @Inject @ApiEndpoint Preference<String> networkEndpoint;
   @Inject @CaptureIntents Preference<Boolean> captureIntents;
   @Inject @PicassoDebugging Preference<Boolean> picassoDebugging;
 
@@ -60,9 +70,28 @@ public final class DebugView extends FrameLayout {
     LayoutInflater.from(context).inflate(R.layout.debug_view_content, this);
     ButterKnife.bind(this);
 
+    setupNetworkSection();
     setupMockBehaviorSection();
     setupDeviceSection();
     setupPicassoSection();
+  }
+
+  private void setupNetworkSection() {
+    final ApiEndpoints currentEndpoint = ApiEndpoints.from(networkEndpoint.get());
+    final EnumAdapter<ApiEndpoints> endpointAdapter =
+        new EnumAdapter<>(getContext(), ApiEndpoints.class);
+    endpointView.setAdapter(endpointAdapter);
+    endpointView.setSelection(currentEndpoint.ordinal());
+
+    endpointView.setOnItemSelectedListener(new SimpleOnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ApiEndpoints selected = endpointAdapter.getItem(position);
+        if (selected != currentEndpoint) {
+          setEndpointAndRelaunch(selected.url);
+        }
+      }
+    });
   }
 
   private void setupMockBehaviorSection() {
@@ -117,7 +146,20 @@ public final class DebugView extends FrameLayout {
     picassoTransformedAvgView.setText(decorator.averageTransformedBitmapSize());
   }
 
+  private void setEndpointAndRelaunch(String endpoint) {
+    Timber.d("Setting network endpoint to %s", endpoint);
+    networkEndpoint.set(endpoint);
+
+    ProcessPhoenix.triggerRebirth(getContext());
+  }
+
   private static String truncateAt(String string, int length) {
     return string.length() > length ? string.substring(0, length) : string;
+  }
+
+  static abstract class SimpleOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+    @Override public void onNothingSelected(AdapterView<?> parent) {
+      // No-op
+    }
   }
 }

@@ -169,6 +169,7 @@ dependencies {
   releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
 
   internalCompile "com.mattprecious.telescope:telescope:$rootProject.deps.telescope"
+  internalDebugCompile "com.jakewharton:process-phoenix:$rootProject.deps.processPhoenix"
 
   testCompile "org.robolectric:robolectric:$rootProject.deps.robolectric"
   testCompile "junit:junit:$rootProject.deps.junit"

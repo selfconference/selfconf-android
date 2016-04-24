@@ -41,6 +41,30 @@
 
   </LinearLayout>
 
+  <!-- NETWORK SECTION -->
+
+  <TextView
+      android:layout_width="0dp"
+      android:layout_columnSpan="2"
+      android:layout_gravity="start|fill_horizontal"
+      android:text="Network"
+      style="@style/Widget.SelfConf.DebugDrawer.Header"
+      />
+
+  <TextView
+      android:layout_gravity="start|center_vertical"
+      android:text="Endpoint"
+      style="@style/Widget.SelfConf.DebugDrawer.RowTitle"
+      />
+
+  <Spinner
+      android:id="@+id/debug_network_endpoint"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start|center_vertical|fill_horizontal"
+      android:gravity="center_vertical"
+      />
+
   <!-- MOCK BEHAVIOR SECTION -->
 
   <TextView
