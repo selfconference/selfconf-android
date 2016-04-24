@@ -16,7 +16,7 @@ public class App extends Application {
 
   private ObjectGraph objectGraph;
 
-  public static App getInstance() {
+  public static App context() {
     return INSTANCE;
   }
 
