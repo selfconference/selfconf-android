@@ -30,7 +30,7 @@ import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseActivity;
 import org.selfconference.android.ui.ViewContainer;
 import org.selfconference.android.ui.decorator.DateTimeDecorator;
-import org.selfconference.android.ui.misc.BrandColor;
+import org.selfconference.android.ui.misc.Themes;
 import org.selfconference.android.ui.speaker.SpeakerAdapter;
 import org.selfconference.android.ui.view.FloatingActionButton;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
@@ -70,7 +70,7 @@ public final class SessionDetailActivity extends BaseActivity {
     session = getIntent().getParcelableExtra(EXTRA_SESSION);
     checkNotNull(session, "session == null");
 
-    setTheme(BrandColor.forId(session.id()));
+    setTheme(Themes.forId(session.id()));
     setStatusBarColor(resolveStatusBarColor());
 
     ViewGroup container = viewContainer.forActivity(this);
