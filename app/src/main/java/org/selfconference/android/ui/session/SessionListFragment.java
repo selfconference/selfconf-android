@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import butterknife.Bind;
+import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -31,8 +31,8 @@ import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
 public final class SessionListFragment extends BaseListFragment {
 
-  @Bind(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-  @Bind(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
+  @BindView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
   @Inject SessionPreferences sessionPreferences;
   @Inject JobManager jobManager;

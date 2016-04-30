@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import butterknife.BindView;
 import org.selfconference.android.R;
+import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 
 import static android.text.util.Linkify.PHONE_NUMBERS;
 import static android.util.Patterns.WEB_URL;
@@ -43,8 +43,8 @@ public final class CodeOfConductAdapter
 
   static final class ViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.code_of_conduct_title) TextView title;
-    @Bind(R.id.code_of_conduct_subtitle) TextView subtitle;
+    @BindView(R.id.code_of_conduct_title) TextView title;
+    @BindView(R.id.code_of_conduct_subtitle) TextView subtitle;
 
     ViewHolder(View itemView) {
       super(itemView);

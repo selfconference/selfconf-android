@@ -6,7 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.ContextThemeWrapper;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.mattprecious.telescope.EmailDeviceInfoLens;
 import com.mattprecious.telescope.Lens;
@@ -47,9 +47,9 @@ import org.selfconference.android.ui.ViewContainer;
   }
 
   static final class ViewHolder {
-    @Bind(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
-    @Bind(R.id.telescope_container) TelescopeLayout telescopeLayout;
-    @Bind(R.id.debug_drawer_content) ViewGroup debugDrawer;
-    @Bind(R.id.debug_content) FrameLayout content;
+    @BindView(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.telescope_container) TelescopeLayout telescopeLayout;
+    @BindView(R.id.debug_drawer_content) ViewGroup debugDrawer;
+    @BindView(R.id.debug_content) FrameLayout content;
   }
 }

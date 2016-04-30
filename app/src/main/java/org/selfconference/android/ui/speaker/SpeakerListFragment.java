@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import com.squareup.picasso.Picasso;
 import java.util.List;
@@ -32,8 +32,8 @@ import static org.greenrobot.eventbus.ThreadMode.MAIN;
 public final class SpeakerListFragment extends BaseListFragment {
   public static final String TAG = SpeakerListFragment.class.getName();
 
-  @Bind(R.id.speaker_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
-  @Bind(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
+  @BindView(R.id.speaker_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
 
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;

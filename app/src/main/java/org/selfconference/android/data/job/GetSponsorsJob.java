@@ -6,9 +6,9 @@ import com.google.common.collect.Ordering;
 import java.util.List;
 import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.SponsorComparator;
+import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.event.GetSponsorsAddEvent;
 import org.selfconference.android.data.event.GetSponsorsSuccessEvent;
-import org.selfconference.android.data.api.model.Sponsor;
 import retrofit2.Call;
 import retrofit2.Response;
 

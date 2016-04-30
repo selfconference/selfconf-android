@@ -2,9 +2,9 @@ package org.selfconference.android.data.job;
 
 import android.support.annotation.NonNull;
 import org.selfconference.android.data.api.ApiJob;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.event.GetSessionAddEvent;
 import org.selfconference.android.data.event.GetSessionSuccessEvent;
-import org.selfconference.android.data.api.model.Session;
 import retrofit2.Call;
 import retrofit2.Response;
 

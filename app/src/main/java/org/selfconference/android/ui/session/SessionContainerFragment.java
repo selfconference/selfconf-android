@@ -3,15 +3,15 @@ package org.selfconference.android.ui.session;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import butterknife.Bind;
-import org.selfconference.android.ui.BaseFragment;
+import butterknife.BindView;
 import org.selfconference.android.R;
+import org.selfconference.android.ui.BaseFragment;
 
 public final class SessionContainerFragment extends BaseFragment {
   public static final String TAG = SessionContainerFragment.class.getName();
 
-  @Bind(R.id.tabs) TabLayout tabLayout;
-  @Bind(R.id.schedule_view_pager) ViewPager scheduleViewPager;
+  @BindView(R.id.tabs) TabLayout tabLayout;
+  @BindView(R.id.schedule_view_pager) ViewPager scheduleViewPager;
 
   public SessionContainerFragment() {
   }

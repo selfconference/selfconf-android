@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.processphoenix.ProcessPhoenix;
@@ -32,27 +32,27 @@ import timber.log.Timber;
 
 public final class DebugView extends FrameLayout {
 
-  @Bind(R.id.debug_network_endpoint) Spinner endpointView;
+  @BindView(R.id.debug_network_endpoint) Spinner endpointView;
 
-  @Bind(R.id.debug_capture_intents) Switch captureIntentsView;
+  @BindView(R.id.debug_capture_intents) Switch captureIntentsView;
 
-  @Bind(R.id.debug_device_make) TextView deviceMakeView;
-  @Bind(R.id.debug_device_model) TextView deviceModelView;
-  @Bind(R.id.debug_device_resolution) TextView deviceResolutionView;
-  @Bind(R.id.debug_device_density) TextView deviceDensityView;
-  @Bind(R.id.debug_device_release) TextView deviceReleaseView;
-  @Bind(R.id.debug_device_api) TextView deviceApiView;
+  @BindView(R.id.debug_device_make) TextView deviceMakeView;
+  @BindView(R.id.debug_device_model) TextView deviceModelView;
+  @BindView(R.id.debug_device_resolution) TextView deviceResolutionView;
+  @BindView(R.id.debug_device_density) TextView deviceDensityView;
+  @BindView(R.id.debug_device_release) TextView deviceReleaseView;
+  @BindView(R.id.debug_device_api) TextView deviceApiView;
 
-  @Bind(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
-  @Bind(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
-  @Bind(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
-  @Bind(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
-  @Bind(R.id.debug_picasso_decoded) TextView picassoDecodedView;
-  @Bind(R.id.debug_picasso_decoded_total) TextView picassoDecodedTotalView;
-  @Bind(R.id.debug_picasso_decoded_avg) TextView picassoDecodedAvgView;
-  @Bind(R.id.debug_picasso_transformed) TextView picassoTransformedView;
-  @Bind(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
-  @Bind(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
+  @BindView(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
+  @BindView(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
+  @BindView(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
+  @BindView(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
+  @BindView(R.id.debug_picasso_decoded) TextView picassoDecodedView;
+  @BindView(R.id.debug_picasso_decoded_total) TextView picassoDecodedTotalView;
+  @BindView(R.id.debug_picasso_decoded_avg) TextView picassoDecodedAvgView;
+  @BindView(R.id.debug_picasso_transformed) TextView picassoTransformedView;
+  @BindView(R.id.debug_picasso_transformed_total) TextView picassoTransformedTotalView;
+  @BindView(R.id.debug_picasso_transformed_avg) TextView picassoTransformedAvgView;
 
   @Inject Picasso picasso;
   @Inject @ApiEndpoint Preference<String> networkEndpoint;

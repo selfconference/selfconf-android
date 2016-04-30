@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
@@ -27,8 +27,8 @@ import static org.greenrobot.eventbus.ThreadMode.MAIN;
 public class SponsorListFragment extends BaseListFragment implements OnSponsorClickListener {
   public static final String TAG = SponsorListFragment.class.getName();
 
-  @Bind(R.id.sponsor_recycler_view) RecyclerView sponsorRecyclerView;
-  @Bind(R.id.sponsor_list_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R.id.sponsor_recycler_view) RecyclerView sponsorRecyclerView;
+  @BindView(R.id.sponsor_list_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;

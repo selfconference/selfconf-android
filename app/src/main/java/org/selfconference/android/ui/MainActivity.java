@@ -11,7 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import javax.inject.Inject;
 import org.selfconference.android.R;
@@ -19,8 +19,8 @@ import org.selfconference.android.ui.drawer.DrawerItem;
 
 public final class MainActivity extends BaseActivity {
 
-  @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
-  @Bind(R.id.navigation_view) NavigationView navigationView;
+  @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+  @BindView(R.id.navigation_view) NavigationView navigationView;
 
   @Inject ViewContainer viewContainer;
 

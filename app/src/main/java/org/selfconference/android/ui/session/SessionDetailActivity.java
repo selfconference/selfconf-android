@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.squareup.picasso.Picasso;
@@ -44,13 +44,13 @@ import static org.greenrobot.eventbus.ThreadMode.MAIN;
 public final class SessionDetailActivity extends BaseActivity {
   private static final String EXTRA_SESSION = "org.selfconference.android.ui.session.SESSION";
 
-  @Bind(R.id.long_title) TextView sessionTitle;
-  @Bind(R.id.scroll_view) ScrollView scrollView;
-  @Bind(R.id.speakers_header) TextView speakersHeader;
-  @Bind(R.id.favorite_button) FloatingActionButton favoriteButton;
-  @Bind(R.id.session_detail_recycler_view) RecyclerView sessionDetailRecyclerView;
-  @Bind(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
-  @Bind(R.id.submit_feedback) TextView submitFeedback;
+  @BindView(R.id.long_title) TextView sessionTitle;
+  @BindView(R.id.scroll_view) ScrollView scrollView;
+  @BindView(R.id.speakers_header) TextView speakersHeader;
+  @BindView(R.id.favorite_button) FloatingActionButton favoriteButton;
+  @BindView(R.id.session_detail_recycler_view) RecyclerView sessionDetailRecyclerView;
+  @BindView(R.id.speaker_recycler_view) RecyclerView speakerRecyclerView;
+  @BindView(R.id.submit_feedback) TextView submitFeedback;
 
   @Inject SessionPreferences preferences;
   @Inject EventBus eventBus;
