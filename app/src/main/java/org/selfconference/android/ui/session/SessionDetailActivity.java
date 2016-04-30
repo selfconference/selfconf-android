@@ -29,12 +29,12 @@ import org.selfconference.android.data.event.SubmitFeedbackSuccessEvent;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseActivity;
 import org.selfconference.android.ui.ViewContainer;
-import org.selfconference.android.ui.decorator.DateTimeDecorator;
 import org.selfconference.android.ui.misc.Themes;
 import org.selfconference.android.ui.speaker.SpeakerAdapter;
 import org.selfconference.android.ui.view.FloatingActionButton;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
 import org.selfconference.android.ui.viewmodel.SessionDetails;
+import org.selfconference.android.util.Instants;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.text.Html.fromHtml;
@@ -148,10 +148,9 @@ public final class SessionDetailActivity extends BaseActivity {
   }
 
   private void setUpSessionDetailList() {
-    DateTimeDecorator dateTimeDecorator = DateTimeDecorator.fromDateTime(session.beginning());
     List<SessionDetail> sessionDetails = SessionDetails.builder()
         .add(R.drawable.ic_maps_place, session.room().name())
-        .add(R.drawable.ic_action_schedule, dateTimeDecorator.fullDateString())
+        .add(R.drawable.ic_action_schedule, Instants.shortTimeString(session.slotTime()))
         .add(R.drawable.ic_action_description, fromHtml(session.description()))
         .toList();
 

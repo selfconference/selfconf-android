@@ -2,9 +2,9 @@ package org.selfconference.android.support.asserts;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
-import org.joda.time.ReadableDateTime;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
+import org.threeten.bp.Instant;
 
 public final class SessionAssert extends AbstractAssert<SessionAssert, Session> {
 
@@ -34,8 +34,8 @@ public final class SessionAssert extends AbstractAssert<SessionAssert, Session> 
     return this;
   }
 
-  public SessionAssert hasBeginning(ReadableDateTime beginning) {
-    Assertions.assertThat(actual.beginning()).isEqualTo(beginning);
+  public SessionAssert hasBeginning(Instant beginning) {
+    Assertions.assertThat(actual.slotTime()).isEqualTo(beginning);
 
     return this;
   }

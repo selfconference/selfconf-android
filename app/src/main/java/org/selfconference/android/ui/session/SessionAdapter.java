@@ -9,10 +9,10 @@ import java.util.Locale;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.pref.SessionPreferences;
-import org.selfconference.android.ui.decorator.DateTimeDecorator;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.misc.FilteredDataSubscriber;
+import org.selfconference.android.util.Instants;
 import rx.functions.Func1;
 
 import static android.view.View.GONE;
@@ -48,7 +48,6 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
   @Override public void onBindViewHolder(SessionViewHolder holder, int position) {
     final Session session = getFilteredData().get(position);
-    DateTimeDecorator dateTimeDecorator = DateTimeDecorator.fromDateTime(session.beginning());
 
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -62,7 +61,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     holder.sessionTitle.setText(session.title());
     holder.sessionSubtitle.setText(session.room().name());
-    holder.startTime.setText(dateTimeDecorator.shortTimeString());
+    holder.startTime.setText(Instants.miniTimeString(session.slotTime()));
   }
 
   public void filterFavorites(final boolean show) {

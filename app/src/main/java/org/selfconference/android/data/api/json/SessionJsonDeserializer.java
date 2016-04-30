@@ -11,12 +11,11 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
-import org.joda.time.ReadableDateTime;
-import org.selfconference.android.data.api.NullDateTime;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.util.DateTimes;
+import org.selfconference.android.util.Instants;
+import org.threeten.bp.Instant;
 
 public final class SessionJsonDeserializer implements JsonDeserializer<Session> {
 
@@ -31,7 +30,7 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
         .id(decorator.id())
         .title(decorator.title())
         .room(decorator.room())
-        .beginning(decorator.beginning())
+        .slotTime(decorator.slotTime())
         .description(decorator.description())
         .keynote(decorator.keynote())
         .speakers(decorator.speakers())
@@ -70,13 +69,18 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
       return Optional.fromNullable(room).or(Room.nullRoom());
     }
 
-    @NonNull ReadableDateTime beginning() {
-      try {
-        String beginning = jsonObject.get(KEY_SLOT).getAsString();
-        return DateTimes.parseEst(beginning);
-      } catch (Exception e) {
-        return NullDateTime.create();
+    @NonNull Instant slotTime() {
+      JsonElement slotElement =
+          Optional.fromNullable(jsonObject.get(KEY_SLOT)).or(JsonNull.INSTANCE);
+      if (slotElement.isJsonPrimitive()) {
+        String slotTime = slotElement.getAsString();
+        return Instants.fromEstString(slotTime);
+      } else if (slotElement.isJsonObject()) {
+        JsonObject slotObject = slotElement.getAsJsonObject();
+        String slotTime = slotObject.get("time").getAsString();
+        return Instants.fromEstString(slotTime);
       }
+      return Instant.MIN;
     }
 
     String description() {

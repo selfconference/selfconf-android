@@ -1,12 +1,15 @@
 package org.selfconference.android.data.job;
 
 import android.support.annotation.NonNull;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Ordering;
+import java.util.Comparator;
 import java.util.List;
 import org.selfconference.android.data.api.ApiJob;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.event.GetSessionsAddEvent;
 import org.selfconference.android.data.event.GetSessionsSuccessEvent;
-import org.selfconference.android.data.api.model.Session;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -20,8 +23,14 @@ public final class GetSessionsJob extends ApiJob<List<Session>> {
   }
 
   @Override protected void onApiSuccess(Response<List<Session>> response) {
-    ImmutableList<Session> sessions = ImmutableList.copyOf(response.body());
-    eventBus.post(new GetSessionsSuccessEvent(sessions));
+    List<Session> sortedSessions = Ordering.from(new Comparator<Session>() {
+      @Override public int compare(Session lhs, Session rhs) {
+        return ComparisonChain.start() //
+            .compare(lhs.slotTime(), rhs.slotTime()) //
+            .result();
+      }
+    }).sortedCopy(response.body());
+    eventBus.post(new GetSessionsSuccessEvent(ImmutableList.copyOf(sortedSessions)));
   }
 
   @Override protected void onApiFailure(Response<List<Session>> response) {

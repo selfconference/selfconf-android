@@ -3,8 +3,8 @@ package org.selfconference.android.ui.session;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import org.joda.time.DateTime;
-import org.selfconference.android.ui.decorator.DateTimeDecorator;
+import org.selfconference.android.util.Instants;
+import org.threeten.bp.Instant;
 
 public final class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -21,8 +21,7 @@ public final class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter
   }
 
   @Override public CharSequence getPageTitle(int position) {
-    DateTime startTime = Day.fromPosition(position).getStartTime();
-    DateTimeDecorator decorator = DateTimeDecorator.fromDateTime(startTime);
-    return decorator.shortDateString();
+    Instant startTime = Day.fromPosition(position).getStartTime();
+    return Instants.monthDayString(startTime);
   }
 }

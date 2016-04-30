@@ -2,6 +2,7 @@ package org.selfconference.android;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.squareup.leakcanary.LeakCanary;
 import dagger.ObjectGraph;
 import org.selfconference.android.data.Injector;
@@ -23,10 +24,12 @@ public class App extends Application {
   @Override public void onCreate() {
     super.onCreate();
 
+    INSTANCE = this;
+
     installLeakCanary();
     setupFabric();
 
-    INSTANCE = this;
+    AndroidThreeTen.init(this);
 
     if (DEBUG) {
       Timber.plant(new DebugTree());
