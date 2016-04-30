@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -105,9 +105,9 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
 
   static final class ViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.sponsor_logo) ImageView sponsorLogo;
-    @Bind(R.id.sponsor_name) TextView sponsorName;
-    @Bind(R.id.sponsor_type) TextView sponsorType;
+    @BindView(R.id.sponsor_logo) ImageView sponsorLogo;
+    @BindView(R.id.sponsor_name) TextView sponsorName;
+    @BindView(R.id.sponsor_type) TextView sponsorType;
 
     ViewHolder(View itemView) {
       super(itemView);

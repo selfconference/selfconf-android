@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import java.util.List;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.R;
+import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
 
 public final class SessionDetailAdapter
@@ -41,8 +41,8 @@ public final class SessionDetailAdapter
 
   static final class ViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.row_icon) ImageView icon;
-    @Bind(R.id.row_title) TextView title;
+    @BindView(R.id.row_icon) ImageView icon;
+    @BindView(R.id.row_title) TextView title;
 
     ViewHolder(View itemView) {
       super(itemView);

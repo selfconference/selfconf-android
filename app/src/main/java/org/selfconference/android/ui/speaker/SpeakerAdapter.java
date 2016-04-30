@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import com.squareup.picasso.Picasso;
 import java.util.Locale;
 import org.selfconference.android.R;
@@ -89,9 +89,9 @@ public final class SpeakerAdapter
 
   static final class SpeakerViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.row_icon) ImageView speakerPhoto;
-    @Bind(R.id.row_title) TextView speakerName;
-    @Bind(R.id.row_subtitle) TextView speakerDescription;
+    @BindView(R.id.row_icon) ImageView speakerPhoto;
+    @BindView(R.id.row_title) TextView speakerName;
+    @BindView(R.id.row_subtitle) TextView speakerDescription;
 
     SpeakerViewHolder(View itemView) {
       super(itemView);

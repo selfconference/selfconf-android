@@ -2,10 +2,10 @@ package org.selfconference.android.data.api;
 
 import java.util.List;
 import okhttp3.ResponseBody;
+import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.data.api.model.Feedback;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

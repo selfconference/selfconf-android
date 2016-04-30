@@ -133,6 +133,7 @@ dependencies {
   apt "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
   provided "com.jakewharton.auto.value:auto-value-annotations:$rootProject.deps.autoValueAnnotations"
   compile "com.jakewharton:butterknife:$rootProject.deps.butterknife"
+  apt "com.jakewharton:butterknife-compiler:$rootProject.deps.butterknife"
   compile "com.jakewharton.timber:timber:$rootProject.deps.timber"
   compile "com.squareup.dagger:dagger:$rootProject.deps.dagger"
   apt "com.squareup.dagger:dagger-compiler:$rootProject.deps.dagger"

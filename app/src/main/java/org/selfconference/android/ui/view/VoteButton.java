@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Vote;
@@ -35,8 +35,8 @@ public final class VoteButton extends LinearLayout implements OnClickListener {
     void onVoteSelected(VoteButton voteButton, Vote vote);
   }
 
-  @Bind(R.id.thumbs_down_view) ImageView thumbsDownView;
-  @Bind(R.id.thumbs_up_view) ImageView thumbsUpView;
+  @BindView(R.id.thumbs_down_view) ImageView thumbsDownView;
+  @BindView(R.id.thumbs_up_view) ImageView thumbsUpView;
   @BindColor(R.color.image_tint_dark) int darkTint;
 
   private OnVoteSelectedListener onVoteSelectedListener;

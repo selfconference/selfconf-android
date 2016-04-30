@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.R;
+import org.selfconference.android.ui.misc.FilterableAdapter;
 
 public abstract class BaseListFragment extends BaseFragment {
 

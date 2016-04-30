@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import java.util.Locale;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Session;
@@ -87,10 +87,10 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
   static final class SessionViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.start_time) TextView startTime;
-    @Bind(R.id.slot_title) TextView sessionTitle;
-    @Bind(R.id.slot_subtitle) TextView sessionSubtitle;
-    @Bind(R.id.favorite_session_indicator) View favoriteSessionIndicator;
+    @BindView(R.id.start_time) TextView startTime;
+    @BindView(R.id.slot_title) TextView sessionTitle;
+    @BindView(R.id.slot_subtitle) TextView sessionSubtitle;
+    @BindView(R.id.favorite_session_indicator) View favoriteSessionIndicator;
 
     SessionViewHolder(View itemView) {
       super(itemView);

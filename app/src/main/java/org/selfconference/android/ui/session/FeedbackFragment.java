@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.birbit.android.jobqueue.JobManager;
 import javax.inject.Inject;
@@ -36,8 +36,8 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
   @Inject JobManager jobManager;
 
-  @Bind(R.id.vote_button) VoteButton voteButton;
-  @Bind(R.id.feedback_fragment_comment_section) EditText comments;
+  @BindView(R.id.vote_button) VoteButton voteButton;
+  @BindView(R.id.feedback_fragment_comment_section) EditText comments;
 
   private Session session;
 

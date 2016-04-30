@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.common.collect.ImmutableList;
 import org.selfconference.android.R;
@@ -31,8 +31,8 @@ public final class ExternalIntentActivity extends AppCompatActivity {
     return intent;
   }
 
-  @Bind(R.id.toolbar) Toolbar toolbar;
-  @Bind(R.id.recycler_view) RecyclerView recyclerView;
+  @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
   private Intent baseIntent;
 
@@ -100,8 +100,8 @@ public final class ExternalIntentActivity extends AppCompatActivity {
 
   static final class TwoLineListItemViewHolder extends ButterKnifeViewHolder {
 
-    @Bind(R.id.lineOne) TextView lineOne;
-    @Bind(R.id.lineTwo) TextView lineTwo;
+    @BindView(R.id.lineOne) TextView lineOne;
+    @BindView(R.id.lineTwo) TextView lineTwo;
 
     TwoLineListItemViewHolder(View itemView) {
       super(itemView);
