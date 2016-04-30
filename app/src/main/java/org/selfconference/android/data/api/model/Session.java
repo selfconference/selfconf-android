@@ -4,10 +4,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
-import com.ryanharter.auto.value.parcel.ParcelAdapter;
 import java.util.List;
-import org.joda.time.ReadableDateTime;
-import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
+import org.threeten.bp.Instant;
 
 @AutoValue public abstract class Session implements Parcelable {
 
@@ -28,8 +26,8 @@ import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
 
   public abstract boolean keynote();
 
-  @NonNull @ParcelAdapter(ReadableDateTimeTypeAdapter.class)
-  public abstract ReadableDateTime beginning();
+  @NonNull
+  public abstract Instant slotTime();
 
   public abstract List<Speaker> speakers();
 
@@ -45,7 +43,7 @@ import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
 
     public abstract Builder keynote(boolean keynote);
 
-    public abstract Builder beginning(ReadableDateTime beginning);
+    public abstract Builder slotTime(Instant slotTime);
 
     public abstract Builder speakers(List<Speaker> speakers);
 

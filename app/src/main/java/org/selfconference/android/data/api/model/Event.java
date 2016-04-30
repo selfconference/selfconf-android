@@ -2,10 +2,8 @@ package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
-import com.ryanharter.auto.value.parcel.ParcelAdapter;
 import java.util.List;
-import org.joda.time.ReadableDateTime;
-import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
+import org.threeten.bp.Instant;
 
 @AutoValue public abstract class Event implements Parcelable {
 
@@ -19,13 +17,10 @@ import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
 
   public abstract String ticketsLink();
 
-  @ParcelAdapter(ReadableDateTimeTypeAdapter.class)
-  public abstract ReadableDateTime startDate();
+  public abstract Instant startDate();
 
-  @ParcelAdapter(ReadableDateTimeTypeAdapter.class)
-  public abstract ReadableDateTime endDate();
+  public abstract Instant endDate();
 
-  // @ParcelAdapter(Organizer.ImmutableListTypeAdapter.class)
   public abstract List<Organizer> organizers();
 
   @AutoValue.Builder public static abstract class Builder {
@@ -35,9 +30,9 @@ import org.selfconference.android.data.parcel.ReadableDateTimeTypeAdapter;
 
     public abstract Builder ticketsLink(String ticketsLink);
 
-    public abstract Builder startDate(ReadableDateTime startDate);
+    public abstract Builder startDate(Instant startDate);
 
-    public abstract Builder endDate(ReadableDateTime endDate);
+    public abstract Builder endDate(Instant endDate);
 
     public abstract Builder organizers(List<Organizer> organizers);
 

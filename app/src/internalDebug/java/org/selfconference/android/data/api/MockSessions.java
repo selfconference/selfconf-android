@@ -6,7 +6,7 @@ import com.google.common.collect.Iterables;
 import java.util.Collections;
 import java.util.List;
 import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.util.DateTimes;
+import org.selfconference.android.util.Instants;
 
 import static org.selfconference.android.data.api.MockRooms.EARTH;
 import static org.selfconference.android.data.api.MockSpeakers.KOBE_BRYANT;
@@ -15,7 +15,7 @@ final class MockSessions {
 
   private static final Session END_OF_AN_ERA = Session.builder() //
       .id(1) //
-      .beginning(DateTimes.parseEst("2016-05-20T09:00:00.000-05:00")) //
+      .slotTime(Instants.fromEstString("2016-05-20T09:00:00.000-05:00")) //
       .keynote(true) //
       .title("The End of an Era") //
       .description("Lorem ipsum should probably go here.") //

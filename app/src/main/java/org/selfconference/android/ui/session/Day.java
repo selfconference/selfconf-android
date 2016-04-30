@@ -1,18 +1,19 @@
 package org.selfconference.android.ui.session;
 
-import org.joda.time.DateTime;
+import org.selfconference.android.util.Instants;
+import org.threeten.bp.Instant;
 
 @Deprecated public enum Day {
-  ONE(new DateTime(2015, 5, 29, 0, 0, 0)),
-  TWO(new DateTime(2015, 5, 30, 0, 0, 0));
+  ONE(Instants.fromEstString("2015-05-29T00:00:00.000-05:00")),
+  TWO(Instants.fromEstString("2015-05-30T00:00:00.000-05:00"));
 
-  private final DateTime startTime;
+  private final Instant startTime;
 
-  Day(DateTime startTime) {
+  Day(Instant startTime) {
     this.startTime = startTime;
   }
 
-  public DateTime getStartTime() {
+  public Instant getStartTime() {
     return startTime;
   }
 

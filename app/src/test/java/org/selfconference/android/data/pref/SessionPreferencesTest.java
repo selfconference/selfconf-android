@@ -7,10 +7,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
-import org.selfconference.android.data.api.NullDateTime;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
+import org.threeten.bp.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +31,7 @@ public final class SessionPreferencesTest {
         .room(Room.nullRoom())
         .description("Description")
         .keynote(false)
-        .beginning(NullDateTime.create())
+        .slotTime(Instant.MIN)
         .speakers(ImmutableList.<Speaker>of())
         .build();
 

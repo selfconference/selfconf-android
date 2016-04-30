@@ -7,9 +7,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.support.Parceler.Container;
+import org.threeten.bp.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.joda.time.DateTime.now;
 import static org.selfconference.android.support.Parceler.testParceling;
 
 @RunWith(CustomTestRunner.class)
@@ -20,7 +20,7 @@ public final class SessionTest {
   public void sessionParcelsWithoutError() throws Exception {
     Session session = Session.builder()
         .id(4)
-        .beginning(now())
+        .slotTime(Instant.now())
         .description("description")
         .room(Room.nullRoom())
         .speakers(ImmutableList.of(Speaker.builder() //

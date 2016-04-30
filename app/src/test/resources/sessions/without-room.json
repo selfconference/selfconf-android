@@ -7,6 +7,13 @@
   "name": "Reproducibility",
   "room_id": 7,
   "slot_id": 16,
+  "slot": {
+    "created_at": "2016-03-03T00:54:24.655-05:00",
+    "event_id": 2,
+    "id": 16,
+    "time": "2016-05-21T13:00:00.000-05:00",
+    "updated_at": "2016-03-03T00:54:24.655-05:00"
+  },
   "speakers": [
     {
       "bio": "Gary Bernhardt is a creator and destroyer of software compelled to understand both sides of heated software debates: Vim and Emacs; Python and Ruby; Git and Mercurial. He runs Destroy All Software, which publishes advanced screencasts for serious developers covering Unix, OO design, TDD, and dynamic languages.",
