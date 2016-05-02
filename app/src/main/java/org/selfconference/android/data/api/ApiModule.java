@@ -27,7 +27,7 @@ public final class ApiModule {
     return createApiClient(client).build();
   }
 
-  @Provides @Singleton Retrofit retrofit(HttpUrl baseUrl, Gson gson, OkHttpClient okHttpClient) {
+  @Provides @Singleton Retrofit retrofit(HttpUrl baseUrl, Gson gson, @Named("Api") OkHttpClient okHttpClient) {
     return new Retrofit.Builder() //
         .baseUrl(baseUrl) //
         .addConverterFactory(GsonConverterFactory.create(gson)) //

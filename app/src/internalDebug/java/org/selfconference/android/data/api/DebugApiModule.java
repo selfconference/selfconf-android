@@ -8,13 +8,11 @@ import javax.inject.Singleton;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.logging.HttpLoggingInterceptor.Logger;
 import org.selfconference.android.data.ApiEndpoint;
 import org.selfconference.android.data.IsMockMode;
 import retrofit2.Retrofit;
 import retrofit2.mock.MockRetrofit;
 import retrofit2.mock.NetworkBehavior;
-import timber.log.Timber;
 
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 
@@ -30,11 +28,7 @@ public final class DebugApiModule {
   }
 
   @Provides @Singleton HttpLoggingInterceptor loggingInterceptor() {
-    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new Logger() {
-      @Override public void log(String message) {
-        Timber.tag("OkHttp").v(message);
-      }
-    });
+    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
     loggingInterceptor.setLevel(BODY);
     return loggingInterceptor;
   }
