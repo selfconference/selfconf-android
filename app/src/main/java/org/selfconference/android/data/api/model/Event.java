@@ -15,11 +15,11 @@ import org.threeten.bp.Instant;
 
   public abstract String about();
 
-  public abstract String ticketsLink();
+  public abstract String tickets_link();
 
-  public abstract Instant startDate();
+  public abstract Instant start_date();
 
-  public abstract Instant endDate();
+  public abstract Instant end_date();
 
   public abstract List<Organizer> organizers();
 
@@ -28,11 +28,11 @@ import org.threeten.bp.Instant;
 
     public abstract Builder about(String about);
 
-    public abstract Builder ticketsLink(String ticketsLink);
+    public abstract Builder tickets_link(String tickets_link);
 
-    public abstract Builder startDate(Instant startDate);
+    public abstract Builder start_date(Instant start_date);
 
-    public abstract Builder endDate(Instant endDate);
+    public abstract Builder end_date(Instant end_date);
 
     public abstract Builder organizers(List<Organizer> organizers);
 

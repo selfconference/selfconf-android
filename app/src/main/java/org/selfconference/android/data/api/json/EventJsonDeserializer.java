@@ -27,9 +27,9 @@ public final class EventJsonDeserializer implements JsonDeserializer<Event> {
     return Event.builder()
         .id(decorator.id())
         .about(decorator.about())
-        .ticketsLink(decorator.ticketsLink())
-        .startDate(decorator.startDate())
-        .endDate(decorator.endDate())
+        .tickets_link(decorator.tickets_link())
+        .start_date(decorator.start_date())
+        .end_date(decorator.end_date())
         .organizers(decorator.organizers())
         .build();
   }
@@ -58,16 +58,16 @@ public final class EventJsonDeserializer implements JsonDeserializer<Event> {
       return jsonObject.get(KEY_ABOUT).getAsString();
     }
 
-    String ticketsLink() {
+    String tickets_link() {
       return jsonObject.get(KEY_TICKETS_LINK).getAsString();
     }
 
-    Instant startDate() {
+    Instant start_date() {
       String startDate = jsonObject.get(KEY_START_DATE).getAsString();
       return Instants.fromEstString(startDate);
     }
 
-    Instant endDate() {
+    Instant end_date() {
       String endDate = jsonObject.get(KEY_END_DATE).getAsString();
       return Instants.fromEstString(endDate);
     }

@@ -12,9 +12,9 @@ final class MockEvents {
 
   static final Event SELF_CONF_2016 = Event.builder() //
       .id(2) //
-      .startDate(Instants.fromEstString("2016-05-20T08:00:00.000-05:00")) //
-      .endDate(Instants.fromEstString("2016-05-21T18:00:00.000-05:00")) //
-      .ticketsLink("http://selfconf2016.eventbrite.com") //
+      .start_date(Instants.fromEstString("2016-05-20T08:00:00.000-05:00")) //
+      .end_date(Instants.fromEstString("2016-05-21T18:00:00.000-05:00")) //
+      .tickets_link("http://selfconf2016.eventbrite.com") //
       .about("Self.conference 2016 is a fun place to be.") //
       .organizers(ImmutableList.of(JOE_ROBIT, ROBO_SCOTT, PAT_BOT)) //
       .build();
