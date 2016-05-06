@@ -27,7 +27,7 @@ import org.threeten.bp.Instant;
   public abstract boolean keynote();
 
   @NonNull
-  public abstract Instant slotTime();
+  public abstract Instant slot();
 
   public abstract List<Speaker> speakers();
 
@@ -43,7 +43,7 @@ import org.threeten.bp.Instant;
 
     public abstract Builder keynote(boolean keynote);
 
-    public abstract Builder slotTime(Instant slotTime);
+    public abstract Builder slot(Instant slot);
 
     public abstract Builder speakers(List<Speaker> speakers);
 

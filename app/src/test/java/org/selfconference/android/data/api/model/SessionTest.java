@@ -20,7 +20,7 @@ public final class SessionTest {
   public void sessionParcelsWithoutError() throws Exception {
     Session session = Session.builder()
         .id(4)
-        .slotTime(Instant.now())
+        .slot(Instant.now())
         .description("description")
         .room(Room.nullRoom())
         .speakers(ImmutableList.of(Speaker.builder() //

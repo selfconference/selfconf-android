@@ -30,7 +30,7 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
         .id(decorator.id())
         .title(decorator.title())
         .room(decorator.room())
-        .slotTime(decorator.slotTime())
+        .slot(decorator.slot())
         .description(decorator.description())
         .keynote(decorator.keynote())
         .speakers(decorator.speakers())
@@ -69,7 +69,7 @@ public final class SessionJsonDeserializer implements JsonDeserializer<Session> 
       return Optional.fromNullable(room).or(Room.nullRoom());
     }
 
-    @NonNull Instant slotTime() {
+    @NonNull Instant slot() {
       JsonElement slotElement =
           Optional.fromNullable(jsonObject.get(KEY_SLOT)).or(JsonNull.INSTANCE);
       if (slotElement.isJsonPrimitive()) {

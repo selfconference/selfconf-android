@@ -35,7 +35,7 @@ public final class SessionAssert extends AbstractAssert<SessionAssert, Session> 
   }
 
   public SessionAssert hasBeginning(Instant beginning) {
-    Assertions.assertThat(actual.slotTime()).isEqualTo(beginning);
+    Assertions.assertThat(actual.slot()).isEqualTo(beginning);
 
     return this;
   }

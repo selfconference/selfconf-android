@@ -61,7 +61,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     holder.sessionTitle.setText(session.title());
     holder.sessionSubtitle.setText(session.room().name());
-    holder.startTime.setText(Instants.miniTimeString(session.slotTime()));
+    holder.startTime.setText(Instants.miniTimeString(session.slot()));
   }
 
   public void filterFavorites(final boolean show) {

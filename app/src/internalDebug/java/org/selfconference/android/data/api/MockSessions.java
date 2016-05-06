@@ -15,7 +15,7 @@ final class MockSessions {
 
   private static final Session END_OF_AN_ERA = Session.builder() //
       .id(1) //
-      .slotTime(Instants.fromEstString("2016-05-20T09:00:00.000-05:00")) //
+      .slot(Instants.fromEstString("2016-05-20T09:00:00.000-05:00")) //
       .keynote(true) //
       .title("The End of an Era") //
       .description("Lorem ipsum should probably go here.") //

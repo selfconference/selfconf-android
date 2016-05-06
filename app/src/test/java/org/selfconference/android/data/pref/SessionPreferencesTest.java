@@ -31,7 +31,7 @@ public final class SessionPreferencesTest {
         .room(Room.nullRoom())
         .description("Description")
         .keynote(false)
-        .slotTime(Instant.MIN)
+        .slot(Instant.MIN)
         .speakers(ImmutableList.<Speaker>of())
         .build();
 

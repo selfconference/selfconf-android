@@ -26,7 +26,7 @@ public final class GetSessionsJob extends ApiJob<List<Session>> {
     List<Session> sortedSessions = Ordering.from(new Comparator<Session>() {
       @Override public int compare(Session lhs, Session rhs) {
         return ComparisonChain.start() //
-            .compare(lhs.slotTime(), rhs.slotTime()) //
+            .compare(lhs.slot(), rhs.slot()) //
             .result();
       }
     }).sortedCopy(response.body());

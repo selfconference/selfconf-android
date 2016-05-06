@@ -150,7 +150,7 @@ public final class SessionDetailActivity extends BaseActivity {
   private void setUpSessionDetailList() {
     List<SessionDetail> sessionDetails = SessionDetails.builder()
         .add(R.drawable.ic_maps_place, session.room().name())
-        .add(R.drawable.ic_action_schedule, Instants.shortTimeString(session.slotTime()))
+        .add(R.drawable.ic_action_schedule, Instants.shortTimeString(session.slot()))
         .add(R.drawable.ic_action_description, fromHtml(session.description()))
         .toList();
 
