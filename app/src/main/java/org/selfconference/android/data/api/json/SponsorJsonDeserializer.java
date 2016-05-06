@@ -28,7 +28,7 @@ public final class SponsorJsonDeserializer implements JsonDeserializer<Sponsor> 
         .name(decorator.name())
         .link(decorator.link())
         .photo(decorator.photo())
-        .sponsorLevels(decorator.sponsorLevels())
+        .sponsor_levels(decorator.sponsor_levels())
         .build();
   }
 
@@ -63,7 +63,7 @@ public final class SponsorJsonDeserializer implements JsonDeserializer<Sponsor> 
       return sponsorObject.get(KEY_PHOTO).getAsString();
     }
 
-    List<SponsorLevel> sponsorLevels() {
+    List<SponsorLevel> sponsor_levels() {
       JsonArray sponsorLevelsArray = sponsorObject.get(KEY_SPONSOR_LEVELS).getAsJsonArray();
       Iterable<SponsorLevel> sponsorLevels =
           Iterables.transform(sponsorLevelsArray, new Function<JsonElement, SponsorLevel>() {

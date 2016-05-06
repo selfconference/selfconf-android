@@ -19,8 +19,8 @@ import org.selfconference.android.data.api.model.SponsorLevel;
  */
 public final class SponsorComparator implements Comparator<Sponsor> {
   @Override public int compare(Sponsor lhs, Sponsor rhs) {
-    SponsorLevel lhsMin = Collections.min(lhs.sponsorLevels());
-    SponsorLevel rhsMin = Collections.min(rhs.sponsorLevels());
+    SponsorLevel lhsMin = Collections.min(lhs.sponsor_levels());
+    SponsorLevel rhsMin = Collections.min(rhs.sponsor_levels());
     int result = ComparisonChain.start() //
         .compare(lhsMin, rhsMin) //
         .result();

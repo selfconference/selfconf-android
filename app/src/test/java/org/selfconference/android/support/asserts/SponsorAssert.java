@@ -49,14 +49,14 @@ public final class SponsorAssert extends AbstractAssert<SponsorAssert, Sponsor> 
       }
     };
     List<String> sponsorLevelNames =
-        Lists.transform(actual.sponsorLevels(), sponsorLevelNameFunction);
+        Lists.transform(actual.sponsor_levels(), sponsorLevelNameFunction);
     Assertions.assertThat(names).containsAll(sponsorLevelNames);
 
     return this;
   }
 
   public SponsorAssert hasNumberOfSponsorLevels(int size) {
-    Assertions.assertThat(actual.sponsorLevels()).hasSize(size);
+    Assertions.assertThat(actual.sponsor_levels()).hasSize(size);
 
     return this;
   }

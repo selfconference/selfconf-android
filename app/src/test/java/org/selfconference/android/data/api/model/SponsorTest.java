@@ -18,7 +18,7 @@ public final class SponsorTest {
         .name("Apprend")
         .photo("https://apprend.org/")
         .link("https://s3.amazonaws.com/selfconf/sponsors/apprend.png")
-        .sponsorLevels(ImmutableList.<SponsorLevel>of())
+        .sponsor_levels(ImmutableList.<SponsorLevel>of())
         .build();
 
     Container<Sponsor> sponsorContainer = testParceling(sponsor, AutoValue_Sponsor.CREATOR);

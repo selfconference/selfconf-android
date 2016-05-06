@@ -16,7 +16,7 @@ final class MockSponsors {
       .name("One") //
       .link("http://example.com/sponsor/one") //
       .photo("mock:///avatar/one.png") //
-      .sponsorLevels(ImmutableList.of(WICKED_AWESOME)) //
+      .sponsor_levels(ImmutableList.of(WICKED_AWESOME)) //
       .build();
 
   private static final Sponsor TWO = Sponsor.builder() //
@@ -24,7 +24,7 @@ final class MockSponsors {
       .name("Two") //
       .link("http://example.com/sponsor/two") //
       .photo("mock:///avatar/two.png") //
-      .sponsorLevels(ImmutableList.of(GNARLY, COOL)) //
+      .sponsor_levels(ImmutableList.of(GNARLY, COOL)) //
       .build();
 
   private static final Sponsor THREE = Sponsor.builder() //
@@ -32,7 +32,7 @@ final class MockSponsors {
       .name("Three") //
       .link("http://example.com/sponsor/three") //
       .photo("mock:///avatar/two.png") //
-      .sponsorLevels(ImmutableList.of(NEATO)) //
+      .sponsor_levels(ImmutableList.of(NEATO)) //
       .build();
 
   static List<Sponsor> allSponsors() {

@@ -20,8 +20,7 @@ import java.util.List;
 
   public abstract String photo();
 
-  // @ParcelAdapter(SponsorLevel.ImmutableListTypeAdapter.class)
-  public abstract List<SponsorLevel> sponsorLevels();
+  public abstract List<SponsorLevel> sponsor_levels();
 
   @AutoValue.Builder public abstract static class Builder {
 
@@ -33,7 +32,7 @@ import java.util.List;
 
     public abstract Builder photo(String photo);
 
-    public abstract Builder sponsorLevels(List<SponsorLevel> sponsorLevels);
+    public abstract Builder sponsor_levels(List<SponsorLevel> sponsor_levels);
 
     public abstract Sponsor build();
   }
