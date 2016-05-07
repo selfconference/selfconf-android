@@ -65,7 +65,7 @@ public final class DebugDataModule {
 
   @Provides @Singleton @ApiEndpoint
   Preference<String> endpoint(RxSharedPreferences preferences) {
-    return preferences.getString("debug_endpoint", ApiEndpoints.MOCK_MODE.url);
+    return preferences.getString("debug_endpoint", ApiEndpoints.PRODUCTION.url);
   }
 
   @Provides @Singleton @IsMockMode

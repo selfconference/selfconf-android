@@ -3,9 +3,9 @@ package org.selfconference.android.data;
 import org.selfconference.android.data.api.ApiModule;
 
 public enum ApiEndpoints {
-  PRODUCTION("Production", ApiModule.PRODUCTION_API_URL.toString()),
-  STAGING("Staging", "http://selfconf-dev.herokuapp.com/api/"),
-  MOCK_MODE("Mock Mode", "http://localhost/mock/");
+  PRODUCTION("Production", ApiModule.PRODUCTION_API_URL.toString());
+  // STAGING("Staging", "http://selfconf-dev.herokuapp.com/api/"),
+  // MOCK_MODE("Mock Mode", "http://localhost/mock/");
 
   public final String name;
   public final String url;
@@ -29,6 +29,7 @@ public enum ApiEndpoints {
   }
 
   public static boolean isMockMode(String endpoint) {
-    return from(endpoint) == MOCK_MODE;
+    return false;
+    // return from(endpoint) == MOCK_MODE;
   }
 }

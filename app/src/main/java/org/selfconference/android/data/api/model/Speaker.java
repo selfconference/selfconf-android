@@ -1,8 +1,11 @@
 package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.List;
 
 @AutoValue public abstract class Speaker implements Parcelable {
@@ -10,7 +13,11 @@ import java.util.List;
   public static Builder builder() {
     return new AutoValue_Speaker.Builder() //
         .twitter("") //
-        .sessions(Lists.<Integer>newArrayList());
+        .sessions(Lists.newArrayList());
+  }
+
+  public static JsonAdapter<Speaker> jsonAdapter(Moshi moshi) {
+    return new AutoValue_Speaker.MoshiJsonAdapter(moshi);
   }
 
   Speaker() {}
@@ -25,7 +32,7 @@ import java.util.List;
 
   public abstract String photo();
 
-  public abstract List<Integer> sessions();
+  @Nullable public abstract List<Session> sessions();
 
   @AutoValue.Builder public static abstract class Builder {
 
@@ -39,7 +46,7 @@ import java.util.List;
 
     public abstract Builder photo(String photo);
 
-    public abstract Builder sessions(List<Integer> sessions);
+    public abstract Builder sessions(List<Session> sessions);
 
     public abstract Speaker build();
   }

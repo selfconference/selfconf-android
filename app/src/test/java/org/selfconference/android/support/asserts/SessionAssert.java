@@ -23,7 +23,7 @@ public final class SessionAssert extends AbstractAssert<SessionAssert, Session> 
   }
 
   public SessionAssert hasName(String name) {
-    Assertions.assertThat(actual.title()).isEqualTo(name);
+    Assertions.assertThat(actual.name()).isEqualTo(name);
 
     return this;
   }
@@ -35,7 +35,7 @@ public final class SessionAssert extends AbstractAssert<SessionAssert, Session> 
   }
 
   public SessionAssert hasBeginning(Instant beginning) {
-    Assertions.assertThat(actual.slot()).isEqualTo(beginning);
+    Assertions.assertThat(actual.slot().time()).isEqualTo(beginning);
 
     return this;
   }

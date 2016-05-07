@@ -3,11 +3,13 @@ package org.selfconference.android.data.api.model;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 @AutoValue public abstract class Room implements Parcelable {
 
   /** Returns a Null Object to represent missing room data. */
-  @NonNull public static Room nullRoom() {
+  @NonNull public static Room empty() {
     return create(-1, "TBD");
   }
 
@@ -16,7 +18,10 @@ import com.google.auto.value.AutoValue;
     return new AutoValue_Room(id, name);
   }
 
-  /** A no-args constructor used by {@link com.google.gson.Gson}. */
+  public static JsonAdapter<Room> jsonAdapter(Moshi moshi) {
+    return new AutoValue_Room.MoshiJsonAdapter(moshi);
+  }
+
   Room() {}
 
   /** Returns the room's database ID. */

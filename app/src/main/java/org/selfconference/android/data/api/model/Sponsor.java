@@ -2,12 +2,18 @@ package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.List;
 
 @AutoValue public abstract class Sponsor implements Parcelable {
 
   public static Builder builder() {
     return new AutoValue_Sponsor.Builder();
+  }
+
+  public static JsonAdapter<Sponsor> jsonAdapter(Moshi moshi) {
+    return new AutoValue_Sponsor.MoshiJsonAdapter(moshi);
   }
 
   Sponsor() {}

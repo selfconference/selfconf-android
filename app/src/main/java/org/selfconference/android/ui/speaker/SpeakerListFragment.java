@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import javax.inject.Inject;
@@ -15,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.event.GetSessionAddEvent;
 import org.selfconference.android.data.event.GetSessionSuccessEvent;
@@ -57,13 +60,13 @@ public final class SpeakerListFragment extends BaseListFragment {
     speakerAdapter.setOnSpeakerClickListener(new SpeakerAdapter.OnSpeakerClickListener() {
       @Override public void onSpeakerClick(Speaker speaker) {
         Timber.d("Speaker clicked: %s", speaker);
-        List<Integer> sessions = speaker.sessions();
+        List<Session> sessions = Optional.fromNullable(speaker.sessions()).or(ImmutableList.of());
         if (sessions.isEmpty()) {
           // TODO handle empty state
         } else {
           // TODO handle possibility where speaker has more than one session
-          int firstSessionId = sessions.get(0);
-          jobManager.addJobInBackground(new GetSessionJob(firstSessionId));
+          Session session = sessions.get(0);
+          jobManager.addJobInBackground(new GetSessionJob(session.id()));
         }
       }
     });

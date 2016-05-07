@@ -139,6 +139,7 @@ dependencies {
 
   apt "com.ryanharter.auto.value:auto-value-parcel:$rootProject.deps.autoValueParcel"
   compile "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
+  apt "com.ryanharter.auto.value:auto-value-moshi:$rootProject.deps.autoValueMoshi"
   apt "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
   provided "com.jakewharton.auto.value:auto-value-annotations:$rootProject.deps.autoValueAnnotations"
   compile "com.jakewharton:butterknife:$rootProject.deps.butterknife"
@@ -150,7 +151,7 @@ dependencies {
   compile "com.squareup.okhttp3:okhttp:$rootProject.deps.okhttp"
   internalCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
   compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
-  compile "com.squareup.retrofit2:converter-gson:$rootProject.deps.retrofit"
+  compile "com.squareup.retrofit2:converter-moshi:$rootProject.deps.retrofit"
   internalCompile "com.squareup.retrofit2:retrofit-mock:$rootProject.deps.retrofit"
 
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'
@@ -158,7 +159,7 @@ dependencies {
   compile "com.birbit:android-priority-jobqueue:$rootProject.deps.jobQueue"
   compile "org.greenrobot:eventbus:$rootProject.deps.eventBus"
 
-  compile "com.google.code.gson:gson:$rootProject.deps.gson"
+  compile "com.squareup.moshi:moshi:$rootProject.deps.moshi"
   compile "com.jakewharton.threetenabp:threetenabp:$rootProject.deps.threeTenAbp"
 
   compile "com.google.guava:guava:$rootProject.deps.guava"

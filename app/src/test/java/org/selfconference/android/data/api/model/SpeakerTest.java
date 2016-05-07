@@ -22,7 +22,7 @@ public final class SpeakerTest {
         .photo("http://test.com/img.png")
         .id(10)
         .name("Dave")
-        .sessions(ImmutableList.of(10))
+        .sessions(ImmutableList.of())
         .twitter("dave")
         .build();
 

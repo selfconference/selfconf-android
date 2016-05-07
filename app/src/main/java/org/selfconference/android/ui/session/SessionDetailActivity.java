@@ -15,6 +15,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import javax.inject.Inject;
@@ -22,7 +24,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
 import org.selfconference.android.data.IntentFactory;
+import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.event.SubmitFeedbackAddEvent;
 import org.selfconference.android.data.event.SubmitFeedbackSuccessEvent;
@@ -79,7 +83,7 @@ public final class SessionDetailActivity extends BaseActivity {
 
     setUpActionBar();
 
-    sessionTitle.setText(session.title());
+    sessionTitle.setText(session.name());
     favoriteButton.setChecked(preferences.isFavorite(session));
     favoriteButton.setOnCheckedChangeListener(new FloatingActionButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
@@ -148,9 +152,11 @@ public final class SessionDetailActivity extends BaseActivity {
   }
 
   private void setUpSessionDetailList() {
+    Room room = Optional.fromNullable(session.room()).or(Room.empty());
+    Slot slot = Optional.fromNullable(session.slot()).or(Slot.empty());
     List<SessionDetail> sessionDetails = SessionDetails.builder()
-        .add(R.drawable.ic_maps_place, session.room().name())
-        .add(R.drawable.ic_action_schedule, Instants.shortTimeString(session.slot()))
+        .add(R.drawable.ic_maps_place, room.name())
+        .add(R.drawable.ic_action_schedule, Instants.shortTimeString(slot.time()))
         .add(R.drawable.ic_action_description, fromHtml(session.description()))
         .toList();
 
@@ -165,7 +171,7 @@ public final class SessionDetailActivity extends BaseActivity {
   }
 
   private void setUpSpeakerList() {
-    List<Speaker> speakers = session.speakers();
+    List<Speaker> speakers = Optional.fromNullable(session.speakers()).or(ImmutableList.of());
     speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
     SpeakerAdapter speakerAdapter = new SpeakerAdapter(picasso, true);
     speakerAdapter.setData(speakers);

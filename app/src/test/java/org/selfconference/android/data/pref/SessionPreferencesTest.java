@@ -9,8 +9,8 @@ import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.api.model.Speaker;
-import org.threeten.bp.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,11 +27,11 @@ public final class SessionPreferencesTest {
   @Test public void testSavedSessionPreferences() throws Exception {
     Session session = Session.builder() //
         .id(13)
-        .title("Title")
-        .room(Room.nullRoom())
+        .name("Title")
+        .room(Room.empty())
         .description("Description")
         .keynote(false)
-        .slot(Instant.MIN)
+        .slot(Slot.empty())
         .speakers(ImmutableList.<Speaker>of())
         .build();
 

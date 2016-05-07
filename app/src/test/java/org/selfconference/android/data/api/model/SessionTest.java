@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 import org.selfconference.android.CustomTestRunner;
 import org.selfconference.android.support.Parceler.Container;
-import org.threeten.bp.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.selfconference.android.support.Parceler.testParceling;
@@ -20,9 +19,9 @@ public final class SessionTest {
   public void sessionParcelsWithoutError() throws Exception {
     Session session = Session.builder()
         .id(4)
-        .slot(Instant.now())
+        .slot(Slot.empty())
         .description("description")
-        .room(Room.nullRoom())
+        .room(Room.empty())
         .speakers(ImmutableList.of(Speaker.builder() //
             .id(3)
             .name("Name")
@@ -30,7 +29,7 @@ public final class SessionTest {
             .bio("bio")
             .photo("http://example.com/photo.jpg")
             .build()))
-        .title("title")
+        .name("name")
         .keynote(false)
         .build();
 

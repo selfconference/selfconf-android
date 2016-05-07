@@ -1,6 +1,6 @@
 package org.selfconference.android.data.api;
 
-import com.google.gson.Gson;
+import com.squareup.moshi.Moshi;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 import static org.selfconference.android.BuildConfig.DEBUG;
 
@@ -27,10 +27,11 @@ public final class ApiModule {
     return createApiClient(client).build();
   }
 
-  @Provides @Singleton Retrofit retrofit(HttpUrl baseUrl, Gson gson, @Named("Api") OkHttpClient okHttpClient) {
+  @Provides @Singleton
+  Retrofit retrofit(HttpUrl baseUrl, Moshi moshi, @Named("Api") OkHttpClient okHttpClient) {
     return new Retrofit.Builder() //
         .baseUrl(baseUrl) //
-        .addConverterFactory(GsonConverterFactory.create(gson)) //
+        .addConverterFactory(MoshiConverterFactory.create(moshi)) //
         .client(okHttpClient) //
         .validateEagerly(DEBUG) //
         .build();

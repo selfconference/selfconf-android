@@ -1,6 +1,6 @@
 package org.selfconference.android.data.api;
 
-import com.google.gson.Gson;
+import com.squareup.moshi.Moshi;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,12 +20,11 @@ import retrofit2.mock.MockRetrofit;
 @Singleton public final class MockRestClient implements RestClient {
 
   private final BehaviorDelegate<RestClient> delegate;
-  private final Gson gson;
+  private final Moshi moshi;
 
-  @Inject
-  public MockRestClient(MockRetrofit mockRetrofit, Gson gson) {
+  @Inject public MockRestClient(MockRetrofit mockRetrofit, Moshi moshi) {
     this.delegate = mockRetrofit.create(RestClient.class);
-    this.gson = gson;
+    this.moshi = moshi;
   }
 
   @Override public Call<List<Session>> getSessions() {
@@ -49,7 +48,7 @@ import retrofit2.mock.MockRetrofit;
   }
 
   @Override public Call<ResponseBody> submitFeedback(@Path("id") int id, @Body Feedback feedback) {
-    String feedbackJson = gson.toJson(feedback, Feedback.class);
+    String feedbackJson = moshi.adapter(Feedback.class).toJson(feedback);
     ResponseBody body = ResponseBody.create(MediaType.parse("application/json"), feedbackJson);
     return delegate.returning(Calls.response(body)).submitFeedback(id, feedback);
   }

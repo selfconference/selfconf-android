@@ -8,8 +8,8 @@ import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
 import com.birbit.android.jobqueue.di.DependencyInjector;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
+import com.squareup.moshi.Moshi;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
@@ -18,22 +18,8 @@ import javax.inject.Singleton;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.selfconference.android.data.api.ApiModule;
-import org.selfconference.android.data.api.json.EventJsonDeserializer;
-import org.selfconference.android.data.api.json.FeedbackJsonSerializer;
-import org.selfconference.android.data.api.json.OrganizerJsonDeserializer;
-import org.selfconference.android.data.api.json.RoomJsonDeserializer;
-import org.selfconference.android.data.api.json.SessionJsonDeserializer;
-import org.selfconference.android.data.api.json.SpeakerTypeAdapter;
-import org.selfconference.android.data.api.json.SponsorJsonDeserializer;
-import org.selfconference.android.data.api.json.SponsorLevelJsonDeserializer;
-import org.selfconference.android.data.api.model.Event;
-import org.selfconference.android.data.api.model.Feedback;
-import org.selfconference.android.data.api.model.Organizer;
-import org.selfconference.android.data.api.model.Room;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.data.api.model.SponsorLevel;
+import org.selfconference.android.data.api.json.InstantAdapter;
+import org.selfconference.android.data.api.json.VoteAdapter;
 import org.selfconference.android.data.pref.SessionPreferences;
 import timber.log.Timber;
 
@@ -43,22 +29,15 @@ import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
 @Module(
     includes = ApiModule.class,
     complete = false,
-    library = true
-)
-public final class DataModule {
+    library = true) public final class DataModule {
   static final int DISK_CACHE_SIZE = (int) MEGABYTES.toBytes(50);
 
-  @Provides @Singleton Gson gson() {
-    return new GsonBuilder() //
-        .registerTypeAdapter(Session.class, new SessionJsonDeserializer())
-        .registerTypeAdapter(Speaker.class, new SpeakerTypeAdapter())
-        .registerTypeAdapter(Sponsor.class, new SponsorJsonDeserializer())
-        .registerTypeAdapter(SponsorLevel.class, new SponsorLevelJsonDeserializer())
-        .registerTypeAdapter(Room.class, new RoomJsonDeserializer())
-        .registerTypeAdapter(Feedback.class, new FeedbackJsonSerializer())
-        .registerTypeAdapter(Event.class, new EventJsonDeserializer())
-        .registerTypeAdapter(Organizer.class, new OrganizerJsonDeserializer())
-        .create();
+  @Provides @Singleton Moshi moshi() {
+    return new Moshi.Builder() //
+        .add(new AutoValueMoshiAdapterFactory())
+        .add(new InstantAdapter())
+        .add(new VoteAdapter())
+        .build();
   }
 
   @Provides @Singleton SharedPreferences sharedPreferences(Application application) {

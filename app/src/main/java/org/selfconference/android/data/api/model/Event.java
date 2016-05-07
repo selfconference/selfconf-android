@@ -2,6 +2,8 @@ package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.List;
 import org.threeten.bp.Instant;
 
@@ -9,6 +11,10 @@ import org.threeten.bp.Instant;
 
   public static Builder builder() {
     return new AutoValue_Event.Builder();
+  }
+
+  public static JsonAdapter<Event> jsonAdapter(Moshi moshi) {
+    return new AutoValue_Event.MoshiJsonAdapter(moshi);
   }
 
   public abstract int id();

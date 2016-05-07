@@ -4,11 +4,17 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ComparisonChain;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 @AutoValue public abstract class SponsorLevel implements Parcelable, Comparable<SponsorLevel> {
 
   public static Builder builder() {
     return new AutoValue_SponsorLevel.Builder();
+  }
+
+  public static JsonAdapter<SponsorLevel> jsonAdapter(Moshi moshi) {
+    return new AutoValue_SponsorLevel.MoshiJsonAdapter(moshi);
   }
 
   SponsorLevel() {

@@ -1,11 +1,13 @@
 package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
+import com.squareup.moshi.Json;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import java.util.List;
-import org.threeten.bp.Instant;
 
 @AutoValue public abstract class Session implements Parcelable {
 
@@ -14,28 +16,31 @@ import org.threeten.bp.Instant;
         .speakers(Lists.<Speaker>newArrayList());
   }
 
+  public static JsonAdapter<Session> jsonAdapter(Moshi moshi) {
+    return new AutoValue_Session.MoshiJsonAdapter(moshi);
+  }
+
   Session() {}
 
   public abstract int id();
 
-  public abstract String title();
+  public abstract String name();
 
-  @NonNull public abstract Room room();
+  @Nullable public abstract Room room();
 
-  public abstract String description();
+  @Json(name="abstract") public abstract String description();
 
   public abstract boolean keynote();
 
-  @NonNull
-  public abstract Instant slot();
+  @Nullable public abstract Slot slot();
 
-  public abstract List<Speaker> speakers();
+  @Nullable public abstract List<Speaker> speakers();
 
   @AutoValue.Builder public static abstract class Builder {
 
     public abstract Builder id(int id);
 
-    public abstract Builder title(String title);
+    public abstract Builder name(String name);
 
     public abstract Builder room(Room room);
 
@@ -43,7 +48,7 @@ import org.threeten.bp.Instant;
 
     public abstract Builder keynote(boolean keynote);
 
-    public abstract Builder slot(Instant slot);
+    public abstract Builder slot(Slot slot);
 
     public abstract Builder speakers(List<Speaker> speakers);
 

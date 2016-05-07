@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
+import com.google.common.base.Optional;
 import java.util.Locale;
 import org.selfconference.android.R;
+import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.misc.FilterableAdapter;
@@ -59,9 +62,11 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
 
     holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
 
-    holder.sessionTitle.setText(session.title());
-    holder.sessionSubtitle.setText(session.room().name());
-    holder.startTime.setText(Instants.miniTimeString(session.slot()));
+    holder.sessionTitle.setText(session.name());
+    Room room = Optional.fromNullable(session.room()).or(Room.empty());
+    holder.sessionSubtitle.setText(room.name());
+    Slot slot = Optional.fromNullable(session.slot()).or(Slot.empty());
+    holder.startTime.setText(Instants.miniTimeString(slot.time()));
   }
 
   public void filterFavorites(final boolean show) {
@@ -78,7 +83,7 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
     return new Func1<Session, Boolean>() {
       @Override public Boolean call(Session session) {
-        return session.title() //
+        return session.name() //
             .toLowerCase(Locale.US) //
             .contains(query.toLowerCase(Locale.US));
       }

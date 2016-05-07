@@ -31,7 +31,8 @@ public abstract class ApiJob<T> extends Job {
 
   @Override protected RetryConstraint shouldReRunOnThrowable(Throwable throwable, int runCount,
       int maxRunCount) {
-    return RetryConstraint.createExponentialBackoff(runCount, INITIAL_BACKOFF_MS);
+    Timber.e(throwable, "ApiJob#shouldReRunOnThrowable");
+    return RetryConstraint.CANCEL;
   }
 
   @Override protected void onCancel(int cancelReason) {
