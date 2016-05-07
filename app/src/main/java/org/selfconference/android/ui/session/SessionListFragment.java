@@ -14,22 +14,28 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.BindView;
 import com.birbit.android.jobqueue.JobManager;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.event.GetSessionsAddEvent;
 import org.selfconference.android.data.event.GetSessionsSuccessEvent;
 import org.selfconference.android.data.job.GetSessionsJob;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseListFragment;
 import org.selfconference.android.ui.misc.FilterableAdapter;
+import org.selfconference.android.util.Instants;
 
 import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
 public final class SessionListFragment extends BaseListFragment {
+  private static final String EXTRA_DAY = "org.selfconference.android.ui.session.EXTRA_DAY";
 
   @BindView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
   @BindView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
@@ -38,11 +44,12 @@ public final class SessionListFragment extends BaseListFragment {
   @Inject JobManager jobManager;
   @Inject EventBus eventBus;
 
+  private Day day;
   private SessionAdapter sessionAdapter;
 
-  public static SessionListFragment newInstance() {
+  public static SessionListFragment newInstance(Day day) {
     Bundle bundle = new Bundle();
-
+    bundle.putString(EXTRA_DAY, day.name());
     SessionListFragment fragment = new SessionListFragment();
     fragment.setArguments(bundle);
     return fragment;
@@ -55,6 +62,8 @@ public final class SessionListFragment extends BaseListFragment {
     super.onCreate(savedInstanceState);
     Injector.obtain(getActivity().getApplicationContext()).inject(this);
 
+    String dayString = getArguments().getString(EXTRA_DAY);
+    day = Day.valueOf(dayString);
     sessionAdapter = new SessionAdapter(sessionPreferences);
   }
 
@@ -116,7 +125,11 @@ public final class SessionListFragment extends BaseListFragment {
 
   @Subscribe(threadMode = MAIN) public void onGetSessionsSucceeded(GetSessionsSuccessEvent event) {
     swipeRefreshLayout.setRefreshing(false);
-    sessionAdapter.setData(event.sessions);
+    Iterable<Session> sessionsByDay = Iterables.filter(event.sessions, session -> {
+      Slot slot = Optional.fromNullable(session.slot()).or(Slot.empty());
+      return Instants.areOnSameDay(slot.time(), day.getStartTime());
+    });
+    sessionAdapter.setData(ImmutableList.copyOf(sessionsByDay));
   }
 
   @Override protected int layoutResId() {

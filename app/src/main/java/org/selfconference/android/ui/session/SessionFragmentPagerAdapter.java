@@ -13,7 +13,7 @@ public final class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter
   }
 
   @Override public Fragment getItem(int position) {
-    return SessionListFragment.newInstance();
+    return SessionListFragment.newInstance(Day.fromPosition(position));
   }
 
   @Override public int getCount() {

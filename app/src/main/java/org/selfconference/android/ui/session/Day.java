@@ -3,9 +3,9 @@ package org.selfconference.android.ui.session;
 import org.selfconference.android.util.Instants;
 import org.threeten.bp.Instant;
 
-@Deprecated public enum Day {
-  ONE(Instants.fromEstString("2015-05-29T00:00:00.000-05:00")),
-  TWO(Instants.fromEstString("2015-05-30T00:00:00.000-05:00"));
+public enum Day {
+  ONE(Instants.fromEstString("2016-05-20T00:00:00.000-05:00")),
+  TWO(Instants.fromEstString("2016-05-21T00:00:00.000-05:00"));
 
   private final Instant startTime;
 

@@ -8,6 +8,7 @@ import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.FormatStyle;
 import org.threeten.bp.format.TextStyle;
+import org.threeten.bp.temporal.ChronoUnit;
 
 public final class Instants {
 
@@ -15,6 +16,12 @@ public final class Instants {
 
   public static Instant fromEstString(String text) {
     return ZonedDateTime.parse(text).toInstant();
+  }
+
+  public static boolean areOnSameDay(Instant left, Instant right) {
+    Instant leftTime = left.truncatedTo(ChronoUnit.DAYS);
+    Instant rightTime = right.truncatedTo(ChronoUnit.DAYS);
+    return leftTime.compareTo(rightTime) == 0;
   }
 
   public static String miniTimeString(Instant instant) {
