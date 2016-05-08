@@ -97,7 +97,7 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
       }
     };
     List<String> sponsorLevelNames = Lists.transform(sponsor.sponsor_levels(), sponsorLevelToName);
-    String sponsorLevels = Joiner.on(",").join(sponsorLevelNames);
+    String sponsorLevels = Joiner.on(", ").join(sponsorLevelNames);
     int numSponsorLevels = sponsor.sponsor_levels().size();
     Resources resources = App.context().getResources();
     return resources.getQuantityString(R.plurals.sponsor_levels, numSponsorLevels, sponsorLevels);

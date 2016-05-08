@@ -3,37 +3,40 @@ package org.selfconference.android.ui.sponsor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import butterknife.BindView;
-import com.birbit.android.jobqueue.JobManager;
 import com.squareup.picasso.Picasso;
+import java.util.List;
 import javax.inject.Inject;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.IntentFactory;
+import org.selfconference.android.data.api.RestClient;
+import org.selfconference.android.data.api.Results;
 import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.data.event.GetSponsorsAddEvent;
-import org.selfconference.android.data.event.GetSponsorsSuccessEvent;
-import org.selfconference.android.data.job.GetSponsorsJob;
 import org.selfconference.android.ui.BaseListFragment;
 import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.sponsor.SponsorAdapter.OnSponsorClickListener;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
-import static org.greenrobot.eventbus.ThreadMode.MAIN;
-
-public class SponsorListFragment extends BaseListFragment implements OnSponsorClickListener {
+public class SponsorListFragment extends BaseListFragment
+    implements OnSponsorClickListener, OnRefreshListener {
   public static final String TAG = SponsorListFragment.class.getName();
 
   @BindView(R.id.sponsor_recycler_view) RecyclerView sponsorRecyclerView;
   @BindView(R.id.sponsor_list_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
-  @Inject JobManager jobManager;
-  @Inject EventBus eventBus;
+  @Inject RestClient restClient;
   @Inject Picasso picasso;
   @Inject IntentFactory intentFactory;
+
+  private final PublishSubject<Void> sponsorsSubject = PublishSubject.create();
 
   private SponsorAdapter sponsorAdapter;
 
@@ -45,6 +48,11 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
     Injector.obtain(getActivity().getApplicationContext()).inject(this);
 
     sponsorAdapter = new SponsorAdapter(picasso);
+    sponsorAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+      @Override public void onChanged() {
+        swipeRefreshLayout.setRefreshing(false);
+      }
+    });
   }
 
   @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -55,27 +63,20 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
     sponsorRecyclerView.setAdapter(sponsorAdapter);
     sponsorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-    jobManager.addJobInBackground(new GetSponsorsJob());
-  }
+    Observable<Result<List<Sponsor>>> result =
+        sponsorsSubject.flatMap(__ -> restClient.getSponsors().subscribeOn(Schedulers.io()))
+            .observeOn(AndroidSchedulers.mainThread())
+            .compose(bindToLifecycle())
+            .share();
 
-  @Override public void onResume() {
-    super.onResume();
-    eventBus.register(this);
-  }
+    result.filter(Results.isSuccessful())
+        .map(Results.responseBody())
+        .flatMap(sponsors -> Observable.from(sponsors).toSortedList())
+        .subscribe(sponsors -> {
+          sponsorAdapter.setData(sponsors);
+        });
 
-  @Override public void onPause() {
-    super.onPause();
-    eventBus.unregister(this);
-  }
-
-  @Subscribe(threadMode = MAIN) public void onGetSponsorsJobAdded(GetSponsorsAddEvent event) {
-    swipeRefreshLayout.setRefreshing(true);
-  }
-
-  @Subscribe(threadMode = MAIN)
-  public void onGetSponsorsJobSucceeded(GetSponsorsSuccessEvent event) {
-    swipeRefreshLayout.setRefreshing(false);
-    sponsorAdapter.setData(event.sponsors);
+    onRefresh();
   }
 
   @Override protected FilterableAdapter getFilterableAdapter() {
@@ -88,5 +89,12 @@ public class SponsorListFragment extends BaseListFragment implements OnSponsorCl
 
   @Override public void onSponsorClicked(Sponsor sponsor) {
     startActivity(intentFactory.createUrlIntent(sponsor.link()));
+  }
+
+  @Override public void onRefresh() {
+    getView().post(() -> {
+      swipeRefreshLayout.setRefreshing(true);
+      sponsorsSubject.onNext(null);
+    });
   }
 }

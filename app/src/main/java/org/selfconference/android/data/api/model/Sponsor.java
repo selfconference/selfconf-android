@@ -5,8 +5,9 @@ import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import java.util.List;
+import org.selfconference.android.data.api.SponsorComparator;
 
-@AutoValue public abstract class Sponsor implements Parcelable {
+@AutoValue public abstract class Sponsor implements Parcelable, Comparable<Sponsor> {
 
   public static Builder builder() {
     return new AutoValue_Sponsor.Builder();
@@ -27,6 +28,10 @@ import java.util.List;
   public abstract String photo();
 
   public abstract List<SponsorLevel> sponsor_levels();
+
+  @Override public int compareTo(Sponsor another) {
+    return new SponsorComparator().compare(this, another);
+  }
 
   @AutoValue.Builder public abstract static class Builder {
 

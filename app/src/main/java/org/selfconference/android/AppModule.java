@@ -6,7 +6,6 @@ import dagger.Provides;
 import javax.inject.Singleton;
 import org.selfconference.android.data.DataModule;
 import org.selfconference.android.data.api.ApiJob;
-import org.selfconference.android.data.job.GetSponsorsJob;
 import org.selfconference.android.data.job.SubmitFeedbackJob;
 import org.selfconference.android.ui.BaseActivity;
 import org.selfconference.android.ui.BaseFragment;
@@ -36,7 +35,6 @@ import org.selfconference.android.ui.sponsor.SponsorListFragment;
         SessionDetailActivity.class, //
         ApiJob.class, //
         SubmitFeedbackJob.class, //
-        GetSponsorsJob.class, //
         App.class, //
     }
 )
