@@ -6,8 +6,9 @@ import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.event.GetSpeakersAddEvent;
 import org.selfconference.android.data.event.GetSpeakersSuccessEvent;
-import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
 
 public final class GetSpeakersJob extends ApiJob<List<Speaker>> {
 
@@ -15,7 +16,7 @@ public final class GetSpeakersJob extends ApiJob<List<Speaker>> {
     return new GetSpeakersAddEvent();
   }
 
-  @Override protected Call<List<Speaker>> apiCall() {
+  @Override protected Observable<Result<List<Speaker>>> apiCall() {
     return restClient.getSpeakers();
   }
 
@@ -23,7 +24,7 @@ public final class GetSpeakersJob extends ApiJob<List<Speaker>> {
     eventBus.post(new GetSpeakersSuccessEvent(response.body()));
   }
 
-  @Override protected void onApiFailure(Response<List<Speaker>> response) {
+  @Override protected void onApiFailure(Throwable error) {
 
   }
 }

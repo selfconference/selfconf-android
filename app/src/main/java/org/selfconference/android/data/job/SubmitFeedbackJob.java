@@ -9,8 +9,9 @@ import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.event.SubmitFeedbackAddEvent;
 import org.selfconference.android.data.event.SubmitFeedbackSuccessEvent;
 import org.selfconference.android.data.pref.SessionPreferences;
-import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,7 +32,7 @@ public final class SubmitFeedbackJob extends ApiJob<ResponseBody> {
     return new SubmitFeedbackAddEvent();
   }
 
-  @Override protected Call<ResponseBody> apiCall() {
+  @Override protected Observable<Result<ResponseBody>> apiCall() {
     return restClient.submitFeedback(session.id(), feedback);
   }
 
@@ -40,7 +41,7 @@ public final class SubmitFeedbackJob extends ApiJob<ResponseBody> {
     eventBus.post(new SubmitFeedbackSuccessEvent());
   }
 
-  @Override protected void onApiFailure(Response<ResponseBody> response) {
+  @Override protected void onApiFailure(Throwable error) {
 
   }
 }

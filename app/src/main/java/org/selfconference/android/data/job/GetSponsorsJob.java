@@ -9,8 +9,9 @@ import org.selfconference.android.data.api.SponsorComparator;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.event.GetSponsorsAddEvent;
 import org.selfconference.android.data.event.GetSponsorsSuccessEvent;
-import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
 
 public final class GetSponsorsJob extends ApiJob<List<Sponsor>> {
 
@@ -18,7 +19,7 @@ public final class GetSponsorsJob extends ApiJob<List<Sponsor>> {
     return new GetSponsorsAddEvent();
   }
 
-  @Override protected Call<List<Sponsor>> apiCall() {
+  @Override protected Observable<Result<List<Sponsor>>> apiCall() {
     return restClient.getSponsors();
   }
 
@@ -29,7 +30,7 @@ public final class GetSponsorsJob extends ApiJob<List<Sponsor>> {
     eventBus.post(new GetSponsorsSuccessEvent(sortedSponsors));
   }
 
-  @Override protected void onApiFailure(Response<List<Sponsor>> response) {
+  @Override protected void onApiFailure(Throwable error) {
 
   }
 }

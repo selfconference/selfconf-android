@@ -152,6 +152,7 @@ dependencies {
   internalCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
   compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
   compile "com.squareup.retrofit2:converter-moshi:$rootProject.deps.retrofit"
+  compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
   internalCompile "com.squareup.retrofit2:retrofit-mock:$rootProject.deps.retrofit"
 
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'

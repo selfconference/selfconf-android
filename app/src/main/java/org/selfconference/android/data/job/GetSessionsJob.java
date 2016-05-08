@@ -12,15 +12,16 @@ import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.event.GetSessionsAddEvent;
 import org.selfconference.android.data.event.GetSessionsSuccessEvent;
-import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
 
 public final class GetSessionsJob extends ApiJob<List<Session>> {
   @NonNull @Override protected Object createAddEvent() {
     return new GetSessionsAddEvent();
   }
 
-  @Override protected Call<List<Session>> apiCall() {
+  @Override protected Observable<Result<List<Session>>> apiCall() {
     return restClient.getSessions();
   }
 
@@ -37,7 +38,7 @@ public final class GetSessionsJob extends ApiJob<List<Session>> {
     eventBus.post(new GetSessionsSuccessEvent(ImmutableList.copyOf(sortedSessions)));
   }
 
-  @Override protected void onApiFailure(Response<List<Session>> response) {
+  @Override protected void onApiFailure(Throwable error) {
 
   }
 }

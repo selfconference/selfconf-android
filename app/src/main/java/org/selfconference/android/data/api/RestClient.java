@@ -6,28 +6,29 @@ import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;
-import retrofit2.Call;
+import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import rx.Observable;
 
 /**
  * A Retrofit client to access the Self.conference API.
  */
 public interface RestClient {
   @GET("events/latest/sessions") //
-  Call<List<Session>> getSessions();
+  Observable<Result<List<Session>>> getSessions();
 
   @GET("sessions/{id}") //
-  Call<Session> getSessionById(@Path("id") int id);
+  Observable<Result<Session>> getSessionById(@Path("id") int id);
 
   @GET("events/latest/speakers") //
-  Call<List<Speaker>> getSpeakers();
+  Observable<Result<List<Speaker>>> getSpeakers();
 
   @GET("events/latest/sponsors") //
-  Call<List<Sponsor>> getSponsors();
+  Observable<Result<List<Sponsor>>> getSponsors();
 
   @POST("sessions/{id}/feedbacks") //
-  Call<ResponseBody> submitFeedback(@Path("id") int id, @Body Feedback feedback);
+  Observable<Result<ResponseBody>> submitFeedback(@Path("id") int id, @Body Feedback feedback);
 }

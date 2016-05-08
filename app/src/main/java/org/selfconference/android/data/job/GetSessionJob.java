@@ -5,8 +5,9 @@ import org.selfconference.android.data.api.ApiJob;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.event.GetSessionAddEvent;
 import org.selfconference.android.data.event.GetSessionSuccessEvent;
-import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
 
 public final class GetSessionJob extends ApiJob<Session> {
 
@@ -21,7 +22,7 @@ public final class GetSessionJob extends ApiJob<Session> {
     return new GetSessionAddEvent();
   }
 
-  @Override protected Call<Session> apiCall() {
+  @Override protected Observable<Result<Session>> apiCall() {
     return restClient.getSessionById(id);
   }
 
@@ -30,7 +31,7 @@ public final class GetSessionJob extends ApiJob<Session> {
     eventBus.post(new GetSessionSuccessEvent(session));
   }
 
-  @Override protected void onApiFailure(Response<Session> response) {
+  @Override protected void onApiFailure(Throwable error) {
 
   }
 }

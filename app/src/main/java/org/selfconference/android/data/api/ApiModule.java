@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 import static org.selfconference.android.BuildConfig.DEBUG;
@@ -32,6 +33,7 @@ public final class ApiModule {
     return new Retrofit.Builder() //
         .baseUrl(baseUrl) //
         .addConverterFactory(MoshiConverterFactory.create(moshi)) //
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) //
         .client(okHttpClient) //
         .validateEagerly(DEBUG) //
         .build();

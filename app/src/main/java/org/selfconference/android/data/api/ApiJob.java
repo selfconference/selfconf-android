@@ -9,6 +9,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.selfconference.android.data.job.Priorities;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
 import timber.log.Timber;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,8 +21,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @param <T> the expected type returned by the API.
  */
 public abstract class ApiJob<T> extends Job {
-
-  private static final long INITIAL_BACKOFF_MS = 1000;
 
   @Inject protected RestClient restClient;
   @Inject protected EventBus eventBus;
@@ -40,11 +40,11 @@ public abstract class ApiJob<T> extends Job {
   }
 
   @Override public void onRun() throws Throwable {
-    Response<T> response = apiCall().execute();
-    if (response.isSuccessful()) {
-      onApiSuccess(response);
+    Result<T> result = apiCall().toBlocking().single();
+    if (result.isError()) {
+      onApiFailure(result.error());
     } else {
-      onApiFailure(response);
+      onApiSuccess(result.response());
     }
   }
 
@@ -59,7 +59,7 @@ public abstract class ApiJob<T> extends Job {
   @NonNull protected abstract Object createAddEvent();
 
   /** Returns the API call to be executed when this job is run. */
-  protected abstract Call<T> apiCall();
+  protected abstract Observable<Result<T>> apiCall();
 
   /**
    * A callback to be invoked when the {@link #apiCall()} has succeeded.
@@ -73,7 +73,7 @@ public abstract class ApiJob<T> extends Job {
    * A callback to be invoked when the {@link #apiCall()} has failed.
    * Failure is determined by a status code that does not fall within the range of [200, 300).
    *
-   * @param response the response returned from {@link Call#execute()}.
+   * @param error the error thrown while making the HTTP request.
    */
-  protected abstract void onApiFailure(Response<T> response);
+  protected abstract void onApiFailure(Throwable error);
 }
