@@ -11,6 +11,10 @@ public final class Results {
     return SUCCESSFUL;
   }
 
+  public static <T> Func1<Result<? extends T>, T> responseBody() {
+    return result -> result.response().body();
+  }
+
   private Results() {
     throw new AssertionError("No instances.");
   }

@@ -87,7 +87,7 @@ public final class SessionListFragment extends BaseListFragment
     scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
     Observable<Result<List<Session>>> result =
-        sessionsSubject.flatMap(sessions -> restClient.getSessions().subscribeOn(Schedulers.io()))
+        sessionsSubject.flatMap(__ -> restClient.getSessions().subscribeOn(Schedulers.io()))
             .observeOn(AndroidSchedulers.mainThread())
             .share();
 

@@ -20,9 +20,5 @@ public abstract class BaseFragment extends RxFragment {
     ButterKnife.bind(this, view);
   }
 
-  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-  }
-
   protected abstract int layoutResId();
 }
