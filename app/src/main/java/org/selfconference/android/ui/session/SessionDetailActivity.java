@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,32 +19,37 @@ import com.google.common.collect.ImmutableList;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import javax.inject.Inject;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import okhttp3.ResponseBody;
 import org.selfconference.android.R;
 import org.selfconference.android.data.IntentFactory;
+import org.selfconference.android.data.api.RestClient;
+import org.selfconference.android.data.api.Results;
+import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.data.event.SubmitFeedbackAddEvent;
-import org.selfconference.android.data.event.SubmitFeedbackSuccessEvent;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseActivity;
 import org.selfconference.android.ui.ViewContainer;
 import org.selfconference.android.ui.misc.Themes;
+import org.selfconference.android.ui.session.FeedbackFragment.OnFeedbackCreatedListener;
 import org.selfconference.android.ui.speaker.SpeakerAdapter;
 import org.selfconference.android.ui.view.FloatingActionButton;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
 import org.selfconference.android.ui.viewmodel.SessionDetails;
 import org.selfconference.android.util.Instants;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.text.Html.fromHtml;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.greenrobot.eventbus.ThreadMode.MAIN;
 
-public final class SessionDetailActivity extends BaseActivity {
+public final class SessionDetailActivity extends BaseActivity implements OnFeedbackCreatedListener {
   private static final String EXTRA_SESSION = "org.selfconference.android.ui.session.SESSION";
 
   @BindView(R.id.long_title) TextView sessionTitle;
@@ -57,10 +61,12 @@ public final class SessionDetailActivity extends BaseActivity {
   @BindView(R.id.submit_feedback) TextView submitFeedback;
 
   @Inject SessionPreferences preferences;
-  @Inject EventBus eventBus;
   @Inject Picasso picasso;
   @Inject IntentFactory intentFactory;
   @Inject ViewContainer viewContainer;
+  @Inject RestClient restClient;
+
+  private final PublishSubject<Feedback> feedbackSubject = PublishSubject.create();
 
   private Session session;
 
@@ -85,35 +91,31 @@ public final class SessionDetailActivity extends BaseActivity {
 
     sessionTitle.setText(session.name());
     favoriteButton.setChecked(preferences.isFavorite(session));
-    favoriteButton.setOnCheckedChangeListener(new FloatingActionButton.OnCheckedChangeListener() {
-      @Override public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
-        if (isChecked) {
-          preferences.favorite(session);
-        } else {
-          preferences.unfavorite(session);
-        }
+    favoriteButton.setOnCheckedChangeListener((fabView, isChecked) -> {
+      if (isChecked) {
+        preferences.favorite(session);
+      } else {
+        preferences.unfavorite(session);
       }
     });
-    favoriteButton.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        showSnackbar();
-      }
-    });
+    favoriteButton.setOnClickListener(view -> showSnackbar());
 
     setupFeedbackButton();
 
     setUpSessionDetailList();
     setUpSpeakerList();
-  }
 
-  @Override protected void onResume() {
-    super.onResume();
-    eventBus.register(this);
-  }
+    Observable<Result<ResponseBody>> result = feedbackSubject //
+        .flatMap(feedback -> restClient.submitFeedback(session.id(), feedback)
+            .subscribeOn(Schedulers.io()))
+        .observeOn(AndroidSchedulers.mainThread())
+        .compose(bindToLifecycle())
+        .share();
 
-  @Override protected void onPause() {
-    super.onPause();
-    eventBus.unregister(this);
+    result.filter(Results.isSuccessful()).subscribe(response -> {
+      preferences.submitFeedback(session);
+      setupFeedbackButton();
+    });
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,14 +131,12 @@ public final class SessionDetailActivity extends BaseActivity {
     fragment.show(getSupportFragmentManager(), FeedbackFragment.TAG);
   }
 
-  @Subscribe(threadMode = MAIN) public void onSubmitFeedbackAdded(SubmitFeedbackAddEvent event) {
+  @Override public void onFeedbackCreated(Session session, Feedback feedback) {
     submitFeedback.setEnabled(false);
     submitFeedback.setText("Submitting feedback...");
-  }
 
-  @Subscribe(threadMode = MAIN)
-  public void onSuccessfulFeedbackSubmitted(SubmitFeedbackSuccessEvent event) {
-    setupFeedbackButton();
+    // Submit feedback.
+    feedbackSubject.onNext(feedback);
   }
 
   private void setUpActionBar() {
@@ -163,11 +163,7 @@ public final class SessionDetailActivity extends BaseActivity {
     SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
     sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);
     sessionDetailRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    scrollView.post(new Runnable() {
-      @Override public void run() {
-        scrollView.scrollTo(0, 0);
-      }
-    });
+    scrollView.post(() -> scrollView.scrollTo(0, 0));
   }
 
   private void setUpSpeakerList() {
@@ -175,11 +171,9 @@ public final class SessionDetailActivity extends BaseActivity {
     speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
     SpeakerAdapter speakerAdapter = new SpeakerAdapter(picasso, true);
     speakerAdapter.setData(speakers);
-    speakerAdapter.setOnSpeakerClickListener(new SpeakerAdapter.OnSpeakerClickListener() {
-      @Override public void onSpeakerClick(Speaker speaker) {
-        String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
-        startActivity(intentFactory.createUrlIntent(twitterUrl));
-      }
+    speakerAdapter.setOnSpeakerClickListener(speaker -> {
+      String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
+      startActivity(intentFactory.createUrlIntent(twitterUrl));
     });
     speakerRecyclerView.setAdapter(speakerAdapter);
     speakerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -189,11 +183,9 @@ public final class SessionDetailActivity extends BaseActivity {
     final boolean isChecked = favoriteButton.isChecked();
     String message = isChecked ? "Session favorited" : "Session unfavorited";
     final Snackbar snackbar = Snackbar.make(favoriteButton, message, LENGTH_SHORT);
-    snackbar.setAction("Undo", new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        favoriteButton.setChecked(!isChecked);
-        snackbar.dismiss();
-      }
+    snackbar.setAction("Undo", v -> {
+      favoriteButton.setChecked(!isChecked);
+      snackbar.dismiss();
     });
     snackbar.show();
   }

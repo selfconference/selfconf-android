@@ -5,8 +5,6 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 import org.selfconference.android.data.DataModule;
-import org.selfconference.android.data.api.ApiJob;
-import org.selfconference.android.data.job.SubmitFeedbackJob;
 import org.selfconference.android.ui.BaseActivity;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.UiModule;
@@ -33,8 +31,6 @@ import org.selfconference.android.ui.sponsor.SponsorListFragment;
         FeedbackFragment.class, //
         BaseActivity.class, //
         SessionDetailActivity.class, //
-        ApiJob.class, //
-        SubmitFeedbackJob.class, //
         App.class, //
     }
 )

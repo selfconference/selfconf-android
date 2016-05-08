@@ -1,5 +1,6 @@
 package org.selfconference.android.ui.session;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,14 +11,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.birbit.android.jobqueue.JobManager;
-import javax.inject.Inject;
 import org.selfconference.android.R;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Vote;
-import org.selfconference.android.data.job.SubmitFeedbackJob;
 import org.selfconference.android.ui.view.VoteButton;
 import org.selfconference.android.ui.view.VoteButton.OnVoteSelectedListener;
 
@@ -30,16 +27,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Also contains an {@link EditText} for optional comments.
  */
 public final class FeedbackFragment extends DialogFragment implements OnVoteSelectedListener {
+  public interface OnFeedbackCreatedListener {
+    void onFeedbackCreated(Session session, Feedback feedback);
+  }
+
   public static final String TAG = FeedbackFragment.class.getName();
   private static final String EXTRA_SESSION =
       "org.selfconference.android.ui.session.FeedbackFragment.EXTRA_SESSION";
-
-  @Inject JobManager jobManager;
 
   @BindView(R.id.vote_button) VoteButton voteButton;
   @BindView(R.id.feedback_fragment_comment_section) EditText comments;
 
   private Session session;
+  private OnFeedbackCreatedListener onFeedbackCreatedListener;
 
   /**
    * A factory method used to create a {@link FeedbackFragment} for a session
@@ -57,9 +57,18 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
     return feedbackFragment;
   }
 
-  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    Injector.obtain(getActivity().getApplication()).inject(this);
+  @Override public void onAttach(Activity activity) {
+    try {
+      onFeedbackCreatedListener = (OnFeedbackCreatedListener) activity;
+    } catch (ClassCastException e) {
+      throw new RuntimeException(e);
+    }
+    super.onAttach(activity);
+  }
+
+  @Override public void onDetach() {
+    super.onDetach();
+    onFeedbackCreatedListener = null;
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -82,17 +91,14 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
   }
 
   @Override public void onVoteSelected(VoteButton voteButton, Vote vote) {
-    Feedback feedback = Feedback.builder() //
-        .vote(vote) //
-        .comments(comments.getText().toString()) //
-        .build();
+    if (onFeedbackCreatedListener != null) {
+      Feedback feedback = Feedback.builder() //
+          .vote(vote) //
+          .comments(comments.getText().toString()) //
+          .build();
+      onFeedbackCreatedListener.onFeedbackCreated(session, feedback);
+    }
 
-    jobManager.addJobInBackground(new SubmitFeedbackJob(session, feedback));
-
-    voteButton.postDelayed(new Runnable() {
-      @Override public void run() {
-        dismiss();
-      }
-    }, 200);
+    voteButton.postDelayed(this::dismiss, 200);
   }
 }

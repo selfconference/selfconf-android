@@ -157,9 +157,6 @@ dependencies {
 
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'
 
-  compile "com.birbit:android-priority-jobqueue:$rootProject.deps.jobQueue"
-  compile "org.greenrobot:eventbus:$rootProject.deps.eventBus"
-
   compile "com.squareup.moshi:moshi:$rootProject.deps.moshi"
   compile "com.jakewharton.threetenabp:threetenabp:$rootProject.deps.threeTenAbp"
 

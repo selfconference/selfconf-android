@@ -2,11 +2,6 @@ package org.selfconference.android.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import com.birbit.android.jobqueue.Job;
-import com.birbit.android.jobqueue.JobManager;
-import com.birbit.android.jobqueue.config.Configuration;
-import com.birbit.android.jobqueue.di.DependencyInjector;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
@@ -29,7 +24,9 @@ import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
 @Module(
     includes = ApiModule.class,
     complete = false,
-    library = true) public final class DataModule {
+    library = true
+)
+public final class DataModule {
   static final int DISK_CACHE_SIZE = (int) MEGABYTES.toBytes(50);
 
   @Provides @Singleton Moshi moshi() {
@@ -58,26 +55,12 @@ import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
 
   @Provides @Singleton Picasso picasso(Application application) {
     return new Picasso.Builder(application) //
-        .listener(new Picasso.Listener() {
-          @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception e) {
-            Timber.e(e, "Image load failed for URI: %s", uri);
-          }
-        }) //
+        .listener((picasso, uri, e) -> Timber.e(e, "Image load failed for URI: %s", uri)) //
         .build();
   }
 
   @Provides @Singleton OkHttpClient okHttpClient(Application application) {
     return createOkHttpClient(application).build();
-  }
-
-  @Provides @Singleton JobManager jobManager(final Application application) {
-    return new JobManager(new Configuration.Builder(application) //
-        .injector(new DependencyInjector() {
-          @Override public void inject(Job job) {
-            Injector.obtain(application).inject(job);
-          }
-        }) //
-        .build());
   }
 
   static OkHttpClient.Builder createOkHttpClient(Application application) {
