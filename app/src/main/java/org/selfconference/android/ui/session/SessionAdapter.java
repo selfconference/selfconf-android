@@ -52,11 +52,9 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   @Override public void onBindViewHolder(SessionViewHolder holder, int position) {
     final Session session = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        if (onSessionClickListener != null) {
-          onSessionClickListener.onSessionClick(session);
-        }
+    holder.itemView.setOnClickListener(v -> {
+      if (onSessionClickListener != null) {
+        onSessionClickListener.onSessionClick(session);
       }
     });
 
@@ -72,22 +70,14 @@ public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.Se
   public void filterFavorites(final boolean show) {
     getFilteredData().clear();
     dataObservable() //
-        .filter(new Func1<Session, Boolean>() {
-          @Override public Boolean call(Session session) {
-            return !show || preferences.isFavorite(session);
-          }
-        }) //
+        .filter(session -> !show || preferences.isFavorite(session)) //
         .subscribe(new FilteredDataSubscriber<>(this));
   }
 
   @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
-    return new Func1<Session, Boolean>() {
-      @Override public Boolean call(Session session) {
-        return session.name() //
-            .toLowerCase(Locale.US) //
-            .contains(query.toLowerCase(Locale.US));
-      }
-    };
+    return session -> session.name() //
+        .toLowerCase(Locale.US) //
+        .contains(query.toLowerCase(Locale.US));
   }
 
   static final class SessionViewHolder extends ButterKnifeViewHolder {
