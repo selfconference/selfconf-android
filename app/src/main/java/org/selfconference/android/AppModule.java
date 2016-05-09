@@ -13,7 +13,6 @@ import org.selfconference.android.ui.session.FeedbackFragment;
 import org.selfconference.android.ui.session.SessionContainerFragment;
 import org.selfconference.android.ui.session.SessionDetailActivity;
 import org.selfconference.android.ui.session.SessionListFragment;
-import org.selfconference.android.ui.speaker.SpeakerListFragment;
 import org.selfconference.android.ui.sponsor.SponsorListFragment;
 
 @Module(
@@ -25,7 +24,6 @@ import org.selfconference.android.ui.sponsor.SponsorListFragment;
         SponsorListFragment.class, //
         BaseFragment.class, //
         SessionContainerFragment.class, //
-        SpeakerListFragment.class, //
         SessionListFragment.class, //
         CodeOfConductFragment.class, //
         FeedbackFragment.class, //

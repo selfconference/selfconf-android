@@ -8,7 +8,6 @@ import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
@@ -36,11 +35,6 @@ import rx.Observable;
   @Override public Observable<Result<Session>> getSessionById(@Path("id") int id) {
     Session session = MockSessions.findSessionById(id);
     return delegate.returning(Calls.response(session)).getSessionById(id);
-  }
-
-  @Override public Observable<Result<List<Speaker>>> getSpeakers() {
-    List<Speaker> speakers = MockSpeakers.allSpeakers();
-    return delegate.returning(Calls.response(speakers)).getSpeakers();
   }
 
   @Override public Observable<Result<List<Sponsor>>> getSponsors() {

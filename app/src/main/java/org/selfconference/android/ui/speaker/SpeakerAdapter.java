@@ -17,7 +17,6 @@ import org.selfconference.android.util.PlaceholderDrawable;
 import rx.functions.Func1;
 
 import static android.text.Html.fromHtml;
-import static android.view.View.GONE;
 import static android.view.ViewTreeObserver.OnPreDrawListener;
 
 public final class SpeakerAdapter
@@ -27,14 +26,12 @@ public final class SpeakerAdapter
   }
 
   private final Picasso picasso;
-  private final boolean showDescription;
 
   private OnSpeakerClickListener onSpeakerClickListener;
 
-  public SpeakerAdapter(Picasso picasso, boolean showDescription) {
+  public SpeakerAdapter(Picasso picasso) {
     super();
     this.picasso = picasso;
-    this.showDescription = showDescription;
   }
 
   public void setOnSpeakerClickListener(OnSpeakerClickListener onSpeakerClickListener) {
@@ -42,11 +39,7 @@ public final class SpeakerAdapter
   }
 
   @Override protected Func1<Speaker, Boolean> filterPredicate(final String query) {
-    return new Func1<Speaker, Boolean>() {
-      @Override public Boolean call(Speaker speaker) {
-        return speaker.name().toLowerCase(Locale.US).contains(query.toLowerCase(Locale.US));
-      }
-    };
+    return speaker -> speaker.name().toLowerCase(Locale.US).contains(query.toLowerCase(Locale.US));
   }
 
   @Override public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,11 +51,9 @@ public final class SpeakerAdapter
   @Override public void onBindViewHolder(final SpeakerViewHolder holder, int position) {
     final Speaker speaker = getFilteredData().get(position);
 
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        if (onSpeakerClickListener != null) {
-          onSpeakerClickListener.onSpeakerClick(speaker);
-        }
+    holder.itemView.setOnClickListener(v -> {
+      if (onSpeakerClickListener != null) {
+        onSpeakerClickListener.onSpeakerClick(speaker);
       }
     });
     holder.speakerName.setText(speaker.name());
@@ -80,11 +71,7 @@ public final class SpeakerAdapter
         return true;
       }
     });
-    if (showDescription) {
-      holder.speakerDescription.setText(fromHtml(speaker.bio()));
-    } else {
-      holder.speakerDescription.setVisibility(GONE);
-    }
+    holder.speakerDescription.setText(fromHtml(speaker.bio()));
   }
 
   static final class SpeakerViewHolder extends ButterKnifeViewHolder {

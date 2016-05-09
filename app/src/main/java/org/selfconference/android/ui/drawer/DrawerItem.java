@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.coc.CodeOfConductFragment;
 import org.selfconference.android.ui.session.SessionContainerFragment;
-import org.selfconference.android.ui.speaker.SpeakerListFragment;
 import org.selfconference.android.ui.sponsor.SponsorListFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,15 +18,6 @@ public enum DrawerItem {
 
     @Override public String fragmentTag() {
       return SessionContainerFragment.TAG;
-    }
-  },
-  SPEAKERS {
-    @Override public Fragment fragment() {
-      return new SpeakerListFragment();
-    }
-
-    @Override public String fragmentTag() {
-      return SpeakerListFragment.TAG;
     }
   },
   SPONSORS {
@@ -58,8 +48,6 @@ public enum DrawerItem {
     switch (menuItem.getItemId()) {
       case R.id.menu_item_sessions:
         return SESSIONS;
-      case R.id.menu_item_speakers:
-        return SPEAKERS;
       case R.id.menu_item_sponsors:
         return SPONSORS;
       case R.id.menu_item_code_of_conduct:

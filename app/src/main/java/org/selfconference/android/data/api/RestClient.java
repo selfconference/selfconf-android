@@ -4,7 +4,6 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.api.model.Sponsor;
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
@@ -22,9 +21,6 @@ public interface RestClient {
 
   @GET("sessions/{id}") //
   Observable<Result<Session>> getSessionById(@Path("id") int id);
-
-  @GET("events/latest/speakers") //
-  Observable<Result<List<Speaker>>> getSpeakers();
 
   @GET("events/latest/sponsors") //
   Observable<Result<List<Sponsor>>> getSponsors();

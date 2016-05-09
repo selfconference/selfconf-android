@@ -20,7 +20,7 @@
       android:layout_marginRight="16dp"
       android:layout_marginLeft="16dp"
       android:tint="@color/image_tint_light"
-      tools:src="@drawable/ic_social_mood"
+      tools:background="#fff"
       />
 
   <TextView
