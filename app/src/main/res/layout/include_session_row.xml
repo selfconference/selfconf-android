@@ -14,94 +14,43 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="16dp"
-    android:orientation="horizontal"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:baselineAligned="false"
+    android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    tools:background="#FAFAFA"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:background="#50FF0000"
     >
 
   <TextView
-      android:id="@+id/start_time"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      android:textSize="14sp"
+      android:id="@+id/lineOne"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:fontFamily="sans-serif-medium"
-      android:background="@drawable/circle"
-      android:textColor="@android:color/white"
-      android:gravity="center"
-      android:padding="2dp"
-      android:layout_marginStart="16dp"
-      android:layout_marginEnd="16dp"
-      android:layout_marginLeft="16dp"
-      android:layout_marginRight="16dp"
-      tools:text="12PM"
+      android:textColor="#464646"
+      android:textSize="16sp"
+      tools:text="How to supply the dank memes"
       />
 
-  <FrameLayout
-      android:id="@+id/box"
-      android:layout_width="0dp"
-      android:layout_weight="1"
+  <TextView
+      android:id="@+id/lineTwo"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginRight="16dp"
-      android:layout_marginEnd="16dp"
-      >
+      android:layout_marginTop="4dp"
+      android:textColor="#939393"
+      android:textSize="14sp"
+      tools:text="Nate West"
+      />
 
-    <LinearLayout
-        android:id="@+id/slot_chip_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="16dp"
-        android:orientation="vertical"
-        >
+  <TextView
+      android:id="@+id/lineThree"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:textColor="#939393"
+      android:textSize="14sp"
+      tools:text="MCC1"
+      />
 
-      <TextView
-          android:id="@+id/slot_title"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="18sp"
-          android:fontFamily="sans-serif-medium"
-          android:textColor="#464646"
-          android:paddingLeft="8dp"
-          android:paddingRight="8dp"
-          tools:text="Introduction to Typescript"
-          />
-
-      <TextView
-          android:id="@+id/slot_subtitle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:paddingLeft="8dp"
-          android:textSize="14sp"
-          android:textColor="#939393"
-          tools:text="Room 140F"
-          />
-
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:layout_marginTop="16dp"
-          android:background="#eee"
-          />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/favorite_session_indicator"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:src="@drawable/ic_star_grey"
-        android:layout_gravity="right|top"
-        android:layout_marginTop="8dp"
-        android:padding="4dp"
-        android:tint="@color/orange"
-        android:visibility="gone"
-        tools:visibility="visible"
-        />
-  </FrameLayout>
 </LinearLayout>

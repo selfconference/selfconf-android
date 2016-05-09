@@ -4,15 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import butterknife.BindView;
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimaps;
 import java.util.List;
 import javax.inject.Inject;
 import org.selfconference.android.R;
@@ -20,11 +22,11 @@ import org.selfconference.android.data.Funcs;
 import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.api.RestClient;
 import org.selfconference.android.data.api.Results;
+import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Slot;
-import org.selfconference.android.data.pref.SessionPreferences;
-import org.selfconference.android.ui.BaseListFragment;
-import org.selfconference.android.ui.misc.FilterableAdapter;
+import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.util.Instants;
 import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
@@ -33,14 +35,12 @@ import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
-public final class SessionListFragment extends BaseListFragment
-    implements SwipeRefreshLayout.OnRefreshListener {
+public final class SessionListFragment extends BaseFragment implements OnRefreshListener {
   private static final String EXTRA_DAY = "org.selfconference.android.ui.session.EXTRA_DAY";
 
   @BindView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
   @BindView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
-  @Inject SessionPreferences sessionPreferences;
   @Inject RestClient restClient;
 
   private final PublishSubject<Day> sessionsSubject = PublishSubject.create();
@@ -65,7 +65,7 @@ public final class SessionListFragment extends BaseListFragment
 
     String dayString = getArguments().getString(EXTRA_DAY);
     day = Day.valueOf(dayString);
-    sessionAdapter = new SessionAdapter(sessionPreferences);
+    sessionAdapter = new SessionAdapter();
     sessionAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
       @Override public void onChanged() {
         swipeRefreshLayout.setRefreshing(false);
@@ -92,7 +92,7 @@ public final class SessionListFragment extends BaseListFragment
             .share();
 
     result.filter(Results.isSuccessful())
-        .map(res -> res.response().body())
+        .map(Results.responseBody())
         .flatMap((sessions) -> Observable.from(sessions) //
             .filter(session -> {
               Slot slot = Optional.fromNullable(session.slot()).or(Slot.empty());
@@ -103,11 +103,35 @@ public final class SessionListFragment extends BaseListFragment
               Slot s2 = Optional.fromNullable(session2.slot()).or(Slot.empty());
               return s1.compareTo(s2);
             }))
+        .map(sessions -> Multimaps.index(sessions, session -> {
+          return Optional.fromNullable(session.slot()).or(Slot.empty()).time();
+        }))
+        .flatMap(sessions -> {
+          return Observable.from(sessions.asMap().entrySet()) //
+              .map(entry -> {
+                ImmutableList.Builder<SessionAdapter.ViewModel> models = ImmutableList.builder();
+                models.add(SessionAdapter.Header.withText(Instants.miniTimeString(entry.getKey())));
+                models.addAll(Collections2.transform(entry.getValue(), session -> {
+                  List<Speaker> speakers =
+                      Optional.fromNullable(session.speakers()).or(ImmutableList.of());
+                  List<String> speakerNames = Lists.transform(speakers, Speaker::name);
+                  Room room = Optional.fromNullable(session.room()).or(Room.empty());
+                  return SessionAdapter.ListItem.builder()
+                      .session(session)
+                      .lineOne(session.name())
+                      .lineTwo(Joiner.on(" / ").join(speakerNames))
+                      .lineThree(room.name())
+                      .build();
+                }));
+                return models.build();
+              })
+              .concatMapIterable(Funcs.identity())
+              .toList();
+        })
         .compose(bindToLifecycle())
-        .subscribe(sessions -> {
-          Timber.d("Got filtered session: %s", sessions);
-          sessionAdapter.setData(sessions);
-        }, throwable -> Timber.e(throwable, "Y u no work"));
+        .subscribe(viewModels -> {
+          sessionAdapter.setViewModels(viewModels);
+        });
 
     result.filter(Funcs.not(Results.isSuccessful()))
         .compose(bindToLifecycle())
@@ -118,41 +142,12 @@ public final class SessionListFragment extends BaseListFragment
     onRefresh();
   }
 
-  @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
-    if (sessionPreferences.hasFavorites()) {
-      inflater.inflate(R.menu.favorites, menu);
-      menu.findItem(R.id.action_favorites).setOnMenuItemClickListener(item -> {
-        item.setChecked(!item.isChecked());
-        sessionAdapter.filterFavorites(item.isChecked());
-        return true;
-      });
-    }
-  }
-
-  @Override public void onResume() {
-    super.onResume();
-    sessionAdapter.refresh();
-    refreshFavoritesMenu();
-  }
-
   @Override protected int layoutResId() {
     return R.layout.fragment_schedule_item;
   }
 
-  @Override protected FilterableAdapter getFilterableAdapter() {
-    return sessionAdapter;
-  }
-
-  private void refreshFavoritesMenu() {
-    ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-    if (supportActionBar != null) {
-      supportActionBar.invalidateOptionsMenu();
-    }
-  }
-
   @Override public void onRefresh() {
-    getView().post(() -> {
+    swipeRefreshLayout.post(() -> {
       swipeRefreshLayout.setRefreshing(true);
       sessionsSubject.onNext(day);
     });

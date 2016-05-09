@@ -1,93 +1,158 @@
 package org.selfconference.android.ui.session;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
-import com.google.common.base.Optional;
-import java.util.Locale;
+import com.google.auto.value.AutoValue;
+import com.google.common.collect.Lists;
+import java.util.List;
 import org.selfconference.android.R;
-import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Slot;
-import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.misc.FilterableAdapter;
-import org.selfconference.android.ui.misc.FilteredDataSubscriber;
-import org.selfconference.android.util.Instants;
-import rx.functions.Func1;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
-public class SessionAdapter extends FilterableAdapter<Session, SessionAdapter.SessionViewHolder> {
+public class SessionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   public interface OnSessionClickListener {
     void onSessionClick(Session event);
   }
 
-  private final SessionPreferences preferences;
+  public interface ViewModel {
+    ViewType viewType();
+  }
+
+  enum ViewType {
+    HEADER,
+    LIST_ITEM;
+
+    static ViewType fromInt(int position) {
+      return ViewType.values()[position];
+    }
+  }
+
+  @AutoValue public static abstract class Header implements ViewModel {
+    public static Header withText(String text) {
+      return new AutoValue_SessionAdapter_Header(text);
+    }
+
+    public abstract String text();
+
+    @Override public ViewType viewType() {
+      return ViewType.HEADER;
+    }
+  }
+
+  @AutoValue public static abstract class ListItem implements ViewModel {
+    public static Builder builder() {
+      return new AutoValue_SessionAdapter_ListItem.Builder();
+    }
+
+    public abstract Session session();
+
+    public abstract String lineOne();
+
+    public abstract String lineTwo();
+
+    public abstract String lineThree();
+
+    @Override public ViewType viewType() {
+      return ViewType.LIST_ITEM;
+    }
+
+    @AutoValue.Builder public static abstract class Builder {
+      public abstract Builder session(Session session);
+
+      public abstract Builder lineOne(String lineOne);
+
+      public abstract Builder lineTwo(String lineTwo);
+
+      public abstract Builder lineThree(String lineThree);
+
+      public abstract ListItem build();
+    }
+  }
+
+  private final List<ViewModel> viewModels = Lists.newArrayList();
 
   private OnSessionClickListener onSessionClickListener;
 
-  public SessionAdapter(SessionPreferences preferences) {
-    super();
-    this.preferences = preferences;
+  public SessionAdapter() {
+  }
+
+  public void setViewModels(List<ViewModel> viewModels) {
+    this.viewModels.clear();
+    this.viewModels.addAll(viewModels);
+    notifyDataSetChanged();
   }
 
   public void setOnSessionClickListener(OnSessionClickListener onSessionClickListener) {
     this.onSessionClickListener = onSessionClickListener;
   }
 
-  public void refresh() {
-    notifyDataSetChanged();
+  @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    ViewType type = ViewType.fromInt(viewType);
+    LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    switch (type) {
+      case HEADER:
+        View headerView = inflater.inflate(R.layout.text_header, parent, false);
+        return new HeaderViewHolder(headerView);
+      case LIST_ITEM:
+        View listItemView = inflater.inflate(R.layout.include_session_row, parent, false);
+        return new ListItemViewHolder(listItemView);
+      default:
+        throw new IllegalArgumentException("Invalid ViewType: " + type);
+    }
   }
 
-  @Override public SessionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.include_session_row, parent, false);
-    return new SessionViewHolder(view);
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    ViewModel viewModel = viewModels.get(position);
+    ViewType viewType = viewModel.viewType();
+    switch (viewType) {
+      case HEADER:
+        Header header = (Header) viewModel;
+        HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+        headerViewHolder.textView.setText(header.text());
+        break;
+      case LIST_ITEM:
+        ListItem listItem = (ListItem) viewModel;
+        ListItemViewHolder listItemViewHolder = (ListItemViewHolder) holder;
+        listItemViewHolder.itemView.setOnClickListener(v -> {
+          if (onSessionClickListener != null) {
+            onSessionClickListener.onSessionClick(listItem.session());
+          }
+        });
+        listItemViewHolder.lineOne.setText(listItem.lineOne());
+        listItemViewHolder.lineTwo.setText(listItem.lineTwo());
+        listItemViewHolder.lineThree.setText(listItem.lineThree());
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid ViewType: " + viewType);
+    }
   }
 
-  @Override public void onBindViewHolder(SessionViewHolder holder, int position) {
-    final Session session = getFilteredData().get(position);
-
-    holder.itemView.setOnClickListener(v -> {
-      if (onSessionClickListener != null) {
-        onSessionClickListener.onSessionClick(session);
-      }
-    });
-
-    holder.favoriteSessionIndicator.setVisibility(preferences.isFavorite(session) ? VISIBLE : GONE);
-
-    holder.sessionTitle.setText(session.name());
-    Room room = Optional.fromNullable(session.room()).or(Room.empty());
-    holder.sessionSubtitle.setText(room.name());
-    Slot slot = Optional.fromNullable(session.slot()).or(Slot.empty());
-    holder.startTime.setText(Instants.miniTimeString(slot.time()));
+  @Override public int getItemViewType(int position) {
+    return viewModels.get(position).viewType().ordinal();
   }
 
-  public void filterFavorites(final boolean show) {
-    getFilteredData().clear();
-    dataObservable() //
-        .filter(session -> !show || preferences.isFavorite(session)) //
-        .subscribe(new FilteredDataSubscriber<>(this));
+  @Override public int getItemCount() {
+    return viewModels.size();
   }
 
-  @Override protected Func1<Session, Boolean> filterPredicate(final String query) {
-    return session -> session.name() //
-        .toLowerCase(Locale.US) //
-        .contains(query.toLowerCase(Locale.US));
+  static final class HeaderViewHolder extends ButterKnifeViewHolder {
+    @BindView(R.id.text) TextView textView;
+
+    HeaderViewHolder(View itemView) {
+      super(itemView);
+    }
   }
 
-  static final class SessionViewHolder extends ButterKnifeViewHolder {
+  static final class ListItemViewHolder extends ButterKnifeViewHolder {
+    @BindView(R.id.lineOne) TextView lineOne;
+    @BindView(R.id.lineTwo) TextView lineTwo;
+    @BindView(R.id.lineThree) TextView lineThree;
 
-    @BindView(R.id.start_time) TextView startTime;
-    @BindView(R.id.slot_title) TextView sessionTitle;
-    @BindView(R.id.slot_subtitle) TextView sessionSubtitle;
-    @BindView(R.id.favorite_session_indicator) View favoriteSessionIndicator;
-
-    SessionViewHolder(View itemView) {
+    ListItemViewHolder(View itemView) {
       super(itemView);
     }
   }
