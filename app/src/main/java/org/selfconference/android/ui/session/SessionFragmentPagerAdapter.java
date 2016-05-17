@@ -13,15 +13,21 @@ public final class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter
   }
 
   @Override public Fragment getItem(int position) {
-    return SessionListFragment.newInstance(Day.fromPosition(position));
+    if (position == 0 || position == 1) {
+      return SessionListFragment.newInstance(Day.fromPosition(position));
+    }
+    return MyScheduleFragment.newInstance();
   }
 
   @Override public int getCount() {
-    return Day.values().length;
+    return Day.values().length + 1;
   }
 
   @Override public CharSequence getPageTitle(int position) {
-    Instant startTime = Day.fromPosition(position).getStartTime();
-    return Instants.monthDayString(startTime);
+    if (position == 0 || position == 1) {
+      Instant startTime = Day.fromPosition(position).getStartTime();
+      return Instants.monthDayString(startTime);
+    }
+    return "My Schedule";
   }
 }

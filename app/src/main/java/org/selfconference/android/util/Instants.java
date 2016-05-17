@@ -24,6 +24,20 @@ public final class Instants {
     return leftTime.compareTo(rightTime) == 0;
   }
 
+  public static String dayTimeString(Instant instant) {
+    if (Instant.MIN.equals(instant)) {
+      return "TBD";
+    }
+    OffsetDateTime offsetDateTime = offset(instant);
+
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("ha");
+    String time = timeFormatter.format(offsetDateTime);
+
+    String month = offsetDateTime.getMonth().getDisplayName(TextStyle.SHORT, Locale.US);
+    int day = offsetDateTime.getDayOfMonth();
+    return String.format("%s %s, %s", month, day, time);
+  }
+
   public static String miniTimeString(Instant instant) {
     if (Instant.MIN.equals(instant)) {
       return "TBD";

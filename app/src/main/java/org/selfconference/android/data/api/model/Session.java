@@ -3,6 +3,7 @@ package org.selfconference.android.data.api.model;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
@@ -28,13 +29,20 @@ import java.util.List;
 
   @Nullable public abstract Room room();
 
-  @Json(name="abstract") public abstract String description();
+  @Json(name = "abstract") public abstract String description();
 
   public abstract boolean keynote();
 
   @Nullable public abstract Slot slot();
 
   @Nullable public abstract List<Speaker> speakers();
+
+  @Override public String toString() {
+    return MoreObjects.toStringHelper(this) //
+        .add("id", id()) //
+        .add("name", name()) //
+        .toString();
+  }
 
   @AutoValue.Builder public static abstract class Builder {
 

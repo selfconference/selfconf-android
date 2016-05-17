@@ -1,11 +1,13 @@
 package org.selfconference.android.data;
 
+import com.fernandocejas.frodo.annotation.RxLogObservable;
 import com.google.common.collect.Lists;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.android.data.pref.SessionPreferences;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -16,8 +18,9 @@ import static org.selfconference.android.data.Data.Status.NONE;
 
   private final BehaviorSubject<Data<List<Session>>> sessionSubject;
   private final BehaviorSubject<Data<List<Sponsor>>> sponsorSubject;
+  private final SessionPreferences sessionPreferences;
 
-  @Inject public DataSource() {
+  @Inject public DataSource(SessionPreferences sessionPreferences) {
     Data<List<Session>> sessions = Data.<List<Session>>builder() //
         .data(Lists.newArrayList()) //
         .status(NONE) //
@@ -29,6 +32,8 @@ import static org.selfconference.android.data.Data.Status.NONE;
         .status(NONE) //
         .build();
     this.sponsorSubject = BehaviorSubject.create(sponsors);
+
+    this.sessionPreferences = sessionPreferences;
   }
 
   public void setSessions(Data<List<Session>> data) {
@@ -46,6 +51,13 @@ import static org.selfconference.android.data.Data.Status.NONE;
   public Observable<Data<List<Session>>> sessions() {
     return this.sessionSubject.share()
         .doOnSubscribe(() -> sessionSubject.onNext(sessionSubject.getValue()));
+  }
+
+  @RxLogObservable public Observable<List<Session>> favoriteSessions() {
+    return sessions().compose(DataTransformers.loaded())
+        .flatMap(sessions -> Observable.from(sessions) //
+            .filter(sessionPreferences::isFavorite) //
+            .toList());
   }
 
   public void setSponsors(Data<List<Sponsor>> data) {

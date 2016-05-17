@@ -10,6 +10,7 @@ import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.UiModule;
 import org.selfconference.android.ui.coc.CodeOfConductFragment;
 import org.selfconference.android.ui.session.FeedbackFragment;
+import org.selfconference.android.ui.session.MyScheduleFragment;
 import org.selfconference.android.ui.session.SessionContainerFragment;
 import org.selfconference.android.ui.session.SessionDetailActivity;
 import org.selfconference.android.ui.session.SessionListFragment;
@@ -25,6 +26,7 @@ import org.selfconference.android.ui.sponsor.SponsorListFragment;
         BaseFragment.class, //
         SessionContainerFragment.class, //
         SessionListFragment.class, //
+        MyScheduleFragment.class, //
         CodeOfConductFragment.class, //
         FeedbackFragment.class, //
         BaseActivity.class, //
