@@ -32,17 +32,13 @@ import rx.Observable;
     return delegate.returning(Calls.response(sessions)).getSessions();
   }
 
-  @Override public Observable<Result<Session>> getSessionById(@Path("id") int id) {
-    Session session = MockSessions.findSessionById(id);
-    return delegate.returning(Calls.response(session)).getSessionById(id);
-  }
-
   @Override public Observable<Result<List<Sponsor>>> getSponsors() {
     List<Sponsor> sponsors = MockSponsors.allSponsors();
     return delegate.returning(Calls.response(sponsors)).getSponsors();
   }
 
-  @Override public Observable<Result<ResponseBody>> submitFeedback(@Path("id") int id, @Body Feedback feedback) {
+  @Override public Observable<Result<ResponseBody>> submitFeedback(@Path("id") int id,
+      @Body Feedback feedback) {
     String feedbackJson = moshi.adapter(Feedback.class).toJson(feedback);
     ResponseBody body = ResponseBody.create(MediaType.parse("application/json"), feedbackJson);
     return delegate.returning(Calls.response(body)).submitFeedback(id, feedback);

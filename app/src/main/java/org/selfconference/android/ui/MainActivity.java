@@ -23,6 +23,7 @@ import org.selfconference.android.data.Funcs;
 import org.selfconference.android.data.api.RestClient;
 import org.selfconference.android.data.api.Results;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.drawer.DrawerItem;
 import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
@@ -40,6 +41,7 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
   @Inject RestClient restClient;
 
   private final PublishSubject<Void> sessionsSubject = PublishSubject.create();
+  private final PublishSubject<Void> sponsorsSubject = PublishSubject.create();
 
   private ActionBarDrawerToggle drawerToggle;
 
@@ -74,12 +76,12 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
     setupDrawerContent();
     clickNavigationDrawerItem(R.id.menu_item_sessions);
 
-    Observable<Result<List<Session>>> result =
+    Observable<Result<List<Session>>> sessionsResult =
         sessionsSubject.flatMap(__ -> restClient.getSessions().subscribeOn(Schedulers.io()))
             .observeOn(AndroidSchedulers.mainThread())
             .share();
 
-    result.filter(Results.isSuccessful()) //
+    sessionsResult.filter(Results.isSuccessful()) //
         .map(Results.responseBody()) //
         .compose(bindToLifecycle()) //
         .subscribe(sessions -> {
@@ -87,10 +89,34 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
               Data.<List<Session>>builder().data(sessions).status(Data.Status.LOADED).build());
         });
 
-    result.filter(Funcs.not(Results.isSuccessful())) //
+    sessionsResult.filter(Funcs.not(Results.isSuccessful())) //
         .compose(bindToLifecycle()) //
         .subscribe(sessionResult -> {
           dataSource.setSessions(Data.<List<Session>>builder().data(Lists.newArrayList())
+              .status(Data.Status.ERROR)
+              .throwable(sessionResult.error())
+              .build());
+        });
+
+    onRequestSessions();
+
+    Observable<Result<List<Sponsor>>> sponsorsResult =
+        sessionsSubject.flatMap(__ -> restClient.getSponsors().subscribeOn(Schedulers.io()))
+            .observeOn(AndroidSchedulers.mainThread())
+            .share();
+
+    sponsorsResult.filter(Results.isSuccessful()) //
+        .map(Results.responseBody()) //
+        .compose(bindToLifecycle()) //
+        .subscribe(sessions -> {
+          dataSource.setSponsors(
+              Data.<List<Sponsor>>builder().data(sessions).status(Data.Status.LOADED).build());
+        });
+
+    sponsorsResult.filter(Funcs.not(Results.isSuccessful())) //
+        .compose(bindToLifecycle()) //
+        .subscribe(sessionResult -> {
+          dataSource.setSponsors(Data.<List<Sponsor>>builder().data(Lists.newArrayList())
               .status(Data.Status.ERROR)
               .throwable(sessionResult.error())
               .build());
@@ -139,5 +165,10 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
   @Override public void onRequestSessions() {
     dataSource.requestNewSessions();
     sessionsSubject.onNext(null);
+  }
+
+  @Override public void onRequestSponsors() {
+    dataSource.requestNewSponsors();
+    sponsorsSubject.onNext(null);
   }
 }

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.BindView;
+import com.trello.rxlifecycle.FragmentEvent;
 import java.util.List;
 import javax.inject.Inject;
 import org.selfconference.android.R;
@@ -92,11 +93,15 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
 
     scheduleItemRecyclerView.setAdapter(sessionAdapter);
     scheduleItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+  }
+
+  @Override public void onStart() {
+    super.onStart();
 
     Observable<Data<List<Session>>> sessionsData = dataSource.sessions()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .compose(bindToLifecycle());
+        .compose(bindUntilEvent(FragmentEvent.STOP));
 
     sessionsData.compose(DataTransformers.loading()) //
         .subscribe(__ -> {

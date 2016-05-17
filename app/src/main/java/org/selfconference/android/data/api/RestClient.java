@@ -19,9 +19,6 @@ public interface RestClient {
   @GET("events/latest/sessions") //
   Observable<Result<List<Session>>> getSessions();
 
-  @GET("sessions/{id}") //
-  Observable<Result<Session>> getSessionById(@Path("id") int id);
-
   @GET("events/latest/sponsors") //
   Observable<Result<List<Sponsor>>> getSponsors();
 

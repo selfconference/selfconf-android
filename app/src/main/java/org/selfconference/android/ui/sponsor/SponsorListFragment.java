@@ -1,5 +1,6 @@
 package org.selfconference.android.ui.sponsor;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,22 +9,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import butterknife.BindView;
 import com.squareup.picasso.Picasso;
+import com.trello.rxlifecycle.FragmentEvent;
 import java.util.List;
 import javax.inject.Inject;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Data;
+import org.selfconference.android.data.DataSource;
+import org.selfconference.android.data.DataTransformers;
 import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.IntentFactory;
-import org.selfconference.android.data.api.RestClient;
-import org.selfconference.android.data.api.Results;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.BaseListFragment;
+import org.selfconference.android.ui.FragmentCallbacks;
 import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.sponsor.SponsorAdapter.OnSponsorClickListener;
-import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
+import timber.log.Timber;
 
 public class SponsorListFragment extends BaseListFragment
     implements OnSponsorClickListener, OnRefreshListener {
@@ -32,15 +35,28 @@ public class SponsorListFragment extends BaseListFragment
   @BindView(R.id.sponsor_recycler_view) RecyclerView sponsorRecyclerView;
   @BindView(R.id.sponsor_list_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
-  @Inject RestClient restClient;
   @Inject Picasso picasso;
   @Inject IntentFactory intentFactory;
+  @Inject DataSource dataSource;
 
-  private final PublishSubject<Void> sponsorsSubject = PublishSubject.create();
-
+  private FragmentCallbacks callbacks;
   private SponsorAdapter sponsorAdapter;
 
   public SponsorListFragment() {
+  }
+
+  @Override public void onAttach(Activity activity) {
+    try {
+      callbacks = (FragmentCallbacks) activity;
+    } catch (ClassCastException e) {
+      throw new RuntimeException(e);
+    }
+    super.onAttach(activity);
+  }
+
+  @Override public void onDetach() {
+    super.onDetach();
+    callbacks = null;
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
@@ -62,21 +78,31 @@ public class SponsorListFragment extends BaseListFragment
 
     sponsorRecyclerView.setAdapter(sponsorAdapter);
     sponsorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+  }
 
-    Observable<Result<List<Sponsor>>> result =
-        sponsorsSubject.flatMap(__ -> restClient.getSponsors().subscribeOn(Schedulers.io()))
-            .observeOn(AndroidSchedulers.mainThread())
-            .compose(bindToLifecycle())
-            .share();
+  @Override public void onStart() {
+    super.onStart();
 
-    result.filter(Results.isSuccessful())
-        .map(Results.responseBody())
-        .flatMap(sponsors -> Observable.from(sponsors).toSortedList())
+    Observable<Data<List<Sponsor>>> sessionsData = dataSource.sponsors()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .compose(bindUntilEvent(FragmentEvent.STOP));
+
+    sessionsData.compose(DataTransformers.loading()) //
+        .subscribe(__ -> {
+          swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+        });
+
+    sessionsData.compose(DataTransformers.loaded()) //
+        .flatMap(sponsors -> Observable.from(sponsors).toSortedList()) //
         .subscribe(sponsors -> {
           sponsorAdapter.setData(sponsors);
         });
 
-    onRefresh();
+    sessionsData.compose(DataTransformers.error()) //
+        .subscribe(throwable -> {
+          Timber.d(throwable, "Something happened here");
+        });
   }
 
   @Override protected FilterableAdapter getFilterableAdapter() {
@@ -92,9 +118,8 @@ public class SponsorListFragment extends BaseListFragment
   }
 
   @Override public void onRefresh() {
-    getView().post(() -> {
-      swipeRefreshLayout.setRefreshing(true);
-      sponsorsSubject.onNext(null);
-    });
+    if (callbacks != null) {
+      callbacks.onRequestSponsors();
+    }
   }
 }

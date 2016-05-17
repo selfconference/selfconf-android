@@ -1,6 +1,5 @@
 package org.selfconference.android.data.api;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import java.util.Collections;
@@ -32,11 +31,7 @@ final class MockSessions {
   }
 
   static Session findSessionById(final int sessionId) {
-    return Iterables.find(allSessions(), new Predicate<Session>() {
-      @Override public boolean apply(Session session) {
-        return session.id() == sessionId;
-      }
-    });
+    return Iterables.find(allSessions(), session -> session.id() == sessionId);
   }
 
   private MockSessions() {
