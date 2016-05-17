@@ -13,16 +13,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.common.collect.Lists;
+import java.util.List;
 import javax.inject.Inject;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Data;
+import org.selfconference.android.data.DataSource;
+import org.selfconference.android.data.Funcs;
+import org.selfconference.android.data.api.RestClient;
+import org.selfconference.android.data.api.Results;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.ui.drawer.DrawerItem;
+import retrofit2.adapter.rxjava.Result;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
-public final class MainActivity extends BaseActivity {
+public final class MainActivity extends BaseActivity implements FragmentCallbacks {
 
   @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
   @BindView(R.id.navigation_view) NavigationView navigationView;
 
   @Inject ViewContainer viewContainer;
+  @Inject DataSource dataSource;
+  @Inject RestClient restClient;
+
+  private final PublishSubject<Void> sessionsSubject = PublishSubject.create();
 
   private ActionBarDrawerToggle drawerToggle;
 
@@ -56,6 +73,30 @@ public final class MainActivity extends BaseActivity {
 
     setupDrawerContent();
     clickNavigationDrawerItem(R.id.menu_item_sessions);
+
+    Observable<Result<List<Session>>> result =
+        sessionsSubject.flatMap(__ -> restClient.getSessions().subscribeOn(Schedulers.io()))
+            .observeOn(AndroidSchedulers.mainThread())
+            .share();
+
+    result.filter(Results.isSuccessful()) //
+        .map(Results.responseBody()) //
+        .compose(bindToLifecycle()) //
+        .subscribe(sessions -> {
+          dataSource.setSessions(
+              Data.<List<Session>>builder().data(sessions).status(Data.Status.LOADED).build());
+        });
+
+    result.filter(Funcs.not(Results.isSuccessful())) //
+        .compose(bindToLifecycle()) //
+        .subscribe(sessionResult -> {
+          dataSource.setSessions(Data.<List<Session>>builder().data(Lists.newArrayList())
+              .status(Data.Status.ERROR)
+              .throwable(sessionResult.error())
+              .build());
+        });
+
+    onRequestSessions();
   }
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -94,4 +135,9 @@ public final class MainActivity extends BaseActivity {
           return true;
         }
       };
+
+  @Override public void onRequestSessions() {
+    dataSource.requestNewSessions();
+    sessionsSubject.onNext(null);
+  }
 }
