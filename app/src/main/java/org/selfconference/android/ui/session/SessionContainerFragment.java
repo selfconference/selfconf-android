@@ -20,6 +20,7 @@ public final class SessionContainerFragment extends BaseFragment {
     super.onActivityCreated(savedInstanceState);
 
     scheduleViewPager.setAdapter(new SessionFragmentPagerAdapter(getChildFragmentManager()));
+    scheduleViewPager.setOffscreenPageLimit(2);
     tabLayout.setupWithViewPager(scheduleViewPager);
   }
 
