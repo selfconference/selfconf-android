@@ -18,6 +18,10 @@ public class SessionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     void onSessionClick(Session event);
   }
 
+  public interface OnSessionLongClickListener {
+    void onSessionLongClick(Session session);
+  }
+
   public interface ViewModel {
     ViewType viewType();
   }
@@ -76,6 +80,7 @@ public class SessionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   private final List<ViewModel> viewModels = Lists.newArrayList();
 
   private OnSessionClickListener onSessionClickListener;
+  private OnSessionLongClickListener onSessionLongClickListener;
 
   public SessionAdapter() {
   }
@@ -88,6 +93,10 @@ public class SessionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
   public void setOnSessionClickListener(OnSessionClickListener onSessionClickListener) {
     this.onSessionClickListener = onSessionClickListener;
+  }
+
+  public void setOnSessionLongClickListener(OnSessionLongClickListener onSessionLongClickListener) {
+    this.onSessionLongClickListener = onSessionLongClickListener;
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -121,6 +130,13 @@ public class SessionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
           if (onSessionClickListener != null) {
             onSessionClickListener.onSessionClick(listItem.session());
           }
+        });
+        listItemViewHolder.itemView.setOnLongClickListener(v -> {
+          if (onSessionLongClickListener != null) {
+            onSessionLongClickListener.onSessionLongClick(listItem.session());
+            return true;
+          }
+          return false;
         });
         listItemViewHolder.lineOne.setText(listItem.lineOne());
         listItemViewHolder.lineTwo.setText(listItem.lineTwo());

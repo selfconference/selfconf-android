@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,6 +23,7 @@ import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.Sessions;
 import org.selfconference.android.data.api.RestClient;
 import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.FragmentCallbacks;
 import rx.Observable;
@@ -36,6 +39,7 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
 
   @Inject RestClient restClient;
   @Inject DataSource dataSource;
+  @Inject SessionPreferences sessionPreferences;
 
   private Day day;
   private SessionAdapter sessionAdapter;
@@ -89,6 +93,27 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
     sessionAdapter.setOnSessionClickListener(session -> {
       Intent intent = SessionDetailActivity.newIntent(getActivity(), session);
       getActivity().startActivity(intent);
+    });
+
+    sessionAdapter.setOnSessionLongClickListener(session -> {
+      if (sessionPreferences.isFavorite(session)) {
+        Snackbar.make(view, "Already added to schedule", Snackbar.LENGTH_SHORT).show();
+      } else {
+        new AlertDialog.Builder(getActivity()) //
+            .setMessage("Add session to your schedule?") //
+            .setPositiveButton("Add", (dialog, which) -> {
+              sessionPreferences.favorite(session);
+              dataSource.tickleSessions();
+              Snackbar.make(view, "Added to schedule", Snackbar.LENGTH_SHORT) //
+                  .setAction("Undo", v -> {
+                    sessionPreferences.unfavorite(session);
+                    dataSource.tickleSessions();
+                  }) //
+                  .show();
+            }) //
+            .setNegativeButton("Cancel", null) //
+            .show();
+      }
     });
 
     scheduleItemRecyclerView.setAdapter(sessionAdapter);

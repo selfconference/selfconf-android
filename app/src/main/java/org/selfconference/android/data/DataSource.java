@@ -50,7 +50,7 @@ import static org.selfconference.android.data.Data.Status.NONE;
 
   public Observable<Data<List<Session>>> sessions() {
     return this.sessionSubject.share()
-        .doOnSubscribe(() -> sessionSubject.onNext(sessionSubject.getValue()));
+        .doOnSubscribe(this::tickleSessions);
   }
 
   @RxLogObservable public Observable<List<Session>> favoriteSessions() {
@@ -75,5 +75,9 @@ import static org.selfconference.android.data.Data.Status.NONE;
   public Observable<Data<List<Sponsor>>> sponsors() {
     return this.sponsorSubject.share()
         .doOnSubscribe(() -> sponsorSubject.onNext(sponsorSubject.getValue()));
+  }
+
+  public void tickleSessions() {
+    sessionSubject.onNext(sessionSubject.getValue());
   }
 }

@@ -3,8 +3,10 @@ package org.selfconference.android.ui.session;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,6 +27,7 @@ import org.selfconference.android.data.Sessions;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.util.Instants;
 import rx.Observable;
@@ -39,6 +42,7 @@ public final class MyScheduleFragment extends BaseFragment
   @BindView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
   @Inject DataSource dataSource;
+  @Inject SessionPreferences sessionPreferences;
 
   private SessionAdapter sessionAdapter;
 
@@ -71,6 +75,23 @@ public final class MyScheduleFragment extends BaseFragment
     sessionAdapter.setOnSessionClickListener(session -> {
       Intent intent = SessionDetailActivity.newIntent(getActivity(), session);
       getActivity().startActivity(intent);
+    });
+
+    sessionAdapter.setOnSessionLongClickListener(session -> {
+      new AlertDialog.Builder(getActivity()) //
+          .setMessage("Remove session from your schedule?") //
+          .setPositiveButton("Remove", (dialog, which) -> {
+            sessionPreferences.unfavorite(session);
+            dataSource.tickleSessions();
+            Snackbar.make(view, "Removed from schedule", Snackbar.LENGTH_SHORT) //
+                .setAction("Undo", v -> {
+                  sessionPreferences.favorite(session);
+                  dataSource.tickleSessions();
+                }) //
+                .show();
+          }) //
+          .setNegativeButton("Cancel", null) //
+          .show();
     });
 
     scheduleItemRecyclerView.setAdapter(sessionAdapter);
