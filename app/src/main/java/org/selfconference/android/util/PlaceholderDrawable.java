@@ -1,5 +1,6 @@
 package org.selfconference.android.util;
 
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import org.selfconference.android.R;
 
@@ -28,6 +29,9 @@ public final class PlaceholderDrawable {
    * @return The placeholder drawable resource id.
    */
   @DrawableRes public static int forId(int id) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+      return R.drawable.support_robit;
+    }
     int index = Math.abs(id);
     return ROBITS[index % ROBITS.length];
   }
