@@ -2,10 +2,10 @@ package org.selfconference.android.ui.session;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,25 +20,28 @@ import com.trello.rxlifecycle.FragmentEvent;
 import java.util.List;
 import javax.inject.Inject;
 import org.selfconference.android.R;
+import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
+import org.selfconference.android.data.DataTransformers;
 import org.selfconference.android.data.Funcs;
 import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.Sessions;
 import org.selfconference.android.data.api.model.Room;
+import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Slot;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseFragment;
+import org.selfconference.android.ui.misc.BetterViewAnimator;
 import org.selfconference.android.util.Instants;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public final class MyScheduleFragment extends BaseFragment
-    implements SwipeRefreshLayout.OnRefreshListener {
+public final class MyScheduleFragment extends BaseFragment {
   public static final String TAG = MyScheduleFragment.class.getName();
 
-  @BindView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R.id.animator_view) BetterViewAnimator animatorView;
   @BindView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
   @Inject DataSource dataSource;
@@ -62,15 +65,22 @@ public final class MyScheduleFragment extends BaseFragment
     sessionAdapter = new SessionAdapter();
     sessionAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
       @Override public void onChanged() {
-        swipeRefreshLayout.setRefreshing(false);
+        animatorView.setDisplayedChildId(determineViewToDisplay());
       }
     });
+  }
+
+  @IdRes private int determineViewToDisplay() {
+    if (sessionAdapter.getItemCount() == 0) {
+      return R.id.session_empty_view;
+    }
+    return R.id.schedule_item_recycler_view;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    swipeRefreshLayout.setOnRefreshListener(this);
+    animatorView.setDisplayedChildId(R.id.session_initial_view);
 
     sessionAdapter.setOnSessionClickListener(session -> {
       Intent intent = SessionDetailActivity.newIntent(getActivity(), session);
@@ -101,9 +111,14 @@ public final class MyScheduleFragment extends BaseFragment
   @Override public void onStart() {
     super.onStart();
 
-    dataSource.favoriteSessions()
+    Observable<Data<List<Session>>> sessionsResult = dataSource.sessions()
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(AndroidSchedulers.mainThread());
+
+    sessionsResult.compose(DataTransformers.loaded())
+        .flatMap(sessions1 -> Observable.from(sessions1) //
+            .filter(sessionPreferences::isFavorite) //
+            .toList())
         .compose(bindUntilEvent(FragmentEvent.STOP))
         .flatMap(sessions -> Observable.from(sessions) //
             .toSortedList((session, session2) -> {
@@ -135,13 +150,13 @@ public final class MyScheduleFragment extends BaseFragment
         .subscribe(viewModels -> {
           sessionAdapter.setViewModels(viewModels);
         });
+
+    sessionsResult.compose(DataTransformers.error()).subscribe(data -> {
+      animatorView.setDisplayedChildId(R.id.session_error_view);
+    });
   }
 
   @Override protected int layoutResId() {
-    return R.layout.fragment_schedule_item;
-  }
-
-  @Override public void onRefresh() {
-    swipeRefreshLayout.postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 200);
+    return R.layout.fragment_my_schedule;
   }
 }

@@ -3,6 +3,7 @@ package org.selfconference.android.ui.session;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.trello.rxlifecycle.FragmentEvent;
 import java.util.List;
 import javax.inject.Inject;
@@ -26,6 +28,7 @@ import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.FragmentCallbacks;
+import org.selfconference.android.ui.misc.BetterViewAnimator;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -34,6 +37,7 @@ import timber.log.Timber;
 public final class SessionListFragment extends BaseFragment implements OnRefreshListener {
   private static final String EXTRA_DAY = "org.selfconference.android.ui.session.EXTRA_DAY";
 
+  @BindView(R.id.animator_view) BetterViewAnimator animatorView;
   @BindView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
   @BindView(R.id.schedule_item_recycler_view) RecyclerView scheduleItemRecyclerView;
 
@@ -80,13 +84,23 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
     sessionAdapter = new SessionAdapter();
     sessionAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
       @Override public void onChanged() {
+        animatorView.setDisplayedChildId(determineViewToDisplay());
         swipeRefreshLayout.setRefreshing(false);
       }
     });
   }
 
+  @IdRes private int determineViewToDisplay() {
+    if (sessionAdapter.getItemCount() == 0) {
+      return R.id.session_empty_view;
+    }
+    return R.id.schedule_swipe_refresh_layout;
+  }
+
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
+    animatorView.setDisplayedChildId(R.id.session_initial_view);
 
     swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -156,12 +170,18 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
 
     sessionsData.compose(DataTransformers.error()) //
         .subscribe(throwable -> {
+          animatorView.setDisplayedChildId(R.id.session_error_view);
+          swipeRefreshLayout.setRefreshing(false);
           Timber.e(throwable, "Something happened here");
         });
   }
 
   @Override protected int layoutResId() {
-    return R.layout.fragment_schedule_item;
+    return R.layout.fragment_sessions;
+  }
+
+  @OnClick(R.id.session_error_refresh_button) void onErrorRefreshRequested() {
+    onRefresh();
   }
 
   @Override public void onRefresh() {

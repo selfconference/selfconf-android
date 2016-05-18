@@ -51,6 +51,6 @@ public class App extends Application {
   }
 
   protected void setupFabric() {
-
+    // STOPSHIP: 5/18/16 reinstall Fabric
   }
 }
