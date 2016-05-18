@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
+import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
@@ -35,6 +36,10 @@ import rx.Observable;
   @Override public Observable<Result<List<Sponsor>>> getSponsors() {
     List<Sponsor> sponsors = MockSponsors.allSponsors();
     return delegate.returning(Calls.response(sponsors)).getSponsors();
+  }
+
+  @Override public Observable<Result<Event>> getEvent() {
+    return delegate.returning(Calls.response(MockEvents.SELF_CONF_2016)).getEvent();
   }
 
   @Override public Observable<Result<ResponseBody>> submitFeedback(@Path("id") int id,

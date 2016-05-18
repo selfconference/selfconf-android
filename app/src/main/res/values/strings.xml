@@ -35,6 +35,7 @@
   <string name="prompt_schedule_add">Add session to your schedule?</string>
   <string name="message_schedule_add">Added to schedule</string>
   <string name="message_feedback_submit">Submitting feedback…</string>
+  <string name="about">About</string>
 
   <plurals name="speakers">
     <item quantity="one">Speaker</item>

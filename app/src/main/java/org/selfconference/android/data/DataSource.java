@@ -1,10 +1,10 @@
 package org.selfconference.android.data;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
 import com.google.common.collect.Lists;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.pref.SessionPreferences;
@@ -18,6 +18,7 @@ import static org.selfconference.android.data.Data.Status.NONE;
 
   private final BehaviorSubject<Data<List<Session>>> sessionSubject;
   private final BehaviorSubject<Data<List<Sponsor>>> sponsorSubject;
+  private final BehaviorSubject<Data<Event>> eventSubject;
   private final SessionPreferences sessionPreferences;
 
   @Inject public DataSource(SessionPreferences sessionPreferences) {
@@ -32,6 +33,12 @@ import static org.selfconference.android.data.Data.Status.NONE;
         .status(NONE) //
         .build();
     this.sponsorSubject = BehaviorSubject.create(sponsors);
+
+    Data<Event> event = Data.<Event>builder() //
+        .data(Event.empty()) //
+        .status(NONE) //
+        .build();
+    this.eventSubject = BehaviorSubject.create(event);
 
     this.sessionPreferences = sessionPreferences;
   }
@@ -49,11 +56,10 @@ import static org.selfconference.android.data.Data.Status.NONE;
   }
 
   public Observable<Data<List<Session>>> sessions() {
-    return this.sessionSubject.share()
-        .doOnSubscribe(this::tickleSessions);
+    return this.sessionSubject.share().doOnSubscribe(this::tickleSessions);
   }
 
-  @RxLogObservable public Observable<List<Session>> favoriteSessions() {
+  public Observable<List<Session>> favoriteSessions() {
     return sessions().compose(DataTransformers.loaded())
         .flatMap(sessions -> Observable.from(sessions) //
             .filter(sessionPreferences::isFavorite) //
@@ -79,5 +85,22 @@ import static org.selfconference.android.data.Data.Status.NONE;
 
   public void tickleSessions() {
     sessionSubject.onNext(sessionSubject.getValue());
+  }
+
+  public void setEvent(Data<Event> data) {
+    this.eventSubject.onNext(data);
+  }
+
+  public void requestNewEvent() {
+    Data<Event> event = this.eventSubject.getValue() //
+        .toBuilder() //
+        .status(LOADING) //
+        .build();
+    this.eventSubject.onNext(event);
+  }
+
+  public Observable<Data<Event>> event() {
+    return this.eventSubject.share()
+        .doOnSubscribe(() -> eventSubject.onNext(eventSubject.getValue()));
   }
 }

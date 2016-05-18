@@ -4,4 +4,6 @@ public interface FragmentCallbacks {
   void onRequestSessions();
 
   void onRequestSponsors();
+
+  void onRequestEvent();
 }

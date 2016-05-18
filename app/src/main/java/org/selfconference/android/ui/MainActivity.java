@@ -22,6 +22,7 @@ import org.selfconference.android.data.DataSource;
 import org.selfconference.android.data.Funcs;
 import org.selfconference.android.data.api.RestClient;
 import org.selfconference.android.data.api.Results;
+import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.drawer.DrawerItem;
@@ -30,6 +31,9 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
+
+import static org.selfconference.android.data.Data.Status.ERROR;
+import static org.selfconference.android.data.Data.Status.LOADED;
 
 public final class MainActivity extends BaseActivity implements FragmentCallbacks {
 
@@ -42,6 +46,7 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
 
   private final PublishSubject<Void> sessionsSubject = PublishSubject.create();
   private final PublishSubject<Void> sponsorsSubject = PublishSubject.create();
+  private final PublishSubject<Void> eventSubject = PublishSubject.create();
 
   private ActionBarDrawerToggle drawerToggle;
 
@@ -86,14 +91,14 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
         .compose(bindToLifecycle()) //
         .subscribe(sessions -> {
           dataSource.setSessions(
-              Data.<List<Session>>builder().data(sessions).status(Data.Status.LOADED).build());
+              Data.<List<Session>>builder().data(sessions).status(LOADED).build());
         });
 
     sessionsResult.filter(Funcs.not(Results.isSuccessful())) //
         .compose(bindToLifecycle()) //
         .subscribe(sessionResult -> {
           dataSource.setSessions(Data.<List<Session>>builder().data(Lists.newArrayList())
-              .status(Data.Status.ERROR)
+              .status(ERROR)
               .throwable(sessionResult.error())
               .build());
         });
@@ -110,19 +115,43 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
         .compose(bindToLifecycle()) //
         .subscribe(sessions -> {
           dataSource.setSponsors(
-              Data.<List<Sponsor>>builder().data(sessions).status(Data.Status.LOADED).build());
+              Data.<List<Sponsor>>builder().data(sessions).status(LOADED).build());
         });
 
     sponsorsResult.filter(Funcs.not(Results.isSuccessful())) //
         .compose(bindToLifecycle()) //
         .subscribe(sessionResult -> {
           dataSource.setSponsors(Data.<List<Sponsor>>builder().data(Lists.newArrayList())
-              .status(Data.Status.ERROR)
+              .status(ERROR)
               .throwable(sessionResult.error())
               .build());
         });
 
     onRequestSessions();
+
+    Observable<Result<Event>> eventResult =
+        eventSubject.flatMap(__ -> restClient.getEvent().subscribeOn(Schedulers.io()))
+            .observeOn(AndroidSchedulers.mainThread())
+            .share();
+
+    eventResult.filter(Results.isSuccessful()) //
+        .map(Results.responseBody()) //
+        .compose(bindToLifecycle()) //
+        .subscribe(event -> {
+          dataSource.setEvent(Data.<Event>builder().data(event).status(LOADED).build());
+        });
+
+    eventResult.filter(Funcs.not(Results.isSuccessful())) //
+        .compose(bindToLifecycle()) //
+        .subscribe(sessionResult -> {
+          dataSource.setEvent(Data.<Event>builder() //
+              .data(Event.empty()) //
+              .status(ERROR) //
+              .throwable(sessionResult.error()) //
+              .build());
+        });
+
+    onRequestEvent();
   }
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -170,5 +199,10 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
   @Override public void onRequestSponsors() {
     dataSource.requestNewSponsors();
     sponsorsSubject.onNext(null);
+  }
+
+  @Override public void onRequestEvent() {
+    dataSource.requestNewEvent();
+    eventSubject.onNext(null);
   }
 }
