@@ -18,8 +18,8 @@ public final class CodeOfConductAdapter
     extends RecyclerView.Adapter<CodeOfConductAdapter.ViewHolder> {
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.include_code_of_conduct_card, parent, false);
+    LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    View view = inflater.inflate(R.layout.include_code_of_conduct_card, parent, false);
     return new ViewHolder(view);
   }
 
