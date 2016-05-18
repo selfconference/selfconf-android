@@ -8,21 +8,23 @@ import android.support.design.widget.NavigationView.OnNavigationItemSelectedList
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.common.collect.Lists;
+import de.psdev.licensesdialog.LicensesDialog;
 import java.util.List;
 import javax.inject.Inject;
+import org.selfconference.android.BuildConfig;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
 import org.selfconference.android.data.Funcs;
 import org.selfconference.android.data.api.RestClient;
 import org.selfconference.android.data.api.Results;
-import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.drawer.DrawerItem;
@@ -46,7 +48,6 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
 
   private final PublishSubject<Void> sessionsSubject = PublishSubject.create();
   private final PublishSubject<Void> sponsorsSubject = PublishSubject.create();
-  private final PublishSubject<Void> eventSubject = PublishSubject.create();
 
   private ActionBarDrawerToggle drawerToggle;
 
@@ -128,30 +129,6 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
         });
 
     onRequestSessions();
-
-    Observable<Result<Event>> eventResult =
-        eventSubject.flatMap(__ -> restClient.getEvent().subscribeOn(Schedulers.io()))
-            .observeOn(AndroidSchedulers.mainThread())
-            .share();
-
-    eventResult.filter(Results.isSuccessful()) //
-        .map(Results.responseBody()) //
-        .compose(bindToLifecycle()) //
-        .subscribe(event -> {
-          dataSource.setEvent(Data.<Event>builder().data(event).status(LOADED).build());
-        });
-
-    eventResult.filter(Funcs.not(Results.isSuccessful())) //
-        .compose(bindToLifecycle()) //
-        .subscribe(sessionResult -> {
-          dataSource.setEvent(Data.<Event>builder() //
-              .data(Event.empty()) //
-              .status(ERROR) //
-              .throwable(sessionResult.error()) //
-              .build());
-        });
-
-    onRequestEvent();
   }
 
   @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -162,6 +139,21 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
   @Override public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     drawerToggle.onConfigurationChanged(newConfig);
+  }
+
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.main, menu);
+
+    MenuItem licensesItem = menu.findItem(R.id.main_menu_licenses);
+    licensesItem.setOnMenuItemClickListener(item -> {
+      new LicensesDialog.Builder(this).setNotices(R.raw.notices).build().show();
+      return true;
+    });
+
+    MenuItem appVersionItem = menu.findItem(R.id.main_menu_app_version);
+    appVersionItem.setTitle(String.format("Version %s", BuildConfig.VERSION_NAME));
+
+    return super.onCreateOptionsMenu(menu);
   }
 
   private void clickNavigationDrawerItem(@IdRes int menuIdRes) {
@@ -199,10 +191,5 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
   @Override public void onRequestSponsors() {
     dataSource.requestNewSponsors();
     sponsorsSubject.onNext(null);
-  }
-
-  @Override public void onRequestEvent() {
-    dataSource.requestNewEvent();
-    eventSubject.onNext(null);
   }
 }

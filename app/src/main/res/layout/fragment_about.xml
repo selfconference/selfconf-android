@@ -3,6 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     >
+
+  <ImageView
+      android:layout_width="match_parent"
+      android:layout_height="120dp"
+      android:src="@drawable/robit1"
+      />
+
+  <TextView
+      android:id="@+id/about"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:textColor="#464646"
+      android:textSize="16sp"
+      />
+
+  <TextView
+      android:id="@+id/version"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:textColor="#464646"
+      android:textSize="16sp"
+      />
 
 </LinearLayout>

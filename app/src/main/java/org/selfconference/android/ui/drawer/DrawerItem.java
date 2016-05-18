@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.coc.CodeOfConductFragment;
-import org.selfconference.android.ui.event.AboutFragment;
 import org.selfconference.android.ui.session.SessionContainerFragment;
 import org.selfconference.android.ui.sponsor.SponsorListFragment;
 
@@ -38,15 +37,6 @@ public enum DrawerItem {
     @Override public String fragmentTag() {
       return CodeOfConductFragment.TAG;
     }
-  },
-  ABOUT {
-    @Override public Fragment fragment() {
-      return new AboutFragment();
-    }
-
-    @Override public String fragmentTag() {
-      return AboutFragment.TAG;
-    }
   };
 
   public abstract Fragment fragment();
@@ -62,8 +52,6 @@ public enum DrawerItem {
         return SPONSORS;
       case R.id.menu_item_code_of_conduct:
         return CODE_OF_CONDUCT;
-      case R.id.menu_item_about:
-        return ABOUT;
       default:
         throw new IllegalStateException("menuItemId was not passed in from @menu/drawer_view");
     }

@@ -19,11 +19,5 @@
         android:orderInCategory="3"
         android:title="@string/code_of_conduct"
         />
-    <item
-        android:id="@+id/menu_item_about"
-        android:icon="@drawable/ic_info"
-        android:orderInCategory="4"
-        android:title="@string/about"
-        />
   </group>
 </menu>

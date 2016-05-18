@@ -2,7 +2,6 @@ package org.selfconference.android.data.api;
 
 import java.util.List;
 import okhttp3.ResponseBody;
-import org.selfconference.android.data.api.model.Event;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
@@ -22,9 +21,6 @@ public interface RestClient {
 
   @GET("events/latest/sponsors") //
   Observable<Result<List<Sponsor>>> getSponsors();
-
-  @GET("events/latest") //
-  Observable<Result<Event>> getEvent();
 
   @POST("sessions/{id}/feedbacks") //
   Observable<Result<ResponseBody>> submitFeedback(@Path("id") int id, @Body Feedback feedback);

@@ -1,0 +1,146 @@
+<notices>
+  <notice>
+    <name>LicensesDialog</name>
+    <url>https://github.com/PSDev/LicensesDialog</url>
+    <copyright>Copyright 2013-2016 Philip Schiffer</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Google Guava</name>
+    <url>https://github.com/google/guava</url>
+    <copyright>Copyright 2010 The Guava Authors</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>AutoValue</name>
+    <url>https://github.com/google/auto</url>
+    <copyright>Copyright 2013 Google, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>AutoValue: Moshi Extension</name>
+    <url>https://github.com/rharter/auto-value-moshi</url>
+    <copyright>Copyright 2015 Ryan Harter</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>AutoValue: Parcel Extension</name>
+    <url>https://github.com/rharter/auto-value-parcel</url>
+    <copyright>Copyright 2015 Ryan Harter</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Butter Knife</name>
+    <url>https://github.com/JakeWharton/butterknife</url>
+    <copyright>Copyright 2013 Jake Wharton</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Timber</name>
+    <url>https://github.com/JakeWharton/timber</url>
+    <copyright>Copyright 2013 Jake Wharton</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Byte Units</name>
+    <url>https://github.com/JakeWharton/byteunits</url>
+    <copyright>Copyright 2014 Jake Wharton</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Process Phoenix</name>
+    <url>https://github.com/JakeWharton/ProcessPhoenix</url>
+    <copyright>Copyright 2015 Jake Wharton</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>ThreeTen Android Backport</name>
+    <url>https://github.com/JakeWharton/ThreeTenABP</url>
+    <copyright>Copyright 2015 Jake Wharton</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Telescope</name>
+    <url>https://github.com/mattprecious/telescope</url>
+    <copyright>Copyright 2014 Matthew Precious</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Dagger</name>
+    <url>https://github.com/square/dagger</url>
+    <copyright>Copyright 2012 Square, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>OkHttp</name>
+    <url>https://github.com/square/okhttp</url>
+    <copyright>Copyright 2012 Square, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Retrofit</name>
+    <url>https://github.com/square/retrofit</url>
+    <copyright>Copyright 2013 Square, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Moshi</name>
+    <url>https://github.com/square/moshi</url>
+    <copyright>Copyright 2015 Square, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Picasso</name>
+    <url>https://github.com/square/picasso</url>
+    <copyright>Copyright 2013 Square, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>RxJava</name>
+    <url>https://github.com/ReactiveX/RxJava</url>
+    <copyright>Copyright 2013 Netflix, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>RxAndroid</name>
+    <url>https://github.com/ReactiveX/RxAndroid</url>
+    <copyright>Copyright 2015 The RxAndroid authors</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>RxPreferences</name>
+    <url>https://github.com/f2prateek/rx-preferences</url>
+    <copyright>Copyright 2014 Prateek Srivastava</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>RxLifecycle</name>
+    <url>https://github.com/trello/RxLifecycle</url>
+    <copyright>Copyright 2015 Trello</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Retrolambda</name>
+    <url>https://github.com/orfjackal/retrolambda</url>
+    <copyright>Copyright 2013-2016 Esko Luontola and other Retrolambda contributors</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Gradle Retrolambda Plugin</name>
+    <url>https://github.com/evant/gradle-retrolambda</url>
+    <copyright>Copyright 2013 Evan Tatarka</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Gradle Versions Plugin</name>
+    <url>https://github.com/ben-manes/gradle-versions-plugin</url>
+    <copyright>Copyright 2012 Ben Manes</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>Frodo</name>
+    <url>https://github.com/android10/frodo</url>
+    <copyright>Copyright 2015 Fernando Cejas</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+</notices>

@@ -2,24 +2,12 @@ package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.Lists;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import java.util.List;
 import org.threeten.bp.Instant;
 
 @AutoValue public abstract class Event implements Parcelable {
-
-  public static Event empty() {
-    return builder() //
-        .id(-1) //
-        .about("") //
-        .tickets_link("") //
-        .start_date(Instant.MIN) //
-        .end_date(Instant.MIN) //
-        .organizers(Lists.newArrayList()) //
-        .build();
-  }
 
   public static Builder builder() {
     return new AutoValue_Event.Builder();
