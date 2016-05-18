@@ -97,7 +97,20 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
 
     sessionAdapter.setOnSessionLongClickListener(session -> {
       if (sessionPreferences.isFavorite(session)) {
-        Snackbar.make(view, "Already added to schedule", Snackbar.LENGTH_SHORT).show();
+        new AlertDialog.Builder(getActivity()) //
+            .setMessage(R.string.prompt_schedule_remove) //
+            .setPositiveButton(R.string.remove, (dialog, which) -> {
+              sessionPreferences.unfavorite(session);
+              dataSource.tickleSessions();
+              Snackbar.make(view, R.string.message_schedule_remove, Snackbar.LENGTH_SHORT) //
+                  .setAction(R.string.undo, v -> {
+                    sessionPreferences.favorite(session);
+                    dataSource.tickleSessions();
+                  }) //
+                  .show();
+            }) //
+            .setNegativeButton(R.string.cancel, null) //
+            .show();
       } else {
         new AlertDialog.Builder(getActivity()) //
             .setMessage(R.string.prompt_schedule_add) //
