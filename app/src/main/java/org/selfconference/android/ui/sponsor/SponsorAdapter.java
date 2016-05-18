@@ -1,6 +1,7 @@
 package org.selfconference.android.ui.sponsor;
 
 import android.content.res.Resources;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,41 +14,35 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
 import java.util.List;
-import java.util.Locale;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.misc.FilterableAdapter;
-import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
-public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.ViewHolder> {
+public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.ViewHolder> {
   public interface OnSponsorClickListener {
     void onSponsorClicked(final Sponsor sponsor);
   }
 
   private final Picasso picasso;
   private final CompositeSubscription compositeSubscription = new CompositeSubscription();
+  private final List<Sponsor> sponsors = Lists.newArrayList();
   private OnSponsorClickListener onSponsorClickListener;
 
   public SponsorAdapter(Picasso picasso) {
     this.picasso = picasso;
   }
 
-  public void setOnSponsorClickListener(OnSponsorClickListener sponsorClickListener) {
-    this.onSponsorClickListener = sponsorClickListener;
+  public void setSponsors(List<Sponsor> sponsors) {
+    this.sponsors.clear();
+    this.sponsors.addAll(sponsors);
+    notifyDataSetChanged();
   }
 
-  @Override protected Func1<Sponsor, Boolean> filterPredicate(final String query) {
-    return new Func1<Sponsor, Boolean>() {
-      @Override public Boolean call(Sponsor sponsor) {
-        return sponsor.name() //
-            .toLowerCase(Locale.US) //
-            .contains(query.toLowerCase(Locale.US));
-      }
-    };
+  public void setOnSponsorClickListener(OnSponsorClickListener sponsorClickListener) {
+    this.onSponsorClickListener = sponsorClickListener;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,8 +51,8 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
     return new ViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(final ViewHolder holder, int position) {
-    final Sponsor sponsor = getFilteredData().get(position);
+  @Override public void onBindViewHolder(ViewHolder holder, int position) {
+    Sponsor sponsor = sponsors.get(position);
 
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -83,6 +78,10 @@ public class SponsorAdapter extends FilterableAdapter<Sponsor, SponsorAdapter.Vi
 
     String formattedSponsorLevels = formattedSponsorLevels(sponsor);
     holder.sponsorType.setText(formattedSponsorLevels);
+  }
+
+  @Override public int getItemCount() {
+    return sponsors.size();
   }
 
   @Override public void onViewDetachedFromWindow(ViewHolder holder) {

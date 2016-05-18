@@ -19,16 +19,15 @@ import org.selfconference.android.data.DataTransformers;
 import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.IntentFactory;
 import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.ui.BaseListFragment;
+import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.FragmentCallbacks;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.sponsor.SponsorAdapter.OnSponsorClickListener;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class SponsorListFragment extends BaseListFragment
+public class SponsorListFragment extends BaseFragment
     implements OnSponsorClickListener, OnRefreshListener {
   public static final String TAG = SponsorListFragment.class.getName();
 
@@ -96,17 +95,13 @@ public class SponsorListFragment extends BaseListFragment
     sessionsData.compose(DataTransformers.loaded()) //
         .flatMap(sponsors -> Observable.from(sponsors).toSortedList()) //
         .subscribe(sponsors -> {
-          sponsorAdapter.setData(sponsors);
+          sponsorAdapter.setSponsors(sponsors);
         });
 
     sessionsData.compose(DataTransformers.error()) //
         .subscribe(throwable -> {
           Timber.d(throwable, "Something happened here");
         });
-  }
-
-  @Override protected FilterableAdapter getFilterableAdapter() {
-    return sponsorAdapter;
   }
 
   @Override protected int layoutResId() {

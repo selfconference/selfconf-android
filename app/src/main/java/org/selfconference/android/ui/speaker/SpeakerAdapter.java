@@ -1,45 +1,46 @@
 package org.selfconference.android.ui.speaker;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
+import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
-import java.util.Locale;
+import java.util.List;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.misc.FilterableAdapter;
 import org.selfconference.android.ui.transform.CircularTransformation;
 import org.selfconference.android.util.PlaceholderDrawable;
-import rx.functions.Func1;
 
 import static android.text.Html.fromHtml;
 import static android.view.ViewTreeObserver.OnPreDrawListener;
 
-public final class SpeakerAdapter
-    extends FilterableAdapter<Speaker, SpeakerAdapter.SpeakerViewHolder> {
+public final class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerViewHolder> {
   public interface OnSpeakerClickListener {
     void onSpeakerClick(Speaker speaker);
   }
 
+  private final List<Speaker> speakers = Lists.newArrayList();
   private final Picasso picasso;
 
   private OnSpeakerClickListener onSpeakerClickListener;
 
   public SpeakerAdapter(Picasso picasso) {
-    super();
     this.picasso = picasso;
+  }
+
+  public void setSpeakers(List<Speaker> speakers) {
+    this.speakers.clear();
+    this.speakers.addAll(speakers);
+    notifyDataSetChanged();
   }
 
   public void setOnSpeakerClickListener(OnSpeakerClickListener onSpeakerClickListener) {
     this.onSpeakerClickListener = onSpeakerClickListener;
-  }
-
-  @Override protected Func1<Speaker, Boolean> filterPredicate(final String query) {
-    return speaker -> speaker.name().toLowerCase(Locale.US).contains(query.toLowerCase(Locale.US));
   }
 
   @Override public SpeakerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,8 +49,8 @@ public final class SpeakerAdapter
     return new SpeakerViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(final SpeakerViewHolder holder, int position) {
-    final Speaker speaker = getFilteredData().get(position);
+  @Override public void onBindViewHolder(SpeakerViewHolder holder, int position) {
+    Speaker speaker = speakers.get(position);
 
     holder.itemView.setOnClickListener(v -> {
       if (onSpeakerClickListener != null) {
@@ -72,6 +73,10 @@ public final class SpeakerAdapter
       }
     });
     holder.speakerDescription.setText(fromHtml(speaker.bio()));
+  }
+
+  @Override public int getItemCount() {
+    return speakers.size();
   }
 
   static final class SpeakerViewHolder extends ButterKnifeViewHolder {

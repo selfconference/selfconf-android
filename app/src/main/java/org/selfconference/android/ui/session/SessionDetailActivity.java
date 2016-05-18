@@ -171,7 +171,7 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
     List<Speaker> speakers = Optional.fromNullable(session.speakers()).or(ImmutableList.of());
     speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
     SpeakerAdapter speakerAdapter = new SpeakerAdapter(picasso);
-    speakerAdapter.setData(speakers);
+    speakerAdapter.setSpeakers(speakers);
     speakerAdapter.setOnSpeakerClickListener(speaker -> {
       String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
       startActivity(intentFactory.createUrlIntent(twitterUrl));
