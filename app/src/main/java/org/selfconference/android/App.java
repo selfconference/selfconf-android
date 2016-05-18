@@ -2,9 +2,11 @@ package org.selfconference.android;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import com.crashlytics.android.Crashlytics;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.squareup.leakcanary.LeakCanary;
 import dagger.ObjectGraph;
+import io.fabric.sdk.android.Fabric;
 import org.selfconference.android.data.Injector;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -51,6 +53,8 @@ public class App extends Application {
   }
 
   protected void setupFabric() {
-    // STOPSHIP: 5/18/16 reinstall Fabric
+    if (!BuildConfig.DEBUG) {
+      Fabric.with(this, new Crashlytics());
+    }
   }
 }
