@@ -90,15 +90,10 @@ android {
     release {
       minifyEnabled false
       signingConfig signingConfigs.release
-
-      buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT", "\"http://selfconference.org/api/\""
     }
     debug {
       applicationIdSuffix ".debug"
       signingConfig signingConfigs.debug
-
-      buildConfigField "String", "SELF_CONFERENCE_API_ENDPOINT",
-          "\"http://selfconf-dev.herokuapp.com/api/\""
     }
   }
 
@@ -118,6 +113,10 @@ android {
 
   packagingOptions {
     exclude "META-INF/services/javax.annotation.processing.Processor"
+  }
+
+  lintOptions {
+    checkReleaseBuilds false
   }
 
   testOptions.unitTests.all {
