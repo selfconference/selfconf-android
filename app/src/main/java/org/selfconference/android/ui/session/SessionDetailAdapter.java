@@ -23,8 +23,8 @@ public final class SessionDetailAdapter
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.include_session_detail_item, parent, false);
+    LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    View view = inflater.inflate(R.layout.include_session_detail_item, parent, false);
     return new ViewHolder(view);
   }
 

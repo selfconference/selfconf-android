@@ -100,7 +100,7 @@ public class SponsorListFragment extends BaseFragment
 
     sessionsData.compose(DataTransformers.error()) //
         .subscribe(throwable -> {
-          Timber.d(throwable, "Something happened here");
+          Timber.e(throwable, "Something happened here");
         });
   }
 

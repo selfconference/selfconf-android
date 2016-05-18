@@ -9,7 +9,6 @@ import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
@@ -46,19 +45,17 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.include_sponsor_row, parent, false);
+    LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    View view = inflater.inflate(R.layout.include_sponsor_row, parent, false);
     return new ViewHolder(view);
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     Sponsor sponsor = sponsors.get(position);
 
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        if (onSponsorClickListener != null) {
-          onSponsorClickListener.onSponsorClicked(sponsor);
-        }
+    holder.itemView.setOnClickListener(v -> {
+      if (onSponsorClickListener != null) {
+        onSponsorClickListener.onSponsorClicked(sponsor);
       }
     });
 
@@ -90,12 +87,7 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
   }
 
   private String formattedSponsorLevels(Sponsor sponsor) {
-    Function<SponsorLevel, String> sponsorLevelToName = new Function<SponsorLevel, String>() {
-      @Override public String apply(SponsorLevel sponsorLevel) {
-        return sponsorLevel.name();
-      }
-    };
-    List<String> sponsorLevelNames = Lists.transform(sponsor.sponsor_levels(), sponsorLevelToName);
+    List<String> sponsorLevelNames = Lists.transform(sponsor.sponsor_levels(), SponsorLevel::name);
     String sponsorLevels = Joiner.on(", ").join(sponsorLevelNames);
     int numSponsorLevels = sponsor.sponsor_levels().size();
     Resources resources = App.context().getResources();
