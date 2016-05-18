@@ -60,6 +60,12 @@
     <license>Apache Software License 2.0</license>
   </notice>
   <notice>
+    <name>Picasso 2 OkHttp 3 Downloader</name>
+    <url>https://github.com/JakeWharton/picasso2-okhttp3-downloader</url>
+    <copyright>Copyright 2016 Jake Wharton</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
     <name>Telescope</name>
     <url>https://github.com/mattprecious/telescope</url>
     <copyright>Copyright 2014 Matthew Precious</copyright>

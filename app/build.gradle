@@ -160,6 +160,7 @@ dependencies {
   compile 'com.jakewharton.byteunits:byteunits:0.9.1'
 
   compile 'de.psdev.licensesdialog:licensesdialog:1.8.1'
+  compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
 
   compile "com.squareup.moshi:moshi:$rootProject.deps.moshi"
   compile "com.jakewharton.threetenabp:threetenabp:$rootProject.deps.threeTenAbp"

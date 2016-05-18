@@ -3,6 +3,7 @@ package org.selfconference.android.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
 import com.squareup.picasso.Picasso;
@@ -53,9 +54,10 @@ public final class DataModule {
     return IntentFactory.REAL;
   }
 
-  @Provides @Singleton Picasso picasso(Application application) {
+  @Provides @Singleton Picasso picasso(Application application, OkHttpClient client) {
     return new Picasso.Builder(application) //
         .listener((picasso, uri, e) -> Timber.e(e, "Image load failed for URI: %s", uri)) //
+        .downloader(new OkHttp3Downloader(client)) //
         .build();
   }
 
