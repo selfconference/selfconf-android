@@ -2,7 +2,7 @@
 def versionMajor = 2
 def versionMinor = 0
 def versionPatch = 0
-def versionBuild = 0
+def versionBuild = totalCommits()
 // bump for dogfood builds, public betas, etc.
 
 buildscript {
@@ -35,6 +35,16 @@ apply plugin: "me.tatarka.retrolambda"
 apply plugin: "com.fernandocejas.frodo"
 
 apply from: "test-resources.gradle"
+
+def totalCommits() {
+  def p = 'git rev-list --count HEAD'.execute([], rootDir)
+  p.waitFor()
+  if (p.exitValue() != 0) {
+    throw new RuntimeException(p.errorStream.text)
+  }
+
+  return p.text.trim().toInteger()
+}
 
 def isCi = "true".equals(System.getenv("CI"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
