@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp"
+    app:cardCornerRadius="@dimen/cardview_default_radius"
+    app:cardElevation="@dimen/cardview_default_elevation"
     >
 
-  <TextView
-      android:id="@+id/code_of_conduct_title"
+  <LinearLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:fontFamily="sans-serif-medium"
-      android:textColor="#464646"
-      android:textSize="24sp"
-      tools:text="Title"
-      />
+      android:orientation="vertical"
+      android:padding="16dp"
+      >
 
-  <TextView
-      android:id="@+id/code_of_conduct_subtitle"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="4dp"
-      android:textColor="#464646"
-      android:textSize="16sp"
-      tools:text="Subtitle"
-      />
+    <TextView
+        android:id="@+id/code_of_conduct_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#464646"
+        android:textSize="24sp"
+        tools:text="Title"
+        />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/code_of_conduct_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        tools:text="Subtitle"
+        />
+
+  </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -41,7 +41,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="24dp"
-        android:textColor="@android:color/black"
+        android:textColor="#464646"
         android:textSize="24sp"
         tools:text="Cool Company, LLC"
         />
