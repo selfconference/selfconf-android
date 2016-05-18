@@ -3,6 +3,7 @@ package org.selfconference.android.ui.session;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -133,7 +134,7 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
 
   @Override public void onFeedbackCreated(Session session, Feedback feedback) {
     submitFeedback.setEnabled(false);
-    submitFeedback.setText("Submitting feedback...");
+    submitFeedback.setText(R.string.message_feedback_submit);
 
     // Submit feedback.
     feedbackSubject.onNext(feedback);
@@ -180,10 +181,11 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
   }
 
   private void showSnackbar() {
-    final boolean isChecked = favoriteButton.isChecked();
-    String message = isChecked ? "Session favorited" : "Session unfavorited";
-    final Snackbar snackbar = Snackbar.make(favoriteButton, message, LENGTH_SHORT);
-    snackbar.setAction("Undo", v -> {
+    boolean isChecked = favoriteButton.isChecked();
+    @StringRes int messageResId =
+        isChecked ? R.string.message_schedule_add : R.string.message_schedule_remove;
+    Snackbar snackbar = Snackbar.make(favoriteButton, messageResId, LENGTH_SHORT);
+    snackbar.setAction(R.string.undo, v -> {
       favoriteButton.setChecked(!isChecked);
       snackbar.dismiss();
     });

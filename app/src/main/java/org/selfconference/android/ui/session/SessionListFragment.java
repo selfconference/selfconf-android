@@ -100,18 +100,18 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
         Snackbar.make(view, "Already added to schedule", Snackbar.LENGTH_SHORT).show();
       } else {
         new AlertDialog.Builder(getActivity()) //
-            .setMessage("Add session to your schedule?") //
-            .setPositiveButton("Add", (dialog, which) -> {
+            .setMessage(R.string.prompt_schedule_add) //
+            .setPositiveButton(R.string.add, (dialog, which) -> {
               sessionPreferences.favorite(session);
               dataSource.tickleSessions();
-              Snackbar.make(view, "Added to schedule", Snackbar.LENGTH_SHORT) //
-                  .setAction("Undo", v -> {
+              Snackbar.make(view, R.string.message_schedule_add, Snackbar.LENGTH_SHORT) //
+                  .setAction(R.string.undo, v -> {
                     sessionPreferences.unfavorite(session);
                     dataSource.tickleSessions();
                   }) //
                   .show();
             }) //
-            .setNegativeButton("Cancel", null) //
+            .setNegativeButton(R.string.cancel, null) //
             .show();
       }
     });

@@ -79,18 +79,18 @@ public final class MyScheduleFragment extends BaseFragment
 
     sessionAdapter.setOnSessionLongClickListener(session -> {
       new AlertDialog.Builder(getActivity()) //
-          .setMessage("Remove session from your schedule?") //
-          .setPositiveButton("Remove", (dialog, which) -> {
+          .setMessage(R.string.prompt_schedule_remove) //
+          .setPositiveButton(R.string.remove, (dialog, which) -> {
             sessionPreferences.unfavorite(session);
             dataSource.tickleSessions();
-            Snackbar.make(view, "Removed from schedule", Snackbar.LENGTH_SHORT) //
-                .setAction("Undo", v -> {
+            Snackbar.make(view, R.string.message_schedule_remove, Snackbar.LENGTH_SHORT) //
+                .setAction(R.string.undo, v -> {
                   sessionPreferences.favorite(session);
                   dataSource.tickleSessions();
                 }) //
                 .show();
           }) //
-          .setNegativeButton("Cancel", null) //
+          .setNegativeButton(R.string.cancel, null) //
           .show();
     });
 
