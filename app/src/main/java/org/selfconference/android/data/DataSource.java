@@ -6,9 +6,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.data.pref.SessionPreferences;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
+import timber.log.Timber;
 
 import static org.selfconference.android.data.Data.Status.LOADING;
 import static org.selfconference.android.data.Data.Status.NONE;
@@ -17,9 +17,8 @@ import static org.selfconference.android.data.Data.Status.NONE;
 
   private final BehaviorSubject<Data<List<Session>>> sessionSubject;
   private final BehaviorSubject<Data<List<Sponsor>>> sponsorSubject;
-  private final SessionPreferences sessionPreferences;
 
-  @Inject public DataSource(SessionPreferences sessionPreferences) {
+  @Inject public DataSource() {
     Data<List<Session>> sessions = Data.<List<Session>>builder() //
         .data(Lists.newArrayList()) //
         .status(NONE) //
@@ -31,8 +30,6 @@ import static org.selfconference.android.data.Data.Status.NONE;
         .status(NONE) //
         .build();
     this.sponsorSubject = BehaviorSubject.create(sponsors);
-
-    this.sessionPreferences = sessionPreferences;
   }
 
   public void setSessions(Data<List<Session>> data) {
@@ -48,14 +45,10 @@ import static org.selfconference.android.data.Data.Status.NONE;
   }
 
   public Observable<Data<List<Session>>> sessions() {
-    return this.sessionSubject.share().doOnSubscribe(this::tickleSessions);
-  }
-
-  public Observable<List<Session>> favoriteSessions() {
-    return sessions().compose(DataTransformers.loaded())
-        .flatMap(sessions -> Observable.from(sessions) //
-            .filter(sessionPreferences::isFavorite) //
-            .toList());
+    return this.sessionSubject.share() //
+        .onBackpressureBuffer() //
+        .doOnSubscribe(this::tickleSessions) //
+        .doOnError(this::logError);
   }
 
   public void setSponsors(Data<List<Sponsor>> data) {
@@ -71,11 +64,21 @@ import static org.selfconference.android.data.Data.Status.NONE;
   }
 
   public Observable<Data<List<Sponsor>>> sponsors() {
-    return this.sponsorSubject.share()
-        .doOnSubscribe(() -> sponsorSubject.onNext(sponsorSubject.getValue()));
+    return this.sponsorSubject.share() //
+        .onBackpressureBuffer() //
+        .doOnSubscribe(this::tickleSponsors) //
+        .doOnError(this::logError);
   }
 
   public void tickleSessions() {
     sessionSubject.onNext(sessionSubject.getValue());
+  }
+
+  public void tickleSponsors() {
+    sponsorSubject.onNext(sponsorSubject.getValue());
+  }
+
+  private void logError(Throwable throwable) {
+    Timber.e(throwable, "Error occurred in observable data stream");
   }
 }
