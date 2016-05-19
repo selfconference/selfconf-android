@@ -158,7 +158,7 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
     Slot slot = Optional.fromNullable(session.slot()).or(Slot.empty());
     List<SessionDetail> sessionDetails = SessionDetails.builder()
         .add(R.drawable.ic_maps_place, room.name())
-        .add(R.drawable.ic_action_schedule, Instants.shortTimeString(slot.time()))
+        .add(R.drawable.ic_action_schedule, Instants.dayTimeString(slot.time()))
         .add(R.drawable.ic_action_description, nullSafeDescription(session))
         .toList();
 
