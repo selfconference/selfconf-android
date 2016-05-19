@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -47,7 +48,6 @@ import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
-import static android.text.Html.fromHtml;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class SessionDetailActivity extends BaseActivity implements OnFeedbackCreatedListener {
@@ -158,13 +158,21 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
     List<SessionDetail> sessionDetails = SessionDetails.builder()
         .add(R.drawable.ic_maps_place, room.name())
         .add(R.drawable.ic_action_schedule, Instants.shortTimeString(slot.time()))
-        .add(R.drawable.ic_action_description, fromHtml(session.description()))
+        .add(R.drawable.ic_action_description, nullSafeDescription(session))
         .toList();
 
     SessionDetailAdapter sessionDetailAdapter = new SessionDetailAdapter(sessionDetails);
     sessionDetailRecyclerView.setAdapter(sessionDetailAdapter);
     sessionDetailRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     scrollView.post(() -> scrollView.scrollTo(0, 0));
+  }
+
+  private static String nullSafeDescription(Session session) {
+    Optional<String> optionalDescription = Optional.fromNullable(session.description());
+    if (optionalDescription.isPresent()) {
+      return Html.fromHtml(optionalDescription.get()).toString();
+    }
+    return "No description";
   }
 
   private void setUpSpeakerList() {

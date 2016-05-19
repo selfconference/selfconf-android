@@ -29,7 +29,7 @@ import java.util.List;
 
   @Nullable public abstract Room room();
 
-  @Json(name = "abstract") public abstract String description();
+  @Json(name = "abstract") @Nullable public abstract String description();
 
   public abstract boolean keynote();
 
