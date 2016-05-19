@@ -48,6 +48,7 @@ import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
+import static android.view.View.GONE;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class SessionDetailActivity extends BaseActivity implements OnFeedbackCreatedListener {
@@ -177,15 +178,19 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
 
   private void setUpSpeakerList() {
     List<Speaker> speakers = Optional.fromNullable(session.speakers()).or(ImmutableList.of());
-    speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
-    SpeakerAdapter speakerAdapter = new SpeakerAdapter(picasso);
-    speakerAdapter.setSpeakers(speakers);
-    speakerAdapter.setOnSpeakerClickListener(speaker -> {
-      String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
-      startActivity(intentFactory.createUrlIntent(twitterUrl));
-    });
-    speakerRecyclerView.setAdapter(speakerAdapter);
-    speakerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    if (speakers.isEmpty()) {
+      speakersHeader.setVisibility(GONE);
+    } else {
+      speakersHeader.setText(getResources().getQuantityString(R.plurals.speakers, speakers.size()));
+      SpeakerAdapter speakerAdapter = new SpeakerAdapter(picasso);
+      speakerAdapter.setSpeakers(speakers);
+      speakerAdapter.setOnSpeakerClickListener(speaker -> {
+        String twitterUrl = getString(R.string.twitter_url, speaker.twitter());
+        startActivity(intentFactory.createUrlIntent(twitterUrl));
+      });
+      speakerRecyclerView.setAdapter(speakerAdapter);
+      speakerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
   }
 
   private void showSnackbar() {
