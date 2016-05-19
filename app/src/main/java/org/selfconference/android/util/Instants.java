@@ -19,9 +19,7 @@ public final class Instants {
   }
 
   public static boolean areOnSameDay(Instant left, Instant right) {
-    Instant leftTime = left.truncatedTo(ChronoUnit.DAYS);
-    Instant rightTime = right.truncatedTo(ChronoUnit.DAYS);
-    return leftTime.compareTo(rightTime) == 0;
+    return ChronoUnit.DAYS.between(left, right) == 0;
   }
 
   public static String dayTimeString(Instant instant) {
