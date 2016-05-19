@@ -8,6 +8,7 @@ import com.squareup.leakcanary.LeakCanary;
 import dagger.ObjectGraph;
 import io.fabric.sdk.android.Fabric;
 import org.selfconference.android.data.Injector;
+import org.selfconference.android.util.CrashlyticsTree;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
@@ -55,6 +56,7 @@ public class App extends Application {
   protected void setupFabric() {
     if (!BuildConfig.DEBUG) {
       Fabric.with(this, new Crashlytics());
+      Timber.plant(new CrashlyticsTree());
     }
   }
 }
