@@ -2,6 +2,7 @@ package org.selfconference.android.util;
 
 import java.util.Locale;
 import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.ZonedDateTime;
@@ -18,7 +19,9 @@ public final class Instants {
   }
 
   public static boolean areOnSameDay(Instant left, Instant right) {
-    return ChronoUnit.DAYS.between(left, right) == 0;
+    LocalDate leftOffset = offset(left).toLocalDate();
+    LocalDate rightOffset = offset(right).toLocalDate();
+    return ChronoUnit.DAYS.between(leftOffset, rightOffset) == 0;
   }
 
   public static String dayTimeString(Instant instant) {
