@@ -30,7 +30,7 @@ import java.util.List;
 
   public abstract String bio();
 
-  public abstract String photo();
+  public abstract String headshot();
 
   @Nullable public abstract List<Session> sessions();
 
@@ -44,7 +44,7 @@ import java.util.List;
 
     public abstract Builder bio(String bio);
 
-    public abstract Builder photo(String photo);
+    public abstract Builder headshot(String photo);
 
     public abstract Builder sessions(List<Session> sessions);
 

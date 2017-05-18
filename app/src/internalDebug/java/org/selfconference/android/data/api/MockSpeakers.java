@@ -11,7 +11,7 @@ final class MockSpeakers {
       .name("Kobe Bryant") //
       .bio("Testing") //
       .twitter("kobebryant") //
-      .photo("http://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/110.png") //
+      .headshot("http://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/110.png") //
       .sessions(ImmutableList.of(MockSessions.findSessionById(1))) //
       .build();
 

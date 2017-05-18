@@ -63,10 +63,10 @@ public final class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.Sp
       @Override public boolean onPreDraw() {
         holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-        picasso.load(speaker.photo())
+        picasso.load(speaker.headshot())
             .resize(holder.speakerPhoto.getWidth(), holder.speakerPhoto.getHeight())
             .centerCrop()
-            .transform(new CircularTransformation(speaker.photo()))
+            .transform(new CircularTransformation(speaker.headshot()))
             .placeholder(PlaceholderDrawable.forId(speaker.id()))
             .into(holder.speakerPhoto);
         return true;

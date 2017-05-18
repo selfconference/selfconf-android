@@ -27,7 +27,7 @@ public final class SessionTest {
             .name("Name")
             .twitter("name")
             .bio("bio")
-            .photo("http://example.com/photo.jpg")
+            .headshot("http://example.com/headshot.jpg")
             .build()))
         .name("name")
         .keynote(false)

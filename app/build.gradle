@@ -10,7 +10,7 @@ buildscript {
     maven { url "https://maven.fabric.io/public" }
   }
   dependencies {
-    classpath "com.android.tools.build:gradle:$rootProject.deps.androidGradlePlugin"
+    classpath 'com.android.tools.build:gradle:2.3.1'
     classpath "com.neenbedankt.gradle.plugins:android-apt:$rootProject.deps.androidApt"
     classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
     classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
@@ -124,6 +124,7 @@ android {
       events "passed", "skipped", "failed"
     }
   }
+  buildToolsVersion '25.0.3'
 }
 
 // TODO remove eventually: http://b.android.com/162285
@@ -198,13 +199,15 @@ dependencies {
 }
 
 if (!isCi) {
-  def installAll = tasks.create("installAll")
-  installAll.description = "Install all applications."
-  android.applicationVariants.all { variant ->
-    installAll.dependsOn(variant.install)
-    // Ensure we end up in the same group as the other install tasks.
-    installAll.group = variant.install.group
-  }
+
+//  def installAll = tasks.create("installAll")
+//  installAll.description = "Install all applications."
+//  android.applicationVariants.all { variant ->
+//    installAll.dependsOn(variant.install)
+//    // Ensure we end up in the same group as the other install tasks.
+//    installAll.group = variant.install.group
+//  }
+
 }
 
 // The default 'assemble' task only applies to normal variants. Add test variants as well.

@@ -19,7 +19,7 @@ public final class SpeakerTest {
   public void speakerParcelsWithoutErrors() throws Exception {
     Speaker speaker = Speaker.builder()
         .bio("bio")
-        .photo("http://test.com/img.png")
+        .headshot("http://test.com/img.png")
         .id(10)
         .name("Dave")
         .sessions(ImmutableList.of())
