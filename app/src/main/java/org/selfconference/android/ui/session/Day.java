@@ -4,8 +4,8 @@ import org.selfconference.android.util.Instants;
 import org.threeten.bp.Instant;
 
 public enum Day {
-  ONE(Instants.fromEstString("2017-05-19T00:00:00.000-05:00")),
-  TWO(Instants.fromEstString("2017-05-20T00:00:00.000-05:00"));
+  ONE(Instants.fromEstString("2018-08-17T00:00:00.000-05:00")),
+  TWO(Instants.fromEstString("2018-08-18T00:00:00.000-05:00"));
 
   private final Instant startTime;
 
