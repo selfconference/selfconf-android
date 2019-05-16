@@ -1,7 +1,7 @@
 package org.selfconference.android.util;
 
 import android.os.Build;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import org.selfconference.android.R;
 
 public final class PlaceholderDrawable {

@@ -1,21 +1,20 @@
 package org.selfconference.android.ui.speaker;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
-import java.util.List;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Speaker;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.transform.CircularTransformation;
 import org.selfconference.android.util.PlaceholderDrawable;
-
+import java.util.List;
+import butterknife.BindView;
 import static android.text.Html.fromHtml;
 import static android.view.ViewTreeObserver.OnPreDrawListener;
 

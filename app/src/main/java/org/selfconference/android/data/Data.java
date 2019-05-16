@@ -1,6 +1,6 @@
 package org.selfconference.android.data;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 
 @AutoValue public abstract class Data<T> {

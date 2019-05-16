@@ -1,17 +1,17 @@
 package org.selfconference.android.ui.session;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
+import java.util.List;
+import butterknife.BindView;
 
 public final class SessionDetailAdapter
     extends RecyclerView.Adapter<SessionDetailAdapter.ViewHolder> {

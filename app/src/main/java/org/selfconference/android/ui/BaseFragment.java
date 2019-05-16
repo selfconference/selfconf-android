@@ -1,12 +1,12 @@
 package org.selfconference.android.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
+import androidx.annotation.Nullable;
 import com.trello.rxlifecycle.components.support.RxFragment;
+import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends RxFragment {
 

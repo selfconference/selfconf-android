@@ -1,6 +1,6 @@
 package org.selfconference.android.ui.misc;
 
-import android.support.annotation.StyleRes;
+import androidx.annotation.StyleRes;
 import org.selfconference.android.R;
 
 public final class Themes {

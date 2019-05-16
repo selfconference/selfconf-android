@@ -1,23 +1,23 @@
 package org.selfconference.android.ui.sponsor;
 
 import android.content.res.Resources;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
-import java.util.List;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import java.util.List;
+import butterknife.BindView;
 import rx.subscriptions.CompositeSubscription;
 
 public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.ViewHolder> {

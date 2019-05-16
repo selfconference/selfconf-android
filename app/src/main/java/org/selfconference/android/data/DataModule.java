@@ -4,19 +4,18 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.jakewharton.picasso.OkHttp3Downloader;
-import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
 import com.squareup.picasso.Picasso;
-import dagger.Module;
-import dagger.Provides;
-import java.io.File;
-import javax.inject.Singleton;
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
 import org.selfconference.android.data.api.ApiModule;
 import org.selfconference.android.data.api.json.InstantAdapter;
 import org.selfconference.android.data.api.json.VoteAdapter;
 import org.selfconference.android.data.pref.SessionPreferences;
+import java.io.File;
+import javax.inject.Singleton;
+import dagger.Module;
+import dagger.Provides;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -32,7 +31,7 @@ public final class DataModule {
 
   @Provides @Singleton Moshi moshi() {
     return new Moshi.Builder() //
-        .add(new AutoValueMoshiAdapterFactory())
+        .add(MyAdapterFactory.create())
         .add(new InstantAdapter())
         .add(new VoteAdapter())
         .build();

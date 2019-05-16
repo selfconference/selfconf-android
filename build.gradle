@@ -3,25 +3,27 @@ allprojects {
     repositories {
       jcenter()
       mavenCentral()
+      google()
     }
   }
 
   repositories {
     jcenter()
     mavenCentral()
+    google()
   }
 
   ext {
-    buildToolsVersion = "23.0.3"
-    minSdkVersion = 16
-    targetSdkVersion = 23
+    buildToolsVersion = "28.0.3"
+    minSdkVersion = 21
+    targetSdkVersion = 28
     compileSdkVersion = targetSdkVersion
     deps = [supportLibrary      : "23.4.0",
-            autoValue           : "1.2",
-            autoValueAnnotations: "1.2-update1",
-            autoValueParcel     : "0.2.1",
-            autoValueMoshi      : "0.3.0",
-            butterknife         : "8.0.1",
+            autoValue           : "1.6.5",
+            autoValueAnnotations: "1.6.5",
+            autoValueParcel     : "0.2.6",
+            autoValueMoshi      : "0.4.5",
+            butterknife         : "10.1.0",
             timber              : "4.1.2",
             dagger              : "1.2.5",
             picasso             : "2.5.2",
@@ -30,7 +32,7 @@ allprojects {
             otto                : "1.3.8",
             moshi               : "1.1.0",
             threeTenAbp         : "1.0.3",
-            guava               : "19.0",
+            guava               : "26.0-jre",
             rxJava              : "1.1.5",
             rxJavaAndroid       : "1.2.0",
             rxPreferences       : "1.0.1",

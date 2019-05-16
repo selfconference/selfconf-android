@@ -2,22 +2,21 @@ package org.selfconference.android.ui.session;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Vote;
 import org.selfconference.android.ui.view.VoteButton;
 import org.selfconference.android.ui.view.VoteButton.OnVoteSelectedListener;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**

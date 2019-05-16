@@ -2,22 +2,16 @@ package org.selfconference.android.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
 import com.google.common.collect.Lists;
-import de.psdev.licensesdialog.LicensesDialog;
-import java.util.List;
-import javax.inject.Inject;
 import org.selfconference.android.BuildConfig;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
@@ -28,6 +22,11 @@ import org.selfconference.android.data.api.Results;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.drawer.DrawerItem;
+import java.util.List;
+import javax.inject.Inject;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import de.psdev.licensesdialog.LicensesDialog;
 import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -172,8 +171,8 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
         .commit();
   }
 
-  private final OnNavigationItemSelectedListener navigationItemSelectedListener =
-      new OnNavigationItemSelectedListener() {
+  private final NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+      new NavigationView.OnNavigationItemSelectedListener() {
         @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
           DrawerItem drawerItem = DrawerItem.fromMenuItem(menuItem);
           changeFragment(drawerItem);

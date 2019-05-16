@@ -1,13 +1,12 @@
 package org.selfconference.android.ui;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
-import dagger.ObjectGraph;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
-
+import dagger.ObjectGraph;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.base.Preconditions.checkNotNull;

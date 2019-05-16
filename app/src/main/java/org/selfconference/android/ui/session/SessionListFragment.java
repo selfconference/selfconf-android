@@ -3,20 +3,15 @@ package org.selfconference.android.ui.session;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.BindView;
-import butterknife.OnClick;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.trello.rxlifecycle.FragmentEvent;
-import java.util.List;
-import javax.inject.Inject;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
@@ -29,12 +24,16 @@ import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.FragmentCallbacks;
 import org.selfconference.android.ui.misc.BetterViewAnimator;
+import java.util.List;
+import javax.inject.Inject;
+import butterknife.BindView;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public final class SessionListFragment extends BaseFragment implements OnRefreshListener {
+public final class SessionListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
   private static final String EXTRA_DAY = "org.selfconference.android.ui.session.EXTRA_DAY";
 
   @BindView(R.id.animator_view) BetterViewAnimator animatorView;

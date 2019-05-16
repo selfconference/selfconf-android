@@ -8,19 +8,14 @@ def versionBuild = totalCommits()
 buildscript {
   repositories {
     maven { url "https://maven.fabric.io/public" }
+    google()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.1'
-    classpath "com.neenbedankt.gradle.plugins:android-apt:$rootProject.deps.androidApt"
+    classpath 'com.android.tools.build:gradle:3.4.1'
     classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
     classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
-    classpath "me.tatarka:gradle-retrolambda:3.3.0-beta4"
-    classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
     classpath "com.fernandocejas.frodo:frodo-plugin:0.8.2"
   }
-
-  // Exclude the lombok version that the android plugin depends on.
-  configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
 repositories {
@@ -29,25 +24,21 @@ repositories {
 
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
-apply plugin: "com.neenbedankt.android-apt"
 apply plugin: "com.github.ben-manes.versions"
-apply plugin: "me.tatarka.retrolambda"
 apply plugin: "com.fernandocejas.frodo"
 
-apply from: "test-resources.gradle"
-
 def totalCommits() {
-  def p = 'git rev-list --count HEAD'.execute([], rootDir)
-  p.waitFor()
-  if (p.exitValue() != 0) {
-    throw new RuntimeException(p.errorStream.text)
-  }
+    def p = 'git rev-list --count HEAD'.execute([], rootDir)
+    p.waitFor()
+    if (p.exitValue() != 0) {
+        throw new RuntimeException(p.errorStream.text)
+    }
 
-  return p.text.trim().toInteger()
+    return p.text.trim().toInteger()
 }
 
-def isCi = "true".equals(System.getenv("CI"))
-def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+def isCi = "true" == System.getenv("CI")
+def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
 
 android {
   compileSdkVersion rootProject.compileSdkVersion
@@ -68,6 +59,8 @@ android {
     signingConfig signingConfigs.debug
 
     vectorDrawables.useSupportLibrary = true
+
+    javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
   }
 
   signingConfigs {
@@ -97,11 +90,14 @@ android {
     }
   }
 
+  flavorDimensions "version"
   productFlavors {
     internal {
+      dimension "version"
       applicationId "org.selfconference.android.internal"
     }
     production {
+      dimension "version"
       applicationId "org.selfconference.android"
     }
   }
@@ -124,78 +120,64 @@ android {
       events "passed", "skipped", "failed"
     }
   }
-  buildToolsVersion '25.0.3'
-}
-
-// TODO remove eventually: http://b.android.com/162285
-configurations {
-  internalDebugCompile
-}
-
-configurations.all {
-  resolutionStrategy {
-    force "com.android.support:support-annotations:$rootProject.deps.supportLibrary"
-  }
 }
 
 dependencies {
+  implementation 'androidx.annotation:annotation:1.0.2'
+  implementation 'androidx.appcompat:appcompat:1.0.2'
+  implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+  implementation 'com.google.android.material:material:1.0.0'
+  implementation 'androidx.recyclerview:recyclerview:1.0.0'
+  implementation 'androidx.cardview:cardview:1.0.0'
 
-  retrolambdaConfig "net.orfjackal.retrolambda:retrolambda:2.3.0"
+  annotationProcessor "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
+  implementation "com.google.auto.value:auto-value-annotations:$rootProject.deps.autoValue"
+  annotationProcessor "com.ryanharter.auto.value:auto-value-parcel:$rootProject.deps.autoValueParcel"
+  implementation "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
+  annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$rootProject.deps.autoValueMoshi"
+  implementation "com.ryanharter.auto.value:auto-value-moshi-annotations:$rootProject.deps.autoValueMoshi"
+  implementation "com.jakewharton:butterknife:$rootProject.deps.butterknife"
+  annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.deps.butterknife"
+  implementation "com.jakewharton.timber:timber:$rootProject.deps.timber"
+  implementation "com.squareup.dagger:dagger:$rootProject.deps.dagger"
+  annotationProcessor "com.squareup.dagger:dagger-compiler:$rootProject.deps.dagger"
+  implementation "com.squareup.picasso:picasso:$rootProject.deps.picasso"
+  implementation "com.squareup.okhttp3:okhttp:$rootProject.deps.okhttp"
+  internalImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
+  implementation "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
+  implementation "com.squareup.retrofit2:converter-moshi:$rootProject.deps.retrofit"
+  implementation "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
+  internalImplementation "com.squareup.retrofit2:retrofit-mock:$rootProject.deps.retrofit"
 
-  compile "com.android.support:support-annotations:$rootProject.deps.supportLibrary"
-  compile "com.android.support:appcompat-v7:$rootProject.deps.supportLibrary"
-  compile "com.android.support:support-v4:$rootProject.deps.supportLibrary"
-  compile "com.android.support:design:$rootProject.deps.supportLibrary"
-  compile "com.android.support:recyclerview-v7:$rootProject.deps.supportLibrary"
-  compile "com.android.support:cardview-v7:$rootProject.deps.supportLibrary"
+  implementation 'com.jakewharton.byteunits:byteunits:0.9.1'
 
-  apt "com.ryanharter.auto.value:auto-value-parcel:$rootProject.deps.autoValueParcel"
-  compile "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
-  apt "com.ryanharter.auto.value:auto-value-moshi:$rootProject.deps.autoValueMoshi"
-  apt "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
-  provided "com.jakewharton.auto.value:auto-value-annotations:$rootProject.deps.autoValueAnnotations"
-  compile "com.jakewharton:butterknife:$rootProject.deps.butterknife"
-  apt "com.jakewharton:butterknife-compiler:$rootProject.deps.butterknife"
-  compile "com.jakewharton.timber:timber:$rootProject.deps.timber"
-  compile "com.squareup.dagger:dagger:$rootProject.deps.dagger"
-  apt "com.squareup.dagger:dagger-compiler:$rootProject.deps.dagger"
-  compile "com.squareup.picasso:picasso:$rootProject.deps.picasso"
-  compile "com.squareup.okhttp3:okhttp:$rootProject.deps.okhttp"
-  internalCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
-  compile "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
-  compile "com.squareup.retrofit2:converter-moshi:$rootProject.deps.retrofit"
-  compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
-  internalCompile "com.squareup.retrofit2:retrofit-mock:$rootProject.deps.retrofit"
+  implementation 'de.psdev.licensesdialog:licensesdialog:2.0.0'
+  implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
 
-  compile 'com.jakewharton.byteunits:byteunits:0.9.1'
+  implementation "com.squareup.moshi:moshi:$rootProject.deps.moshi"
+  implementation "com.jakewharton.threetenabp:threetenabp:$rootProject.deps.threeTenAbp"
 
-  compile 'de.psdev.licensesdialog:licensesdialog:1.8.1'
-  compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
+  implementation "com.google.guava:guava:$rootProject.deps.guava"
 
-  compile "com.squareup.moshi:moshi:$rootProject.deps.moshi"
-  compile "com.jakewharton.threetenabp:threetenabp:$rootProject.deps.threeTenAbp"
+  implementation "io.reactivex:rxjava:$rootProject.deps.rxJava"
+  implementation "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
+  implementation "com.f2prateek.rx.preferences:rx-preferences:$rootProject.deps.rxPreferences"
+  implementation "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
+  implementation "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
 
-  compile "com.google.guava:guava:$rootProject.deps.guava"
-
-  compile "io.reactivex:rxjava:$rootProject.deps.rxJava"
-  compile "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
-  compile "com.f2prateek.rx.preferences:rx-preferences:$rootProject.deps.rxPreferences"
-  compile "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
-  compile "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
-
-  compile("com.crashlytics.sdk.android:crashlytics:$rootProject.deps.crashlytics") {
+  implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.deps.crashlytics") {
     transitive = true;
   }
 
-  debugCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
-  releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
+  debugImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
+  releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
 
-  internalCompile "com.mattprecious.telescope:telescope:$rootProject.deps.telescope"
-  internalDebugCompile "com.jakewharton:process-phoenix:$rootProject.deps.processPhoenix"
+  internalImplementation "com.mattprecious.telescope:telescope:$rootProject.deps.telescope"
+  internalImplementation "com.jakewharton:process-phoenix:$rootProject.deps.processPhoenix"
 
-  testCompile "org.robolectric:robolectric:$rootProject.deps.robolectric"
-  testCompile "junit:junit:$rootProject.deps.junit"
-  testCompile "com.squareup.assertj:assertj-android:$rootProject.deps.assertjAndroid"
+  testImplementation "org.robolectric:robolectric:$rootProject.deps.robolectric"
+  testImplementation "junit:junit:$rootProject.deps.junit"
+  testImplementation "com.squareup.assertj:assertj-android:$rootProject.deps.assertjAndroid"
 }
 
 if (!isCi) {

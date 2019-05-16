@@ -2,16 +2,12 @@ package org.selfconference.android.ui.sponsor;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import butterknife.BindView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle.FragmentEvent;
-import java.util.List;
-import javax.inject.Inject;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
@@ -22,13 +18,16 @@ import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.FragmentCallbacks;
 import org.selfconference.android.ui.sponsor.SponsorAdapter.OnSponsorClickListener;
+import java.util.List;
+import javax.inject.Inject;
+import butterknife.BindView;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class SponsorListFragment extends BaseFragment
-    implements OnSponsorClickListener, OnRefreshListener {
+    implements OnSponsorClickListener, SwipeRefreshLayout.OnRefreshListener {
   public static final String TAG = SponsorListFragment.class.getName();
 
   @BindView(R.id.sponsor_recycler_view) RecyclerView sponsorRecyclerView;

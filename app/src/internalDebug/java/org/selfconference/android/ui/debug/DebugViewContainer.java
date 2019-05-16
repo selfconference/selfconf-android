@@ -2,19 +2,24 @@ package org.selfconference.android.ui.debug;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.widget.DrawerLayout;
 import android.view.ContextThemeWrapper;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.mattprecious.telescope.EmailDeviceInfoLens;
 import com.mattprecious.telescope.Lens;
 import com.mattprecious.telescope.TelescopeLayout;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+
 import org.selfconference.android.R;
 import org.selfconference.android.ui.ViewContainer;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 @Singleton public final class DebugViewContainer implements ViewContainer {
 

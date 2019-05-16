@@ -1,17 +1,17 @@
 package org.selfconference.android.ui.session;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.BindView;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
-import java.util.List;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import java.util.List;
+import butterknife.BindView;
 
 public class SessionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   public interface OnSessionClickListener {

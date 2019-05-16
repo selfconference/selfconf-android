@@ -1,6 +1,7 @@
 package org.selfconference.android.ui.viewmodel;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
 import com.google.auto.value.AutoValue;
 
 @AutoValue public abstract class TwoLineListItem {

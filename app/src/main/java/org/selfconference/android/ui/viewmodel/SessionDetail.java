@@ -1,6 +1,6 @@
 package org.selfconference.android.ui.viewmodel;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import com.google.auto.value.AutoValue;
 
 @AutoValue public abstract class SessionDetail {

@@ -2,20 +2,19 @@ package org.selfconference.android.ui.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
+import org.selfconference.android.R;
+import org.selfconference.android.data.api.model.Vote;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import org.selfconference.android.R;
-import org.selfconference.android.data.api.model.Vote;
-
-import static android.support.v4.graphics.drawable.DrawableCompat.setTint;
-import static android.support.v4.graphics.drawable.DrawableCompat.wrap;
+import static androidx.core.graphics.drawable.DrawableCompat.setTint;
+import static androidx.core.graphics.drawable.DrawableCompat.wrap;
 
 /**
  * A wrapper view for providing thumbs up or thumbs down feedback for a session.
