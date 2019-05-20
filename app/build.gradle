@@ -160,10 +160,15 @@ dependencies {
   implementation "com.google.guava:guava:$rootProject.deps.guava"
 
   implementation "io.reactivex:rxjava:$rootProject.deps.rxJava"
+  implementation "io.reactivex.rxjava2:rxjava:$rootProject.deps.rxJava2"
   implementation "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
+  implementation "io.reactivex.rxjava2:rxandroid:$rootProject.deps.rxJavaAndroid2"
   implementation "com.f2prateek.rx.preferences:rx-preferences:$rootProject.deps.rxPreferences"
+  implementation "com.f2prateek.rx.preferences2:rx-preferences:$rootProject.deps.rxPreferences2"
   implementation "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
+  implementation "com.trello.rxlifecycle3:rxlifecycle:$rootProject.deps.rxLifecycle3"
   implementation "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
+  implementation "com.trello.rxlifecycle3:rxlifecycle-components:$rootProject.deps.rxLifecycle3"
 
   implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.deps.crashlytics") {
     transitive = true;
