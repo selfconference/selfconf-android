@@ -18,7 +18,7 @@ import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import java.util.List;
 import butterknife.BindView;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.ViewHolder> {
   public interface OnSponsorClickListener {
@@ -26,7 +26,7 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
   }
 
   private final Picasso picasso;
-  private final CompositeSubscription compositeSubscription = new CompositeSubscription();
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
   private final List<Sponsor> sponsors = Lists.newArrayList();
   private OnSponsorClickListener onSponsorClickListener;
 
@@ -83,7 +83,7 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
 
   @Override public void onViewDetachedFromWindow(ViewHolder holder) {
     super.onViewDetachedFromWindow(holder);
-    compositeSubscription.unsubscribe();
+    compositeDisposable.dispose();
   }
 
   private String formattedSponsorLevels(Sponsor sponsor) {

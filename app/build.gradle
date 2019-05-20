@@ -146,7 +146,7 @@ dependencies {
   internalImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.deps.okhttp"
   implementation "com.squareup.retrofit2:retrofit:$rootProject.deps.retrofit"
   implementation "com.squareup.retrofit2:converter-moshi:$rootProject.deps.retrofit"
-  implementation "com.squareup.retrofit2:adapter-rxjava:$rootProject.deps.retrofit"
+  implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.deps.retrofit"
   internalImplementation "com.squareup.retrofit2:retrofit-mock:$rootProject.deps.retrofit"
 
   implementation 'com.jakewharton.byteunits:byteunits:0.9.1'
@@ -159,15 +159,10 @@ dependencies {
 
   implementation "com.google.guava:guava:$rootProject.deps.guava"
 
-  implementation "io.reactivex:rxjava:$rootProject.deps.rxJava"
   implementation "io.reactivex.rxjava2:rxjava:$rootProject.deps.rxJava2"
-  implementation "io.reactivex:rxandroid:$rootProject.deps.rxJavaAndroid"
   implementation "io.reactivex.rxjava2:rxandroid:$rootProject.deps.rxJavaAndroid2"
-  implementation "com.f2prateek.rx.preferences:rx-preferences:$rootProject.deps.rxPreferences"
   implementation "com.f2prateek.rx.preferences2:rx-preferences:$rootProject.deps.rxPreferences2"
-  implementation "com.trello:rxlifecycle:$rootProject.deps.rxLifecycle"
   implementation "com.trello.rxlifecycle3:rxlifecycle:$rootProject.deps.rxLifecycle3"
-  implementation "com.trello:rxlifecycle-components:$rootProject.deps.rxLifecycle"
   implementation "com.trello.rxlifecycle3:rxlifecycle-components:$rootProject.deps.rxLifecycle3"
 
   implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.deps.crashlytics") {

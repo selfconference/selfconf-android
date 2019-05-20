@@ -1,15 +1,16 @@
 package org.selfconference.android.data;
 
-import rx.functions.Func1;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 public final class Funcs {
 
-  public static <T> Func1<T, T> identity() {
+  public static <T> Function<T, T> identity() {
     return value -> value;
   }
 
-  public static <T> Func1<T, Boolean> not(final Func1<T, Boolean> func) {
-    return value -> !func.call(value);
+  public static <T> Predicate<T> not(final Predicate<T> func) {
+    return value -> !func.test(value);
   }
 
   private Funcs() {

@@ -7,7 +7,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
-import java.util.List;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Slot;
@@ -16,17 +15,19 @@ import org.selfconference.android.ui.session.Day;
 import org.selfconference.android.ui.session.SessionAdapter;
 import org.selfconference.android.util.Instants;
 import org.threeten.bp.Instant;
-import rx.Observable;
-import rx.functions.Func1;
+import java.util.List;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 public final class Sessions {
 
-  public static Func1<List<Session>, Observable<? extends List<Session>>> sortedForDay(Day day) {
-    return sessions -> Observable.from(sessions) //
+  public static Function<List<Session>, Single<? extends List<Session>>> sortedForDay(Day day) {
+    return sessions -> Observable.fromIterable(sessions)
         .filter(session -> {
           Slot slot = Optional.fromNullable(session.slot()).or(Slot.empty());
           return Instants.areOnSameDay(slot.time(), day.getStartTime());
-        }) //
+        })
         .toSortedList((session, session2) -> {
           Slot s1 = Optional.fromNullable(session.slot()).or(Slot.empty());
           Slot s2 = Optional.fromNullable(session2.slot()).or(Slot.empty());
@@ -34,15 +35,15 @@ public final class Sessions {
         });
   }
 
-  public static Func1<List<Session>, ImmutableListMultimap<Instant, Session>> groupBySlotTime() {
+  public static Function<List<Session>, ImmutableListMultimap<Instant, Session>> groupBySlotTime() {
     return sessions -> Multimaps.index(sessions, session -> {
       return Optional.fromNullable(session.slot()).or(Slot.empty()).time();
     });
   }
 
-  public static Func1<ImmutableListMultimap<Instant, Session>, Observable<? extends List<SessionAdapter.ViewModel>>> toViewModels() {
-    return sessions -> Observable.from(sessions.asMap().entrySet()) //
-        .map(entry -> {
+  public static Function<ImmutableListMultimap<Instant, Session>, Single<? extends List<SessionAdapter.ViewModel>>> toViewModels() {
+    return sessions -> Observable.fromIterable(sessions.asMap().entrySet())
+            .map(entry -> {
           ImmutableList.Builder<SessionAdapter.ViewModel> models = ImmutableList.builder();
           models.add(SessionAdapter.Header.withText(Instants.miniTimeString(entry.getKey())));
           models.addAll(Collections2.transform(entry.getValue(), session -> {
@@ -58,8 +59,8 @@ public final class Sessions {
                 .build();
           }));
           return models.build();
-        }) //
-        .concatMapIterable(Funcs.identity()) //
+        })
+        .concatMapIterable(Funcs.identity())
         .toList();
   }
 

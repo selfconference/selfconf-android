@@ -2,7 +2,7 @@ package org.selfconference.android.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import com.f2prateek.rx.preferences.RxSharedPreferences;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.moshi.Moshi;
 import com.squareup.picasso.Picasso;

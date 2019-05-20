@@ -1,14 +1,14 @@
 package org.selfconference.android.data.api;
 
 import com.squareup.moshi.Moshi;
-import dagger.Module;
-import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import dagger.Module;
+import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 import static org.selfconference.android.BuildConfig.DEBUG;
@@ -30,12 +30,12 @@ public final class ApiModule {
 
   @Provides @Singleton
   Retrofit retrofit(HttpUrl baseUrl, Moshi moshi, @Named("Api") OkHttpClient okHttpClient) {
-    return new Retrofit.Builder() //
-        .baseUrl(baseUrl) //
-        .addConverterFactory(MoshiConverterFactory.create(moshi)) //
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create()) //
-        .client(okHttpClient) //
-        .validateEagerly(DEBUG) //
+    return new Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .client(okHttpClient)
+        .validateEagerly(DEBUG)
         .build();
   }
 

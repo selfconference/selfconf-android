@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
-import com.trello.rxlifecycle.components.support.RxFragment;
+import com.trello.rxlifecycle3.components.support.RxFragment;
 import butterknife.ButterKnife;
 
 public abstract class BaseFragment extends RxFragment {

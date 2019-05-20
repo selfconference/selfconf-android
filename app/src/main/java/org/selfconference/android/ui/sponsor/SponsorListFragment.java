@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Picasso;
-import com.trello.rxlifecycle.FragmentEvent;
+import com.trello.rxlifecycle3.android.FragmentEvent;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
@@ -21,9 +21,11 @@ import org.selfconference.android.ui.sponsor.SponsorAdapter.OnSponsorClickListen
 import java.util.List;
 import javax.inject.Inject;
 import butterknife.BindView;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class SponsorListFragment extends BaseFragment
@@ -39,6 +41,7 @@ public class SponsorListFragment extends BaseFragment
 
   private FragmentCallbacks callbacks;
   private SponsorAdapter sponsorAdapter;
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   public SponsorListFragment() {
   }
@@ -86,21 +89,24 @@ public class SponsorListFragment extends BaseFragment
         .observeOn(AndroidSchedulers.mainThread())
         .compose(bindUntilEvent(FragmentEvent.STOP));
 
-    sessionsData.compose(DataTransformers.loading()) //
-        .subscribe(__ -> {
-          swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
-        });
+    Disposable sponsorsLoading = sessionsData.compose(DataTransformers.loading())
+        .subscribe(__ -> swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true)));
+    compositeDisposable.add(sponsorsLoading);
 
-    sessionsData.compose(DataTransformers.loaded()) //
-        .flatMap(sponsors -> Observable.from(sponsors).toSortedList()) //
-        .subscribe(sponsors -> {
-          sponsorAdapter.setSponsors(sponsors);
-        });
+    Disposable sponsorsLoaded = sessionsData.compose(DataTransformers.loaded())
+        .flatMap(sponsors -> Observable.just(sponsors).sorted())
+        .subscribe(sponsors -> sponsorAdapter.setSponsors(sponsors));
+    compositeDisposable.add(sponsorsLoaded);
 
-    sessionsData.compose(DataTransformers.error()) //
-        .subscribe(throwable -> {
-          Timber.e(throwable, "Something happened here");
-        });
+    Disposable sponsorsError = sessionsData.compose(DataTransformers.error())
+        .subscribe(throwable -> Timber.e(throwable, "Something happened here"));
+    compositeDisposable.add(sponsorsError);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    compositeDisposable.dispose();
   }
 
   @Override protected int layoutResId() {

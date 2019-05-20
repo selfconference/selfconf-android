@@ -1,7 +1,7 @@
 package org.selfconference.android.data;
 
 import android.content.Intent;
-import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences2.Preference;
 import org.selfconference.android.ui.ExternalIntentActivity;
 
 public final class DebugIntentFactory implements IntentFactory {

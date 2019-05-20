@@ -1,15 +1,15 @@
 package org.selfconference.android.data.api;
 
-import com.f2prateek.rx.preferences.Preference;
-import dagger.Module;
-import dagger.Provides;
+import com.f2prateek.rx.preferences2.Preference;
+import org.selfconference.android.data.ApiEndpoint;
+import org.selfconference.android.data.IsMockMode;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import dagger.Module;
+import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.selfconference.android.data.ApiEndpoint;
-import org.selfconference.android.data.IsMockMode;
 import retrofit2.Retrofit;
 import retrofit2.mock.MockRetrofit;
 import retrofit2.mock.NetworkBehavior;
@@ -45,8 +45,8 @@ public final class DebugApiModule {
   }
 
   @Provides @Singleton MockRetrofit mockRetrofit(Retrofit retrofit, NetworkBehavior behavior) {
-    return new MockRetrofit.Builder(retrofit) //
-        .networkBehavior(behavior) //
+    return new MockRetrofit.Builder(retrofit)
+        .networkBehavior(behavior)
         .build();
   }
 

@@ -3,7 +3,7 @@ package org.selfconference.android.ui;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Injector;
 import dagger.ObjectGraph;

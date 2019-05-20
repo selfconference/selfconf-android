@@ -40,12 +40,15 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava.Result;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
+import retrofit2.adapter.rxjava2.Result;
+
 import static android.view.View.GONE;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -68,6 +71,7 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
   @Inject RestClient restClient;
 
   private final PublishSubject<Feedback> feedbackSubject = PublishSubject.create();
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   private Session session;
 
@@ -106,17 +110,24 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
     setUpSessionDetailList();
     setUpSpeakerList();
 
-    Observable<Result<ResponseBody>> result = feedbackSubject //
+    Observable<Result<ResponseBody>> result = feedbackSubject
         .flatMap(feedback -> restClient.submitFeedback(session.id(), feedback)
             .subscribeOn(Schedulers.io()))
         .observeOn(AndroidSchedulers.mainThread())
         .compose(bindToLifecycle())
         .share();
 
-    result.filter(Results.isSuccessful()).subscribe(response -> {
+    Disposable feedbackSuccess = result.filter(Results.isSuccessful()).subscribe(response -> {
       preferences.submitFeedback(session);
       setupFeedbackButton();
     });
+    compositeDisposable.add(feedbackSuccess);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    compositeDisposable.dispose();
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
