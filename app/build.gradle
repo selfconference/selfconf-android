@@ -192,7 +192,7 @@ if (!isCi) {
 
 // The default 'assemble' task only applies to normal variants. Add test variants as well.
 android.testVariants.all { variant ->
-  tasks.getByName("assemble").dependsOn variant.assemble
+  tasks.getByName("assemble").dependsOn variant.assembleProvider
 }
 
 def Properties loadProperties(String filename) {
