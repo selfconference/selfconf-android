@@ -11,7 +11,7 @@ buildscript {
     google()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.4.1'
+    classpath "com.android.tools.build:gradle:$rootProject.deps.androidGradlePlugin"
     classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
     classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
     classpath "com.fernandocejas.frodo:frodo-plugin:0.8.2"
@@ -123,12 +123,12 @@ android {
 }
 
 dependencies {
-  implementation 'androidx.annotation:annotation:1.0.2'
-  implementation 'androidx.appcompat:appcompat:1.0.2'
-  implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-  implementation 'com.google.android.material:material:1.0.0'
-  implementation 'androidx.recyclerview:recyclerview:1.0.0'
-  implementation 'androidx.cardview:cardview:1.0.0'
+  implementation "androidx.annotation:annotation:1.0.2"
+  implementation "androidx.appcompat:appcompat:1.0.2"
+  implementation "androidx.legacy:legacy-support-v4:$rootProject.deps.androidxBase"
+  implementation "com.google.android.material:material:$rootProject.deps.androidxBase"
+  implementation "androidx.recyclerview:recyclerview:$rootProject.deps.androidxBase"
+  implementation "androidx.cardview:cardview:$rootProject.deps.androidxBase"
 
   annotationProcessor "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
   implementation "com.google.auto.value:auto-value-annotations:$rootProject.deps.autoValue"
