@@ -14,7 +14,6 @@ buildscript {
     classpath "com.android.tools.build:gradle:$rootProject.deps.androidGradlePlugin"
     classpath "io.fabric.tools:gradle:$rootProject.deps.fabric"
     classpath "com.github.ben-manes:gradle-versions-plugin:$rootProject.deps.gradleVersionsPlugin"
-    classpath "com.fernandocejas.frodo:frodo-plugin:0.8.2"
   }
 }
 
@@ -25,7 +24,6 @@ repositories {
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
 apply plugin: "com.github.ben-manes.versions"
-apply plugin: "com.fernandocejas.frodo"
 
 def totalCommits() {
     def p = 'git rev-list --count HEAD'.execute([], rootDir)
