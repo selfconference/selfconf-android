@@ -3,10 +3,11 @@ package org.selfconference.android.util;
 import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 public final class CrashlyticsTree extends Timber.Tree {
-  @Override protected void log(int priority, String tag, String message, Throwable t) {
+  @Override protected void log(int priority, String tag, @NotNull String message, Throwable t) {
     CrashlyticsCore crashlyticsCore = Crashlytics.getInstance().core;
 
     crashlyticsCore.log(priority, tag, message);
@@ -21,7 +22,7 @@ public final class CrashlyticsTree extends Timber.Tree {
     }
   }
 
-  @Override protected boolean isLoggable(int priority) {
+  @Override protected boolean isLoggable(String tag, int priority) {
     return !(priority == Log.DEBUG || priority == Log.VERBOSE);
   }
 }

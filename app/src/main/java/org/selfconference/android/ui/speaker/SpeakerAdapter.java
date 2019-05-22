@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
@@ -15,8 +16,9 @@ import org.selfconference.android.ui.transform.CircularTransformation;
 import org.selfconference.android.util.PlaceholderDrawable;
 import java.util.List;
 import butterknife.BindView;
-import static android.text.Html.fromHtml;
+
 import static android.view.ViewTreeObserver.OnPreDrawListener;
+import static androidx.core.text.HtmlCompat.fromHtml;
 
 public final class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.SpeakerViewHolder> {
   public interface OnSpeakerClickListener {
@@ -71,7 +73,7 @@ public final class SpeakerAdapter extends RecyclerView.Adapter<SpeakerAdapter.Sp
         return true;
       }
     });
-    holder.speakerDescription.setText(fromHtml(speaker.bio()));
+    holder.speakerDescription.setText(fromHtml(speaker.bio(), HtmlCompat.FROM_HTML_MODE_LEGACY));
   }
 
   @Override public int getItemCount() {

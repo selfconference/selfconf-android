@@ -3,13 +3,13 @@ package org.selfconference.android.ui.session;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.StringRes;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,6 +51,7 @@ import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava2.Result;
 
 import static android.view.View.GONE;
+import static androidx.core.text.HtmlCompat.fromHtml;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -184,7 +185,7 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
   private static String nullSafeDescription(Session session) {
     Optional<String> optionalDescription = Optional.fromNullable(session.description());
     if (optionalDescription.isPresent()) {
-      return Html.fromHtml(optionalDescription.get()).toString();
+      return fromHtml(optionalDescription.get(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
     }
     return "No description";
   }

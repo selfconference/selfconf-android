@@ -129,11 +129,11 @@ dependencies {
   implementation "androidx.cardview:cardview:$rootProject.deps.androidxBase"
 
   annotationProcessor "com.google.auto.value:auto-value:$rootProject.deps.autoValue"
-  implementation "com.google.auto.value:auto-value-annotations:$rootProject.deps.autoValue"
+  api "com.google.auto.value:auto-value-annotations:$rootProject.deps.autoValue"
   annotationProcessor "com.ryanharter.auto.value:auto-value-parcel:$rootProject.deps.autoValueParcel"
-  implementation "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
+  api "com.ryanharter.auto.value:auto-value-parcel-adapter:$rootProject.deps.autoValueParcel"
   annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$rootProject.deps.autoValueMoshi"
-  implementation "com.ryanharter.auto.value:auto-value-moshi-annotations:$rootProject.deps.autoValueMoshi"
+  api "com.ryanharter.auto.value:auto-value-moshi-annotations:$rootProject.deps.autoValueMoshi"
   implementation "com.jakewharton:butterknife:$rootProject.deps.butterknife"
   annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.deps.butterknife"
   implementation "com.jakewharton.timber:timber:$rootProject.deps.timber"
@@ -166,7 +166,7 @@ dependencies {
   implementation "com.trello.rxlifecycle3:rxlifecycle-components:$rootProject.deps.rxLifecycle3"
 
   implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.deps.crashlytics") {
-    transitive = true;
+    transitive = true
   }
 
   debugImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.deps.leakCanary"
@@ -197,7 +197,11 @@ android.testVariants.all { variant ->
   tasks.getByName("assemble").dependsOn variant.assembleProvider
 }
 
-def Properties loadProperties(String filename) {
+tasks.withType(JavaCompile) {
+  options.deprecation = true
+}
+
+Properties loadProperties(String filename) {
   Properties properties = new Properties()
   if (rootProject.file(filename).exists()) {
     properties.load(new FileInputStream(rootProject.file(filename)))

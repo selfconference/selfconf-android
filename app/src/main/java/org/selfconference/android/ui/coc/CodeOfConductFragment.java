@@ -21,7 +21,7 @@ public final class CodeOfConductFragment extends BaseFragment {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(false);
-    getActivity().supportInvalidateOptionsMenu();
+    getActivity().invalidateOptionsMenu();
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

@@ -1,22 +1,26 @@
 package org.selfconference.android.ui.session;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Vote;
 import org.selfconference.android.ui.view.VoteButton;
 import org.selfconference.android.ui.view.VoteButton.OnVoteSelectedListener;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -56,13 +60,13 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
     return feedbackFragment;
   }
 
-  @Override public void onAttach(Activity activity) {
+  @Override public void onAttach(Context context) {
     try {
-      onFeedbackCreatedListener = (OnFeedbackCreatedListener) activity;
+      onFeedbackCreatedListener = (OnFeedbackCreatedListener) context;
     } catch (ClassCastException e) {
       throw new RuntimeException(e);
     }
-    super.onAttach(activity);
+    super.onAttach(context);
   }
 
   @Override public void onDetach() {
