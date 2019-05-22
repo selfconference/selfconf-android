@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Picasso;
 import com.trello.rxlifecycle3.android.FragmentEvent;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
 import org.selfconference.android.data.DataTransformers;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.IntentFactory;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.BaseFragment;
@@ -62,7 +62,8 @@ public class SponsorListFragment extends BaseFragment
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Injector.obtain(getActivity().getApplicationContext()).inject(this);
+
+    App.context().getApplicationComponent().inject(this);
 
     sponsorAdapter = new SponsorAdapter(picasso);
     sponsorAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {

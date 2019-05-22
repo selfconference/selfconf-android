@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.squareup.picasso.Picasso;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.IntentFactory;
 import org.selfconference.android.data.api.RestClient;
@@ -81,6 +82,8 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    App.context().getApplicationComponent().inject(this);
 
     session = getIntent().getParcelableExtra(EXTRA_SESSION);
     checkNotNull(session, "session == null");

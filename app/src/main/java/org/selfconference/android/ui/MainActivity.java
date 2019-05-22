@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.common.collect.Lists;
+import org.selfconference.android.App;
 import org.selfconference.android.BuildConfig;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
@@ -34,7 +35,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import retrofit2.adapter.rxjava2.Result;
-import timber.log.Timber;
 
 import static org.selfconference.android.data.Data.Status.ERROR;
 import static org.selfconference.android.data.Data.Status.LOADED;
@@ -56,6 +56,8 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    App.context().getApplicationComponent().inject(this);
 
     ViewGroup container = viewContainer.forActivity(this);
 
@@ -128,10 +130,10 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
 
     Disposable sponsorsNotSuccessful = sponsorsResult.filter(Funcs.not(Results.isSuccessful()))
         .compose(bindToLifecycle())
-        .subscribe(sessionResult -> {
+        .subscribe(sponsorResult -> {
           dataSource.setSponsors(Data.<List<Sponsor>>builder().data(Lists.newArrayList())
               .status(ERROR)
-              .throwable(sessionResult.error())
+              .throwable(sponsorResult.error())
               .build());
         });
     compositeDisposable.add(sponsorsNotSuccessful);

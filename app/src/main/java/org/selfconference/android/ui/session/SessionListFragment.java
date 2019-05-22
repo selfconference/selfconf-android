@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.trello.rxlifecycle3.android.FragmentEvent;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
 import org.selfconference.android.data.DataTransformers;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.Sessions;
 import org.selfconference.android.data.api.RestClient;
 import org.selfconference.android.data.api.model.Session;
@@ -78,7 +78,8 @@ public final class SessionListFragment extends BaseFragment implements SwipeRefr
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Injector.obtain(getActivity().getApplicationContext()).inject(this);
+
+    App.context().getApplicationComponent().inject(this);
 
     String dayString = getArguments().getString(EXTRA_DAY);
     day = Day.valueOf(dayString);
