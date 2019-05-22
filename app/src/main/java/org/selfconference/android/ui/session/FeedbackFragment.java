@@ -91,9 +91,9 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
   @Override public void onVoteSelected(VoteButton voteButton, Vote vote) {
     if (onFeedbackCreatedListener != null) {
-      Feedback feedback = Feedback.builder() //
-          .vote(vote) //
-          .comments(comments.getText().toString()) //
+      Feedback feedback = Feedback.builder()
+          .vote(vote)
+          .comments(comments.getText().toString())
           .build();
       onFeedbackCreatedListener.onFeedbackCreated(session, feedback);
     }

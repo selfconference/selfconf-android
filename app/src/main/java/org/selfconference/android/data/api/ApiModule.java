@@ -24,7 +24,7 @@ import static org.selfconference.android.BuildConfig.DEBUG;
 
 @Module
 public final class ApiModule {
-  public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("http://selfconference.org/api/");
+  public static final HttpUrl PRODUCTION_API_URL = HttpUrl.parse("https://selfconference.org/api/");
 
   @Provides @Singleton HttpUrl baseUrl() {
     return PRODUCTION_API_URL;
