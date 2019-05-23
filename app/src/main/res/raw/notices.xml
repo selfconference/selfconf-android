@@ -60,12 +60,6 @@
     <license>Apache Software License 2.0</license>
   </notice>
   <notice>
-    <name>Picasso 2 OkHttp 3 Downloader</name>
-    <url>https://github.com/JakeWharton/picasso2-okhttp3-downloader</url>
-    <copyright>Copyright 2016 Jake Wharton</copyright>
-    <license>Apache Software License 2.0</license>
-  </notice>
-  <notice>
     <name>Telescope</name>
     <url>https://github.com/mattprecious/telescope</url>
     <copyright>Copyright 2014 Matthew Precious</copyright>
@@ -73,8 +67,8 @@
   </notice>
   <notice>
     <name>Dagger</name>
-    <url>https://github.com/square/dagger</url>
-    <copyright>Copyright 2012 Square, Inc.</copyright>
+    <url>https://github.com/google/dagger</url>
+    <copyright>Copyright 2012 The Dagger Authors</copyright>
     <license>Apache Software License 2.0</license>
   </notice>
   <notice>
@@ -102,9 +96,21 @@
     <license>Apache Software License 2.0</license>
   </notice>
   <notice>
+    <name>LeakCanary</name>
+    <url>https://github.com/square/leakcanary</url>
+    <copyright>Copyright 2015 Square, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
+    <name>AssertJ Android</name>
+    <url>https://github.com/square/assertj-android</url>
+    <copyright>Copyright 2013 Square, Inc.</copyright>
+    <license>Apache Software License 2.0</license>
+  </notice>
+  <notice>
     <name>RxJava</name>
     <url>https://github.com/ReactiveX/RxJava</url>
-    <copyright>Copyright 2013 Netflix, Inc.</copyright>
+    <copyright>Copyright 2016-present, RxJava Contributors</copyright>
     <license>Apache Software License 2.0</license>
   </notice>
   <notice>
@@ -122,19 +128,7 @@
   <notice>
     <name>RxLifecycle</name>
     <url>https://github.com/trello/RxLifecycle</url>
-    <copyright>Copyright 2015 Trello</copyright>
-    <license>Apache Software License 2.0</license>
-  </notice>
-  <notice>
-    <name>Retrolambda</name>
-    <url>https://github.com/orfjackal/retrolambda</url>
-    <copyright>Copyright 2013-2016 Esko Luontola and other Retrolambda contributors</copyright>
-    <license>Apache Software License 2.0</license>
-  </notice>
-  <notice>
-    <name>Gradle Retrolambda Plugin</name>
-    <url>https://github.com/evant/gradle-retrolambda</url>
-    <copyright>Copyright 2013 Evan Tatarka</copyright>
+    <copyright>Copyright 2016 Trello</copyright>
     <license>Apache Software License 2.0</license>
   </notice>
   <notice>
@@ -144,9 +138,9 @@
     <license>Apache Software License 2.0</license>
   </notice>
   <notice>
-    <name>Frodo</name>
-    <url>https://github.com/android10/frodo</url>
-    <copyright>Copyright 2015 Fernando Cejas</copyright>
-    <license>Apache Software License 2.0</license>
+    <name>Robolectric</name>
+    <url>https://github.com/robolectric/robolectric</url>
+    <copyright>Copyright 2010 Xtreme Labs, Pivotal Labs and Google Inc.</copyright>
+    <license>MIT License</license>
   </notice>
 </notices>
