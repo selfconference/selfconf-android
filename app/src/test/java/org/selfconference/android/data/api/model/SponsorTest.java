@@ -3,13 +3,13 @@ package org.selfconference.android.data.api.model;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.selfconference.android.CustomTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.selfconference.android.support.Parceler.Container;
 
 import static org.selfconference.android.support.Parceler.testParceling;
 import static org.selfconference.android.support.asserts.SponsorAssert.assertThat;
 
-@RunWith(CustomTestRunner.class) //
+@RunWith(RobolectricTestRunner.class)
 public final class SponsorTest {
 
   @Test public void sponsorParcelsWithoutError() {

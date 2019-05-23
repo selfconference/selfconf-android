@@ -118,6 +118,11 @@ android {
       events "passed", "skipped", "failed"
     }
   }
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+    }
+  }
 }
 
 dependencies {
@@ -178,6 +183,7 @@ dependencies {
   testImplementation "org.robolectric:robolectric:$rootProject.deps.robolectric"
   testImplementation "junit:junit:$rootProject.deps.junit"
   testImplementation "com.squareup.assertj:assertj-android:$rootProject.deps.assertjAndroid"
+  testImplementation 'androidx.test.ext:junit:1.1.0'
 }
 
 if (!isCi) {

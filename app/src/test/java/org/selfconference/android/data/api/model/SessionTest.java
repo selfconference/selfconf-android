@@ -4,15 +4,13 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
-import org.selfconference.android.CustomTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.selfconference.android.support.Parceler.Container;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.selfconference.android.support.Parceler.testParceling;
 
-@RunWith(CustomTestRunner.class)
-@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
+@RunWith(RobolectricTestRunner.class)
 public final class SessionTest {
 
   @Test @Ignore("Unable to handle Room Parcelable in Robolectric tests, but works on device")
@@ -22,7 +20,7 @@ public final class SessionTest {
         .slot(Slot.empty())
         .description("description")
         .room(Room.empty())
-        .speakers(ImmutableList.of(Speaker.builder() //
+        .speakers(ImmutableList.of(Speaker.builder()
             .id(3)
             .name("Name")
             .twitter("name")

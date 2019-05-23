@@ -1,38 +1,38 @@
 package org.selfconference.android.data.pref;
 
+import android.content.Context;
+import androidx.test.core.app.ApplicationProvider;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.annotation.Config;
-import org.selfconference.android.CustomTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Slot;
-import org.selfconference.android.data.api.model.Speaker;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(CustomTestRunner.class)
-@Config(emulateSdk = 18, manifest = "app/src/main/AndroidManifest.xml")
+@RunWith(RobolectricTestRunner.class)
 public final class SessionPreferencesTest {
 
+  private Context context;
   private SessionPreferences preferences;
 
-  @Before public void setUp() throws Exception {
-    preferences = new SessionPreferences(Robolectric.application);
+  @Before public void setUp() {
+    context = ApplicationProvider.getApplicationContext();
+    preferences = new SessionPreferences(context);
   }
 
-  @Test public void testSavedSessionPreferences() throws Exception {
-    Session session = Session.builder() //
+  @Test public void testSavedSessionPreferences() {
+    Session session = Session.builder()
         .id(13)
         .name("Title")
         .room(Room.empty())
         .description("Description")
         .keynote(false)
         .slot(Slot.empty())
-        .speakers(ImmutableList.<Speaker>of())
+        .speakers(ImmutableList.of())
         .build();
 
     assertThat(preferences.isFavorite(session)).isFalse();

@@ -40,7 +40,7 @@ allprojects {
             leakCanary          : "1.6.3",
             telescope           : "2.1.0",
             processPhoenix      : "2.0.0",
-            robolectric         : "2.4",
+            robolectric         : "4.2.1",
             junit               : "4.12",
             assertjAndroid      : "1.1.0",
             androidGradlePlugin : "3.4.1",
