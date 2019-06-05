@@ -63,7 +63,7 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
       @Override public boolean onPreDraw() {
         holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-        picasso.load(sponsor.photo())
+        picasso.load(sponsor.photo().isEmpty() ? null : sponsor.photo())
             .resize(holder.sponsorLogo.getWidth(), holder.sponsorLogo.getHeight())
             .centerInside()
             .into(holder.sponsorLogo);

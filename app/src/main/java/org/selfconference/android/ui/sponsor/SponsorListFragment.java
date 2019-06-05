@@ -115,7 +115,9 @@ public class SponsorListFragment extends BaseFragment
   }
 
   @Override public void onSponsorClicked(Sponsor sponsor) {
-    startActivity(intentFactory.createUrlIntent(sponsor.link()));
+    if (!sponsor.link().isEmpty()) {
+      startActivity(intentFactory.createUrlIntent(sponsor.link()));
+    }
   }
 
   @Override public void onRefresh() {
