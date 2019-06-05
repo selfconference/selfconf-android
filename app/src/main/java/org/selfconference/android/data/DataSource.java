@@ -1,13 +1,13 @@
 package org.selfconference.android.data;
 
 import com.google.common.collect.Lists;
+import org.selfconference.android.data.api.model.Session;
+import org.selfconference.android.data.api.model.Sponsor;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Sponsor;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 import static org.selfconference.android.data.Data.Status.LOADING;
@@ -19,17 +19,17 @@ import static org.selfconference.android.data.Data.Status.NONE;
   private final BehaviorSubject<Data<List<Sponsor>>> sponsorSubject;
 
   @Inject public DataSource() {
-    Data<List<Session>> sessions = Data.<List<Session>>builder() //
-        .data(Lists.newArrayList()) //
-        .status(NONE) //
+    Data<List<Session>> sessions = Data.<List<Session>>builder()
+        .data(Lists.newArrayList())
+        .status(NONE)
         .build();
-    this.sessionSubject = BehaviorSubject.create(sessions);
+    this.sessionSubject = BehaviorSubject.createDefault(sessions);
 
-    Data<List<Sponsor>> sponsors = Data.<List<Sponsor>>builder() //
-        .data(Lists.newArrayList()) //
-        .status(NONE) //
+    Data<List<Sponsor>> sponsors = Data.<List<Sponsor>>builder()
+        .data(Lists.newArrayList())
+        .status(NONE)
         .build();
-    this.sponsorSubject = BehaviorSubject.create(sponsors);
+    this.sponsorSubject = BehaviorSubject.createDefault(sponsors);
   }
 
   public void setSessions(Data<List<Session>> data) {
@@ -37,17 +37,16 @@ import static org.selfconference.android.data.Data.Status.NONE;
   }
 
   public void requestNewSessions() {
-    Data<List<Session>> sessions = this.sessionSubject.getValue() //
-        .toBuilder() //
-        .status(LOADING) //
+    Data<List<Session>> sessions = this.sessionSubject.getValue()
+        .toBuilder()
+        .status(LOADING)
         .build();
     this.sessionSubject.onNext(sessions);
   }
 
   public Observable<Data<List<Session>>> sessions() {
-    return this.sessionSubject.share() //
-        .onBackpressureBuffer() //
-        .doOnSubscribe(this::tickleSessions) //
+    return this.sessionSubject.share()
+        .doOnSubscribe(d -> tickleSessions())
         .doOnError(this::logError);
   }
 
@@ -56,17 +55,16 @@ import static org.selfconference.android.data.Data.Status.NONE;
   }
 
   public void requestNewSponsors() {
-    Data<List<Sponsor>> sponsors = this.sponsorSubject.getValue() //
-        .toBuilder() //
-        .status(LOADING) //
+    Data<List<Sponsor>> sponsors = this.sponsorSubject.getValue()
+        .toBuilder()
+        .status(LOADING)
         .build();
     this.sponsorSubject.onNext(sponsors);
   }
 
   public Observable<Data<List<Sponsor>>> sponsors() {
-    return this.sponsorSubject.share() //
-        .onBackpressureBuffer() //
-        .doOnSubscribe(this::tickleSponsors) //
+    return this.sponsorSubject.share()
+        .doOnSubscribe(d -> tickleSponsors())
         .doOnError(this::logError);
   }
 

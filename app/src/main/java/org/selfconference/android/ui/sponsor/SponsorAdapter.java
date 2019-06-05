@@ -1,24 +1,24 @@
 package org.selfconference.android.ui.sponsor;
 
 import android.content.res.Resources;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
-import java.util.List;
 import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.data.api.model.SponsorLevel;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import rx.subscriptions.CompositeSubscription;
+import java.util.List;
+import butterknife.BindView;
+import io.reactivex.disposables.CompositeDisposable;
 
 public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.ViewHolder> {
   public interface OnSponsorClickListener {
@@ -26,7 +26,7 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
   }
 
   private final Picasso picasso;
-  private final CompositeSubscription compositeSubscription = new CompositeSubscription();
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
   private final List<Sponsor> sponsors = Lists.newArrayList();
   private OnSponsorClickListener onSponsorClickListener;
 
@@ -63,7 +63,7 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
       @Override public boolean onPreDraw() {
         holder.itemView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-        picasso.load(sponsor.photo())
+        picasso.load(sponsor.photo().isEmpty() ? null : sponsor.photo())
             .resize(holder.sponsorLogo.getWidth(), holder.sponsorLogo.getHeight())
             .centerInside()
             .into(holder.sponsorLogo);
@@ -83,7 +83,7 @@ public final class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.Vi
 
   @Override public void onViewDetachedFromWindow(ViewHolder holder) {
     super.onViewDetachedFromWindow(holder);
-    compositeSubscription.unsubscribe();
+    compositeDisposable.dispose();
   }
 
   private String formattedSponsorLevels(Sponsor sponsor) {

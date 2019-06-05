@@ -12,22 +12,22 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences2.Preference;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.StatsSnapshot;
-import javax.inject.Inject;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.ApiEndpoint;
 import org.selfconference.android.data.ApiEndpoints;
 import org.selfconference.android.data.CaptureIntents;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.PicassoDebugging;
 import org.selfconference.android.ui.decorator.DisplayMetricsDecorator;
 import org.selfconference.android.ui.decorator.StatsSnapshotDecorator;
 import org.selfconference.android.ui.misc.EnumAdapter;
+import javax.inject.Inject;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public final class DebugView extends FrameLayout {
@@ -65,7 +65,8 @@ public final class DebugView extends FrameLayout {
 
   public DebugView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    Injector.obtain(context).inject(this);
+
+    App.context().getApplicationComponent().inject(this);
 
     LayoutInflater.from(context).inflate(R.layout.debug_view_content, this);
     ButterKnife.bind(this);

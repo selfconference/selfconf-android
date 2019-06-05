@@ -2,22 +2,17 @@ package org.selfconference.android.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
 import com.google.common.collect.Lists;
-import de.psdev.licensesdialog.LicensesDialog;
-import java.util.List;
-import javax.inject.Inject;
+import org.selfconference.android.App;
 import org.selfconference.android.BuildConfig;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
@@ -28,11 +23,18 @@ import org.selfconference.android.data.api.Results;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
 import org.selfconference.android.ui.drawer.DrawerItem;
-import retrofit2.adapter.rxjava.Result;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
+import java.util.List;
+import javax.inject.Inject;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import de.psdev.licensesdialog.LicensesDialog;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import retrofit2.adapter.rxjava2.Result;
 
 import static org.selfconference.android.data.Data.Status.ERROR;
 import static org.selfconference.android.data.Data.Status.LOADED;
@@ -46,13 +48,16 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
   @Inject DataSource dataSource;
   @Inject RestClient restClient;
 
-  private final PublishSubject<Void> sessionsSubject = PublishSubject.create();
-  private final PublishSubject<Void> sponsorsSubject = PublishSubject.create();
+  private final PublishSubject<Object> sessionsSubject = PublishSubject.create();
+  private final PublishSubject<Object> sponsorsSubject = PublishSubject.create();
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   private ActionBarDrawerToggle drawerToggle;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    App.context().getApplicationComponent().inject(this);
 
     ViewGroup container = viewContainer.forActivity(this);
 
@@ -63,10 +68,10 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
 
     drawerLayout.setStatusBarBackgroundColor(ContextCompat.getColor(this, R.color.green_dark));
 
-    drawerToggle = new ActionBarDrawerToggle(this, //
-        drawerLayout, //
-        getToolbar(), //
-        R.string.navigation_drawer_open, //
+    drawerToggle = new ActionBarDrawerToggle(this,
+        drawerLayout,
+        getToolbar(),
+        R.string.navigation_drawer_open,
         R.string.navigation_drawer_close) {
       @Override public void onDrawerClosed(View drawerView) {
         super.onDrawerClosed(drawerView);
@@ -83,26 +88,29 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
     clickNavigationDrawerItem(R.id.menu_item_sessions);
 
     Observable<Result<List<Session>>> sessionsResult =
-        sessionsSubject.flatMap(__ -> restClient.getSessions().subscribeOn(Schedulers.io()))
-            .observeOn(AndroidSchedulers.mainThread())
-            .share();
+        sessionsSubject.flatMap(__ -> restClient.getSessions()
+                .subscribeOn(Schedulers.io()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .share();
 
-    sessionsResult.filter(Results.isSuccessful()) //
-        .map(Results.responseBody()) //
-        .compose(bindToLifecycle()) //
+    Disposable sessionsSuccessful = sessionsResult.filter(Results.isSuccessful())
+        .map(Results.responseBody())
+        .compose(bindToLifecycle())
         .subscribe(sessions -> {
           dataSource.setSessions(
               Data.<List<Session>>builder().data(sessions).status(LOADED).build());
         });
+    compositeDisposable.add(sessionsSuccessful);
 
-    sessionsResult.filter(Funcs.not(Results.isSuccessful())) //
-        .compose(bindToLifecycle()) //
+    Disposable sessionsNotSuccessful = sessionsResult.filter(Funcs.not(Results.isSuccessful()))
+        .compose(bindToLifecycle())
         .subscribe(sessionResult -> {
           dataSource.setSessions(Data.<List<Session>>builder().data(Lists.newArrayList())
               .status(ERROR)
               .throwable(sessionResult.error())
               .build());
         });
+    compositeDisposable.add(sessionsNotSuccessful);
 
     onRequestSessions();
 
@@ -111,22 +119,24 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
             .observeOn(AndroidSchedulers.mainThread())
             .share();
 
-    sponsorsResult.filter(Results.isSuccessful()) //
-        .map(Results.responseBody()) //
-        .compose(bindToLifecycle()) //
+    Disposable sponsorsSuccessful = sponsorsResult.filter(Results.isSuccessful())
+        .map(Results.responseBody())
+        .compose(bindToLifecycle())
         .subscribe(sessions -> {
           dataSource.setSponsors(
               Data.<List<Sponsor>>builder().data(sessions).status(LOADED).build());
         });
+    compositeDisposable.add(sponsorsSuccessful);
 
-    sponsorsResult.filter(Funcs.not(Results.isSuccessful())) //
-        .compose(bindToLifecycle()) //
-        .subscribe(sessionResult -> {
+    Disposable sponsorsNotSuccessful = sponsorsResult.filter(Funcs.not(Results.isSuccessful()))
+        .compose(bindToLifecycle())
+        .subscribe(sponsorResult -> {
           dataSource.setSponsors(Data.<List<Sponsor>>builder().data(Lists.newArrayList())
               .status(ERROR)
-              .throwable(sessionResult.error())
+              .throwable(sponsorResult.error())
               .build());
         });
+    compositeDisposable.add(sponsorsNotSuccessful);
 
     onRequestSessions();
   }
@@ -156,6 +166,12 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
     return super.onCreateOptionsMenu(menu);
   }
 
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    compositeDisposable.dispose();
+  }
+
   private void clickNavigationDrawerItem(@IdRes int menuIdRes) {
     MenuItem clickedMenuItem = navigationView.getMenu().findItem(menuIdRes);
     navigationItemSelectedListener.onNavigationItemSelected(clickedMenuItem);
@@ -166,14 +182,14 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
   }
 
   private void changeFragment(DrawerItem drawerItem) {
-    getSupportFragmentManager() //
-        .beginTransaction() //
-        .replace(R.id.container, drawerItem.fragment(), drawerItem.fragmentTag()) //
+    getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.container, drawerItem.fragment(), drawerItem.fragmentTag())
         .commit();
   }
 
-  private final OnNavigationItemSelectedListener navigationItemSelectedListener =
-      new OnNavigationItemSelectedListener() {
+  private final NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+      new NavigationView.OnNavigationItemSelectedListener() {
         @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
           DrawerItem drawerItem = DrawerItem.fromMenuItem(menuItem);
           changeFragment(drawerItem);
@@ -185,11 +201,11 @@ public final class MainActivity extends BaseActivity implements FragmentCallback
 
   @Override public void onRequestSessions() {
     dataSource.requestNewSessions();
-    sessionsSubject.onNext(null);
+    sessionsSubject.onNext("Start Request Sessions");
   }
 
   @Override public void onRequestSponsors() {
     dataSource.requestNewSponsors();
-    sponsorsSubject.onNext(null);
+    sponsorsSubject.onNext("Start Request Sponsors");
   }
 }

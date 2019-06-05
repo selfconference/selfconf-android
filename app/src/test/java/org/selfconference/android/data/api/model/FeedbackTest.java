@@ -2,19 +2,19 @@ package org.selfconference.android.data.api.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.selfconference.android.CustomTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.selfconference.android.support.Parceler.Container;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.selfconference.android.support.Parceler.testParceling;
 
-@RunWith(CustomTestRunner.class) //
+@RunWith(RobolectricTestRunner.class)
 public final class FeedbackTest {
 
   @Test public void parcelsNegativeFeedbackWithoutError() {
-    Feedback feedback = Feedback.builder() //
-        .vote(Vote.NEGATIVE) //
-        .comments("test") //
+    Feedback feedback = Feedback.builder()
+        .vote(Vote.NEGATIVE)
+        .comments("test")
         .build();
 
     Container<Feedback> feedbackContainer = testParceling(feedback, AutoValue_Feedback.CREATOR);
@@ -23,9 +23,9 @@ public final class FeedbackTest {
   }
 
   @Test public void parcelsPositiveFeedbackWithoutError() {
-    Feedback feedback = Feedback.builder() //
-        .vote(Vote.POSITIVE) //
-        .comments("test") //
+    Feedback feedback = Feedback.builder()
+        .vote(Vote.POSITIVE)
+        .comments("test")
         .build();
 
     Container<Feedback> feedbackContainer = testParceling(feedback, AutoValue_Feedback.CREATOR);

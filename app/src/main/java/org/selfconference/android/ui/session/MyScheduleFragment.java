@@ -2,29 +2,26 @@ package org.selfconference.android.ui.session;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.BindView;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.trello.rxlifecycle.FragmentEvent;
-import java.util.List;
-import javax.inject.Inject;
+import com.trello.rxlifecycle3.android.FragmentEvent;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
 import org.selfconference.android.data.DataTransformers;
 import org.selfconference.android.data.Funcs;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.Sessions;
 import org.selfconference.android.data.api.model.Room;
 import org.selfconference.android.data.api.model.Session;
@@ -34,9 +31,14 @@ import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.misc.BetterViewAnimator;
 import org.selfconference.android.util.Instants;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import java.util.List;
+import javax.inject.Inject;
+import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public final class MyScheduleFragment extends BaseFragment {
   public static final String TAG = MyScheduleFragment.class.getName();
@@ -48,6 +50,7 @@ public final class MyScheduleFragment extends BaseFragment {
   @Inject SessionPreferences sessionPreferences;
 
   private SessionAdapter sessionAdapter;
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   public static Fragment newInstance() {
     Bundle args = new Bundle();
@@ -60,7 +63,8 @@ public final class MyScheduleFragment extends BaseFragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Injector.obtain(getActivity().getApplicationContext()).inject(this);
+
+    App.context().getApplicationComponent().inject(this);
 
     sessionAdapter = new SessionAdapter();
     sessionAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -88,19 +92,19 @@ public final class MyScheduleFragment extends BaseFragment {
     });
 
     sessionAdapter.setOnSessionLongClickListener(session -> {
-      new AlertDialog.Builder(getActivity()) //
-          .setMessage(R.string.prompt_schedule_remove) //
+      new AlertDialog.Builder(getActivity())
+          .setMessage(R.string.prompt_schedule_remove)
           .setPositiveButton(R.string.remove, (dialog, which) -> {
             sessionPreferences.unfavorite(session);
             dataSource.tickleSessions();
-            Snackbar.make(view, R.string.message_schedule_remove, Snackbar.LENGTH_SHORT) //
+            Snackbar.make(view, R.string.message_schedule_remove, Snackbar.LENGTH_SHORT)
                 .setAction(R.string.undo, v -> {
                   sessionPreferences.favorite(session);
                   dataSource.tickleSessions();
-                }) //
+                })
                 .show();
-          }) //
-          .setNegativeButton(R.string.cancel, null) //
+          })
+          .setNegativeButton(R.string.cancel, null)
           .show();
     });
 
@@ -115,19 +119,19 @@ public final class MyScheduleFragment extends BaseFragment {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread());
 
-    sessionsResult.compose(DataTransformers.loaded())
-        .flatMap(sessions1 -> Observable.from(sessions1) //
-            .filter(sessionPreferences::isFavorite) //
+    Disposable sessionsLoaded = sessionsResult.compose(DataTransformers.loaded())
+        .flatMapSingle(sessions1 -> Observable.fromIterable(sessions1)
+            .filter(sessionPreferences::isFavorite)
             .toList())
         .compose(bindUntilEvent(FragmentEvent.STOP))
-        .flatMap(sessions -> Observable.from(sessions) //
+        .flatMapSingle(sessions -> Observable.fromIterable(sessions)
             .toSortedList((session, session2) -> {
               Slot s1 = Optional.fromNullable(session.slot()).or(Slot.empty());
               Slot s2 = Optional.fromNullable(session2.slot()).or(Slot.empty());
               return s1.compareTo(s2);
-            })) //
-        .map(Sessions.groupBySlotTime()) //
-        .flatMap(sessions -> Observable.from(sessions.asMap().entrySet()) //
+            }))
+        .map(Sessions.groupBySlotTime())
+        .flatMapSingle(sessions -> Observable.fromIterable(sessions.asMap().entrySet())
             .map(entry -> {
               ImmutableList.Builder<SessionAdapter.ViewModel> models = ImmutableList.builder();
               models.add(SessionAdapter.Header.withText(Instants.dayTimeString(entry.getKey())));
@@ -144,16 +148,22 @@ public final class MyScheduleFragment extends BaseFragment {
                     .build();
               }));
               return models.build();
-            }) //
-            .concatMapIterable(Funcs.identity()) //
-            .toList()) //
-        .subscribe(viewModels -> {
-          sessionAdapter.setViewModels(viewModels);
-        });
+            })
+            .concatMapIterable(Funcs.identity())
+            .toList())
+        .subscribe(viewModels -> sessionAdapter.setViewModels(viewModels));
+    compositeDisposable.add(sessionsLoaded);
 
-    sessionsResult.compose(DataTransformers.error()).subscribe(data -> {
+    Disposable sessionsError = sessionsResult.compose(DataTransformers.error()).subscribe(data -> {
       animatorView.setDisplayedChildId(R.id.session_error_view);
     });
+    compositeDisposable.add(sessionsError);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    compositeDisposable.dispose();
   }
 
   @Override protected int layoutResId() {

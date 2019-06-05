@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import java.util.Set;
 import org.selfconference.android.data.api.model.Session;
+import java.util.Set;
 import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;

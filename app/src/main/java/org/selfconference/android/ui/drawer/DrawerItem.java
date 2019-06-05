@@ -1,8 +1,8 @@
 package org.selfconference.android.ui.drawer;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.MenuItem;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.coc.CodeOfConductFragment;
 import org.selfconference.android.ui.session.SessionContainerFragment;

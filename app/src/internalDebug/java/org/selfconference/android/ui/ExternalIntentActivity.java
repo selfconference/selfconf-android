@@ -2,22 +2,22 @@ package org.selfconference.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.collect.ImmutableList;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.decorator.IntentDecorator;
 import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
 import org.selfconference.android.ui.viewmodel.TwoLineListItem;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public final class ExternalIntentActivity extends AppCompatActivity {
   public static final String ACTION = "org.selfconference.android.intent.EXTERNAL_INTENT";

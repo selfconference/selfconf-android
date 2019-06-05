@@ -1,7 +1,7 @@
 package org.selfconference.android.data.api.model;
 
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
 import com.squareup.moshi.JsonAdapter;

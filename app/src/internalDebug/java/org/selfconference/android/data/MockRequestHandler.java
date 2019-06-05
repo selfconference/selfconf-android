@@ -11,6 +11,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
+import org.selfconference.android.data.api.ApiModule;
 import java.io.IOException;
 import retrofit2.mock.NetworkBehavior;
 
@@ -28,7 +29,7 @@ public final class MockRequestHandler extends RequestHandler {
 
   /** Emulate the disk cache by storing the URLs in an LRU using its size as the value. */
   private final LruCache<String, Long> emulatedDiskCache =
-      new LruCache<String, Long>(DataModule.DISK_CACHE_SIZE) {
+      new LruCache<String, Long>(ApiModule.DISK_CACHE_SIZE) {
         @Override protected int sizeOf(String key, Long value) {
           return (int) Math.min(value.longValue(), Integer.MAX_VALUE);
         }

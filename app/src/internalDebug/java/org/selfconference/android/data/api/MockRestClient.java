@@ -1,21 +1,21 @@
 package org.selfconference.android.data.api;
 
 import com.squareup.moshi.Moshi;
-import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
 import org.selfconference.android.data.api.model.Feedback;
 import org.selfconference.android.data.api.model.Session;
 import org.selfconference.android.data.api.model.Sponsor;
-import retrofit2.adapter.rxjava.Result;
+import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
+import retrofit2.adapter.rxjava2.Result;
 import retrofit2.http.Body;
 import retrofit2.http.Path;
 import retrofit2.mock.BehaviorDelegate;
 import retrofit2.mock.Calls;
 import retrofit2.mock.MockRetrofit;
-import rx.Observable;
 
 @Singleton public final class MockRestClient implements RestClient {
 

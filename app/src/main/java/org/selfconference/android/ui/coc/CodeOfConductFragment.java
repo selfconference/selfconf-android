@@ -1,13 +1,13 @@
 package org.selfconference.android.ui.coc;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.BindView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.BaseFragment;
+import butterknife.BindView;
 
 public final class CodeOfConductFragment extends BaseFragment {
   public static final String TAG = CodeOfConductFragment.class.getName();
@@ -21,7 +21,7 @@ public final class CodeOfConductFragment extends BaseFragment {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(false);
-    getActivity().supportInvalidateOptionsMenu();
+    getActivity().invalidateOptionsMenu();
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

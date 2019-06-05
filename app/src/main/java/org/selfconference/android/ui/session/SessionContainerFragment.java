@@ -1,11 +1,11 @@
 package org.selfconference.android.ui.session;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import butterknife.BindView;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
 import org.selfconference.android.R;
 import org.selfconference.android.ui.BaseFragment;
+import butterknife.BindView;
 
 public final class SessionContainerFragment extends BaseFragment {
   public static final String TAG = SessionContainerFragment.class.getName();

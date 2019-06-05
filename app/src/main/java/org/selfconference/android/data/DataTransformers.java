@@ -1,7 +1,7 @@
 package org.selfconference.android.data;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Predicate;
 
 import static org.selfconference.android.data.Data.Status.ERROR;
 import static org.selfconference.android.data.Data.Status.LOADED;
@@ -10,23 +10,23 @@ import static org.selfconference.android.data.Data.Status.NONE;
 
 public final class DataTransformers {
 
-  public static <T> Observable.Transformer<Data<T>, Data<T>> none() {
+  public static <T> ObservableTransformer<Data<T>, Data<T>> none() {
     return dataObservable -> dataObservable.filter(byStatus(NONE));
   }
 
-  public static <T> Observable.Transformer<Data<T>, Data<T>> loading() {
+  public static <T> ObservableTransformer<Data<T>, Data<T>> loading() {
     return dataObservable -> dataObservable.filter(byStatus(LOADING));
   }
 
-  public static <T> Observable.Transformer<Data<T>, T> loaded() {
+  public static <T> ObservableTransformer<Data<T>, T> loaded() {
     return dataObservable -> dataObservable.filter(byStatus(LOADED)).map(Data::data);
   }
 
-  public static <T> Observable.Transformer<Data<T>, Throwable> error() {
+  public static <T> ObservableTransformer<Data<T>, Throwable> error() {
     return dataObservable -> dataObservable.filter(byStatus(ERROR)).map(Data::throwable);
   }
 
-  private static <T> Func1<Data<T>, Boolean> byStatus(Data.Status status) {
+  private static <T> Predicate<Data<T>> byStatus(Data.Status status) {
     return data -> data.status() == status;
   }
 

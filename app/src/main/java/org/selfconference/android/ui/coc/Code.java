@@ -1,6 +1,6 @@
 package org.selfconference.android.ui.coc;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import org.selfconference.android.R;
 
 public enum Code {

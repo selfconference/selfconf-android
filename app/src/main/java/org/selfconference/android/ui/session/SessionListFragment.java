@@ -3,25 +3,20 @@ package org.selfconference.android.ui.session;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.BindView;
-import butterknife.OnClick;
-import com.trello.rxlifecycle.FragmentEvent;
-import java.util.List;
-import javax.inject.Inject;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.snackbar.Snackbar;
+import com.trello.rxlifecycle3.android.FragmentEvent;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.Data;
 import org.selfconference.android.data.DataSource;
 import org.selfconference.android.data.DataTransformers;
-import org.selfconference.android.data.Injector;
 import org.selfconference.android.data.Sessions;
 import org.selfconference.android.data.api.RestClient;
 import org.selfconference.android.data.api.model.Session;
@@ -29,12 +24,18 @@ import org.selfconference.android.data.pref.SessionPreferences;
 import org.selfconference.android.ui.BaseFragment;
 import org.selfconference.android.ui.FragmentCallbacks;
 import org.selfconference.android.ui.misc.BetterViewAnimator;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import java.util.List;
+import javax.inject.Inject;
+import butterknife.BindView;
+import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public final class SessionListFragment extends BaseFragment implements OnRefreshListener {
+public final class SessionListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
   private static final String EXTRA_DAY = "org.selfconference.android.ui.session.EXTRA_DAY";
 
   @BindView(R.id.animator_view) BetterViewAnimator animatorView;
@@ -47,8 +48,8 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
 
   private Day day;
   private SessionAdapter sessionAdapter;
-
   private FragmentCallbacks callbacks;
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   public static SessionListFragment newInstance(Day day) {
     Bundle bundle = new Bundle();
@@ -77,7 +78,8 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Injector.obtain(getActivity().getApplicationContext()).inject(this);
+
+    App.context().getApplicationComponent().inject(this);
 
     String dayString = getArguments().getString(EXTRA_DAY);
     day = Day.valueOf(dayString);
@@ -111,34 +113,34 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
 
     sessionAdapter.setOnSessionLongClickListener(session -> {
       if (sessionPreferences.isFavorite(session)) {
-        new AlertDialog.Builder(getActivity()) //
-            .setMessage(R.string.prompt_schedule_remove) //
+        new AlertDialog.Builder(getActivity())
+            .setMessage(R.string.prompt_schedule_remove)
             .setPositiveButton(R.string.remove, (dialog, which) -> {
               sessionPreferences.unfavorite(session);
               dataSource.tickleSessions();
-              Snackbar.make(view, R.string.message_schedule_remove, Snackbar.LENGTH_SHORT) //
+              Snackbar.make(view, R.string.message_schedule_remove, Snackbar.LENGTH_SHORT)
                   .setAction(R.string.undo, v -> {
                     sessionPreferences.favorite(session);
                     dataSource.tickleSessions();
-                  }) //
+                  })
                   .show();
-            }) //
-            .setNegativeButton(R.string.cancel, null) //
+            })
+            .setNegativeButton(R.string.cancel, null)
             .show();
       } else {
-        new AlertDialog.Builder(getActivity()) //
-            .setMessage(R.string.prompt_schedule_add) //
+        new AlertDialog.Builder(getActivity())
+            .setMessage(R.string.prompt_schedule_add)
             .setPositiveButton(R.string.add, (dialog, which) -> {
               sessionPreferences.favorite(session);
               dataSource.tickleSessions();
-              Snackbar.make(view, R.string.message_schedule_add, Snackbar.LENGTH_SHORT) //
+              Snackbar.make(view, R.string.message_schedule_add, Snackbar.LENGTH_SHORT)
                   .setAction(R.string.undo, v -> {
                     sessionPreferences.unfavorite(session);
                     dataSource.tickleSessions();
-                  }) //
+                  })
                   .show();
-            }) //
-            .setNegativeButton(R.string.cancel, null) //
+            })
+            .setNegativeButton(R.string.cancel, null)
             .show();
       }
     });
@@ -155,25 +157,30 @@ public final class SessionListFragment extends BaseFragment implements OnRefresh
         .observeOn(AndroidSchedulers.mainThread())
         .compose(bindUntilEvent(FragmentEvent.STOP));
 
-    sessionsData.compose(DataTransformers.loading()) //
-        .subscribe(__ -> {
-          swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
-        });
+    Disposable sessionsLoading = sessionsData.compose(DataTransformers.loading())
+        .subscribe(__ -> swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true)));
+    compositeDisposable.add(sessionsLoading);
 
-    sessionsData.compose(DataTransformers.loaded()) //
-        .flatMap(Sessions.sortedForDay(day)) //
-        .map(Sessions.groupBySlotTime()) //
-        .flatMap(Sessions.toViewModels()) //
-        .subscribe(viewModels -> {
-          sessionAdapter.setViewModels(viewModels);
-        });
+    Disposable sessionsLoaded = sessionsData.compose(DataTransformers.loaded())
+        .flatMapSingle(Sessions.sortedForDay(day))
+        .map(Sessions.groupBySlotTime())
+        .flatMapSingle(Sessions.toViewModels())
+        .subscribe(viewModels -> sessionAdapter.setViewModels(viewModels));
+    compositeDisposable.add(sessionsLoaded);
 
-    sessionsData.compose(DataTransformers.error()) //
+    Disposable sessionsError = sessionsData.compose(DataTransformers.error())
         .subscribe(throwable -> {
           animatorView.setDisplayedChildId(R.id.session_error_view);
           swipeRefreshLayout.setRefreshing(false);
           Timber.e(throwable, "Something happened here");
         });
+    compositeDisposable.add(sessionsError);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    compositeDisposable.dispose();
   }
 
   @Override protected int layoutResId() {

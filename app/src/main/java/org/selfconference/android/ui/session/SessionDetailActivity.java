@@ -3,25 +3,20 @@ package org.selfconference.android.ui.session;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import androidx.annotation.StringRes;
+import androidx.core.text.HtmlCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.squareup.picasso.Picasso;
-import java.util.List;
-import javax.inject.Inject;
-import okhttp3.ResponseBody;
+import org.selfconference.android.App;
 import org.selfconference.android.R;
 import org.selfconference.android.data.IntentFactory;
 import org.selfconference.android.data.api.RestClient;
@@ -41,14 +36,23 @@ import org.selfconference.android.ui.view.FloatingActionButton;
 import org.selfconference.android.ui.viewmodel.SessionDetail;
 import org.selfconference.android.ui.viewmodel.SessionDetails;
 import org.selfconference.android.util.Instants;
-import retrofit2.adapter.rxjava.Result;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
+import java.util.List;
+import javax.inject.Inject;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import okhttp3.ResponseBody;
+import retrofit2.adapter.rxjava2.Result;
 
-import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static android.view.View.GONE;
+import static androidx.core.text.HtmlCompat.fromHtml;
+import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class SessionDetailActivity extends BaseActivity implements OnFeedbackCreatedListener {
@@ -69,6 +73,7 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
   @Inject RestClient restClient;
 
   private final PublishSubject<Feedback> feedbackSubject = PublishSubject.create();
+  private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   private Session session;
 
@@ -78,6 +83,8 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    App.context().getApplicationComponent().inject(this);
 
     session = getIntent().getParcelableExtra(EXTRA_SESSION);
     checkNotNull(session, "session == null");
@@ -107,17 +114,24 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
     setUpSessionDetailList();
     setUpSpeakerList();
 
-    Observable<Result<ResponseBody>> result = feedbackSubject //
+    Observable<Result<ResponseBody>> result = feedbackSubject
         .flatMap(feedback -> restClient.submitFeedback(session.id(), feedback)
             .subscribeOn(Schedulers.io()))
         .observeOn(AndroidSchedulers.mainThread())
         .compose(bindToLifecycle())
         .share();
 
-    result.filter(Results.isSuccessful()).subscribe(response -> {
+    Disposable feedbackSuccess = result.filter(Results.isSuccessful()).subscribe(response -> {
       preferences.submitFeedback(session);
       setupFeedbackButton();
     });
+    compositeDisposable.add(feedbackSuccess);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    compositeDisposable.dispose();
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -171,7 +185,7 @@ public final class SessionDetailActivity extends BaseActivity implements OnFeedb
   private static String nullSafeDescription(Session session) {
     Optional<String> optionalDescription = Optional.fromNullable(session.description());
     if (optionalDescription.isPresent()) {
-      return Html.fromHtml(optionalDescription.get()).toString();
+      return fromHtml(optionalDescription.get(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
     }
     return "No description";
   }
