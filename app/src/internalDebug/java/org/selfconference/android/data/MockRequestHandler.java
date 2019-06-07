@@ -1,4 +1,4 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -11,7 +11,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 import com.squareup.picasso.RequestHandler;
-import org.selfconference.android.data.api.ApiModule;
+import org.selfconference.data.api.ApiModule;
 import java.io.IOException;
 import retrofit2.mock.NetworkBehavior;
 

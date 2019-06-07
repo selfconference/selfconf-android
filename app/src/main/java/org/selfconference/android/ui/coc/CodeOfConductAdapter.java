@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.coc;
+package org.selfconference.ui.coc;
 
 import android.text.util.Linkify;
 import android.text.util.Linkify.MatchFilter;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
-import org.selfconference.android.R;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.R;
+import org.selfconference.ui.misc.ButterKnifeViewHolder;
 import butterknife.BindView;
 import static android.text.util.Linkify.PHONE_NUMBERS;
 import static android.util.Patterns.WEB_URL;

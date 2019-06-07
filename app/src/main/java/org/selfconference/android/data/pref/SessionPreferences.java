@@ -1,16 +1,16 @@
-package org.selfconference.android.data.pref;
+package org.selfconference.data.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.selfconference.android.data.api.model.Session;
+import org.selfconference.data.api.model.Session;
 import java.util.Set;
 import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.google.common.collect.Sets.newHashSet;
-import static org.selfconference.android.BuildConfig.APPLICATION_ID;
+import static org.selfconference.BuildConfig.APPLICATION_ID;
 
 public final class SessionPreferences {
   private static final String PREFS_NAME = APPLICATION_ID + ".sessions";

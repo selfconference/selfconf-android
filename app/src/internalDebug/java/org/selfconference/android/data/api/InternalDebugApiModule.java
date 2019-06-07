@@ -1,4 +1,4 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
 import android.app.Application;
 import android.net.Uri;
@@ -6,10 +6,10 @@ import com.f2prateek.rx.preferences2.Preference;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.squareup.moshi.Moshi;
 import com.squareup.picasso.Picasso;
-import org.selfconference.android.data.ApiEndpoint;
-import org.selfconference.android.data.IsMockMode;
-import org.selfconference.android.data.MockRequestHandler;
-import org.selfconference.android.data.PicassoDebugging;
+import org.selfconference.data.ApiEndpoint;
+import org.selfconference.data.IsMockMode;
+import org.selfconference.data.MockRequestHandler;
+import org.selfconference.data.PicassoDebugging;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;

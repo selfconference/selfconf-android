@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.selfconference.android.ui.view;
+package org.selfconference.ui.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

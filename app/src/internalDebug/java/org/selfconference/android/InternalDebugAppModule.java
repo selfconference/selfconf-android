@@ -1,8 +1,8 @@
-package org.selfconference.android;
+package org.selfconference;
 
 import android.app.Application;
-import org.selfconference.android.data.InternalDebugDataModule;
-import org.selfconference.android.ui.InternalDebugUiModule;
+import org.selfconference.data.InternalDebugDataModule;
+import org.selfconference.ui.InternalDebugUiModule;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;

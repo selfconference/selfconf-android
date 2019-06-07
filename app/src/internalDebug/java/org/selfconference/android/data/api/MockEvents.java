@@ -1,12 +1,12 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
 import com.google.common.collect.ImmutableList;
-import org.selfconference.android.data.api.model.Event;
-import org.selfconference.android.util.Instants;
+import org.selfconference.data.api.model.Event;
+import org.selfconference.util.Instants;
 
-import static org.selfconference.android.data.api.MockOrganizers.JOE_ROBIT;
-import static org.selfconference.android.data.api.MockOrganizers.PAT_BOT;
-import static org.selfconference.android.data.api.MockOrganizers.ROBO_SCOTT;
+import static org.selfconference.data.api.MockOrganizers.JOE_ROBIT;
+import static org.selfconference.data.api.MockOrganizers.PAT_BOT;
+import static org.selfconference.data.api.MockOrganizers.ROBO_SCOTT;
 
 final class MockEvents {
 

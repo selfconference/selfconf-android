@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.sponsor;
+package org.selfconference.ui.sponsor;
 
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
-import org.selfconference.android.App;
-import org.selfconference.android.R;
-import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.data.api.model.SponsorLevel;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.App;
+import org.selfconference.R;
+import org.selfconference.data.api.model.Sponsor;
+import org.selfconference.data.api.model.SponsorLevel;
+import org.selfconference.ui.misc.ButterKnifeViewHolder;
 import java.util.List;
 import butterknife.BindView;
 import io.reactivex.disposables.CompositeDisposable;

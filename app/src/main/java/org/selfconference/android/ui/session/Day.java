@@ -1,6 +1,6 @@
-package org.selfconference.android.ui.session;
+package org.selfconference.ui.session;
 
-import org.selfconference.android.util.Instants;
+import org.selfconference.util.Instants;
 import org.threeten.bp.Instant;
 
 public enum Day {

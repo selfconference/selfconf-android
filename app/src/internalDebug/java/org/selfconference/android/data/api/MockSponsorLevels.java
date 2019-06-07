@@ -1,6 +1,6 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
-import org.selfconference.android.data.api.model.SponsorLevel;
+import org.selfconference.data.api.model.SponsorLevel;
 
 final class MockSponsorLevels {
 

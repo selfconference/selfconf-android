@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.session;
+package org.selfconference.ui.session;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.trello.rxlifecycle3.android.FragmentEvent;
-import org.selfconference.android.App;
-import org.selfconference.android.R;
-import org.selfconference.android.data.Data;
-import org.selfconference.android.data.DataSource;
-import org.selfconference.android.data.DataTransformers;
-import org.selfconference.android.data.Sessions;
-import org.selfconference.android.data.api.RestClient;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.pref.SessionPreferences;
-import org.selfconference.android.ui.BaseFragment;
-import org.selfconference.android.ui.FragmentCallbacks;
-import org.selfconference.android.ui.misc.BetterViewAnimator;
+import org.selfconference.App;
+import org.selfconference.R;
+import org.selfconference.data.Data;
+import org.selfconference.data.DataSource;
+import org.selfconference.data.DataTransformers;
+import org.selfconference.data.Sessions;
+import org.selfconference.data.api.RestClient;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.pref.SessionPreferences;
+import org.selfconference.ui.BaseFragment;
+import org.selfconference.ui.FragmentCallbacks;
+import org.selfconference.ui.misc.BetterViewAnimator;
 import java.util.List;
 import javax.inject.Inject;
 import butterknife.BindView;
@@ -36,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public final class SessionListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
-  private static final String EXTRA_DAY = "org.selfconference.android.ui.session.EXTRA_DAY";
+  private static final String EXTRA_DAY = "org.selfconference.ui.session.EXTRA_DAY";
 
   @BindView(R.id.animator_view) BetterViewAnimator animatorView;
   @BindView(R.id.schedule_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;

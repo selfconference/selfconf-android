@@ -1,4 +1,4 @@
-package org.selfconference.android;
+package org.selfconference;
 
 public final class TestApp extends App {
 

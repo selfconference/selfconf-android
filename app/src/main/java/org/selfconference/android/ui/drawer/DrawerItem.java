@@ -1,12 +1,12 @@
-package org.selfconference.android.ui.drawer;
+package org.selfconference.ui.drawer;
 
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import org.selfconference.android.R;
-import org.selfconference.android.ui.coc.CodeOfConductFragment;
-import org.selfconference.android.ui.session.SessionContainerFragment;
-import org.selfconference.android.ui.sponsor.SponsorListFragment;
+import org.selfconference.R;
+import org.selfconference.ui.coc.CodeOfConductFragment;
+import org.selfconference.ui.session.SessionContainerFragment;
+import org.selfconference.ui.sponsor.SponsorListFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

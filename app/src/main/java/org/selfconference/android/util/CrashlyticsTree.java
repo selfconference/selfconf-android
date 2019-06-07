@@ -1,4 +1,4 @@
-package org.selfconference.android.util;
+package org.selfconference.util;
 
 import android.util.Log;
 import com.crashlytics.android.Crashlytics;

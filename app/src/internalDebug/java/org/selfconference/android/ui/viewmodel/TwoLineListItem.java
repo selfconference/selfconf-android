@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.viewmodel;
+package org.selfconference.ui.viewmodel;
 
 import androidx.annotation.NonNull;
 

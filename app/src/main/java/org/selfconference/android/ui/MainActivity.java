@@ -1,4 +1,4 @@
-package org.selfconference.android.ui;
+package org.selfconference.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,17 +12,17 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.common.collect.Lists;
-import org.selfconference.android.App;
-import org.selfconference.android.BuildConfig;
-import org.selfconference.android.R;
-import org.selfconference.android.data.Data;
-import org.selfconference.android.data.DataSource;
-import org.selfconference.android.data.Funcs;
-import org.selfconference.android.data.api.RestClient;
-import org.selfconference.android.data.api.Results;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.ui.drawer.DrawerItem;
+import org.selfconference.App;
+import org.selfconference.BuildConfig;
+import org.selfconference.R;
+import org.selfconference.data.Data;
+import org.selfconference.data.DataSource;
+import org.selfconference.data.Funcs;
+import org.selfconference.data.api.RestClient;
+import org.selfconference.data.api.Results;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.api.model.Sponsor;
+import org.selfconference.ui.drawer.DrawerItem;
 import java.util.List;
 import javax.inject.Inject;
 import butterknife.BindView;
@@ -36,8 +36,8 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import retrofit2.adapter.rxjava2.Result;
 
-import static org.selfconference.android.data.Data.Status.ERROR;
-import static org.selfconference.android.data.Data.Status.LOADED;
+import static org.selfconference.data.Data.Status.ERROR;
+import static org.selfconference.data.Data.Status.LOADED;
 
 public final class MainActivity extends BaseActivity implements FragmentCallbacks {
 

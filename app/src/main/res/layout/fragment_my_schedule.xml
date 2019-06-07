@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.selfconference.android.ui.misc.BetterViewAnimator
+<org.selfconference.ui.misc.BetterViewAnimator
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/animator_view"
     android:layout_width="match_parent"
@@ -63,4 +63,4 @@
       android:clipToPadding="false"
       android:paddingBottom="16dp"
       />
-</org.selfconference.android.ui.misc.BetterViewAnimator>
+</org.selfconference.ui.misc.BetterViewAnimator>

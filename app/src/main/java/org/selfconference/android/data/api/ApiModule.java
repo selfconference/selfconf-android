@@ -1,12 +1,12 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
 import android.app.Application;
 import com.squareup.moshi.Moshi;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
-import org.selfconference.android.data.MyAdapterFactory;
-import org.selfconference.android.data.api.json.InstantAdapter;
-import org.selfconference.android.data.api.json.VoteAdapter;
+import org.selfconference.data.MyAdapterFactory;
+import org.selfconference.data.api.json.InstantAdapter;
+import org.selfconference.data.api.json.VoteAdapter;
 import java.io.File;
 import javax.inject.Singleton;
 import dagger.Module;
@@ -20,7 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 import timber.log.Timber;
 
 import static com.jakewharton.byteunits.DecimalByteUnit.MEGABYTES;
-import static org.selfconference.android.BuildConfig.DEBUG;
+import static org.selfconference.BuildConfig.DEBUG;
 
 @Module
 public final class ApiModule {

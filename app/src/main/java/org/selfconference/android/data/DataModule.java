@@ -1,7 +1,7 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
-import org.selfconference.android.data.api.ApiModule;
-import org.selfconference.android.data.pref.PreferencesModule;
+import org.selfconference.data.api.ApiModule;
+import org.selfconference.data.pref.PreferencesModule;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;

@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.debug;
+package org.selfconference.ui.debug;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,8 +12,8 @@ import com.mattprecious.telescope.EmailDeviceInfoLens;
 import com.mattprecious.telescope.Lens;
 import com.mattprecious.telescope.TelescopeLayout;
 
-import org.selfconference.android.R;
-import org.selfconference.android.ui.ViewContainer;
+import org.selfconference.R;
+import org.selfconference.ui.ViewContainer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

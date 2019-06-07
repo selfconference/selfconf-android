@@ -1,15 +1,15 @@
-package org.selfconference.android;
+package org.selfconference;
 
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.squareup.leakcanary.LeakCanary;
-import org.selfconference.android.util.CrashlyticsTree;
+import org.selfconference.util.CrashlyticsTree;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
-import static org.selfconference.android.BuildConfig.DEBUG;
+import static org.selfconference.BuildConfig.DEBUG;
 
 public class App extends Application {
 

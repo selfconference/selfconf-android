@@ -1,9 +1,9 @@
-package org.selfconference.android.ui.view;
+package org.selfconference.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.selfconference.android.R;
+import org.selfconference.R;
 
 /**
  * A {@link SwipeRefreshLayout} pre-populated with Self.conference's brand colors.

@@ -1,15 +1,15 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import java.util.Collections;
 import java.util.List;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Slot;
-import org.selfconference.android.util.Instants;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.api.model.Slot;
+import org.selfconference.util.Instants;
 
-import static org.selfconference.android.data.api.MockRooms.EARTH;
-import static org.selfconference.android.data.api.MockSpeakers.KOBE_BRYANT;
+import static org.selfconference.data.api.MockRooms.EARTH;
+import static org.selfconference.data.api.MockSpeakers.KOBE_BRYANT;
 
 final class MockSessions {
 

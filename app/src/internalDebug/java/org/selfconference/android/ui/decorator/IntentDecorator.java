@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.decorator;
+package org.selfconference.ui.decorator;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.text.style.StyleSpan;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import org.selfconference.android.ui.misc.Truss;
+import org.selfconference.ui.misc.Truss;
 import timber.log.Timber;
 
 public final class IntentDecorator {

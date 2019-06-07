@@ -1,4 +1,4 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
@@ -7,13 +7,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
-import org.selfconference.android.data.api.model.Room;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Slot;
-import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.ui.session.Day;
-import org.selfconference.android.ui.session.SessionAdapter;
-import org.selfconference.android.util.Instants;
+import org.selfconference.data.api.model.Room;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.api.model.Slot;
+import org.selfconference.data.api.model.Speaker;
+import org.selfconference.ui.session.Day;
+import org.selfconference.ui.session.SessionAdapter;
+import org.selfconference.util.Instants;
 import org.threeten.bp.Instant;
 import java.util.List;
 import io.reactivex.Observable;

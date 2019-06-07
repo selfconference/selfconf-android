@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.speaker;
+package org.selfconference.ui.speaker;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +9,11 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
-import org.selfconference.android.R;
-import org.selfconference.android.data.api.model.Speaker;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.transform.CircularTransformation;
-import org.selfconference.android.util.PlaceholderDrawable;
+import org.selfconference.R;
+import org.selfconference.data.api.model.Speaker;
+import org.selfconference.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.ui.transform.CircularTransformation;
+import org.selfconference.util.PlaceholderDrawable;
 import java.util.List;
 import butterknife.BindView;
 

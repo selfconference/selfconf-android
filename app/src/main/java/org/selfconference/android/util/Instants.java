@@ -1,4 +1,4 @@
-package org.selfconference.android.util;
+package org.selfconference.util;
 
 import java.util.Locale;
 import org.threeten.bp.Instant;

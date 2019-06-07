@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.decorator;
+package org.selfconference.ui.decorator;
 
 import android.util.DisplayMetrics;
 

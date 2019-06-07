@@ -1,4 +1,4 @@
-package org.selfconference.android.support;
+package org.selfconference.support;
 
 import android.os.Parcel;
 import android.os.Parcelable;

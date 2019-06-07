@@ -1,4 +1,4 @@
-package org.selfconference.android.ui;
+package org.selfconference.ui;
 
 import javax.inject.Singleton;
 import dagger.Module;

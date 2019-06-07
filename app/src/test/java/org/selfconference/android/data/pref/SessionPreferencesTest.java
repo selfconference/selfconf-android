@@ -1,4 +1,4 @@
-package org.selfconference.android.data.pref;
+package org.selfconference.data.pref;
 
 import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
@@ -7,9 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.selfconference.android.data.api.model.Room;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Slot;
+import org.selfconference.data.api.model.Room;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.api.model.Slot;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

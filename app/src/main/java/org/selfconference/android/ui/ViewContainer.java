@@ -1,4 +1,4 @@
-package org.selfconference.android.ui;
+package org.selfconference.ui;
 
 import android.app.Activity;
 import android.view.ViewGroup;

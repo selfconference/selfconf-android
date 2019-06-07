@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.view;
+package org.selfconference.ui.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -8,8 +8,8 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
-import org.selfconference.android.R;
-import org.selfconference.android.data.api.model.Vote;
+import org.selfconference.R;
+import org.selfconference.data.api.model.Vote;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;

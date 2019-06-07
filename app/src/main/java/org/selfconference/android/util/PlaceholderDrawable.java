@@ -1,8 +1,8 @@
-package org.selfconference.android.util;
+package org.selfconference.util;
 
 import android.os.Build;
 import androidx.annotation.DrawableRes;
-import org.selfconference.android.R;
+import org.selfconference.R;
 
 public final class PlaceholderDrawable {
 
@@ -22,7 +22,7 @@ public final class PlaceholderDrawable {
    *
    * This method requires an id parameter to map an object's id to a position in the array
    * of placeholder drawables.
-   * For example, supplying {@link org.selfconference.android.data.api.model.Speaker#id()} to this
+   * For example, supplying {@link org.selfconference.data.api.model.Speaker#id()} to this
    * method will return a consistent placeholder drawable for that object.
    *
    * @param id The id to map to a position in the {@link #ROBITS} array.

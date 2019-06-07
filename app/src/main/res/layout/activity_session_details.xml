@@ -120,7 +120,7 @@
 
   </ScrollView>
 
-  <org.selfconference.android.ui.view.FloatingActionButton
+  <org.selfconference.ui.view.FloatingActionButton
       android:id="@+id/favorite_button"
       android:layout_width="@dimen/fab_size_small"
       android:layout_height="@dimen/fab_size_small"
@@ -143,5 +143,5 @@
         android:duplicateParentState="true"
         android:src="@drawable/fab_icons"
         />
-  </org.selfconference.android.ui.view.FloatingActionButton>
+  </org.selfconference.ui.view.FloatingActionButton>
 </RelativeLayout>

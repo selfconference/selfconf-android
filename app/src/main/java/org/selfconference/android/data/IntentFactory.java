@@ -1,4 +1,4 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import android.content.Intent;
 import android.net.Uri;

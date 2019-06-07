@@ -1,9 +1,9 @@
-package org.selfconference.android;
+package org.selfconference;
 
 import android.app.Application;
 
-import org.selfconference.android.data.DataModule;
-import org.selfconference.android.ui.UiModule;
+import org.selfconference.data.DataModule;
+import org.selfconference.ui.UiModule;
 
 import javax.inject.Singleton;
 

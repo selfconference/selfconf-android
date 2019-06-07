@@ -1,12 +1,12 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Predicate;
 
-import static org.selfconference.android.data.Data.Status.ERROR;
-import static org.selfconference.android.data.Data.Status.LOADED;
-import static org.selfconference.android.data.Data.Status.LOADING;
-import static org.selfconference.android.data.Data.Status.NONE;
+import static org.selfconference.data.Data.Status.ERROR;
+import static org.selfconference.data.Data.Status.LOADED;
+import static org.selfconference.data.Data.Status.LOADING;
+import static org.selfconference.data.Data.Status.NONE;
 
 public final class DataTransformers {
 

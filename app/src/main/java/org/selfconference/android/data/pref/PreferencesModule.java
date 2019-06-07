@@ -1,4 +1,4 @@
-package org.selfconference.android.data.pref;
+package org.selfconference.data.pref;
 
 import android.app.Application;
 import android.content.SharedPreferences;

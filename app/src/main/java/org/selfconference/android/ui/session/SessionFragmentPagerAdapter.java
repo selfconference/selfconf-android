@@ -1,9 +1,9 @@
-package org.selfconference.android.ui.session;
+package org.selfconference.ui.session;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import org.selfconference.android.util.Instants;
+import org.selfconference.util.Instants;
 import org.threeten.bp.Instant;
 
 public final class SessionFragmentPagerAdapter extends FragmentStatePagerAdapter {
