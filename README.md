@@ -6,4 +6,4 @@
 
 This is the Self.conference Android app. Read the [wiki](https://github.com/selfconference/selfconf-android/wiki) if you'd like to learn more about the codebase and hack around.
 
-[__Install the app from the Google Play Store__](https://play.google.com/store/apps/details?id=org.selfconference.android)
+[__Install the app from the Google Play Store__](https://play.google.com/store/apps/details?id=org.selfconference)

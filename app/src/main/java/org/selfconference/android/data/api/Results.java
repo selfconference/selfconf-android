@@ -1,4 +1,4 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;

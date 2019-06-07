@@ -1,6 +1,6 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
-import org.selfconference.android.data.api.ApiModule;
+import org.selfconference.data.api.ApiModule;
 
 public enum ApiEndpoints {
   PRODUCTION("Production", ApiModule.PRODUCTION_API_URL.toString());

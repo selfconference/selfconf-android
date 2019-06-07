@@ -1,4 +1,4 @@
-package org.selfconference.android.support.file;
+package org.selfconference.support.file;
 
 import java.io.Reader;
 

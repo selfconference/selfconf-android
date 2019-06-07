@@ -1,7 +1,7 @@
-package org.selfconference.android.ui;
+package org.selfconference.ui;
 
-import org.selfconference.android.IsInstrumentationTest;
-import org.selfconference.android.ui.debug.DebugViewContainer;
+import org.selfconference.IsInstrumentationTest;
+import org.selfconference.ui.debug.DebugViewContainer;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;

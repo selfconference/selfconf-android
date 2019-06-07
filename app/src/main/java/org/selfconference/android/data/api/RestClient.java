@@ -1,8 +1,8 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
-import org.selfconference.android.data.api.model.Feedback;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.data.api.model.Feedback;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.api.model.Sponsor;
 import java.util.List;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

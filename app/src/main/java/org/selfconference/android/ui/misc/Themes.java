@@ -1,7 +1,7 @@
-package org.selfconference.android.ui.misc;
+package org.selfconference.ui.misc;
 
 import androidx.annotation.StyleRes;
-import org.selfconference.android.R;
+import org.selfconference.R;
 
 public final class Themes {
   private static final int[] THEMES = {

@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.misc;
+package org.selfconference.ui.misc;
 
 import android.text.SpannableStringBuilder;
 import java.util.ArrayDeque;

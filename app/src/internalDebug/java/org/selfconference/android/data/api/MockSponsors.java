@@ -1,13 +1,13 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
-import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.data.api.model.Sponsor;
 
-import static org.selfconference.android.data.api.MockSponsorLevels.COOL;
-import static org.selfconference.android.data.api.MockSponsorLevels.GNARLY;
-import static org.selfconference.android.data.api.MockSponsorLevels.NEATO;
-import static org.selfconference.android.data.api.MockSponsorLevels.WICKED_AWESOME;
+import static org.selfconference.data.api.MockSponsorLevels.COOL;
+import static org.selfconference.data.api.MockSponsorLevels.GNARLY;
+import static org.selfconference.data.api.MockSponsorLevels.NEATO;
+import static org.selfconference.data.api.MockSponsorLevels.WICKED_AWESOME;
 
 final class MockSponsors {
 

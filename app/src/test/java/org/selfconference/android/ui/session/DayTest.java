@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.session;
+package org.selfconference.ui.session;
 
 import org.junit.Test;
 

@@ -1,10 +1,10 @@
-package org.selfconference.android.ui;
+package org.selfconference.ui;
 
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
-import org.selfconference.android.App;
-import org.selfconference.android.R;
+import org.selfconference.App;
+import org.selfconference.R;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;

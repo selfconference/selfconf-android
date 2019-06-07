@@ -1,12 +1,12 @@
-package org.selfconference.android.data.api.model;
+package org.selfconference.data.api.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.selfconference.android.support.Parceler.Container;
+import org.selfconference.support.Parceler.Container;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.selfconference.android.support.Parceler.testParceling;
+import static org.selfconference.support.Parceler.testParceling;
 
 @RunWith(RobolectricTestRunner.class)
 public final class SponsorLevelTest {

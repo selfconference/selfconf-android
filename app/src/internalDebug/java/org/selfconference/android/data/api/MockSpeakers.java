@@ -1,8 +1,8 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
-import org.selfconference.android.data.api.model.Speaker;
+import org.selfconference.data.api.model.Speaker;
 
 final class MockSpeakers {
 

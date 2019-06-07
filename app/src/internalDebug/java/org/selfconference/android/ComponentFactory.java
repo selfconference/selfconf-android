@@ -1,4 +1,4 @@
-package org.selfconference.android;
+package org.selfconference;
 
 public class ComponentFactory {
 

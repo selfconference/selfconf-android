@@ -1,4 +1,4 @@
-<org.selfconference.android.ui.view.SelfConferenceSwipeRefreshLayout
+<org.selfconference.ui.view.SelfConferenceSwipeRefreshLayout
     android:id="@+id/sponsor_list_swipe_refresh_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,4 +13,4 @@
       android:layout_height="match_parent"
       />
 
-</org.selfconference.android.ui.view.SelfConferenceSwipeRefreshLayout>
+</org.selfconference.ui.view.SelfConferenceSwipeRefreshLayout>

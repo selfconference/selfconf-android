@@ -1,4 +1,4 @@
-package org.selfconference.android.data.api.model;
+package org.selfconference.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;

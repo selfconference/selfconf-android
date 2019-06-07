@@ -1,4 +1,4 @@
-package org.selfconference.android.ui;
+package org.selfconference.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,15 +12,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.common.collect.ImmutableList;
-import org.selfconference.android.R;
-import org.selfconference.android.ui.decorator.IntentDecorator;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
-import org.selfconference.android.ui.viewmodel.TwoLineListItem;
+import org.selfconference.R;
+import org.selfconference.ui.decorator.IntentDecorator;
+import org.selfconference.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.ui.viewmodel.TwoLineListItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public final class ExternalIntentActivity extends AppCompatActivity {
-  public static final String ACTION = "org.selfconference.android.intent.EXTERNAL_INTENT";
+  public static final String ACTION = "org.selfconference.intent.EXTERNAL_INTENT";
   public static final String EXTRA_BASE_INTENT = "debug_base_intent";
 
   public static Intent createIntent(Intent baseIntent) {

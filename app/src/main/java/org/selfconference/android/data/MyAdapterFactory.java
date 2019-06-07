@@ -1,4 +1,4 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import com.ryanharter.auto.value.moshi.MoshiAdapterFactory;
 import com.squareup.moshi.JsonAdapter;

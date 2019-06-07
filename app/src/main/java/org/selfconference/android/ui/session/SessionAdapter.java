@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.session;
+package org.selfconference.ui.session;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +7,9 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
-import org.selfconference.android.R;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.ui.misc.ButterKnifeViewHolder;
+import org.selfconference.R;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.ui.misc.ButterKnifeViewHolder;
 import java.util.List;
 import butterknife.BindView;
 

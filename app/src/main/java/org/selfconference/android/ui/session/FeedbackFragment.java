@@ -1,4 +1,4 @@
-package org.selfconference.android.ui.session;
+package org.selfconference.ui.session;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,12 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import org.selfconference.android.R;
-import org.selfconference.android.data.api.model.Feedback;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Vote;
-import org.selfconference.android.ui.view.VoteButton;
-import org.selfconference.android.ui.view.VoteButton.OnVoteSelectedListener;
+import org.selfconference.R;
+import org.selfconference.data.api.model.Feedback;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.api.model.Vote;
+import org.selfconference.ui.view.VoteButton;
+import org.selfconference.ui.view.VoteButton.OnVoteSelectedListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +36,7 @@ public final class FeedbackFragment extends DialogFragment implements OnVoteSele
 
   public static final String TAG = FeedbackFragment.class.getName();
   private static final String EXTRA_SESSION =
-      "org.selfconference.android.ui.session.FeedbackFragment.EXTRA_SESSION";
+      "org.selfconference.ui.session.FeedbackFragment.EXTRA_SESSION";
 
   @BindView(R.id.vote_button) VoteButton voteButton;
   @BindView(R.id.feedback_fragment_comment_section) EditText comments;

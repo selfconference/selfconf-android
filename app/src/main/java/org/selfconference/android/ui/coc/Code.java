@@ -1,7 +1,7 @@
-package org.selfconference.android.ui.coc;
+package org.selfconference.ui.coc;
 
 import androidx.annotation.StringRes;
-import org.selfconference.android.R;
+import org.selfconference.R;
 
 public enum Code {
   CODE_OF_CONDUCT(R.string.coc_main_title, R.string.coc_main_subtitle),

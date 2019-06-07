@@ -1,10 +1,10 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import com.f2prateek.rx.preferences2.Preference;
 import com.f2prateek.rx.preferences2.RxSharedPreferences;
-import org.selfconference.android.IsInstrumentationTest;
-import org.selfconference.android.data.api.InternalDebugApiModule;
-import org.selfconference.android.data.pref.PreferencesModule;
+import org.selfconference.IsInstrumentationTest;
+import org.selfconference.data.api.InternalDebugApiModule;
+import org.selfconference.data.pref.PreferencesModule;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;

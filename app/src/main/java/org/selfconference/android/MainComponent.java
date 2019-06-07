@@ -1,11 +1,11 @@
-package org.selfconference.android;
+package org.selfconference;
 
-import org.selfconference.android.ui.BaseActivity;
-import org.selfconference.android.ui.MainActivity;
-import org.selfconference.android.ui.session.MyScheduleFragment;
-import org.selfconference.android.ui.session.SessionDetailActivity;
-import org.selfconference.android.ui.session.SessionListFragment;
-import org.selfconference.android.ui.sponsor.SponsorListFragment;
+import org.selfconference.ui.BaseActivity;
+import org.selfconference.ui.MainActivity;
+import org.selfconference.ui.session.MyScheduleFragment;
+import org.selfconference.ui.session.SessionDetailActivity;
+import org.selfconference.ui.session.SessionListFragment;
+import org.selfconference.ui.sponsor.SponsorListFragment;
 
 public interface MainComponent {
     App getApp();

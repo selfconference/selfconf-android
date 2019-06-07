@@ -1,6 +1,6 @@
-package org.selfconference.android.data.api;
+package org.selfconference.data.api;
 
-import org.selfconference.android.data.api.model.Room;
+import org.selfconference.data.api.model.Room;
 
 final class MockRooms {
 

@@ -1,4 +1,4 @@
-package org.selfconference.android;
+package org.selfconference;
 
 import java.lang.annotation.Retention;
 import javax.inject.Qualifier;

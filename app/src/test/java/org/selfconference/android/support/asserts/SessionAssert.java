@@ -1,9 +1,9 @@
-package org.selfconference.android.support.asserts;
+package org.selfconference.support.asserts;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
-import org.selfconference.android.data.api.model.Room;
-import org.selfconference.android.data.api.model.Session;
+import org.selfconference.data.api.model.Room;
+import org.selfconference.data.api.model.Session;
 import org.threeten.bp.Instant;
 
 public final class SessionAssert extends AbstractAssert<SessionAssert, Session> {

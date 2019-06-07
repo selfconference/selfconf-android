@@ -1,11 +1,11 @@
-package org.selfconference.android.data.api.model;
+package org.selfconference.data.api.model;
 
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import java.util.List;
-import org.selfconference.android.data.api.SponsorComparator;
+import org.selfconference.data.api.SponsorComparator;
 
 @AutoValue public abstract class Sponsor implements Parcelable, Comparable<Sponsor> {
 

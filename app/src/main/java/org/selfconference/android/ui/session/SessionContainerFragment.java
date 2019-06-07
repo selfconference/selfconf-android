@@ -1,10 +1,10 @@
-package org.selfconference.android.ui.session;
+package org.selfconference.ui.session;
 
 import android.os.Bundle;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
-import org.selfconference.android.R;
-import org.selfconference.android.ui.BaseFragment;
+import org.selfconference.R;
+import org.selfconference.ui.BaseFragment;
 import butterknife.BindView;
 
 public final class SessionContainerFragment extends BaseFragment {

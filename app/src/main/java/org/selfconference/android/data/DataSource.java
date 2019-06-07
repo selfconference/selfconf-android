@@ -1,8 +1,8 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import com.google.common.collect.Lists;
-import org.selfconference.android.data.api.model.Session;
-import org.selfconference.android.data.api.model.Sponsor;
+import org.selfconference.data.api.model.Session;
+import org.selfconference.data.api.model.Sponsor;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -10,8 +10,8 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-import static org.selfconference.android.data.Data.Status.LOADING;
-import static org.selfconference.android.data.Data.Status.NONE;
+import static org.selfconference.data.Data.Status.LOADING;
+import static org.selfconference.data.Data.Status.NONE;
 
 @Singleton public final class DataSource {
 

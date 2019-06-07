@@ -1,12 +1,12 @@
-package org.selfconference.android.support.asserts;
+package org.selfconference.support.asserts;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
-import org.selfconference.android.data.api.model.Sponsor;
-import org.selfconference.android.data.api.model.SponsorLevel;
+import org.selfconference.data.api.model.Sponsor;
+import org.selfconference.data.api.model.SponsorLevel;
 
 public final class SponsorAssert extends AbstractAssert<SponsorAssert, Sponsor> {
 

@@ -15,10 +15,10 @@
       android:icon="@mipmap/dev_ic_launcher"
       tools:replace="icon">
     <activity
-        android:name="org.selfconference.android.ui.ExternalIntentActivity"
+        android:name="org.selfconference.ui.ExternalIntentActivity"
         >
       <intent-filter>
-        <action android:name="org.selfconference.android.intent.EXTERNAL_INTENT"/>
+        <action android:name="org.selfconference.intent.EXTERNAL_INTENT"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>

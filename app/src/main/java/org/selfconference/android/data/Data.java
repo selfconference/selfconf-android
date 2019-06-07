@@ -1,4 +1,4 @@
-package org.selfconference.android.data;
+package org.selfconference.data;
 
 import androidx.annotation.Nullable;
 import com.google.auto.value.AutoValue;

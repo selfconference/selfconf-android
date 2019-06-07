@@ -1,12 +1,12 @@
-package org.selfconference.android.ui.coc;
+package org.selfconference.ui.coc;
 
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import org.selfconference.android.R;
-import org.selfconference.android.ui.BaseFragment;
+import org.selfconference.R;
+import org.selfconference.ui.BaseFragment;
 import butterknife.BindView;
 
 public final class CodeOfConductFragment extends BaseFragment {
